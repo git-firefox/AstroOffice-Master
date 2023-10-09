@@ -1091,11 +1091,6 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-
-
-
-
-
         private void BtnShow_TabDateFinder_Click(MouseEventArgs e)
         {
             //if (string.IsNullOrEmpty(this.CmbBOccassion.Text))
