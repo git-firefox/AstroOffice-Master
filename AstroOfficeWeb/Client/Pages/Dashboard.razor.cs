@@ -935,7 +935,45 @@ namespace AstroOfficeWeb.Client.Pages
 
         private void OnClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
         {
+            if(ListView_Years35 == null)
+            {
+                ListView_Years35 = new ();
+            }
+            else
+            {
+                ListView_Years35.Clear();
+            }
 
+            this.maha_dasha_click = true;
+            this.sukshma_dasha_click = false;
+
+            short planet = (
+                from Map in this.planet_list
+                where Map.Hindi == selectedTR.Planet
+                select Map).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+            DateTime startDate = (
+                from Map in this.main_mahadasha
+                where Map.Planet == planet
+                select Map).SingleOrDefault<KPDashaVO>()?.StartDate ?? default;
+
+            DateTime endDate = (
+                from Map in this.main_mahadasha
+                where Map.Planet == planet
+                select Map).SingleOrDefault<KPDashaVO>()?.EndDate ?? default;
+
+            this.main_antardasha = this.kpbl.Get_Antar_Dasha(startDate, endDate, planet, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
+
+            if (!this.BirthDetails.SalaChakkar)
+            {
+                this.Gen_AntarDasha(this.main_antardasha, this.kp_chart);
+            }
+
+        }
+
+        private void Gen_AntarDasha(List<KPDashaVO> dasha_list, List<KPPlanetMappingVO> kp_chart)
+        {
+            throw new NotImplementedException();
         }
 
         private void OnChange_CmbAyanansh(ChangeEventArgs e)
@@ -1422,144 +1460,146 @@ namespace AstroOfficeWeb.Client.Pages
 
 
 
-        private bool isBestKundali(string best_Online_Result, short rating, short engine)
+        private async Task<bool> isBestKundali(string best_Online_Result, short rating, short engine)
         {
-            return true;
+            var response = await Swagger!.GetAsync<ApiResponse<bool>>(string.Format(ApiConst.GET_BestBLL_IsBestKundali, best_Online_Result,rating,engine));
+
+            return response?.Data ?? false;
         }
 
         private void BtnShow_TabKundaliDates_Click(MouseEventArgs e)
         {
-            if ((this.full_lat.Length <= 0 ? false : this.full_lon.Length > 0))
-            {
-                //  Application.UseWaitCursor = true;
-                string str = this.full_lon.Replace(":", ".");
-                string str1 = this.full_lat.Replace(":", ".");
-              //  this.txtbestdate.Text = "";
-                BestKundaliDates.BestDate = "";
+            //if ((this.full_lat.Length <= 0 ? false : this.full_lon.Length > 0))
+            //{
+            //    //  Application.UseWaitCursor = true;
+            //    string str = this.full_lon.Replace(":", ".");
+            //    string str1 = this.full_lat.Replace(":", ".");
+            //  //  this.txtbestdate.Text = "";
+            //    BestKundaliDates.BestDate = "";
 
-                str = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str.Substring(0, str.Length - 1))).ToString(), str.Substring(str.Length - 1, 1));
-                str1 = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str1.Substring(0, str1.Length - 1))).ToString(), str1.Substring(str1.Length - 1, 1));
-                string str2 = this.kkbl.longi2timezone(this.full_tz);
-                if (str.Length == 6)
-                {
-                    str = string.Concat("0", str);
-                }
-                if (str1.Length == 5)
-                {
-                    str1 = string.Concat("0", str1);
-                }
-                string str3 = "";
-                string str4 = "";
-                KundliBLL kundliBLL = new KundliBLL();
-               // BestBLL bestBLL = new BestBLL();
-                short num = 0;
-                DateTime date = this.pick_start_date.Value.Date;
-                DateTime value = this.pick_start_time.Value;
-                DateTime timeOfDay = date + value.TimeOfDay;
-                DateTime dateTime = this.pick_end_date.Value.Date;
-                value = this.pick_end_time.Value;
-                DateTime timeOfDay1 = dateTime + value.TimeOfDay;
-                long num1 = (long)0;
-                short num2 = 0;
-                short num3 = 0;
-                if (this.comborating.Text == "Good")
-                {
-                    num2 = 1;
-                }
-                if (this.comborating.Text == "Best")
-                {
-                    num2 = 2;
-                }
-                if (this.comborating.Text == "Excellent")
-                {
-                    num2 = 3;
-                }
-                if (this.radioRedBook.Checked)
-                {
-                    num3 = 1;
-                }
-                if (this.radiokp.Checked)
-                {
-                    num3 = 2;
-                }
-                string str5 = "";
-                string str6 = "";
-                while (true)
-                {
-                    string[] fullTimeCorr = new string[19];
-                    int day = timeOfDay.Day;
-                    fullTimeCorr[0] = day.ToString();
-                    fullTimeCorr[1] = "/";
-                    day = timeOfDay.Month;
-                    fullTimeCorr[2] = day.ToString();
-                    fullTimeCorr[3] = "/";
-                    day = timeOfDay.Year;
-                    fullTimeCorr[4] = day.ToString();
-                    fullTimeCorr[5] = ",";
-                    day = timeOfDay.Hour;
-                    fullTimeCorr[6] = day.ToString();
-                    fullTimeCorr[7] = ":";
-                    day = timeOfDay.Minute;
-                    fullTimeCorr[8] = day.ToString();
-                    fullTimeCorr[9] = ",";
-                    fullTimeCorr[10] = str;
-                    fullTimeCorr[11] = ",";
-                    fullTimeCorr[12] = str1;
-                    fullTimeCorr[13] = ",";
-                    fullTimeCorr[14] = str2;
-                    fullTimeCorr[15] = ",";
-                    fullTimeCorr[16] = this.ayan;
-                    fullTimeCorr[17] = ",";
-                    fullTimeCorr[18] = this.full_time_corr;
-                    str3 = string.Concat(fullTimeCorr);
-                    str4 = kundliBLL.Gen_Kunda(str3, 500f, 1);
-                    char[] chrArray = new char[] { '-' };
-                    str5 = str4.Split(chrArray)[0];
-                    if (num3 == 1)
-                    {
-                        if (str5 != str6)
-                        {
-                            if (isBestKundali(str4, num2, num3))
-                            {
-                                TextBox textBox = this.txtbestdate;
-                                textBox.Text = string.Concat(textBox.Text, timeOfDay.ToString(), "\r\n\r\n");
-                            }
-                            num1 += (long)1;
-                        }
-                    }
-                    if (num3 == 2)
-                    {
-                        if (isBestKundali(str4, num2, num3))
-                        {
-                            TextBox textBox1 = this.txtbestdate;
-                            textBox1.Text = string.Concat(textBox1.Text, timeOfDay.ToString(), "\r\n\r\n");
-                        }
-                        num1 += (long)1;
-                    }
-                    str6 = str5;
-                    if (num3 == 2)
-                    {
-                        num = 5;
-                    }
-                    if (num3 == 1)
-                    {
-                        num = 30;
-                    }
-                    timeOfDay = timeOfDay.AddMinutes((double)num);
-                    if (timeOfDay >= timeOfDay1)
-                    {
-                        break;
-                    }
-                }
-                this.lblkundli_nos.Text = string.Concat(num1.ToString(), " Kundalis processed.");
-                Application.UseWaitCursor = false;
-            }
-            else
-            {
-                MessageBox.Show("Please choose City from list.");
-                this.TxtBirthplace.SelectAll();
-                this.TxtBirthplace.Focus();
-            }
+            //    str = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str.Substring(0, str.Length - 1))).ToString(), str.Substring(str.Length - 1, 1));
+            //    str1 = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str1.Substring(0, str1.Length - 1))).ToString(), str1.Substring(str1.Length - 1, 1));
+            //    string str2 = this.kkbl.longi2timezone(this.full_tz);
+            //    if (str.Length == 6)
+            //    {
+            //        str = string.Concat("0", str);
+            //    }
+            //    if (str1.Length == 5)
+            //    {
+            //        str1 = string.Concat("0", str1);
+            //    }
+            //    string str3 = "";
+            //    string str4 = "";
+            //    KundliBLL kundliBLL = new KundliBLL();
+            //   // BestBLL bestBLL = new BestBLL();
+            //    short num = 0;
+            //    DateTime date = this.pick_start_date.Value.Date;
+            //    DateTime value = this.pick_start_time.Value;
+            //    DateTime timeOfDay = date + value.TimeOfDay;
+            //    DateTime dateTime = this.pick_end_date.Value.Date;
+            //    value = this.pick_end_time.Value;
+            //    DateTime timeOfDay1 = dateTime + value.TimeOfDay;
+            //    long num1 = (long)0;
+            //    short num2 = 0;
+            //    short num3 = 0;
+            //    if (this.comborating.Text == "Good")
+            //    {
+            //        num2 = 1;
+            //    }
+            //    if (this.comborating.Text == "Best")
+            //    {
+            //        num2 = 2;
+            //    }
+            //    if (this.comborating.Text == "Excellent")
+            //    {
+            //        num2 = 3;
+            //    }
+            //    if (this.radioRedBook.Checked)
+            //    {
+            //        num3 = 1;
+            //    }
+            //    if (this.radiokp.Checked)
+            //    {
+            //        num3 = 2;
+            //    }
+            //    string str5 = "";
+            //    string str6 = "";
+            //    while (true)
+            //    {
+            //        string[] fullTimeCorr = new string[19];
+            //        int day = timeOfDay.Day;
+            //        fullTimeCorr[0] = day.ToString();
+            //        fullTimeCorr[1] = "/";
+            //        day = timeOfDay.Month;
+            //        fullTimeCorr[2] = day.ToString();
+            //        fullTimeCorr[3] = "/";
+            //        day = timeOfDay.Year;
+            //        fullTimeCorr[4] = day.ToString();
+            //        fullTimeCorr[5] = ",";
+            //        day = timeOfDay.Hour;
+            //        fullTimeCorr[6] = day.ToString();
+            //        fullTimeCorr[7] = ":";
+            //        day = timeOfDay.Minute;
+            //        fullTimeCorr[8] = day.ToString();
+            //        fullTimeCorr[9] = ",";
+            //        fullTimeCorr[10] = str;
+            //        fullTimeCorr[11] = ",";
+            //        fullTimeCorr[12] = str1;
+            //        fullTimeCorr[13] = ",";
+            //        fullTimeCorr[14] = str2;
+            //        fullTimeCorr[15] = ",";
+            //        fullTimeCorr[16] = this.ayan;
+            //        fullTimeCorr[17] = ",";
+            //        fullTimeCorr[18] = this.full_time_corr;
+            //        str3 = string.Concat(fullTimeCorr);
+            //        str4 = kundliBLL.Gen_Kunda(str3, 500f, 1);
+            //        char[] chrArray = new char[] { '-' };
+            //        str5 = str4.Split(chrArray)[0];
+            //        if (num3 == 1)
+            //        {
+            //            if (str5 != str6)
+            //            {
+            //                if (isBestKundali(str4, num2, num3))
+            //                {
+            //                    TextBox textBox = this.txtbestdate;
+            //                    textBox.Text = string.Concat(textBox.Text, timeOfDay.ToString(), "\r\n\r\n");
+            //                }
+            //                num1 += (long)1;
+            //            }
+            //        }
+            //        if (num3 == 2)
+            //        {
+            //            if (isBestKundali(str4, num2, num3))
+            //            {
+            //                TextBox textBox1 = this.txtbestdate;
+            //                textBox1.Text = string.Concat(textBox1.Text, timeOfDay.ToString(), "\r\n\r\n");
+            //            }
+            //            num1 += (long)1;
+            //        }
+            //        str6 = str5;
+            //        if (num3 == 2)
+            //        {
+            //            num = 5;
+            //        }
+            //        if (num3 == 1)
+            //        {
+            //            num = 30;
+            //        }
+            //        timeOfDay = timeOfDay.AddMinutes((double)num);
+            //        if (timeOfDay >= timeOfDay1)
+            //        {
+            //            break;
+            //        }
+            //    }
+            //    this.lblkundli_nos.Text = string.Concat(num1.ToString(), " Kundalis processed.");
+            //    Application.UseWaitCursor = false;
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Please choose City from list.");
+            //    this.TxtBirthplace.SelectAll();
+            //    this.TxtBirthplace.Focus();
+            //}
         }
 
 
