@@ -933,6 +933,11 @@ namespace AstroOfficeWeb.Client.Pages
 
         #region Handle events
 
+        private void OnClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
+        {
+
+        }
+
         private void OnChange_CmbAyanansh(ChangeEventArgs e)
         {
             string value = e.Value?.ToString() ?? "";

@@ -531,11 +531,10 @@
                                                             <tbody>
                                                                 @foreach (var row in ListView_Mahadasha ?? new List<MahadashaTableTRModel>())
                                                                 {
-                                                                    <tr>
+                                                                    <tr @onclick="()=>OnClick_TR_ListView_Mahadasha(row)">
                                                                         <td>@row.Planet</td>
                                                                         <td>@row.Period</td>
                                                                         <td>@row.Signi</td>
-
                                                                     </tr>
                                                                 }
                                                             </tbody>
@@ -559,6 +558,8 @@
                                                                     <tr>
                                                                         <th>Planet</th>
                                                                         <th>Antar</th>
+                                                                        <th>Period</th>
+                                                                        <th>Age</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -567,6 +568,8 @@
                                                                         <tr>
                                                                             <td>@row.Planet</td>
                                                                             <td>@row.Antar</td>
+                                                                            <td>@row.Period</td>
+                                                                            <td>@row.Age</td>
                                                                         </tr>
                                                                     }
                                                                 </tbody>
