@@ -1,0 +1,30 @@
+﻿@* <h3>Confirmation</h3>
+ *@
+@inherits ConfirmBase
+
+@if (ShowConfirmation)
+{
+    @* <div class="modal fade show" id="modal-xl" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="false"> *@
+    <div class="modal fade show d-block" id="modal-xl" data-backdrop="static" data-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl  modal-enter-active modal-leave-active">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Extra Large Modal</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="() => OnConfirmationChange(false)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @ConfirmationMessage
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">Close</button>
+                    <button type="button" class="btn btn-primary" @onclick="() => OnConfirmationChange(true)">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div class="modal-backdrop show"></div>
+}

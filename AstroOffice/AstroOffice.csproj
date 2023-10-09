@@ -1,0 +1,85 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<Nullable>annotations</Nullable>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<ApplicationIcon>Images\Logos\logo.ico</ApplicationIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="BAL\**" />
+		<Compile Remove="DAl\**" />
+		<Compile Remove="Models\**" />
+		<Compile Remove="Old\**" />
+		<Compile Remove="Resources\**" />
+		<EmbeddedResource Remove="BAL\**" />
+		<EmbeddedResource Remove="DAl\**" />
+		<EmbeddedResource Remove="Models\**" />
+		<EmbeddedResource Remove="Old\**" />
+		<EmbeddedResource Remove="Resources\**" />
+		<None Remove="BAL\**" />
+		<None Remove="DAl\**" />
+		<None Remove="Models\**" />
+		<None Remove="Old\**" />
+		<None Remove="Resources\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Images\Logos\logo.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FontAwesome.Sharp" Version="6.3.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ASBAL\ASBAL.csproj" />
+		<ProjectReference Include="..\ASDAL\ASDAL.csproj" />
+		<ProjectReference Include="..\ASDLL\ASDLL.csproj" />
+		<ProjectReference Include="..\AstroShared\AstroShared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Components\AstrooffDataSet.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>AstrooffDataSet.xsd</DependentUpon>
+		</Compile>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Components\AstrooffDataSet.xsd">
+		  <Generator>MSDataSetGenerator</Generator>
+		  <LastGenOutput>AstrooffDataSet.Designer.cs</LastGenOutput>
+		</None>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
+
+</Project>

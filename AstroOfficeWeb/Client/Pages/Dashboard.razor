@@ -1,0 +1,910 @@
+﻿@*@page "/dashboard"*@
+@page "/"
+@attribute [Authorize]
+@inherits BaseComponent
+@inject HttpClient HttpClient
+@inject IJSRuntime JSRuntime
+
+@* @User?.Identity?.Name *@
+<div class="container-fluid p-3">
+    <h3 class="py-3">Report</h3>
+    <section class="content">
+        <div class="row report-content mb-3">
+
+            @* Birth Details *@
+            <div class="col-md-4">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Birth Details</h3>
+                    </div>
+                    <EditForm Model="BirthDetails">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-2">
+                                    <select @onchange="OnChange_CmbSkipBad" value="@BirthDetails!.CmbSkipBad" class="form-control form-control-sm" aria-label="Selection of SkipBad">
+                                        @foreach (var item in BirthDetailsLookups.SkipBadItems)
+                                        {
+                                            <option value="@item.Text">@item.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    @* <InputSelect @bind-Value="BirthDetails!.CmbTime" class="form-control form-control-sm" aria-label="Selection of Time"> *@
+                                    <select @onchange="OnChange_CmbTime" class="form-control form-control-sm" aria-label="Selection of Time">
+                                        @foreach (var item in BirthDetailsLookups.CmbTimeItems)
+                                        {
+                                            <option value="@item.Text">@item.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-block btn-secondary btn-sm"> - </button>
+                                </div>
+                                <div class="col">
+                                    @* <input type="text" class="form-control form-control-sm" />*@
+                                    <InputNumber @bind-Value="BirthDetails.TimeValue" class="form-control form-control-sm" />
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-block btn-secondary btn-sm"> + </button>
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-block btn-secondary btn-sm" @onclick="OnClick_BtnRefresh">Refresh</button>
+                                </div>
+                            </div>
+
+                            <div class="row align-items-end mt-2">
+                                <div class="col-5">
+                                    @if (IsAdmin || UserCanEdit)
+                                    {
+                                        <InputText @ref="inputTextName" @bind-Value="BirthDetails!.TxtName" class="form-control form-control-sm" />
+                                    }
+                                    else
+                                    {
+                                        <input value="@BirthDetails!.TxtName" class="form-control form-control-sm" readonly />
+                                    }
+                                </div>
+                                <div class="col">
+                                    @if (dobddEnabled)
+                                    {
+                                        <InputNumber @bind-Value="BirthDetails!.Dobdd" class="form-control form-control-sm" min="1" max="31" />
+                                    }
+                                    else
+                                    {
+                                        <input value="@BirthDetails!.Dobdd" class="form-control form-control-sm" readonly />
+                                    }
+                                </div>
+                                <div class="col">
+                                    @if (dobmmEnabled)
+                                    {
+                                        <InputNumber @bind-Value="BirthDetails!.Dobmm" class="form-control form-control-sm" min="1" max="12" />
+                                    }
+                                    else
+                                    {
+                                        <input value="@BirthDetails!.Dobmm" class="form-control form-control-sm" readonly />
+                                    }
+                                </div>
+                                <div class="col">
+                                    @if (dobyyEnabled)
+                                    {
+                                        <InputNumber @bind-Value="BirthDetails!.Dobyy" class="form-control form-control-sm" />
+                                    }
+                                    else
+                                    {
+                                        <input value="@BirthDetails!.Dobyy" class="form-control form-control-sm" readonly />
+                                    }
+                                </div>
+                                <div class="col">
+                                    @if (tobhhEnabled)
+                                    {
+                                        <InputNumber @bind-Value="BirthDetails!.Tobhh" class="form-control form-control-sm" min="1" max="24" />
+                                    }
+                                    else
+                                    {
+                                        <input value="@BirthDetails!.Tobhh" class="form-control form-control-sm" readonly />
+                                    }
+                                </div>
+                                <div class="col">
+                                    @if (tobmmEnabled)
+                                    {
+                                        <InputNumber @bind-Value="BirthDetails!.Tobmm" class="form-control form-control-sm" min="1" max="60" />
+                                    }
+                                    else
+                                    {
+                                        <input value="@BirthDetails!.Tobmm" class="form-control form-control-sm" readonly />
+                                    }
+                                </div>
+                                <div class="col">
+                                    @if (tobssEnabled)
+                                    {
+                                        <InputNumber @bind-Value="BirthDetails!.Tobss" class="form-control form-control-sm" min="1" max="60" />
+                                    }
+                                    else
+                                    {
+                                        <input value="@BirthDetails!.Tobss" class="form-control form-control-sm" readonly />
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="row align-items-end mt-1">
+                                <div class="col-5">
+                                    <div class="row align-items-end mt-1">
+                                        @if (CmbCountry != null)
+                                        {
+                                            <div class="col">
+                                                <select @bind="BirthDetails!.CmbCountry" class="form-control form-control-sm" aria-label="Selection of brith country">
+                                                    @foreach (var item in CmbCountry)
+                                                    {
+                                                        <option value="@item.Value">@item.Text</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        }
+                                    </div>
+
+
+                                    <div class="row align-items-end mt-1">
+
+                                        <div class="col">
+                                            @if ((IsAdmin || UserCanEdit) && txtBirthPlaceEnabled)
+                                            {
+                                                <InputText @ref="inputTextBirthPlace" @bind-Value="BirthDetails!.TxtBirthPlace" class="form-control form-control-sm" @onkeydown="OnKeyDown_TxtBirthplace" @oninput="OnInput_TxtBirthplace" @onfocus="OnFocus_TxtBirthplace" />
+                                            }
+                                            else
+                                            {
+                                                <input value="@BirthDetails!.TxtBirthPlace" class="form-control form-control-sm" readonly />
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div class="row align-items-end mt-1">
+
+                                        <div class="col">
+                                            @if (ListBirthCities != null)
+                                            {
+                                                <select value="@selectedBirthCityIndex" class="form-control form-control-sm" aria-label="Selection of BirthCity" size="3" @onchange="OnChange_ListBirthCities">
+                                                    @for (int i = 0; i < ListBirthCities.Count; i++)
+                                                    {
+                                                        <option value="@i">@ListBirthCities[i].Place</option>
+                                                    }
+                                                </select>
+                                            }
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row align-items-end mt-1">
+                                        <div class="col">
+                                            <div class="form-group row">
+                                                <label for="IdLongtitude" class="col-sm-5 col-form-label">Longtitude</label>
+                                                <div class="col-sm-7">
+
+                                                    <InputText @bind-Value="BirthDetails!.Longtitude" id="IdLongtitude" class="form-control form-control-sm" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="IdLatitude" class="col-sm-5 col-form-label">Latitude</label>
+                                                <div class="col-sm-7">
+
+                                                    <InputText @bind-Value="BirthDetails!.Latitude" id="IdLatitude" class="form-control form-control-sm" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row align-items-end mt-1">
+                                        <div class="col">
+                                            <select value="@BirthDetails!.CmbLanguage" class="form-control form-control-sm" aria-label="Selection of language" @onchange="OnChange_CmbLanguage">
+                                                @foreach (var item in BirthDetailsLookups.LanguageItems)
+                                                {
+                                                    <option value="@item.Text">@item.Text</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row align-items-end mt-1">
+                                        <div class="col-4">
+                                            @if (IsAdmin || UserCanEdit)
+                                            {
+                                                <InputText @bind-Value="BirthDetails!.TxtTimezone" class="form-control form-control-sm" />
+                                            }
+                                            else
+                                            {
+                                                <input value="@BirthDetails!.TxtTimezone" class="form-control form-control-sm" readonly />
+                                            }
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-check form-check-inline">
+                                                <InputCheckbox id="ref" class="form-check-input" @bind-Value="BirthDetails!.ChkShowRef" />
+                                                <label class="form-check-label" for="ref">Show Ref. Code</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col">
+                                    <fieldset class="border p-2">
+                                        <legend class="w-auto small">Options</legend>
+                                        <div class="row">
+                                            <InputRadioGroup Name="Gender" @bind-Value="BirthDetails!.Gender">
+
+                                                <div class="col">
+                                                    <div class="form-check">
+                                                        <InputRadio Value="Gender.Male" class="form-check-input" id="RbMale" />
+                                                        <label class="form-check-label" for="RbMale">
+                                                            Male
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col">
+                                                    <div class="form-check">
+                                                        <InputRadio Value="Gender.Female" class="form-check-input" id="RbFemale" />
+                                                        <label class="form-check-label" for="RbFemale">
+                                                            Female
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-2">
+                                                    <button type="button" class="btn btn-block btn-secondary btn-sm"> ✓ </button>
+                                                </div>
+
+
+                                            </InputRadioGroup>
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col">
+
+                                                <div class="row align-items-end mt-2">
+                                                    <div class="col">
+                                                        <select @onchange="OnChange_CmbCategory" value="@BirthDetails!.CmbCategory" class="form-control form-control-sm">
+                                                            @foreach (var item in BirthDetailsLookups.BirthCategoryItems)
+                                                            {
+                                                                <option value="@item.Text">@item.Text</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row align-items-end mt-2">
+                                                    <div class="col">
+                                                        @* <InputSelect @bind-Value="BirthDetails!.CmbAyanansh" class="form-control form-control-sm" aria-label="Default select example"> *@
+                                                        <select @onchange="OnChange_CmbAyanansh" class="form-control form-control-sm" aria-label="Selection of ayanansh">
+                                                            @foreach (var item in BirthDetailsLookups.CmbAyananshItems)
+                                                            {
+                                                                <option value="@item.Text">@item.Text</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row align-items-end mt-2">
+                                                    <div class="col">
+                                                        <select @oninput="OnChange_CmbRotate" class="form-control form-control-sm">
+                                                            @foreach (var item in BirthDetailsLookups.CmbRotateItems)
+                                                            {
+                                                                <option value="@item.Text">@item.Text</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col">
+                                                <InputTextArea class="form-control mt-2" rows="4" Placeholder="Enter ..." @bind-Value="BirthDetails!.Brief" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col">
+                                            <div class="form-check">
+                                                <InputCheckbox id="ChkSahasane" class="form-check-input" @bind-Value="BirthDetails!.ChkSahasaneLogic" />
+                                                <label class="form-check-label" for="ChkSahasane">Sahasane Logic</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col">
+                                            <div class="form-check">
+                                                <InputCheckbox id="ChkSalachakkar" class="form-check-input" @bind-Value="BirthDetails!.SalaChakkar" />
+                                                <label class="form-check-label" for="ChkSalachakkar">35 sala chakkar</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col">
+                                            <div class="form-check">
+                                                <InputCheckbox id="ChkMfal" class="form-check-input" @bind-Value="BirthDetails!.Mfal" />
+                                                <label class="form-check-label" for="ChkMfal">mfal</label>
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+
+                                    <div class="row align-items-end mt-2">
+
+                                        <div class="col">
+                                            <button class="btn btn-block btn-secondary btn-sm"> ⨉ </button>
+                                        </div>
+
+                                        <div class="col">
+                                            <button class="btn btn-block btn-secondary btn-sm"> Faladesh </button>
+                                        </div>
+
+                                        <div class="col">
+                                            <button class="btn btn-block btn-secondary btn-sm" @onclick="OnClick_BtnChart"> Chart </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+
+            @* Kundali Table *@
+            <div class="col-md-4">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">Kundali Table</h3>
+                    </div>
+                    <div class="col-md-12">
+                        <table class="table table-sm table-striped table-hover">
+
+                            <thead class="p-0">
+                                <tr>
+                                    <th>Desk</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var row in ListView_Ruling_Planet ?? new List<KundaliTableTRModel>())
+                                {
+                                    <tr>
+                                        <td>@row.Item</td>
+                                        <td>@row.SubItem</td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            @* Kundali *@
+            <div class="col-md-4">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Kundali</h3>
+                    </div>
+
+                    <EditForm Model="BirthDetails">
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col">
+                                    <button type="button" class="btn btn-block btn-secondary btn-sm" @onclick="OnClick_BhavChalit"> Bhav Chalit </button>
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-block btn-secondary btn-sm" @onclick="OnClick_Lagan"> Lagan </button>
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-block btn-secondary btn-sm" @onclick="OnClick_Chandra"> Chandra </button>
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-block btn-secondary btn-sm" @onclick="OnClick_Gochar"> Gochar </button>
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-block btn-secondary btn-sm" @onclick="OnClick_Varsh"> Varsh </button>
+                                </div>
+                            </div>
+
+                            @if (isNumVarshVisible)
+                            {
+                                <div class="row">
+                                    <div class="col-2">
+                                        <InputNumber @bind-Value="BirthDetails.KundaliUdvYear" class="form-control form-control-sm" min="1" max="120" />
+                                    </div>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrEmpty(imgSrc))
+                            {
+                                <div class="row mt-2">
+                                    <img src="@imgSrc" alt="" />
+                                </div>
+                            }
+
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="card card-primary card-outline card-outline-tabs">
+                    <div class="card-header p-0 pt-1 border-bottom-0">
+                        <ul class="nav nav-tabs" id="birthdetails-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="birthdetails-tabs-charts-tab" data-toggle="pill" href="#birthdetails-tabs-charts" role="tab" aria-controls="birthdetails-tabs-charts" aria-selected="true"> Charts </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="birthdetails-tabs-mahadasha-tab" data-toggle="pill" href="#birthdetails-tabs-mahadasha" role="tab" aria-controls="birthdetails-tabs-mahadasha" aria-selected="false"> Mahadasha </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="birthdetails-tabs-date-finder-tab" data-toggle="pill" href="#birthdetails-tabs-date-finder" role="tab" aria-controls="birthdetails-tabs-date-finder" aria-selected="false"> Date Finder </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " id="birthdetails-tabs-best-kundali-dates-tab" data-toggle="pill" href="#birthdetails-tabs-best-kundali-dates" role="tab" aria-controls="birthdetails-tabs-best-kundali-dates" aria-selected="false"> Best Kundali Dates </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="birthdetails-tabs-tabContent">
+                            @* Charts *@
+                            <div class="tab-pane fade active show" id="birthdetails-tabs-charts" role="tabpanel" aria-labelledby="birthdetails-tabs-charts-tab">
+                                <div class="row">
+                                    <div class="col-sm-7">
+                                        <table class="table table-sm table-bordered table-striped table-hover">
+
+                                            <thead class="p-0">
+                                                <tr>
+                                                    <th>House</th>
+                                                    <th>RL-NL-SL-SSL</th>
+                                                    <th>Nak Signi</th>
+                                                    <th>Sub Signi</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                @foreach (var row in ListView_House ?? new List<ChartHouseTableTRModel>())
+                                                {
+                                                    <tr>
+                                                        <td>@row.House</td>
+                                                        <td>@row.RL_NL_SL_SSL</td>
+                                                        <td>@row.NakSigni</td>
+                                                        <td>@row.SubSigni</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+
+                                    <div class="col-sm-5">
+                                        <table class="table table-sm  table-bordered table-striped table-hover">
+                                            <thead class="p-0">
+                                                <tr>
+                                                    <th>Planet</th>
+                                                    <th>RL-NL-SL-SSL</th>
+                                                    <th>Significators</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                @foreach (var row in ListView_Planet ?? new List<ChartPlanetTableTRModel>())
+                                                {
+                                                    <tr>
+                                                        <td>@row.Planet</td>
+                                                        <td>@row.RL_NL_SL_SSL</td>
+                                                        <td>@row.Significators</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @* Mahadasha *@
+                            <div class="tab-pane fade" id="birthdetails-tabs-mahadasha" role="tabpanel" aria-labelledby="birthdetails-tabs-mahadasha-tab">
+                                <div class="row">
+                                    <div class="col">
+
+                                        <div class="d-flex justify-content-start"><label>महादशा : </label><label>@LblMahadasha</label></div>
+                                        <div class="d-flex justify-content-start"><label>अन्तर्दशा : </label><label>@LblAntar</label></div>
+                                        <div class="d-flex justify-content-start"><label>प्र्यंतरदशा : </label><label>@LblParyan</label></div>
+                                        <div class="d-flex justify-content-start"><label>सुक्ष्मदशा : </label><label>@LblSukhsmadasha</label></div>
+
+                                        <div class="row mt-2">
+                                            <div class="col-3">
+                                                <div class="card card-success">
+                                                    <div class="card-header table table-sm">
+                                                        <h3 class="card-title">महादशा</h3>
+                                                    </div>
+                                                    <div class="col-md-12 table-responsive">
+                                                        <table class="table table-sm table-head-fixed text-nowrap">
+
+                                                            <thead class="p-0">
+                                                                <tr>
+                                                                    <th>Planet</th>
+                                                                    <th>Period</th>
+                                                                    <th>Signi(Self/Nak)</th>
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody>
+                                                                @foreach (var row in ListView_Mahadasha ?? new List<MahadashaTableTRModel>())
+                                                                {
+                                                                    <tr @onclick="() => OnClick_TR_ListView_Mahadasha(row)">
+                                                                        <td>@row.Planet</td>
+                                                                        <td>@row.Period</td>
+                                                                        <td>@row.Signi</td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-3">
+                                                <div class="card card-success">
+                                                    <div class="card-header table table-sm">
+                                                        <h3 class="card-title">अन्तर्दशा</h3>
+                                                    </div>
+
+                                                    <div class="col-md-12 table-responsive">
+                                                        <table class="table table-sm table-head-fixed text-nowrap">
+                                                            @if (BirthDetails.SalaChakkar)
+                                                            {
+                                                                <thead class="p-0">
+                                                                    <tr>
+                                                                        <th>Planet</th>
+                                                                        <th>Antar</th>
+                                                                        <th>Period</th>
+                                                                        <th>Age</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach (var row in ListView_Antardasha ?? new List<AntardashaTableTRModel>())
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@row.Planet</td>
+                                                                            <td>@row.Antar</td>
+                                                                            <td>@row.Period</td>
+                                                                            <td>@row.Age</td>
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <thead class="p-0">
+                                                                    <tr>
+                                                                        <th>Planet</th>
+                                                                        <th>Period</th>
+                                                                        <th>Signi(Self/Nak)</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach (var row in ListView_Years35 ?? new List<Years35TableTRModel>())
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@row.Planet</td>
+                                                                            <td>@row.Period</td>
+                                                                            <td>@row.Signi</td>
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                            }
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-3">
+                                                @if (!BirthDetails.SalaChakkar)
+                                                {
+                                                    <div class="card card-success">
+                                                        <div class="card-header table table-sm">
+                                                            <h3 class="card-title">प्र्यंतरदशा</h3>
+                                                        </div>
+
+                                                        <div class="col-md-12 table-responsive">
+
+                                                            <table class="table table-sm table-head-fixed text-nowrap">
+                                                                <thead class="p-0">
+                                                                    <tr>
+                                                                        <th>Planet</th>
+                                                                        <th>Period</th>
+                                                                        <th>Signi(Self/Nak)</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach (var row in ListView_Prayantardasha ?? new List<PrayantardashaTableTRModel>())
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@row.Planet</td>
+                                                                            <td>@row.Period</td>
+                                                                            <td>@row.Signi</td>
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+
+                                            <div class="col-3">
+                                                @if (!BirthDetails.SalaChakkar)
+                                                {
+                                                    <div class="card card-success">
+                                                        <div class="card-header table table-sm">
+                                                            <h3 class="card-title">सुक्ष्मदशा</h3>
+                                                        </div>
+                                                        <div class="col-md-12 table-responsive">
+                                                            <table class="table table-sm table-head-fixed text-nowrap">
+                                                                <thead class="p-0">
+                                                                    <tr>
+                                                                        <th>Planet</th>
+                                                                        <th>Period</th>
+                                                                        <th>Signi(Self/Nak)</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach (var row in ListView_Sukhsmadasha ?? new List<SukhsmadashaTableTRModel>())
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@row.Planet</td>
+                                                                            <td>@row.Period</td>
+                                                                            <td>@row.Signi</td>
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @* Date Finder *@
+                            <div class="tab-pane fade" id="birthdetails-tabs-date-finder" role="tabpanel" aria-labelledby="birthdetails-tabs-date-finder-tab">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <EditForm Model="DateFinder">
+                                            <div class="row mt-2">
+                                                <div class="col">
+                                                    <div class="d-flex justify-content-between">
+                                                        <label> Choose occassion</label>
+                                                        <InputSelect @bind-Value="DateFinder!.Occassion" class="form-control custom-select" aria-label="Section of Occassion">
+                                                            @foreach (var Datefinders in DateFinder.OccassionList)
+                                                            {
+                                                                <option value="@Datefinders">@Datefinders</option>
+                                                            }
+                                                        </InputSelect>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class="col">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="form-check">
+                                                            <InputCheckbox id="sahasane" class="form-check-input" @bind-Value="DateFinder!.Sahasane" />
+                                                            <label class="form-check-label" for="sahasane">Sahasane</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <InputCheckbox id="fullMatch" class="form-check-input" @bind-Value="DateFinder!.FullMatch" />
+                                                            <label class="form-check-label" for="fullMatch">Full match</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class="col">
+                                                    <fieldset class="border px-2">
+                                                        <legend class="w-auto small">Choose Period:</legend>
+                                                        <div class="row">
+                                                            <InputRadioGroup Name="DateFinderChoosePeriod" @bind-Value="DateFinder!.Period">
+
+                                                                <div class="col">
+                                                                    <div class="form-check">
+                                                                        <InputRadio Value="Period.Maha" class="form-check-input" id="rbMaha" />
+                                                                        <label class="form-check-label" for="rbMaha">
+                                                                            Maha
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col">
+                                                                    <div class="form-check">
+                                                                        <InputRadio Value="Period.Antar" class="form-check-input" id="rbAntar" />
+                                                                        <label class="form-check-label" for="rbAntar">
+                                                                            Antar
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col">
+                                                                    <div class="form-check">
+                                                                        <InputRadio Value="Period.Pryan" class="form-check-input" id="rbPryan" />
+                                                                        <label class="form-check-label" for="rbPryan">
+                                                                            Pryan
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </InputRadioGroup>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class="col">
+                                                    <fieldset class="px-2">
+                                                        <legend class="w-auto small"></legend>
+                                                        <div class="row">
+                                                            <InputRadioGroup Name="DateFinderDashaRadioButtons" @bind-Value="DateFinder!.Dasha">
+                                                                <div class="col">
+                                                                    <div class="form-check">
+                                                                        @*  <input class="form-check-input" type="radio" name="exampleRadios" id="rbDasha" value="option1" checked>*@
+                                                                        <InputRadio Value="Dasha.Dasha" class="form-check-input" id="rbDasha" />
+                                                                        <label class="form-check-label" for="rbDasha">
+                                                                            Dasha
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col">
+                                                                    <div class="form-check">
+                                                                        <InputRadio Value="Dasha.NakSwami" class="form-check-input" id="rbNakswami" />
+                                                                        <label class="form-check-label" for="rbNakswami">
+                                                                            Nak Swami
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col">
+                                                                    <div class="form-check">
+                                                                        <InputRadio Value="Dasha.Both" class="form-check-input" id="rbForBoth" />
+                                                                        <label class="form-check-label" for="rbForBoth">
+                                                                            Both
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </InputRadioGroup>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-5">
+                                                <div class="col">
+                                                    <div class="d-flex flex-row-reverse">
+                                                        <button type="button" class="btn btn-warning">Show</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </EditForm>
+                                    </div>
+
+                                    <div class="col">
+                                        <EditForm Model="DateFinder">
+                                            <InputTextArea class="form-control mt-2" rows="11" Placeholder="Date Lists ..." @bind-Value="DateFinder.DateList" />
+                                        </EditForm>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @* Best Kundali Dates *@
+                            <div class="tab-pane fade " id="birthdetails-tabs-best-kundali-dates" role="tabpanel" aria-labelledby="birthdetails-tabs-best-kundali-dates-tab">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <EditForm Model="BestKundaliDates">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <fieldset class="border p-2">
+                                                        <legend class="w-auto custom-legend">Starting Date and Time</legend>
+                                                        <div class="row align-items-end mt-2">
+                                                            <div class="col">
+                                                                <div>
+                                                                    <InputDate @bind-Value="BestKundaliDates.Pick_start_date" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col">
+                                                                <div>
+                                                                    <InputText type="time" @bind-Value="BestKundaliDates.StartingTime" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col">
+                                                    <fieldset class="border p-2">
+                                                        <legend class="w-auto custom-legend">Ending Date and Time</legend>
+                                                        <div class="row align-items-end mt-2">
+                                                            <div class="col">
+                                                                <div>
+                                                                    <InputDate @bind-Value="BestKundaliDates.Pick_end_date" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col">
+                                                                <div>
+                                                                    <InputText type="time" @bind-Value="BestKundaliDates.EndingTime" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col">
+                                                    <div class="d-flex justify-content-between">
+                                                        <label>Choose rating</label>
+                                                        <InputSelect @bind-Value="BestKundaliDates.Comborating" class="form-control custom-select" aria-label="Selecttion of rating">
+
+                                                            @foreach (var BirthCategory in BestKundaliDates.ComboratingSelect)
+                                                            {
+                                                                <option value="@BirthCategory">@BirthCategory</option>
+                                                            }
+                                                        </InputSelect>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2 d-flex justify-content-between">
+                                                <InputRadioGroup Name="KundaliDatesRadio" @bind-Value="BestKundaliDates!.KundaliDatesRadio">
+                                                    <div class="col">
+                                                        <div class="form-check">
+                                                            @* <input class="form-check-input" type="radio" name="exampleRadios" id="dasha" value="option1" checked>*@
+                                                            <InputRadio Value="KundaliDatesRadio.Kp" class="form-check-input" id="rbKp" />
+                                                            <label class="form-check-label" for="rbKp">
+                                                                KP
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-check">
+                                                            @* <input class="form-check-input" type="radio" name="exampleRadios" id="nakswami" value="option2">*@
+                                                            <InputRadio Value="KundaliDatesRadio.RedBook" class="form-check-input" id="rbRedBook" />
+                                                            <label class="form-check-label" for="rbRedBook">
+                                                                Red Book
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </InputRadioGroup>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="d-flex flex-row-reverse">
+                                                        <button type="button" class="btn btn-warning">Show</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </EditForm>
+                                    </div>
+
+                                    <div class="col">
+                                        <EditForm Model="BestKundaliDates">
+                                            <InputTextArea class="form-control mt-3" rows="11" Placeholder="Best Dates..." @bind-Value="BestKundaliDates.BestDate" />
+                                        </EditForm>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

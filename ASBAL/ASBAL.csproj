@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="BALAppointment.cs" />
+    <Compile Remove="BALGeneral.cs" />
+    <Compile Remove="BALKundli.cs" />
+    <Compile Remove="BALLifeAmritReg.cs" />
+    <Compile Remove="BALOrder.cs" />
+    <Compile Remove="BALProduct.cs" />
+    <Compile Remove="BALReceipt.cs" />
+    <Compile Remove="BALTimeDistribution.cs" />
+    <Compile Remove="BALVfalUpay.cs" />
+    <Compile Remove="DALLifeAmritReg.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ASDAL\ASDAL.csproj" />
+    <ProjectReference Include="..\ASModels\ASModels.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,45 @@
+﻿@page "/karan"
+
+@attribute [Authorize]
+
+<div class="container-fluid p-3">
+    <h3 class="py-3">Karan</h3>
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="p-0">
+                        <tr>
+                            <th>Problem</th>
+                            <th>House</th>
+                            <th>Significators</th>
+                            <th>Good</th>
+                            <th>Bad</th>
+                            <th>Karan Planet</th>
+                            <th>Position</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (KaranModelTableData != null)
+                        {
+                            foreach (var row in KaranModelTableData)
+                            {
+                                <tr>
+                                    <td>@row.Problem</td>
+                                    <td>@row.House</td>
+                                    <td>@row.Significators</td>
+                                    <td>@row.Good</td>
+                                    <td>@row.Bad</td>
+                                    <td>@row.KaranPlanet</td>
+                                    <td>@row.Position</td>
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
