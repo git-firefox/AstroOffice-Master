@@ -531,7 +531,7 @@
                                                             <tbody>
                                                                 @foreach (var row in ListView_Mahadasha ?? new List<MahadashaTableTRModel>())
                                                                 {
-                                                                    <tr @onclick="()=>OnClick_TR_ListView_Mahadasha(row)">
+                                                                    <tr @onclick="()=>OnClick_TR_ListView_Mahadasha(row)" @ondblclick="() => OnDBLClick_TR_ListView_Mahadasha(row)">
                                                                         <td>@row.Planet</td>
                                                                         <td>@row.Period</td>
                                                                         <td>@row.Signi</td>
@@ -552,7 +552,27 @@
 
                                                     <div class="col-md-12 table-responsive">
                                                         <table class="table table-sm table-head-fixed text-nowrap">
-                                                            @if (BirthDetails.SalaChakkar)
+                                                            @if (!BirthDetails.SalaChakkar)
+                                                            {
+                                                                <thead class="p-0">
+                                                                    <tr>
+                                                                        <th>Planet</th>
+                                                                        <th>Period</th>
+                                                                        <th>Signi(Self/Nak)</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach (var row in ListView_Antardasha ?? new List<AntardashaTableTRModel>())
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@row.Planet</td>
+                                                                            <td>@row.Period</td>
+                                                                            <td>@row.Signi</td>
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                            }
+                                                            else
                                                             {
                                                                 <thead class="p-0">
                                                                     <tr>
@@ -563,34 +583,13 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    @foreach (var row in ListView_Antardasha ?? new List<AntardashaTableTRModel>())
+                                                                    @foreach (var row in ListView_Years35 ?? new List<Years35TableTRModel>())
                                                                     {
                                                                         <tr>
                                                                             <td>@row.Planet</td>
                                                                             <td>@row.Antar</td>
                                                                             <td>@row.Period</td>
                                                                             <td>@row.Age</td>
-                                                                        </tr>
-                                                                    }
-                                                                </tbody>
-                                                            }
-                                                            else
-                                                            {
-
-                                                                <thead class="p-0">
-                                                                    <tr>
-                                                                        <th>Planet</th>
-                                                                        <th>Period</th>
-                                                                        <th>Signi(Self/Nak)</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    @foreach (var row in ListView_Years35 ?? new List<Years35TableTRModel>())
-                                                                    {
-                                                                        <tr>
-                                                                            <td>@row.Planet</td>
-                                                                            <td>@row.Period</td>
-                                                                            <td>@row.Signi</td>
                                                                         </tr>
                                                                     }
                                                                 </tbody>
