@@ -1469,13 +1469,13 @@ namespace AstroOfficeWeb.Client.Pages
 
         private void BtnShow_TabKundaliDates_Click(MouseEventArgs e)
         {
-            //if ((this.full_lat.Length <= 0 ? false : this.full_lon.Length > 0))
-            //{
-            //    //  Application.UseWaitCursor = true;
-            //    string str = this.full_lon.Replace(":", ".");
-            //    string str1 = this.full_lat.Replace(":", ".");
-            //  //  this.txtbestdate.Text = "";
-            //    BestKundaliDates.BestDate = "";
+            if ((this.full_lat.Length <= 0 ? false : this.full_lon.Length > 0))
+            {
+                //  Application.UseWaitCursor = true;
+                string str = this.full_lon.Replace(":", ".");
+                string str1 = this.full_lat.Replace(":", ".");
+                //  this.txtbestdate.Text = "";
+                BestKundaliDates.BestDate = "";
 
                 str = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str.Substring(0, str.Length - 1))).ToString(), str.Substring(str.Length - 1, 1));
                 str1 = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str1.Substring(0, str1.Length - 1))).ToString(), str1.Substring(str1.Length - 1, 1));
