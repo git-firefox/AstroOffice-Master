@@ -812,13 +812,13 @@
                                                         <div class="row align-items-end mt-2">
                                                             <div class="col">
                                                                 <div>
-                                                                    <InputDate @bind-Value="BestKundaliDates.Pick_start_date" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
+                                                                    <InputDate @bind-Value="BestKundaliDates.Pick_start_date"  class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
                                                                 </div>
                                                             </div>
 
                                                             <div class="col">
                                                                 <div>
-                                                                    <InputText type="time" @bind-Value="BestKundaliDates.StartingTime" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
+                                                                    <input type="time" @bind="BestKundaliDates.StartingTime" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -838,7 +838,7 @@
 
                                                             <div class="col">
                                                                 <div>
-                                                                    <InputText type="time" @bind-Value="BestKundaliDates.EndingTime" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
+                                                                    <input type="time" @bind="BestKundaliDates.EndingTime" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -889,6 +889,14 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label class="d-flex flex-row-reverse">
+                                                        @BestKundaliDates.countProcess
+                                                    </label>
+                                                </div>
+                                            </div>
+
                                         </EditForm>
                                     </div>
 
