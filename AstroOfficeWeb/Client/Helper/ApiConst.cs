@@ -23,6 +23,6 @@
         public static string GET_PredictionBLL_GetCodeLang = "api/PredictionBLL/GetCodeLang?rulecode={0}&lang={1}&paid={2}&unicode={3}";
         public static string POST_KPBLL_ProcessPlanetLagan = "api/KPBLL/ProcessPlanetLagan";
         public static string POST_KPBLL_ProcessKPChartGoodBad = "api/KPBLL/ProcessKPChartGoodBad";
-        public static string GET_BestBLL_IsBestKundali = "api/BestBLL/IsBestKundali?best_Online_Result={0}&rating={1}&engine={2}";
+        public static string POST_BestBLL_IsBestKundali = "api/BestBLL/IsBestKundali";
     }
 }
