@@ -12,7 +12,7 @@ namespace AstroOfficeWeb.Shared.Models
         public string TxtName { get; set; } = "SHIVA";
         public string? CmbSkipBad { get; set; }
         public string? CmbTime { get; set; }
-        public int TimeValue { get; set; }
+        public int TimeValue { get; set; } = 2;
         public int Dobdd { get; set; } = 12;
         public int Dobmm { get; set; } = 06;
         public int Dobyy { get; set; } = 2006;

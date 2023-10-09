@@ -4,7 +4,7 @@ namespace AstroOfficeWeb.Client.Models
 {
     public class DateFinderModel
     {
-        public string? Occassion { get; set; }
+        public string Occassion { get; set; } = "Child Birth - 2,5,11 - 18~55";
         public bool Sahasane { get; set; }
         public bool FullMatch { get; set; }
         public Period Period { get; set; }

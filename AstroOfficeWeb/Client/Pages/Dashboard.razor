@@ -116,7 +116,7 @@
                                 <div class="col">
                                     @if (tobssEnabled)
                                     {
-                                        <InputNumber @bind-Value="BirthDetails!.Tobss" class="form-control form-control-sm" min="1" max="60" />
+                                        <InputNumber @bind-Value="BirthDetails!.Tobss" class="form-control form-control-sm" min="0" max="60" />
                                     }
                                     else
                                     {
@@ -531,10 +531,11 @@
                                                             <tbody>
                                                                 @foreach (var row in ListView_Mahadasha ?? new List<MahadashaTableTRModel>())
                                                                 {
-                                                                    <tr @onclick="() => OnClick_TR_ListView_Mahadasha(row)">
+                                                                    <tr>
                                                                         <td>@row.Planet</td>
                                                                         <td>@row.Period</td>
                                                                         <td>@row.Signi</td>
+
                                                                     </tr>
                                                                 }
                                                             </tbody>
@@ -558,8 +559,6 @@
                                                                     <tr>
                                                                         <th>Planet</th>
                                                                         <th>Antar</th>
-                                                                        <th>Period</th>
-                                                                        <th>Age</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -568,8 +567,6 @@
                                                                         <tr>
                                                                             <td>@row.Planet</td>
                                                                             <td>@row.Antar</td>
-                                                                            <td>@row.Period</td>
-                                                                            <td>@row.Age</td>
                                                                         </tr>
                                                                     }
                                                                 </tbody>
@@ -786,7 +783,7 @@
                                             <div class="row mt-5">
                                                 <div class="col">
                                                     <div class="d-flex flex-row-reverse">
-                                                        <button type="button" class="btn btn-warning">Show</button>
+                                                        <button type="button" class="btn btn-warning" @onclick="BtnShow_TabDateFinder_Click">Show</button>
                                                     </div>
                                                 </div>
                                             </div>

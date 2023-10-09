@@ -2761,5 +2761,304 @@ namespace AstroShared.Methods
             return kPDashaVOs;
         }
 
+
+        public string Get_Dates_Chain(List<KPPlanetMappingVO> kp_chart, List<KPHouseMappingVO> cusp_house, KundliVO persKV, string chain, ProductSettingsVO prod, bool nakswami, bool both, bool include, short fromyear, short toyear, bool fullmatch, short dasha_type)
+        {
+            string[] strArrays;
+            DateTime startDate;
+            string[] signiString;
+            string[] strArrays1;
+            int num;
+            string str;
+            bool flag;
+            string str1 = "";
+            bool flag1 = false;
+            bool flag2 = false;
+            List<KPDashaVO> kPDashaVOs = new List<KPDashaVO>();
+            List<KPDashaVO> antarDasha = new List<KPDashaVO>();
+            List<KPDashaVO> prayatntarDasha = new List<KPDashaVO>();
+            List<KPDashaVO> kPDashaVOs1 = new List<KPDashaVO>();
+            string str2 = chain.Trim();
+            char[] chrArray = new char[] { '@' };
+            chain = str2.TrimStart(chrArray);
+            chrArray = new char[] { ',' };
+            string[] strArrays2 = chain.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+            kPDashaVOs = Get_Dasha(cusp_house, kp_chart, persKV, include);
+            DateTime dateTime = persKV.Dob.AddYears(fromyear);
+            DateTime dateTime1 = persKV.Dob.AddYears(toyear);
+            foreach (KPDashaVO kPDashaVO in kPDashaVOs)
+            {
+                antarDasha = Get_Antar_Dasha(kPDashaVO.StartDate, kPDashaVO.EndDate, kPDashaVO.Planet, kp_chart, include);
+                if (dasha_type == 2)
+                {
+                    kPDashaVO.Signi_String = kPDashaVO.Signi_String;
+                    kPDashaVO.Nak_Signi_String = kPDashaVO.Nak_Signi_String;
+                    if ((kPDashaVO.StartDate < dateTime ? false : kPDashaVO.StartDate <= dateTime1))
+                    {
+                        kPDashaVOs1.Add(kPDashaVO);
+                    }
+                }
+                foreach (KPDashaVO kPDashaVO1 in antarDasha)
+                {
+                    prayatntarDasha = Get_Prayatntar_Dasha(antarDasha, kPDashaVO1.StartDate, kPDashaVO1.EndDate, kPDashaVO.Planet, kPDashaVO1.Planet, kp_chart, include);
+                    if (dasha_type == 2)
+                    {
+                        kPDashaVO1.Signi_String = string.Concat(kPDashaVO.Signi_String, " ", kPDashaVO1.Signi_String);
+                        kPDashaVO1.Nak_Signi_String = string.Concat(kPDashaVO.Nak_Signi_String, " ", kPDashaVO1.Nak_Signi_String);
+                        if ((kPDashaVO1.StartDate < dateTime ? false : kPDashaVO1.StartDate <= dateTime1))
+                        {
+                            kPDashaVOs1.Add(kPDashaVO1);
+                        }
+                    }
+                    foreach (KPDashaVO kPDashaVO2 in prayatntarDasha)
+                    {
+                        if (dasha_type == 3)
+                        {
+                            signiString = new string[] { kPDashaVO.Signi_String, " ", kPDashaVO1.Signi_String, " ", kPDashaVO2.Signi_String };
+                            kPDashaVO2.Signi_String = string.Concat(signiString);
+                            signiString = new string[] { kPDashaVO.Nak_Signi_String, " ", kPDashaVO1.Nak_Signi_String, " ", kPDashaVO2.Nak_Signi_String };
+                            kPDashaVO2.Nak_Signi_String = string.Concat(signiString);
+                            if ((kPDashaVO2.StartDate < dateTime ? false : kPDashaVO2.StartDate <= dateTime1))
+                            {
+                                kPDashaVOs1.Add(kPDashaVO2);
+                            }
+                        }
+                    }
+                }
+            }
+            foreach (KPDashaVO kPDashaVO3 in kPDashaVOs1)
+            {
+                string nakSigniString = "";
+                string nakSigniString1 = "";
+                if (!both)
+                {
+                    if (!nakswami)
+                    {
+                        nakSigniString = kPDashaVO3.Signi_String;
+                    }
+                    if (nakswami)
+                    {
+                        nakSigniString = kPDashaVO3.Nak_Signi_String;
+                    }
+                    chrArray = new char[] { ' ' };
+                    strArrays = nakSigniString.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                    if (!fullmatch)
+                    {
+                        flag1 = true;
+                        strArrays1 = strArrays2;
+                        num = 0;
+                        while (num < (int)strArrays1.Length)
+                        {
+                            if (!strArrays.Contains<string>(strArrays1[num].Trim()))
+                            {
+                                num++;
+                            }
+                            else
+                            {
+                                flag1 = false;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        flag1 = false;
+                        strArrays1 = strArrays2;
+                        num = 0;
+                        while (num < (int)strArrays1.Length)
+                        {
+                            if (strArrays.Contains<string>(strArrays1[num].Trim()))
+                            {
+                                num++;
+                            }
+                            else
+                            {
+                                flag1 = true;
+                                break;
+                            }
+                        }
+                    }
+                    if ((flag1 ? false : fullmatch))
+                    {
+                        if (!nakswami)
+                        {
+                            str = str1;
+                            signiString = new string[] { str, null, null, null, null, null, null };
+                            startDate = kPDashaVO3.StartDate;
+                            signiString[1] = startDate.ToString("dd MMM yyyy");
+                            signiString[2] = " - ";
+                            startDate = kPDashaVO3.EndDate;
+                            signiString[3] = startDate.ToString("dd MMM yyyy");
+                            signiString[4] = " [";
+                            signiString[5] = kPDashaVO3.Signi_String;
+                            signiString[6] = "] \r\n\r\n";
+                            str1 = string.Concat(signiString);
+                        }
+                        else
+                        {
+                            str = str1;
+                            signiString = new string[] { str, null, null, null, null, null, null };
+                            startDate = kPDashaVO3.StartDate;
+                            signiString[1] = startDate.ToString("dd MMM yyyy");
+                            signiString[2] = " - ";
+                            startDate = kPDashaVO3.EndDate;
+                            signiString[3] = startDate.ToString("dd MMM yyyy");
+                            signiString[4] = " [";
+                            signiString[5] = kPDashaVO3.Nak_Signi_String;
+                            signiString[6] = "] \r\n\r\n";
+                            str1 = string.Concat(signiString);
+                        }
+                    }
+                    if ((fullmatch ? false : !flag1))
+                    {
+                        if (!nakswami)
+                        {
+                            str = str1;
+                            signiString = new string[] { str, null, null, null, null, null, null };
+                            startDate = kPDashaVO3.StartDate;
+                            signiString[1] = startDate.ToString("dd MMM yyyy");
+                            signiString[2] = " - ";
+                            startDate = kPDashaVO3.EndDate;
+                            signiString[3] = startDate.ToString("dd MMM yyyy");
+                            signiString[4] = " [";
+                            signiString[5] = kPDashaVO3.Signi_String;
+                            signiString[6] = "] \r\n\r\n";
+                            str1 = string.Concat(signiString);
+                        }
+                        else
+                        {
+                            str = str1;
+                            signiString = new string[] { str, null, null, null, null, null, null };
+                            startDate = kPDashaVO3.StartDate;
+                            signiString[1] = startDate.ToString("dd MMM yyyy");
+                            signiString[2] = " - ";
+                            startDate = kPDashaVO3.EndDate;
+                            signiString[3] = startDate.ToString("dd MMM yyyy");
+                            signiString[4] = " [";
+                            signiString[5] = kPDashaVO3.Nak_Signi_String;
+                            signiString[6] = "] \r\n\r\n";
+                            str1 = string.Concat(signiString);
+                        }
+                    }
+                }
+                if (both)
+                {
+                    nakSigniString = kPDashaVO3.Signi_String;
+                    nakSigniString1 = kPDashaVO3.Nak_Signi_String;
+                    chrArray = new char[] { ' ' };
+                    strArrays = nakSigniString.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                    chrArray = new char[] { ' ' };
+                    string[] strArrays3 = nakSigniString1.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                    if (!fullmatch)
+                    {
+                        flag1 = true;
+                        flag2 = true;
+                        strArrays1 = strArrays2;
+                        num = 0;
+                        while (num < (int)strArrays1.Length)
+                        {
+                            if (!strArrays.Contains<string>(strArrays1[num].Trim()))
+                            {
+                                num++;
+                            }
+                            else
+                            {
+                                flag1 = false;
+                                break;
+                            }
+                        }
+                        strArrays1 = strArrays2;
+                        num = 0;
+                        while (num < (int)strArrays1.Length)
+                        {
+                            if (!strArrays3.Contains<string>(strArrays1[num].Trim()))
+                            {
+                                num++;
+                            }
+                            else
+                            {
+                                flag2 = false;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        flag1 = false;
+                        flag2 = false;
+                        strArrays1 = strArrays2;
+                        num = 0;
+                        while (num < (int)strArrays1.Length)
+                        {
+                            if (strArrays.Contains<string>(strArrays1[num].Trim()))
+                            {
+                                num++;
+                            }
+                            else
+                            {
+                                flag1 = true;
+                                break;
+                            }
+                        }
+                        strArrays1 = strArrays2;
+                        num = 0;
+                        while (num < (int)strArrays1.Length)
+                        {
+                            if (strArrays3.Contains<string>(strArrays1[num].Trim()))
+                            {
+                                num++;
+                            }
+                            else
+                            {
+                                flag2 = true;
+                                break;
+                            }
+                        }
+                    }
+                    if ((flag1 || flag2 ? false : fullmatch))
+                    {
+                        str = str1;
+                        signiString = new string[] { str, null, null, null, null, null, null, null, null };
+                        startDate = kPDashaVO3.StartDate;
+                        signiString[1] = startDate.ToString("dd MMM yyyy");
+                        signiString[2] = " - ";
+                        startDate = kPDashaVO3.EndDate;
+                        signiString[3] = startDate.ToString("dd MMM yyyy");
+                        signiString[4] = " [";
+                        signiString[5] = kPDashaVO3.Signi_String;
+                        signiString[6] = " / ";
+                        signiString[7] = kPDashaVO3.Nak_Signi_String;
+                        signiString[8] = "] \r\n\r\n";
+                        str1 = string.Concat(signiString);
+                    }
+                    if (fullmatch)
+                    {
+                        flag = true;
+                    }
+                    else
+                    {
+                        flag = (!flag1 ? false : flag2);
+                    }
+                    if (!flag)
+                    {
+                        str = str1;
+                        signiString = new string[] { str, null, null, null, null, null, null, null, null };
+                        startDate = kPDashaVO3.StartDate;
+                        signiString[1] = startDate.ToString("dd MMM yyyy");
+                        signiString[2] = " - ";
+                        startDate = kPDashaVO3.EndDate;
+                        signiString[3] = startDate.ToString("dd MMM yyyy");
+                        signiString[4] = " [";
+                        signiString[5] = kPDashaVO3.Signi_String;
+                        signiString[6] = " / ";
+                        signiString[7] = kPDashaVO3.Nak_Signi_String;
+                        signiString[8] = "] \r\n\r\n";
+                        str1 = string.Concat(signiString);
+                    }
+                }
+            }
+            return str1;
+        }
+
     }
 }

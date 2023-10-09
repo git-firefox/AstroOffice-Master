@@ -11,6 +11,7 @@ using AstroShared.Methods;
 using AstroOfficeWeb.Shared.Lookups;
 using AstroOfficeWeb.Client.Services;
 using System.Runtime.InteropServices;
+using Dasha = AstroOfficeWeb.Client.Helper.Dasha;
 
 namespace AstroOfficeWeb.Client.Pages
 {
@@ -909,6 +910,12 @@ namespace AstroOfficeWeb.Client.Pages
             return kundaResponse.Data ?? string.Empty;
         }
 
+
+
+
+
+
+
         private async Task LoadCountry()
         {
             if (BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
@@ -965,6 +972,61 @@ namespace AstroOfficeWeb.Client.Pages
                 this.BirthDetails.TimeValue = 1;
             }
         }
+
+
+
+     
+
+
+        private void BtnShow_TabDateFinder_Click(MouseEventArgs e)
+        {
+            //if (string.IsNullOrEmpty(this.CmbBOccassion.Text))
+            //{
+            //    MessageBox.Show("Please select an occassion.", "Alert", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
+
+            //   Application.UseWaitCursor = true;
+            List<KPDashaVO> kPDashaVOs = new List<KPDashaVO>();
+            string str = "";
+            string datesChain = "";
+            short num = 0;
+            DateFinder.DateList = "";
+            if (DateFinder.Period == Helper.Period.Maha)
+            {
+                num = 1;
+            }
+            if (DateFinder.Period == Helper.Period.Antar)
+            {
+                num = 2;
+            }
+            if (DateFinder.Period == Helper.Period.Pryan)
+            {
+                num = 3;
+            }
+
+            string text = this.DateFinder.Occassion;
+
+            char[] chrArray = new char[] { '-' };
+            str = text.Split(chrArray, StringSplitOptions.RemoveEmptyEntries)[1];
+            string text1 = this.DateFinder.Occassion;
+            chrArray = new char[] { '-' };
+            string str1 = text1.Split(chrArray, StringSplitOptions.RemoveEmptyEntries)[2];
+            chrArray = new char[] { '~' };
+            short num1 = Convert.ToInt16(str1.Split(chrArray, StringSplitOptions.RemoveEmptyEntries)[0]);
+            string text2 = this.DateFinder.Occassion;
+            chrArray = new char[] { '-' };
+            string str2 = text2.Split(chrArray, StringSplitOptions.RemoveEmptyEntries)[2];
+            chrArray = new char[] { '~' };
+            short num2 = Convert.ToInt16(str2.Split(chrArray, StringSplitOptions.RemoveEmptyEntries)[1]);
+            datesChain = kpbl.Get_Dates_Chain(this.kp_chart, this.cusp_house, this.persKV, str, this.prod, DateFinder.Dasha == Dasha.NakSwami, DateFinder.Dasha == Dasha.Both, DateFinder.Sahasane, num1, num2, DateFinder.FullMatch, num);
+            DateFinder.DateList = datesChain;
+            //  Application.UseWaitCursor = false;
+        }
+
+
+
+
 
         private async Task OnChange_CmbRotate(ChangeEventArgs e)
         {
@@ -1242,42 +1304,9 @@ namespace AstroOfficeWeb.Client.Pages
 
         private void OnClick_BtnRefresh(MouseEventArgs e)
         {
-            return;
-        }
-
-        // private void ListViewMahadasha_Click(object sender, EventArgs e)
-        private void OnClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
-        {
-            if (this.ListView_Years35 == null)
-            {
-                this.ListView_Years35 = new List<Years35TableTRModel>();
-            }
-            else
-            {
-                this.ListView_Years35.Clear();
-            }
-
-            this.maha_dasha_click = true;
-            this.sukshma_dasha_click = false;
-
-            short planet = (
-                from Map in this.planet_list
-                where Map.Hindi == selectedTR.Planet
-                select Map).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
-
-            DateTime startDate = (
-                from Map in this.main_mahadasha
-                where Map.Planet == planet
-                select Map).SingleOrDefault<KPDashaVO>()?.StartDate ?? default;
-
-            DateTime endDate = (
-                from Map in this.main_mahadasha
-                where Map.Planet == planet
-                select Map).SingleOrDefault<KPDashaVO>()?.EndDate ?? default;
-
-            this.main_antardasha = this.kpbl.Get_Antar_Dasha(startDate, endDate, planet, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
 
         }
+
         private async Task OnFocus_TxtBirthplace(FocusEventArgs e)
         {
             await JSRuntime.SelectAsync(inputTextBirthPlace?.Element);
