@@ -12,16 +12,16 @@
     public class Years35TableTRModel
     {
         public string? Planet { get; set; }
+        public string? Antar { get; set; }
         public string? Period { get; set; }
-        public string? Signi { get; set; }
+        public string? Age { get; set; }
     }
 
     public class AntardashaTableTRModel
     {
         public string? Planet { get; set; }
-        public string? Antar { get; set; }
         public string? Period { get; set; }
-        public string? Age { get; set; }
+        public string? Signi { get; set; }
     }
 
     public class PrayantardashaTableTRModel

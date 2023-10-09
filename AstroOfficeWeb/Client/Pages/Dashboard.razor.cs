@@ -933,11 +933,15 @@ namespace AstroOfficeWeb.Client.Pages
 
         #region Handle events
 
+        private void OnDBLClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
+        {
+
+        }
         private void OnClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
         {
-            if(ListView_Years35 == null)
+            if (ListView_Years35 == null)
             {
-                ListView_Years35 = new ();
+                ListView_Years35 = new();
             }
             else
             {
@@ -973,7 +977,31 @@ namespace AstroOfficeWeb.Client.Pages
 
         private void Gen_AntarDasha(List<KPDashaVO> dasha_list, List<KPPlanetMappingVO> kp_chart)
         {
-            throw new NotImplementedException();
+
+            if (ListView_Antardasha == null)
+            {
+                ListView_Antardasha = new();
+            }
+            else
+            {
+                ListView_Antardasha.Clear();
+            }
+
+            foreach (KPDashaVO dashaList in dasha_list)
+            {
+                var tr = new AntardashaTableTRModel();
+
+                tr.Planet = this.planet_list.Where(Map => Map.Planet == dashaList.Planet).SingleOrDefault<KPPlanetsVO>()?.Hindi ?? string.Empty;
+
+                string startDate = dashaList.StartDate.ToString("dd MMM yyyy");
+                string endDate = dashaList.EndDate.ToString("dd MMM yyyy");
+
+                tr.Period = string.Concat(startDate, " - ", endDate);
+
+                tr.Signi = string.Concat(dashaList.Signi_String, " | ", dashaList.Nak_Signi_String);
+
+                ListView_Antardasha.Add(tr);
+            }
         }
 
         private void OnChange_CmbAyanansh(ChangeEventArgs e)
@@ -1019,7 +1047,7 @@ namespace AstroOfficeWeb.Client.Pages
 
 
 
-     
+
 
 
         private void BtnShow_TabDateFinder_Click(MouseEventArgs e)
@@ -1462,7 +1490,7 @@ namespace AstroOfficeWeb.Client.Pages
 
         private async Task<bool> isBestKundali(string best_Online_Result, short rating, short engine)
         {
-            var response = await Swagger!.GetAsync<ApiResponse<bool>>(string.Format(ApiConst.GET_BestBLL_IsBestKundali, best_Online_Result,rating,engine));
+            var response = await Swagger!.GetAsync<ApiResponse<bool>>(string.Format(ApiConst.GET_BestBLL_IsBestKundali, best_Online_Result, rating, engine));
 
             return response?.Data ?? false;
         }
@@ -1491,7 +1519,7 @@ namespace AstroOfficeWeb.Client.Pages
                 string str3 = "";
                 string str4 = "";
                 KundliBLL kundliBLL = new KundliBLL();
-               // BestBLL bestBLL = new BestBLL();
+                // BestBLL bestBLL = new BestBLL();
                 short num = 0;
                 //DateTime date = this.pick_start_date.Value.Date;
                 DateTime date = BestKundaliDates.Pick_start_date.Value.Date;
@@ -1499,7 +1527,7 @@ namespace AstroOfficeWeb.Client.Pages
 
                 string dates = date.ToString();
                 string value = BestKundaliDates.StartingTime;
-             //   DateTime timeOfDay = date + value.TimeOfDay;
+                //   DateTime timeOfDay = date + value.TimeOfDay;
 
                 string timeOfDay = date + value;
 
