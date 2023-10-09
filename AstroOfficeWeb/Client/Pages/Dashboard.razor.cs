@@ -935,7 +935,45 @@ namespace AstroOfficeWeb.Client.Pages
 
         private void OnClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
         {
+            if(ListView_Years35 == null)
+            {
+                ListView_Years35 = new ();
+            }
+            else
+            {
+                ListView_Years35.Clear();
+            }
 
+            this.maha_dasha_click = true;
+            this.sukshma_dasha_click = false;
+
+            short planet = (
+                from Map in this.planet_list
+                where Map.Hindi == selectedTR.Planet
+                select Map).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+            DateTime startDate = (
+                from Map in this.main_mahadasha
+                where Map.Planet == planet
+                select Map).SingleOrDefault<KPDashaVO>()?.StartDate ?? default;
+
+            DateTime endDate = (
+                from Map in this.main_mahadasha
+                where Map.Planet == planet
+                select Map).SingleOrDefault<KPDashaVO>()?.EndDate ?? default;
+
+            this.main_antardasha = this.kpbl.Get_Antar_Dasha(startDate, endDate, planet, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
+
+            if (!this.BirthDetails.SalaChakkar)
+            {
+                this.Gen_AntarDasha(this.main_antardasha, this.kp_chart);
+            }
+
+        }
+
+        private void Gen_AntarDasha(List<KPDashaVO> dasha_list, List<KPPlanetMappingVO> kp_chart)
+        {
+            throw new NotImplementedException();
         }
 
         private void OnChange_CmbAyanansh(ChangeEventArgs e)
@@ -1422,20 +1460,22 @@ namespace AstroOfficeWeb.Client.Pages
 
 
 
-        private bool isBestKundali(string best_Online_Result, short rating, short engine)
+        private async Task<bool> isBestKundali(string best_Online_Result, short rating, short engine)
         {
-            return true;
+            var response = await Swagger!.GetAsync<ApiResponse<bool>>(string.Format(ApiConst.GET_BestBLL_IsBestKundali, best_Online_Result,rating,engine));
+
+            return response?.Data ?? false;
         }
 
         private void BtnShow_TabKundaliDates_Click(MouseEventArgs e)
         {
-            if ((this.full_lat.Length <= 0 ? false : this.full_lon.Length > 0))
-            {
-                //  Application.UseWaitCursor = true;
-                string str = this.full_lon.Replace(":", ".");
-                string str1 = this.full_lat.Replace(":", ".");
-              //  this.txtbestdate.Text = "";
-                BestKundaliDates.BestDate = "";
+            //if ((this.full_lat.Length <= 0 ? false : this.full_lon.Length > 0))
+            //{
+            //    //  Application.UseWaitCursor = true;
+            //    string str = this.full_lon.Replace(":", ".");
+            //    string str1 = this.full_lat.Replace(":", ".");
+            //  //  this.txtbestdate.Text = "";
+            //    BestKundaliDates.BestDate = "";
 
                 str = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str.Substring(0, str.Length - 1))).ToString(), str.Substring(str.Length - 1, 1));
                 str1 = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str1.Substring(0, str1.Length - 1))).ToString(), str1.Substring(str1.Length - 1, 1));

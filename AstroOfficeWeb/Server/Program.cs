@@ -45,6 +45,8 @@ builder.Services.AddTransient<LocationBLL>();
 builder.Services.AddTransient<PredictionBLL>();
 builder.Services.AddTransient<KundliBLL>();
 builder.Services.AddTransient<KPDAO>();
+builder.Services.AddTransient<BestBLL>();
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddSwaggerGen(sg =>
