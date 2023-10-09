@@ -13,6 +13,8 @@ using AstroOfficeWeb.Client.Services;
 using System.Runtime.InteropServices;
 using Dasha = AstroOfficeWeb.Client.Helper.Dasha;
 using static System.Net.Mime.MediaTypeNames;
+using System.Text;
+using AstroOfficeWeb.Client.Shared;
 
 namespace AstroOfficeWeb.Client.Pages
 {
@@ -88,7 +90,11 @@ namespace AstroOfficeWeb.Client.Pages
         private int selectedBirthCityIndex = 0;
         private InputText? inputTextName;
         private InputText? inputTextBirthPlace;
+        private FaladeshModal FaladeshModal = new();
         private string? imgSrc;
+        private string? imgSrcLagan;
+        private string? imgSrcBhavChalit;
+        private string? htmlStringFalla;
 
         private List<DTOs.APlaceMaster>? ListBirthCities = new();
         private SavedStateModel SavedStateModel = new();
@@ -933,10 +939,50 @@ namespace AstroOfficeWeb.Client.Pages
 
         #region Handle events
 
-        private void OnDBLClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
+        private async Task OnDBLClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
         {
+            //this.TxtBrief.Text = "";
+            //PredictionBLL predictionBLL = new PredictionBLL();
+            short planet = (
+                from Map in this.planet_list
+                where Map.Hindi == selectedTR.Planet
+                select Map).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+            this.prod.ShowUpay = true;
+            this.prod.ShowUpayCode = true;
+            this.persKV.Paid = true;
+            this.prod.ShowUpayBelow = true;
+            this.prod.Paid = true;
+            string falDoubleMahadasha = await Get_Fal_Double_Mahadasha(planet, this.persKV, this.Online_Result, this.prod);
+
+            await this.Show_Falla(falDoubleMahadasha);
 
         }
+
+        private async Task Show_Falla(string falla)
+        {
+            imgSrcBhavChalit = await this.Get_Gen_Image(this.persKV.Lagna.ToString(), this.kp_chart, this.Online_Result, true, 1, this.persKV.Language); ;
+            imgSrcLagan = await this.Get_Gen_Image(this.persKV.Lagna.ToString(), this.kp_chart, this.Online_Result, false, 1, this.persKV.Language);
+            htmlStringFalla = falla;
+
+            FaladeshModal.Show();
+        }
+
+        private async Task<string> Get_Fal_Double_Mahadasha(short planet, KundliVO persKV, string online_Result, ProductSettingsVO prod)
+        {
+            var request = new DTOs.GetFalDoubleMahadashaRequest()
+            {
+                PlanetNo = planet,
+                PersonalKundli = persKV,
+                OnlineResult = online_Result,
+                TemporaryProduct = prod
+            };
+
+            var response = await Swagger!.PostAsync<DTOs.GetFalDoubleMahadashaRequest, ApiResponse<string>>(ApiConst.POST_KPBLL_GetFalDoubleMahadasha, request);
+
+            return response?.Data ?? string.Empty;
+        }
+
         private void OnClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
         {
             if (ListView_Years35 == null)
@@ -1185,6 +1231,26 @@ namespace AstroOfficeWeb.Client.Pages
 
             #endregion
         }
+
+        private async Task<string> Get_Gen_Image(string lagna, List<KPPlanetMappingVO> lkmv, string Online_Result, bool bhav_chalit, short Kund_Size, string lang)
+        {
+            var genImageRequest = new GenImageRequest()
+            {
+                Lagna = lagna,
+                Lkmv = lkmv,
+                Online_Result = Online_Result,
+                Bhav_Chalit = bhav_chalit,
+                Kund_Size = Kund_Size,
+                Lang = lang
+            };
+
+            var imgResponse = await Swagger!.PostAsync<GenImageRequest, ApiResponse<string>>(ApiConst.POST_KundliBLL_GenImage, genImageRequest);
+
+            imgSrc = imgResponse?.Data ?? "";
+
+            return imgSrc;
+        }
+
         private async Task OnClick_BtnChart(MouseEventArgs e)
         {
             await Task.Delay(10000);

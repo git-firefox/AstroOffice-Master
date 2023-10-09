@@ -4,7 +4,7 @@ using AShared = AstroShared.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using AstroShared.Models;
-//using DTOs = AstroOfficeWeb.Shared.DTOs;
+using DTOs = AstroOfficeWeb.Shared.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -108,6 +108,20 @@ namespace AstroOfficeWeb.Server.Controllers
         {
             var pPlanetMappingVOs = _kpbl.Process_KPChart_GoodBad(request.KpChart, request.PersKV, request.Prod);
             return Ok(pPlanetMappingVOs);
+        }
+
+        [HttpPost]
+        public IActionResult GetFalDoubleMahadasha([FromBody] DTOs.GetFalDoubleMahadashaRequest request)
+        {
+            var html = _kpbl.Get_Fal_Double_Mahadasha(request.PlanetNo, request.PersonalKundli, request.OnlineResult, request.TemporaryProduct);
+
+            if (!string.IsNullOrEmpty(html))
+                html = html
+                    .Replace("\n", "<br />")
+                    .Replace("\r", "")
+                    .Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+
+            return Ok(new ApiResponse<string> { Data = html, Success = true });
         }
     }
 }

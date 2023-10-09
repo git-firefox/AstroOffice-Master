@@ -18,6 +18,7 @@
         public static string GET_KPDAO_GetUpayLogic = "api/KPDAO/GetUpayLogic";
         public static string POST_KundliBLL_GenKunda = "api/KundliBLL/GenKunda";
         public static string POST_KundliBLL_GenImage = "api/KundliBLL/GenImage";
+        public static string POST_KPBLL_GetFalDoubleMahadasha = "api/KPBLL/GetFalDoubleMahadasha";
         public static string POST_PredictionBLL_MapPersKV = "api/PredictionBLL/MapPersKV";
         public static string GET_PredictionBLL_GetCodeLang = "api/PredictionBLL/GetCodeLang?rulecode={0}&lang={1}&paid={2}&unicode={3}";
         public static string POST_KPBLL_ProcessPlanetLagan = "api/KPBLL/ProcessPlanetLagan";

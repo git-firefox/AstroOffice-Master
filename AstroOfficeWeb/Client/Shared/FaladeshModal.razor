@@ -1,0 +1,103 @@
+﻿@inherits BaseComponent
+
+@if (IsShow)
+{
+    @* <div class="modal fade show" id="modal-xl" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="false"> *@
+    <div class="modal fade show d-block" id="modal-xl" data-backdrop="static" data-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl  modal-enter-active modal-leave-active">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">@Title</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="() => OnConfirmationChange(false)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- Bhave Chalit -->
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Bhave Chalit</h3>
+                                </div>
+                                <div class="card-body">
+                                    <img src="@ImgSrcBhavChalit" />
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col (LEFT) -->
+                        <div class="col-md-6">
+                            <!-- LINE CHART -->
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Lagan</h3>
+                                </div>
+                                <div class="card-body">
+                                    <img src="@ImgSrcLagan" />
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <!-- Bhave Chalit -->
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Falla</h3>
+                                </div>
+                                <div class="card-body overflow-auto">
+                                    @(new MarkupString(Falla))
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">Close</button>
+                    <button type="button" class="btn btn-primary" @onclick="() => OnConfirmationChange(true)">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop show"></div>
+}
+
+
+@code {
+
+    protected bool IsShow { get; set; }
+
+    [Parameter]
+    public string Title { get; set; } = "Faladesh";
+
+    [Parameter]
+    public string Falla { get; set; } = string.Empty;
+    
+    [Parameter]
+    public string ImgSrcBhavChalit { get; set; } = string.Empty;
+    
+    [Parameter]
+    public string ImgSrcLagan { get; set; } = string.Empty;
+
+    public void Show()
+    {
+        IsShow = true;
+        StateHasChanged();
+    }
+
+    [Parameter]
+    public EventCallback<bool> ConfirmationChanged { get; set; }
+
+    protected async Task OnConfirmationChange(bool value)
+    {
+        IsShow = false;
+        await ConfirmationChanged.InvokeAsync(value);
+    }
+}
