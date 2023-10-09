@@ -1512,33 +1512,33 @@ namespace AstroOfficeWeb.Client.Pages
 
                 //DateTime timeOfDay1 = dateTime + value.TimeOfDay;
 
-                //string timeOfDay
+                string timeOfDay1 = dateTimesString + value;
 
-                //long num1 = (long)0;
-                //short num2 = 0;
-                //short num3 = 0;
-                //if (this.comborating.Text == "Good")
-                //{
-                //    num2 = 1;
-                //}
-                //if (this.comborating.Text == "Best")
-                //{
-                //    num2 = 2;
-                //}
-                //if (this.comborating.Text == "Excellent")
-                //{
-                //    num2 = 3;
-                //}
-                //if (this.radioRedBook.Checked)
-                //{
-                //    num3 = 1;
-                //}
-                //if (this.radiokp.Checked)
-                //{
-                //    num3 = 2;
-                //}
-                //string str5 = "";
-                //string str6 = "";
+                long num1 = (long)0;
+                short num2 = 0;
+                short num3 = 0;
+                if (BestKundaliDates.Comborating == "Good")
+                {
+                    num2 = 1;
+                }
+                if (BestKundaliDates.Comborating == "Best")
+                {
+                    num2 = 2;
+                }
+                if (BestKundaliDates.Comborating == "Excellent")
+                {
+                    num2 = 3;
+                }
+                if (BestKundaliDates.KundaliDatesRadio == Helper.KundaliDatesRadio.RedBook)
+                {
+                    num3 = 1;
+                }
+                if (BestKundaliDates.KundaliDatesRadio== Helper.KundaliDatesRadio.Kp)
+                {
+                    num3 = 2;
+                }
+                string str5 = "";
+                string str6 = "";
                 //while (true)
                 //{
                 //    string[] fullTimeCorr = new string[19];
