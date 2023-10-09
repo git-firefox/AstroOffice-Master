@@ -37,5 +37,18 @@ namespace AstroOfficeWeb.Server.Controllers
             var bitmap = _kpbl.Gen_Image(request.Lagna, lkmv, request.Online_Result, request.Bhav_Chalit, request.Kund_Size, request.Lang);
             return Ok(new ApiResponse<string> { Success = true, Data = bitmap.ToBase64String() });
         }
+
+
+        [HttpPost]
+        public IActionResult NEWGetVarshaphalKundliMapping([FromBody] GetVarshaphalKundliMappingRequest request)
+        {
+            var getVarsh = _kpbl.NEW_GetVarshaphalKundliMapping(request.age, request.persKV, request.kp_chart);
+
+
+
+            return Ok(getVarsh);
+        }
+
+
     }
 }

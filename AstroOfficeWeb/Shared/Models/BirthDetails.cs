@@ -36,6 +36,6 @@ namespace AstroOfficeWeb.Shared.Models
         public string TxtTimezone { get; set; } = string.Empty;
         public bool ChkShowRef { get; set; }
         public Gender Gender { get; set; }
-        public int? KundaliUdvYear { get; set; }
+        public int KundaliUdvYear { get; set; } = 18;
     }
 }

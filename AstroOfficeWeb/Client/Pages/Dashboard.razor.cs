@@ -1629,9 +1629,33 @@ namespace AstroOfficeWeb.Client.Pages
 
         }
 
-        private void OnClick_Varsh(MouseEventArgs e)
+        private async Task OnClick_Varsh(MouseEventArgs e)
         {
             isNumVarshVisible = true;
+            this.show_vfal = true;
+            List<KPPlanetMappingVO> kPPlanetMappingVOs = new List<KPPlanetMappingVO>();
+            KundliBLL kundliBLL = new KundliBLL();
+            kPPlanetMappingVOs = await NEW_GetVarshaphalKundliMapping(Convert.ToInt16(BirthDetails.KundaliUdvYear), this.persKV, this.kp_chart);
+            long lagna = this.persKV.Lagna;
+            await Gen_Image(lagna.ToString(), kPPlanetMappingVOs, this.Online_Result, false, 1, this.persKV.Language);
+        }
+
+        private async Task<List<KPPlanetMappingVO>> NEW_GetVarshaphalKundliMapping(int age, KundliVO persKV, List<KPPlanetMappingVO> kp_chart)
+        {
+            var request = new GetVarshaphalKundliMappingRequest()
+            {
+                age = age,
+                kp_chart = kp_chart,
+                persKV = persKV
+            };
+
+            var reponse = await Swagger!.PostAsync<GetVarshaphalKundliMappingRequest, List<KPPlanetMappingVO>>(ApiConst.POST_KundliBLL_NEWGetVarshaphalKundliMapping, request);
+
+            if (reponse != null)
+            {
+                return reponse;
+            }
+            return new List<KPPlanetMappingVO>();
         }
 
         private async Task OnClick_BhavChalit(MouseEventArgs e)

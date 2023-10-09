@@ -259,6 +259,7 @@ namespace AstroShared.Models
 
         public KPPlanetMappingVO()
         {
+            _planet_deg = string.Empty;
         }
     }
 }
