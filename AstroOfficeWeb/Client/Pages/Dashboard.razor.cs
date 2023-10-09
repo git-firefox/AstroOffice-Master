@@ -1517,19 +1517,116 @@ namespace AstroOfficeWeb.Client.Pages
             await Gen_Kundali_Chart();
         }
 
-        private void OnClick_Lagan(MouseEventArgs e)
+        private async Task OnClick_Lagan(MouseEventArgs e)
         {
             isNumVarshVisible = false;
+
+            this.show_vfal = false;
+            //this.NumUDVYears.Visible = false;
+            //PictureBox pictureBox = this.PicKundliChart;
+            //KundliBLL kundliBLL = this.kkbl;
+            long lagna = this.persKV.Lagna;
+            await Gen_Image(lagna.ToString(), this.kp_chart, this.Online_Result, false, 1, this.persKV.Language);
         }
 
-        private void OnClick_Gochar(MouseEventArgs e)
+        private async Task OnClick_Gochar(MouseEventArgs e)
         {
             isNumVarshVisible = false;
+
+            this.show_vfal = false;
+            //  this.NumUDVYears.Visible = false;
+            string str = "";
+            string[] strArrays = new string[10];
+            DateTime now = DateTime.Now;
+            strArrays[0] = now.ToString("dd");
+            strArrays[1] = "/";
+            now = DateTime.Now;
+            strArrays[2] = now.ToString("MM");
+            strArrays[3] = "/";
+            now = DateTime.Now;
+            strArrays[4] = now.ToString("yyyy");
+            strArrays[5] = ",";
+            now = DateTime.Now;
+            strArrays[6] = now.ToString("HH");
+            strArrays[7] = ":";
+            now = DateTime.Now;
+            strArrays[8] = now.ToString("mm");
+            strArrays[9] = ",077.12E,28.38N,+05.30,L,null";
+            string str1 = string.Concat(strArrays);
+            //  PredictionBLL predictionBLL = new PredictionBLL();
+            str = await Gen_Kunda(str1, 500f, Convert.ToInt16(BirthDetails.CmbRotate));
+            // PredictionBLL predictionBLL1 = new PredictionBLL();
+            KundliVO kundliVO = new KundliVO();
+            string text = BirthDetails.TxtName;
+            string text1 = BirthDetails.TxtBirthPlace;
+            string str2 = DateTime.Now.ToString("dd");
+            string str3 = DateTime.Now.ToString("MM");
+            string str4 = DateTime.Now.ToString("yyyy");
+            string str5 = DateTime.Now.ToString("HH");
+            now = DateTime.Now;
+
+            var kundli = await Map_PersKV(str, text, text1, str2, str3, str4, str5, now.ToString("mm"), "00", "admin", "28.38", "077.12", "05.30", true, BirthDetails.CmbLanguage, BirthDetails.ChkShowRef, this.male, "YICC", "YICC", "YICC", "YICC", "YICC", "New Product", "01", "01", "2000", 1);
+
+            if (kundli != null)
+            {
+                kundliVO = kundli;
+            }
+
+
+
+            List<KPPlanetMappingVO> kPPlanetMappingVOs = new List<KPPlanetMappingVO>();
+            List<KPHouseMappingVO> kPHouseMappingVOs = new List<KPHouseMappingVO>();
+            ProductSettingsVO productSettingsVO = new ProductSettingsVO();
+
+            var laganResponse = await Process_Planet_Lagan(str, kPPlanetMappingVOs, kPHouseMappingVOs, Convert.ToInt16(BirthDetails.CmbRotate), true);
+
+            if (laganResponse != null)
+            {
+                kPPlanetMappingVOs = laganResponse.KpChart;
+                kPHouseMappingVOs = laganResponse.CuspHouse;
+            }
+
+            kPPlanetMappingVOs = await Process_KPChart_GoodBad(kPPlanetMappingVOs, this.persKV, productSettingsVO);
+            //PictureBox pictureBox = this.PicKundliChart;
+            //KundliBLL kundliBLL = this.kkbl;
+            long lagna = kundliVO.Lagna;
+            await Gen_Image(lagna.ToString(), kPPlanetMappingVOs, str, true, 1, kundliVO.Language);
+
         }
 
-        private void OnClick_Chandra(MouseEventArgs e)
+        private async Task OnClick_Chandra(MouseEventArgs e)
         {
             isNumVarshVisible = false;
+
+            List<KPPlanetMappingVO> kPPlanetMappingVOs = new List<KPPlanetMappingVO>();
+            List<KPHouseMappingVO> kPHouseMappingVOs = new List<KPHouseMappingVO>();
+            string str = "";
+            KundliBLL kundliBLL = new KundliBLL();
+            short rashi = (
+                from Map in this.kp_chart
+                where Map.Planet == 2
+                select Map).FirstOrDefault<KPPlanetMappingVO>()?.Rashi ?? default;
+
+            short num = Convert.ToInt16(Convert.ToInt16((long)rashi - this.persKV.Lagna) + 1);
+            if (num <= 0)
+            {
+                num = Convert.ToInt16(12 - Math.Abs(num));
+            }
+            if (num > 12)
+            {
+                num = Convert.ToInt16(num - 12);
+            }
+            str = await Gen_Kunda(this.prod.Online_Result, (float)rashi, Convert.ToInt16(num));
+            var laganResponse = await this.Process_Planet_Lagan(str, kPPlanetMappingVOs, kPHouseMappingVOs, Convert.ToInt16(BirthDetails.CmbRotate), false);
+            if (laganResponse != null)
+            {
+                kPPlanetMappingVOs = laganResponse.KpChart;
+                kPHouseMappingVOs = laganResponse.CuspHouse;
+            }
+
+            await Gen_Image(rashi.ToString(), kPPlanetMappingVOs, str, false, 1, this.persKV.Language);
+            this.show_vfal = false;
+
         }
 
         private void OnClick_Varsh(MouseEventArgs e)
