@@ -3060,5 +3060,701 @@ namespace AstroShared.Methods
             return str1;
         }
 
+        public bool isFewConditionMet(KPMixDashaVO mix, List<KPPlanetMappingVO> kp_chart, string houses)
+        {
+            bool flag;
+            bool flag1 = false;
+            if ((mix.ptype == "yuti" ? true : mix.ptype == "multi"))
+            {
+                if (mix.lawtype == "yuti")
+                {
+                    if (this.isYutiPass(mix, kp_chart))
+                    {
+                        flag1 = true;
+                    }
+                }
+                flag = flag1;
+                return flag;
+            }
+            else if (mix.Planet2 > 0)
+            {
+                flag = false;
+            }
+            else if (!(!this.isEmptyPass(mix.empty, kp_chart) || !this.isNotEmptyPass(mix.not_empty, kp_chart) || !this.isShubhPass(mix.shubh, kp_chart) ? false : this.isAshubhPass(mix.ashubh, kp_chart)))
+            {
+                flag = false;
+            }
+            else if (!(!this.isAndPlanetPass(mix.andplanet, kp_chart) || !this.isNotAndPlanetPass(mix.not_andplanet, kp_chart) || !this.isOrPlanetPass(mix.orplanet, kp_chart) ? false : this.isNotOrPlanetPass(mix.not_orplanet, kp_chart)))
+            {
+                flag = false;
+            }
+            else if ((!this.isConjPass(mix.conj, mix.Planet1, kp_chart) ? false : this.isNotConjPass(mix.not_conj, mix.Planet1, kp_chart)))
+            {
+                if ((!this.isDrishtiPass(mix.drishti, mix.Planet1, kp_chart) ? true : !this.isNotDrishtiPass(mix.not_drishti, mix.Planet1, kp_chart)))
+                {
+                    flag = false;
+                    return flag;
+                }
+                flag1 = true;
+                if (mix.lawtype == "yuti")
+                {
+                    if (this.isYutiPass(mix, kp_chart))
+                    {
+                        flag1 = true;
+                    }
+                }
+                flag = flag1;
+                return flag;
+            }
+            else
+            {
+                flag = false;
+            }
+            return flag;
+        }
+
+        public bool isYutiPass(KPMixDashaVO mix, List<KPPlanetMappingVO> kp_chart)
+        {
+            bool flag;
+            bool flag1 = false;
+            if ((mix.yuticombi.Trim().Length <= 0 ? false : !(mix.yuticombi.Trim() == "0")))
+            {
+                string str = mix.yutihouse;
+                char[] chrArray = new char[] { ',' };
+                string[] strArrays = str.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                string str1 = mix.yuticombi;
+                chrArray = new char[] { ',' };
+                string[] strArrays1 = str1.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                short house = 0;
+                short num = 0;
+                short house1 = 0;
+                short num1 = 0;
+                short house2 = 0;
+                short num2 = 1;
+                string[] strArrays2 = strArrays1;
+                for (int i = 0; i < (int)strArrays2.Length; i++)
+                {
+                    string str2 = strArrays2[i];
+                    if (num2 == 1)
+                    {
+                        house = (
+                            from Map in kp_chart
+                            where Map.Planet == Convert.ToInt16(str2)
+                            select Map).SingleOrDefault<KPPlanetMappingVO>().House;
+                    }
+                    if (num2 == 2)
+                    {
+                        num = (
+                            from Map in kp_chart
+                            where Map.Planet == Convert.ToInt16(str2)
+                            select Map).SingleOrDefault<KPPlanetMappingVO>().House;
+                    }
+                    if (num2 == 3)
+                    {
+                        house1 = (
+                            from Map in kp_chart
+                            where Map.Planet == Convert.ToInt16(str2)
+                            select Map).SingleOrDefault<KPPlanetMappingVO>().House;
+                    }
+                    if (num2 == 4)
+                    {
+                        num1 = (
+                            from Map in kp_chart
+                            where Map.Planet == Convert.ToInt16(str2)
+                            select Map).SingleOrDefault<KPPlanetMappingVO>().House;
+                    }
+                    if (num2 == 5)
+                    {
+                        house2 = (
+                            from Map in kp_chart
+                            where Map.Planet == Convert.ToInt16(str2)
+                            select Map).SingleOrDefault<KPPlanetMappingVO>().House;
+                    }
+                    num2 = (short)(num2 + 1);
+                }
+                if ((house <= 0 || num <= 0 || house1 != 0 || num1 != 0 ? false : house2 == 0))
+                {
+                    if (house == num)
+                    {
+                        flag1 = true;
+                    }
+                }
+                if ((house <= 0 || num <= 0 || house1 <= 0 || num1 != 0 ? false : house2 == 0))
+                {
+                    if ((house != num ? false : house == house1))
+                    {
+                        flag1 = true;
+                    }
+                }
+                if ((house <= 0 || num <= 0 || house1 <= 0 || num1 <= 0 ? false : house2 == 0))
+                {
+                    if ((house != num || house != house1 ? false : house == num1))
+                    {
+                        flag1 = true;
+                    }
+                }
+                if ((house <= 0 || num <= 0 || house1 <= 0 || num1 <= 0 ? false : house2 > 0))
+                {
+                    if ((house != num || house != house1 || house != num1 ? false : house == house2))
+                    {
+                        flag1 = true;
+                    }
+                }
+                if ((strArrays.Count<string>() <= 0 ? false : mix.yutihouse != "0"))
+                {
+                    if (!strArrays.Contains<string>(house.ToString()))
+                    {
+                        flag = false;
+                        return flag;
+                    }
+                }
+                flag = flag1;
+            }
+            else
+            {
+                flag = false;
+            }
+            return flag;
+        }
+
+
+        public bool isEmptyPass(string empty, List<KPPlanetMappingVO> kp_chart)
+        {
+            bool flag;
+            bool flag1 = true;
+            if ((empty.Trim().Length <= 0 ? false : !(empty.Trim() == "0")))
+            {
+                char[] chrArray = new char[] { ',' };
+                string[] strArrays = empty.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                int num = 0;
+                while (num < (int)strArrays.Length)
+                {
+                    string str = strArrays[num];
+                    if ((
+                        from Map in kp_chart
+                        where Map.House == Convert.ToInt16(str)
+                        select Map).ToList<KPPlanetMappingVO>().Count <= 0)
+                    {
+                        num++;
+                    }
+                    else
+                    {
+                        flag = false;
+                        return flag;
+                    }
+                }
+                flag = flag1;
+            }
+            else
+            {
+                flag = true;
+            }
+            return flag;
+        }
+
+        public bool isNotEmptyPass(string not_empty, List<KPPlanetMappingVO> kp_chart)
+        {
+            bool flag;
+            bool flag1 = true;
+            if ((not_empty.Trim().Length <= 0 ? false : !(not_empty.Trim() == "0")))
+            {
+                char[] chrArray = new char[] { ',' };
+                string[] strArrays = not_empty.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                int num = 0;
+                while (num < (int)strArrays.Length)
+                {
+                    string str = strArrays[num];
+                    if ((
+                        from Map in kp_chart
+                        where Map.House == Convert.ToInt16(str)
+                        select Map).ToList<KPPlanetMappingVO>().Count > 0)
+                    {
+                        num++;
+                    }
+                    else
+                    {
+                        flag = false;
+                        return flag;
+                    }
+                }
+                flag = flag1;
+            }
+            else
+            {
+                flag = true;
+            }
+            return flag;
+        }
+        public bool isShubhPass(string shubh, List<KPPlanetMappingVO> kp_chart)
+        {
+            bool flag;
+            bool flag1 = true;
+            if ((shubh.Trim().Length <= 0 ? false : !(shubh.Trim() == "0")))
+            {
+                char[] chrArray = new char[] { ',' };
+                string[] strArrays = shubh.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                int num = 0;
+                while (num < (int)strArrays.Length)
+                {
+                    string str = strArrays[num];
+                    if (!(
+                        from Map in kp_chart
+                        where Map.Planet == Convert.ToInt16(str)
+                        select Map).ToList<KPPlanetMappingVO>().SingleOrDefault<KPPlanetMappingVO>().isbad)
+                    {
+                        num++;
+                    }
+                    else
+                    {
+                        flag = false;
+                        return flag;
+                    }
+                }
+                flag = flag1;
+            }
+            else
+            {
+                flag = true;
+            }
+            return flag;
+        }
+        public bool isAshubhPass(string ashubh, List<KPPlanetMappingVO> kp_chart)
+        {
+            bool flag;
+            bool flag1 = true;
+            if ((ashubh.Trim().Length <= 0 ? false : !(ashubh.Trim() == "0")))
+            {
+                char[] chrArray = new char[] { ',' };
+                string[] strArrays = ashubh.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                int num = 0;
+                while (num < (int)strArrays.Length)
+                {
+                    string str = strArrays[num];
+                    if ((
+                        from Map in kp_chart
+                        where Map.Planet == Convert.ToInt16(str)
+                        select Map).ToList<KPPlanetMappingVO>().SingleOrDefault<KPPlanetMappingVO>().isbad)
+                    {
+                        num++;
+                    }
+                    else
+                    {
+                        flag = false;
+                        return flag;
+                    }
+                }
+                flag = flag1;
+            }
+            else
+            {
+                flag = true;
+            }
+            return flag;
+        }
+
+        public bool isAndPlanetPass(string hashvalue, List<KPPlanetMappingVO> kp_chart)
+        {
+            bool flag;
+            bool flag1 = true;
+            if ((hashvalue.Trim().Length <= 0 ? false : !(hashvalue.Trim() == "0")))
+            {
+                char[] chrArray = new char[] { ',' };
+                string[] strArrays = hashvalue.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                int num = 0;
+                while (num < (int)strArrays.Length)
+                {
+                    string str = strArrays[num];
+                    chrArray = new char[] { '#' };
+                    string[] strArrays1 = str.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                    if ((
+                        from Map in kp_chart
+                        where (Map.Planet != Convert.ToInt16(strArrays1[0]) ? false : Map.House == Convert.ToInt16(strArrays1[1]))
+                        select Map).ToList<KPPlanetMappingVO>().Count != 0)
+                    {
+                        num++;
+                    }
+                    else
+                    {
+                        flag = false;
+                        return flag;
+                    }
+                }
+                flag = flag1;
+            }
+            else
+            {
+                flag = true;
+            }
+            return flag;
+        }
+
+        public bool isNotAndPlanetPass(string hashvalue, List<KPPlanetMappingVO> kp_chart)
+        {
+            bool flag;
+            bool flag1 = true;
+            if ((hashvalue.Trim().Length <= 0 ? false : !(hashvalue.Trim() == "0")))
+            {
+                char[] chrArray = new char[] { ',' };
+                string[] strArrays = hashvalue.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                int num = 0;
+                while (num < (int)strArrays.Length)
+                {
+                    string str = strArrays[num];
+                    chrArray = new char[] { '#' };
+                    string[] strArrays1 = str.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                    if ((
+                        from Map in kp_chart
+                        where (Map.Planet != Convert.ToInt16(strArrays1[0]) ? false : Map.House == Convert.ToInt16(strArrays1[1]))
+                        select Map).ToList<KPPlanetMappingVO>().Count <= 0)
+                    {
+                        num++;
+                    }
+                    else
+                    {
+                        flag = false;
+                        return flag;
+                    }
+                }
+                flag = flag1;
+            }
+            else
+            {
+                flag = true;
+            }
+            return flag;
+        }
+
+        public bool isNotOrPlanetPass(string hashvalue, List<KPPlanetMappingVO> kp_chart)
+        {
+            bool flag;
+            bool flag1 = true;
+            if ((hashvalue.Trim().Length <= 0 ? false : !(hashvalue.Trim() == "0")))
+            {
+                char[] chrArray = new char[] { ',' };
+                string[] strArrays = hashvalue.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                int num = 0;
+                while (num < (int)strArrays.Length)
+                {
+                    string str = strArrays[num];
+                    chrArray = new char[] { '#' };
+                    string[] strArrays1 = str.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                    if ((
+                        from Map in kp_chart
+                        where (Map.Planet != Convert.ToInt16(strArrays1[0]) ? false : Map.House == Convert.ToInt16(strArrays1[1]))
+                        select Map).ToList<KPPlanetMappingVO>().Count <= 0)
+                    {
+                        num++;
+                    }
+                    else
+                    {
+                        flag = false;
+                        return flag;
+                    }
+                }
+                flag = flag1;
+            }
+            else
+            {
+                flag = true;
+            }
+            return flag;
+        }
+
+        public bool isOrPlanetPass(string hashvalue, List<KPPlanetMappingVO> kp_chart)
+        {
+            bool flag;
+            bool flag1 = false;
+            if ((hashvalue.Trim().Length <= 0 ? false : !(hashvalue.Trim() == "0")))
+            {
+                char[] chrArray = new char[] { ',' };
+                string[] strArrays = hashvalue.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                int num = 0;
+                while (num < (int)strArrays.Length)
+                {
+                    string str = strArrays[num];
+                    chrArray = new char[] { '#' };
+                    string[] strArrays1 = str.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                    if ((
+                        from Map in kp_chart
+                        where (Map.Planet != Convert.ToInt16(strArrays1[0]) ? false : Map.House == Convert.ToInt16(strArrays1[1]))
+                        select Map).ToList<KPPlanetMappingVO>().Count <= 0)
+                    {
+                        num++;
+                    }
+                    else
+                    {
+                        flag1 = true;
+                        break;
+                    }
+                }
+                flag = flag1;
+            }
+            else
+            {
+                flag = true;
+            }
+            return flag;
+        }
+
+        public bool isConjPass(string conj, short planet, List<KPPlanetMappingVO> kp_chart)
+        {
+            bool flag;
+            bool flag1 = true;
+            bool flag2 = false;
+            if ((conj.Trim().Length <= 0 ? false : !(conj.Trim() == "0")))
+            {
+                char[] chrArray = new char[] { ',' };
+                string[] strArrays = conj.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                for (int i = 0; i < (int)strArrays.Length; i++)
+                {
+                    string str = strArrays[i];
+                    short house = (
+                        from Map in kp_chart
+                        where Map.Planet == Convert.ToInt16(str)
+                        select Map).SingleOrDefault<KPPlanetMappingVO>().House;
+                    short num = (
+                        from Map in kp_chart
+                        where Map.Planet == planet
+                        select Map).SingleOrDefault<KPPlanetMappingVO>().House;
+                    if ((!this.isDrishti(Convert.ToInt16(str), planet, kp_chart) ? false : this.isDrishti(planet, Convert.ToInt16(str), kp_chart)))
+                    {
+                        flag1 = false;
+                    }
+                    if (house == num)
+                    {
+                        flag2 = true;
+                    }
+                }
+                if (flag2)
+                {
+                    flag1 = true;
+                }
+                flag = flag1;
+            }
+            else
+            {
+                flag = true;
+            }
+            return flag;
+        
+        
+        }
+        public bool isDrishti(short planet1, short planet2, List<KPPlanetMappingVO> kp_chart)
+        {
+            bool flag;
+            bool flag1 = false;
+            if ((
+                from Map in kp_chart
+                where Map.Planet == planet2
+                select Map).SingleOrDefault<KPPlanetMappingVO>().Bhav_Chalit_House != 8)
+            {
+                short bhavChalitHouse = (
+                    from Map in kp_chart
+                    where Map.Planet == 1
+                    select Map).SingleOrDefault<KPPlanetMappingVO>().Bhav_Chalit_House;
+                short num = (
+                    from Map in kp_chart
+                    where Map.Planet == 2
+                    select Map).SingleOrDefault<KPPlanetMappingVO>().Bhav_Chalit_House;
+                short bhavChalitHouse1 = (
+                    from Map in kp_chart
+                    where Map.Planet == 3
+                    select Map).SingleOrDefault<KPPlanetMappingVO>().Bhav_Chalit_House;
+                short num1 = (
+                    from Map in kp_chart
+                    where Map.Planet == 4
+                    select Map).SingleOrDefault<KPPlanetMappingVO>().Bhav_Chalit_House;
+                short bhavChalitHouse2 = (
+                    from Map in kp_chart
+                    where Map.Planet == 5
+                    select Map).SingleOrDefault<KPPlanetMappingVO>().Bhav_Chalit_House;
+                short num2 = (
+                    from Map in kp_chart
+                    where Map.Planet == 6
+                    select Map).SingleOrDefault<KPPlanetMappingVO>().Bhav_Chalit_House;
+                short bhavChalitHouse3 = (
+                    from Map in kp_chart
+                    where Map.Planet == 7
+                    select Map).SingleOrDefault<KPPlanetMappingVO>().Bhav_Chalit_House;
+                short num3 = (
+                    from Map in kp_chart
+                    where Map.Planet == 8
+                    select Map).SingleOrDefault<KPPlanetMappingVO>().Bhav_Chalit_House;
+                short bhavChalitHouse4 = (
+                    from Map in kp_chart
+                    where Map.Planet == 9
+                    select Map).SingleOrDefault<KPPlanetMappingVO>().Bhav_Chalit_House;
+                short num4 = (
+                    from Map in kp_chart
+                    where Map.Planet == planet1
+                    select Map).SingleOrDefault<KPPlanetMappingVO>().Bhav_Chalit_House;
+                short bhavChalitHouse5 = (
+                    from Map in kp_chart
+                    where Map.Planet == planet2
+                    select Map).SingleOrDefault<KPPlanetMappingVO>().Bhav_Chalit_House;
+                short num5 = 0;
+                if ((planet1 == 1 || planet1 == 2 || planet1 == 4 || planet1 == 6 ? true : planet1 == 9))
+                {
+                    num5 = Convert.ToInt16((int)(num4 - bhavChalitHouse5));
+                    if (Math.Abs(num5) == 6)
+                    {
+                        flag = true;
+                        return flag;
+                    }
+                }
+                if (planet1 == 3)
+                {
+                    num5 = Convert.ToInt16((int)(num4 - bhavChalitHouse5));
+                    if ((num5 == -3 || num5 == 9 || num5 == -7 || num5 == 5 ? true : Math.Abs(num5) == 6))
+                    {
+                        flag = true;
+                        return flag;
+                    }
+                }
+                if (planet1 == 5)
+                {
+                    num5 = Convert.ToInt16((int)(num4 - bhavChalitHouse5));
+                    if ((num5 == -4 || num5 == 8 || num5 == -8 || num5 == 4 ? true : Math.Abs(num5) == 6))
+                    {
+                        flag = true;
+                        return flag;
+                    }
+                }
+                if (planet1 == 7)
+                {
+                    num5 = Convert.ToInt16((int)(num4 - bhavChalitHouse5));
+                    if ((num5 == -2 || num5 == 10 || num5 == -9 || num5 == 3 ? true : Math.Abs(num5) == 6))
+                    {
+                        flag = true;
+                        return flag;
+                    }
+                }
+                if (planet1 == 8)
+                {
+                    num5 = Convert.ToInt16((int)(num4 - bhavChalitHouse5));
+                    if ((num5 == -8 || num5 == 4 ? true : Math.Abs(num5) == 6))
+                    {
+                        flag = true;
+                        return flag;
+                    }
+                }
+                flag = flag1;
+            }
+            else
+            {
+                flag = false;
+            }
+            return flag;
+        }
+
+        public bool isNotConjPass(string conj, short planet, List<KPPlanetMappingVO> kp_chart)
+        {
+            bool flag;
+            bool flag1 = true;
+            bool flag2 = false;
+            if ((conj.Trim().Length <= 0 ? false : !(conj.Trim() == "0")))
+            {
+                char[] chrArray = new char[] { ',' };
+                string[] strArrays = conj.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                int num = 0;
+                while (num < (int)strArrays.Length)
+                {
+                    string str = strArrays[num];
+                    short house = (
+                        from Map in kp_chart
+                        where Map.Planet == Convert.ToInt16(str)
+                        select Map).SingleOrDefault<KPPlanetMappingVO>().House;
+                    short house1 = (
+                        from Map in kp_chart
+                        where Map.Planet == planet
+                        select Map).SingleOrDefault<KPPlanetMappingVO>().House;
+                    if ((this.isDrishti(Convert.ToInt16(str), planet, kp_chart) ? false : !this.isDrishti(planet, Convert.ToInt16(str), kp_chart)))
+                    {
+                        if (house == house1)
+                        {
+                            flag2 = true;
+                        }
+                        num++;
+                    }
+                    else
+                    {
+                        flag = false;
+                        return flag;
+                    }
+                }
+                if (flag2)
+                {
+                    flag1 = false;
+                }
+                flag = flag1;
+            }
+            else
+            {
+                flag = true;
+            }
+            return flag;
+        }
+
+        public bool isDrishtiPass(string from_drishti, short to_drishti, List<KPPlanetMappingVO> kp_chart)
+        {
+            bool flag;
+            bool flag1 = false;
+            if ((from_drishti.Trim().Length <= 0 ? false : !(from_drishti.Trim() == "0")))
+            {
+                char[] chrArray = new char[] { ',' };
+                string[] strArrays = from_drishti.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                int num = 0;
+                while (num < (int)strArrays.Length)
+                {
+                    if (!this.isDrishti(Convert.ToInt16(strArrays[num]), to_drishti, kp_chart))
+                    {
+                        num++;
+                    }
+                    else
+                    {
+                        flag = true;
+                        return flag;
+                    }
+                }
+                flag = flag1;
+            }
+            else
+            {
+                flag = true;
+            }
+            return flag;
+        }
+
+        public bool isNotDrishtiPass(string from_drishti, short to_drishti, List<KPPlanetMappingVO> kp_chart)
+        {
+            bool flag;
+            bool flag1 = true;
+            if ((from_drishti.Trim().Length <= 0 ? false : !(from_drishti.Trim() == "0")))
+            {
+                char[] chrArray = new char[] { ',' };
+                string[] strArrays = from_drishti.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+                int num = 0;
+                while (num < (int)strArrays.Length)
+                {
+                    if (!this.isDrishti(Convert.ToInt16(strArrays[num]), to_drishti, kp_chart))
+                    {
+                        num++;
+                    }
+                    else
+                    {
+                        flag = false;
+                        return flag;
+                    }
+                }
+                flag = flag1;
+            }
+            else
+            {
+                flag = true;
+            }
+            return flag;
+        }
+   
+    
     }
 }

@@ -1,4 +1,6 @@
 ﻿using ASDLL.DataAccess.Core;
+using AstroOfficeWeb.Shared.Models;
+using AstroShared.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,5 +27,19 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(kpdaos);
         }
 
+        [HttpPost]
+        public IActionResult GetMixDasha([FromBody] GetMixDashaRequest request)
+        {
+            var vMixDasha=  _kpdao.Get_Mix_Dasha(request.Planet, request.House, request.FieldNumber, request.Category, request.PType);
+            return Ok(vMixDasha);
+        }
+
+        [HttpGet]
+        public IActionResult GetKPCuspPred(bool showref, short house)
+        {
+             var vGetKpCuspPred= _kpdao.Get_KP_Cusp_Pred(showref,house);    
+            return Ok(vGetKpCuspPred);
+        }
+       
     }
 }

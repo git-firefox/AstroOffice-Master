@@ -113,6 +113,11 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpPost]
         public IActionResult GetFalDoubleMahadasha([FromBody] GetFalDoubleMahadashaRequest request)
         {
+            if (request.PersonalKundli == null || request.OnlineResult == null || request.TemporaryProduct == null)
+            {
+                return BadRequest();
+            }
+
             var html = _kpbl.Get_Fal_Double_Mahadasha(request.PlanetNo, request.PersonalKundli, request.OnlineResult, request.TemporaryProduct);
 
             if (!string.IsNullOrEmpty(html))
@@ -136,8 +141,33 @@ namespace AstroOfficeWeb.Server.Controllers
                     .Replace("\n", "<br />")
                     .Replace("\r", "")
                     .Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
-            return Ok(new ApiResponse<string> { Data = html, Success = true});
+            return Ok(new ApiResponse<string> { Data = html, Success = true });
         }
 
+        [HttpPost]
+        public IActionResult TenthKamkajPred([FromBody] TenthKamkajPredRequestModel request)
+        {
+
+            var html = _kpbl.Tenth_Kamkaj_Pred(request.CuspHouse, request.KPChart, request.PersonalKundli);
+            if (!string.IsNullOrEmpty(html))
+                html = html
+                   .Replace("\n", "<br />")
+                   .Replace("\r", "")
+                   .Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+            return Ok(new ApiResponse<string> { Data = html, Success = true });
+        }
+        [HttpPost]
+        public IActionResult GetKPLang([FromBody] GetKpLangRequest request)
+        {
+            var vGetKpLan = _kpbl.Get_KP_Lang(request.MixSno, request.Language, request.Dashafal, request.Upay, request.Mini);
+            return Ok(new ApiResponse<string> { Data = vGetKpLan, Success = true });
+        }
+
+        [HttpGet]
+        public IActionResult GetKPLang(short mixsno, string language, bool dashafal, bool upay, bool mini)
+        {
+            var vGetKpLan = _kpbl.Get_KP_Lang(mixsno, language, dashafal, upay, mini);
+            return Ok(new ApiResponse<string> { Data = vGetKpLan, Success = true });
+        }
     }
 }
