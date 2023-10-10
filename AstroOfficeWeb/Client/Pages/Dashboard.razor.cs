@@ -123,33 +123,33 @@ namespace AstroOfficeWeb.Client.Pages
         #region  Mahadasha Lables
         public string LblMahadasha
         {
-            get { return string.IsNullOrEmpty(_lblMahadasha) ? "-" : _lblMahadasha; }
-            set { _lblMahadasha = value; }
+            get { return string.IsNullOrEmpty(lblMahadasha) ? "-" : lblMahadasha; }
+            set { lblMahadasha = value; }
         }
 
         public string LblAntar
         {
-            get { return string.IsNullOrEmpty(_lblAntar) ? "-" : _lblAntar; }
-            set { _lblAntar = value; }
+            get { return string.IsNullOrEmpty(lblAntar) ? "-" : lblAntar; }
+            set { lblAntar = value; }
         }
 
         public string LblParyan
         {
-            get { return string.IsNullOrEmpty(_lblParyan) ? "-" : _lblParyan; }
-            set { _lblParyan = value; }
+            get { return string.IsNullOrEmpty(lblParyan) ? "-" : lblParyan; }
+            set { lblParyan = value; }
         }
 
         public string LblSukhsmadasha
         {
-            get { return string.IsNullOrEmpty(_lblSukhsmadasha) ? "-" : _lblSukhsmadasha; }
-            set { _lblSukhsmadasha = value; }
+            get { return string.IsNullOrEmpty(lblSukhsmadasha) ? "-" : lblSukhsmadasha; }
+            set { lblSukhsmadasha = value; }
         }
 
 
-        private string _lblMahadasha = string.Empty;
-        private string _lblAntar = string.Empty;
-        private string _lblParyan = string.Empty;
-        private string _lblSukhsmadasha = string.Empty;
+        private string lblMahadasha = string.Empty;
+        private string lblAntar = string.Empty;
+        private string lblParyan = string.Empty;
+        private string lblSukhsmadasha = string.Empty;
         #endregion
 
         #endregion
@@ -1078,17 +1078,8 @@ namespace AstroOfficeWeb.Client.Pages
 
         }
 
-        private void OnClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
+        private async Task OnClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
         {
-            if (ListView_Years35 == null)
-            {
-                ListView_Years35 = new();
-            }
-            else
-            {
-                ListView_Years35.Clear();
-            }
-
             this.maha_dasha_click = true;
             this.sukshma_dasha_click = false;
 
@@ -1109,11 +1100,88 @@ namespace AstroOfficeWeb.Client.Pages
 
             this.main_antardasha = this.kpbl.Get_Antar_Dasha(startDate, endDate, planet, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
 
-            if (!this.BirthDetails.SalaChakkar)
+            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;", selectedTR.Period, "&nbsp;&nbsp;&nbsp;&nbsp;कार्येश :&nbsp;&nbsp;", null, null, null };
+            string? str = selectedTR.Signi;
+            char[] chrArray = new char[] { '|' };
+            text[4] = str?.Split(chrArray)[0];
+            text[5] = "&nbsp;&nbsp;&nbsp;नक्षत्र स्वामी :&nbsp;";
+            string? text1 = selectedTR.Signi;
+            chrArray = new char[] { '|' };
+            text[6] = text1?.Split(chrArray)[1];
+            this.lblMahadasha = string.Concat(text);
+
+            if (this.BirthDetails.SalaChakkar)
+            {
+                if (ListView_Years35 == null)
+                {
+                    ListView_Years35 = new();
+                }
+                else
+                {
+                    ListView_Years35.Clear();
+                }
+                List<KPDashaVO>? list35Sala = await Get_List_35_Sala(this.Online_Result, this.persKV, startDate, endDate);
+
+                if (list35Sala != null)
+                {
+                    foreach (KPDashaVO kPDashaVO in list35Sala)
+                    {
+                        text = new string[5];
+                        DateTime dateTime = kPDashaVO.StartDate;
+                        text[0] = dateTime.ToString("dd");
+                        text[1] = " ";
+                        dateTime = kPDashaVO.StartDate;
+                        text[2] = await GetCodeLang(string.Concat("M", dateTime.ToString("%M")), this.persKV.Language, this.persKV.Paid, true);
+                        text[3] = " ";
+                        dateTime = kPDashaVO.StartDate;
+                        text[4] = dateTime.ToString("yyyy");
+                        string str1 = string.Concat(text);
+                        text = new string[5];
+                        dateTime = kPDashaVO.EndDate;
+                        text[0] = dateTime.ToString("dd");
+                        text[1] = " ";
+                        dateTime = kPDashaVO.EndDate;
+                        text[2] = await GetCodeLang(string.Concat("M", dateTime.ToString("%M")), this.persKV.Language, this.persKV.Paid, true);
+                        text[3] = " ";
+                        dateTime = kPDashaVO.EndDate;
+                        text[4] = dateTime.ToString("yyyy");
+                        string str2 = string.Concat(text);
+
+                        var tr = new Years35TableTRModel();
+
+                        tr.Planet = this.planet_list.Where(Map => Map.Planet == kPDashaVO.Planet).FirstOrDefault<KPPlanetsVO>()?.Hindi ?? string.Empty;
+                        tr.Antar = kPDashaVO.Duration;
+                        tr.Period = string.Concat(str1, " - ", str2);
+                        tr.Age = kPDashaVO.Nak_Signi_String;
+                        ListView_Years35.Add(tr);
+                    }
+                }
+            }
+            else
             {
                 this.Gen_AntarDasha(this.main_antardasha, this.kp_chart);
             }
 
+            this.ListView_Prayantardasha?.Clear();
+            this.ListView_Sukhsmadasha?.Clear();
+            this.lblParyan = string.Empty;
+            this.lblAntar = string.Empty;
+            this.lblSukhsmadasha = string.Empty;
+        }
+
+        private async Task<List<KPDashaVO>?> Get_List_35_Sala(string online_Result, KundliVO persKV, DateTime startDate, DateTime endDate)
+        {
+            var request = new GetList35SalaRequest()
+            {
+                Online_Result = online_Result,
+                PersKV = persKV,
+                Dasha_Starts = startDate,
+                Dasha_Ends = endDate
+            };
+
+            var response = await Swagger!.PostAsync<GetList35SalaRequest, List<KPDashaVO>>(PredictionBLLApiConst.POST_GetList35Sala, request);
+
+            return response;
         }
 
         private void OnChange_CmbAyanansh(ChangeEventArgs e)

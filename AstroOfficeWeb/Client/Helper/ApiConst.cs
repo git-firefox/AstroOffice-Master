@@ -51,6 +51,7 @@
     {
         public static string Base = "api/PredictionBLL/";
         public static string POST_MapPersKV = Base + "MapPersKV";
+        public static string POST_GetList35Sala = Base + "GetList35Sala";
         public static string GET_GetCodeLang = Base + "GetCodeLang?rulecode={0}&lang={1}&paid={2}&unicode={3}";
     }
     public static class KPDAOApiConst
