@@ -1,5 +1,6 @@
 ﻿@*@page "/dashboard"*@
 @page "/"
+@using AstroOfficeWeb.Shared.Models;
 @attribute [Authorize]
 @inherits BaseComponent
 @inject HttpClient HttpClient
@@ -682,9 +683,9 @@
                                                     <div class="d-flex justify-content-between">
                                                         <label> Choose occassion</label>
                                                         <InputSelect @bind-Value="DateFinder!.Occassion" class="form-control custom-select" aria-label="Section of Occassion">
-                                                            @foreach (var Datefinders in DateFinder.OccassionList)
+                                                            @foreach (var item in DateFinder.OccassionList)
                                                             {
-                                                                <option value="@Datefinders">@Datefinders</option>
+                                                                <option value="@item.Text">@item.Text</option>
                                                             }
                                                         </InputSelect>
                                                     </div>
@@ -790,7 +791,7 @@
                                                         <button type="button" class="btn btn-warning" @onclick="BtnShow_TabDateFinder_Click">Show</button>
                                                     </div>
                                                 </div>
-                                            </div>1
+                                            </div>
                                         </EditForm>
                                     </div>
 
@@ -853,9 +854,9 @@
                                                         <label>Choose rating</label>
                                                         <InputSelect @bind-Value="BestKundaliDates.Comborating" class="form-control custom-select" aria-label="Selecttion of rating">
 
-                                                            @foreach (var BirthCategory in BestKundaliDates.ComboratingSelect)
+                                                            @foreach (var item in BestKundaliDates.ComboratingSelect)
                                                             {
-                                                                <option value="@BirthCategory">@BirthCategory</option>
+                                                                <option value="@item.Text">@item.Text</option>
                                                             }
                                                         </InputSelect>
                                                     </div>

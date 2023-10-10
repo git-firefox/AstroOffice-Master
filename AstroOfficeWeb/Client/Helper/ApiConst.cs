@@ -1,29 +1,65 @@
 ﻿namespace AstroOfficeWeb.Client.Helper
 {
-    public static class ApiConst
+    public static class KPBLLApiConst
     {
-        public static string GET_KPBLL_Fill_249 = "api/KPBLL/GetKP249VOs";
-        public static string GET_Country_GetCountry = "api/Country/GetCountry";
-        public static string POST_SignIn = "api/Account/SignIn";
-        public static string POST_SignUp = "api/Account/SignUp";
-        public static string GET_PlanetBLL_GetKPPlanetsVOs = "api/PlanetBLL/GetKPPlanetsVOs";
-        public static string GET_GetKPHousesVOs = "api/KPBLL/GetKPHousesVOs";
-        public static string GET_LocationBLL_GetPlaceListLike = "api/LocationBLL/GetPlaceListLike?place={0}&countryCode={1}";
-        public static string GET_LocationBLL_GetPlaceByID = "api/LocationBLL/GetPlaceByID?sno={0}";
-        public static string GET_LocationBLL_GetCountryByCode = "api/LocationBLL/GetCountryByCode?countryCode={0}";
-        public static string GET_LocationBLL_GetStateByCode = "api/LocationBLL/GetStateByCode?stateCode={0}";
-        public static string POST_GenKunda = "api/KundliBLL/GenKunda";
-        public static string POST_GenImage = "api/KundliBLL/GenImage";
-        public static string POST_MapPersKV = "api/PredictionBLL/MapPersKV";
-        public static string GET_KPDAO_GetUpayLogic = "api/KPDAO/GetUpayLogic";
-        public static string POST_KundliBLL_GenKunda = "api/KundliBLL/GenKunda";
-        public static string POST_KundliBLL_GenImage = "api/KundliBLL/GenImage";
-        public static string POST_KundliBLL_NEWGetVarshaphalKundliMapping = "api/KundliBLL/NEWGetVarshaphalKundliMapping";
-        public static string POST_KPBLL_GetFalDoubleMahadasha = "api/KPBLL/GetFalDoubleMahadasha";
-        public static string POST_PredictionBLL_MapPersKV = "api/PredictionBLL/MapPersKV";
-        public static string GET_PredictionBLL_GetCodeLang = "api/PredictionBLL/GetCodeLang?rulecode={0}&lang={1}&paid={2}&unicode={3}";
-        public static string POST_KPBLL_ProcessPlanetLagan = "api/KPBLL/ProcessPlanetLagan";
-        public static string POST_KPBLL_ProcessKPChartGoodBad = "api/KPBLL/ProcessKPChartGoodBad";
-        public static string POST_BestBLL_IsBestKundali = "api/BestBLL/IsBestKundali";
+        public static string Base = "api/KPBLL/";
+        public static string GET_Fill_249 = Base + "GetKP249VOs";
+        public static string POST_GetFalDoubleMahadasha = Base + "GetFalDoubleMahadasha";
+        public static string GET_GetKPHousesVOs = Base + "GetKPHousesVOs";
+        public static string POST_ProcessPlanetLagan = Base + "ProcessPlanetLagan";
+        public static string POST_ProcessKPChartGoodBad = Base + "ProcessKPChartGoodBad";
+    }
+
+    public static class CountryApiConst
+    {
+        public static string Base = "api/Country/";
+        public static string GET_GetCountry = Base + "GetCountry";
+    }
+
+    public static class AccountApiConst
+    {
+        public static string Base = "api/Account/";
+        public static string POST_SignIn = Base + "SignIn";
+        public static string POST_SignUp = Base + "SignUp";
+    }
+
+    public static class PlanetBLLApiConst
+    {
+        public static string Base = "api/PlanetBLL/";
+        public static string GET_GetKPPlanetsVOs = Base + "GetKPPlanetsVOs";
+    }
+
+    public static class LocationBLLApiConst
+    {
+        public static string Base = "api/LocationBLL/";
+        public static string GET_GetPlaceListLike = Base + "GetPlaceListLike?place={0}&countryCode={1}";
+        public static string GET_GetPlaceByID = Base + "GetPlaceByID?sno={0}";
+        public static string GET_GetCountryByCode = Base + "GetCountryByCode?countryCode={0}";
+        public static string GET_GetStateByCode = Base + "GetStateByCode?stateCode={0}";
+    }
+    public static class KundliBLLApiConst
+    {
+        public static string Base = "api/KundliBLL/";
+        public static string POST_GenKunda = Base + "GenKunda";
+        public static string POST_GenImage = Base + "GenImage";
+        public static string POST_NEWGetVarshaphalKundliMapping = Base + "NEWGetVarshaphalKundliMapping";
+
+
+    }
+    public static class PredictionBLLApiConst
+    {
+        public static string Base = "api/PredictionBLL/";
+        public static string POST_MapPersKV = Base + "MapPersKV";
+        public static string GET_GetCodeLang = Base + "GetCodeLang?rulecode={0}&lang={1}&paid={2}&unicode={3}";
+    }
+    public static class KPDAOApiConst
+    {
+        public static string Base = "api/KPDAO/";
+        public static string GET_GetUpayLogic = Base + "GetUpayLogic";
+    }
+    public static class BestBLLApiConst
+    {
+        public static string Base = "api/BestBLL/";
+        public static string POST_IsBestKundali = Base + "IsBestKundali";
     }
 }

@@ -1,10 +1,10 @@
 ﻿using AstroOfficeWeb.Client.Helper;
+using AstroOfficeWeb.Shared.Models;
 
 namespace AstroOfficeWeb.Client.Models
 {
     public class BestKundaliDatesModel
     {
-
         public DateTime Pick_start_date { get; set; } = DateTime.Now.Date;
         public DateTime StartingTime { get; set; }
         public DateTime Pick_end_date { get; set; } = DateTime.Now.Date.AddDays(1);
@@ -16,11 +16,10 @@ namespace AstroOfficeWeb.Client.Models
 
         public string countProcess { get; set; } = string.Empty;
 
-        public List<string> ComboratingSelect { get; set; } = new List<string>
-        {
-            "Good",
-            "Best",
-            "Excellent"
+        public List<SelectListItem> ComboratingSelect { get; set; } = new List<SelectListItem> {
+            new SelectListItem ( "Good", "0" ),
+            new SelectListItem ( "Best", "1" ),
+            new SelectListItem ( "Excellent", "2" )
         };
     }
 }

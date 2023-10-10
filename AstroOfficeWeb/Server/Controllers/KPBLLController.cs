@@ -111,7 +111,7 @@ namespace AstroOfficeWeb.Server.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetFalDoubleMahadasha([FromBody] DTOs.GetFalDoubleMahadashaRequest request)
+        public IActionResult GetFalDoubleMahadasha([FromBody] GetFalDoubleMahadashaRequest request)
         {
             var html = _kpbl.Get_Fal_Double_Mahadasha(request.PlanetNo, request.PersonalKundli, request.OnlineResult, request.TemporaryProduct);
 

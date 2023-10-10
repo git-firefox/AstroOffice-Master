@@ -8,12 +8,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using AstroShared.Models;
 using AstroShared.Methods;
-using AstroOfficeWeb.Shared.Lookups;
 using AstroOfficeWeb.Client.Services;
-using System.Runtime.InteropServices;
-using Dasha = AstroOfficeWeb.Client.Helper.Dasha;
-using static System.Net.Mime.MediaTypeNames;
-using System.Text;
 using AstroOfficeWeb.Client.Shared;
 
 namespace AstroOfficeWeb.Client.Pages
@@ -77,7 +72,6 @@ namespace AstroOfficeWeb.Client.Pages
         private List<KPDashaVO> main_pryaantardasha = new List<KPDashaVO>();
         private List<KPDashaVO> main_sukhsmadasha = new List<KPDashaVO>();
 
-
         private bool isNumVarshVisible = false;
         private bool dobddEnabled = true;
         private bool dobmmEnabled = true;
@@ -88,9 +82,11 @@ namespace AstroOfficeWeb.Client.Pages
         private bool txtBirthPlaceEnabled = true;
 
         private int selectedBirthCityIndex = 0;
+
         private InputText? inputTextName;
         private InputText? inputTextBirthPlace;
         private FaladeshModal FaladeshModal = new();
+
         private string? imgSrc;
         private string? imgSrcLagan;
         private string? imgSrcBhavChalit;
@@ -99,15 +95,12 @@ namespace AstroOfficeWeb.Client.Pages
         private List<DTOs.APlaceMaster>? ListBirthCities = new();
         private SavedStateModel SavedStateModel = new();
 
-
-
         #region View Models Data
 
         public List<SelectListItem>? CmbCountry { get; set; }
         private BirthDetails BirthDetails { get; set; } = new();
         private BirthDetailsLookups BirthDetailsLookups { get; set; } = new();
         private BestKundaliDatesModel BestKundaliDates { get; set; } = new();
-        private CmbRotate CmbRotate { get; set; } = new();
         private DateFinderModel DateFinder { get; set; } = new();
 
         #endregion
@@ -123,6 +116,38 @@ namespace AstroOfficeWeb.Client.Pages
         public List<SukhsmadashaTableTRModel>? ListView_Sukhsmadasha { get; set; }
         public List<Years35TableTRModel>? ListView_Years35 { get; set; }
 
+        #endregion
+
+        #region  Mahadasha Lables
+        public string LblMahadasha
+        {
+            get { return string.IsNullOrEmpty(_lblMahadasha) ? "-" : _lblMahadasha; }
+            set { _lblMahadasha = value; }
+        }
+
+        public string LblAntar
+        {
+            get { return string.IsNullOrEmpty(_lblAntar) ? "-" : _lblAntar; }
+            set { _lblAntar = value; }
+        }
+
+        public string LblParyan
+        {
+            get { return string.IsNullOrEmpty(_lblParyan) ? "-" : _lblParyan; }
+            set { _lblParyan = value; }
+        }
+
+        public string LblSukhsmadasha
+        {
+            get { return string.IsNullOrEmpty(_lblSukhsmadasha) ? "-" : _lblSukhsmadasha; }
+            set { _lblSukhsmadasha = value; }
+        }
+
+
+        private string _lblMahadasha = string.Empty;
+        private string _lblAntar = string.Empty;
+        private string _lblParyan = string.Empty;
+        private string _lblSukhsmadasha = string.Empty;
         #endregion
 
         #endregion
@@ -155,9 +180,9 @@ namespace AstroOfficeWeb.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            var countryMasters = await Swagger!.GetAsync<List<DTOs.ACountryMaster>>(ApiConst.GET_Country_GetCountry);
-            var planetVOs = (await Swagger!.GetAsync<List<PlanetVO>>(ApiConst.GET_PlanetBLL_GetKPPlanetsVOs)) ?? new List<PlanetVO>();
-            var kP249s = (await Swagger!.GetAsync<List<KP249VO>>(ApiConst.GET_KPBLL_Fill_249)) ?? new List<KP249VO>();
+            var countryMasters = await Swagger!.GetAsync<List<DTOs.ACountryMaster>>(CountryApiConst.GET_GetCountry);
+            var planetVOs = (await Swagger!.GetAsync<List<PlanetVO>>(PlanetBLLApiConst.GET_GetKPPlanetsVOs)) ?? new List<PlanetVO>();
+            var kP249s = (await Swagger!.GetAsync<List<KP249VO>>(KPBLLApiConst.GET_Fill_249)) ?? new List<KP249VO>();
 
             #region LoadCountry
             this.CmbCountry = countryMasters?.Select(cm => new SelectListItem(cm.Country, cm.CountryCode)).ToList();
@@ -204,8 +229,6 @@ namespace AstroOfficeWeb.Client.Pages
             await base.OnInitializedAsync();
         }
 
-
-
         protected override void OnAfterRender(bool firstRender)
         {
             base.OnAfterRender(firstRender);
@@ -214,16 +237,23 @@ namespace AstroOfficeWeb.Client.Pages
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
-            //if (firstRender)
-            //{
-            //    await JSRuntime.FocusAsync(inputTextName?.Element);
-            //    StateHasChanged();
-            //}
+            if (firstRender)
+            {
+                await JSRuntime.FocusAsync(inputTextName?.Element);
+            }
         }
 
         #region Methods
 
-        //private async Task Sel_Text(InputText s)
+        private async Task<bool> IsBestKundali(string best_Online_Result, short rating, short engine)
+        {
+            var request = new BestKundaliRequest() { Best_Online_Result = best_Online_Result, Rating = rating, Engine = engine };
+
+            var response = await Swagger!.PostAsync<BestKundaliRequest, ApiResponse<bool>>(BestBLLApiConst.POST_IsBestKundali, request);
+
+            return response?.Data ?? false;
+        }
+
         private async Task Sel_Text(InputText s)
         {
             ListView_Planet?.Clear();
@@ -243,7 +273,7 @@ namespace AstroOfficeWeb.Client.Pages
                 BhavChalit = bhav_chalit
             };
 
-            var processPlanetLaganResponse = await Swagger!.PostAsync<ProcessPlanetLaganRequest, ProcessPlanetLaganResponse>(ApiConst.POST_KPBLL_ProcessPlanetLagan, processPlanetLaganRequest);
+            var processPlanetLaganResponse = await Swagger!.PostAsync<ProcessPlanetLaganRequest, ProcessPlanetLaganResponse>(KPBLLApiConst.POST_ProcessPlanetLagan, processPlanetLaganRequest);
 
             return processPlanetLaganResponse;
         }
@@ -282,10 +312,11 @@ namespace AstroOfficeWeb.Client.Pages
                 Rotate = rotate
             };
 
-            var kundliVO = await Swagger!.PostAsync<MapPersKVRequest, KundliVO>(ApiConst.POST_PredictionBLL_MapPersKV, mapPersKVRequest);
+            var kundliVO = await Swagger!.PostAsync<MapPersKVRequest, KundliVO>(PredictionBLLApiConst.POST_MapPersKV, mapPersKVRequest);
             return kundliVO;
 
         }
+
         private async Task<List<KPPlanetMappingVO>> Process_KPChart_GoodBad(List<KPPlanetMappingVO> kp_chart, KundliVO persKV, ProductSettingsVO prod)
         {
             var processKPChartGoodBadRequest = new ProcessKPChartGoodBadRequest()
@@ -295,7 +326,7 @@ namespace AstroOfficeWeb.Client.Pages
                 Prod = this.prod
             };
 
-            var kpPlanetMappingVOs = await Swagger!.PostAsync<ProcessKPChartGoodBadRequest, List<KPPlanetMappingVO>>(ApiConst.POST_KPBLL_ProcessKPChartGoodBad, processKPChartGoodBadRequest);
+            var kpPlanetMappingVOs = await Swagger!.PostAsync<ProcessKPChartGoodBadRequest, List<KPPlanetMappingVO>>(KPBLLApiConst.POST_ProcessKPChartGoodBad, processKPChartGoodBadRequest);
 
             if (kpPlanetMappingVOs != null)
             {
@@ -303,6 +334,7 @@ namespace AstroOfficeWeb.Client.Pages
             }
             return new List<KPPlanetMappingVO>();
         }
+
         private void Gen_KP_Chart(List<KPPlanetMappingVO> kp_chart)
         {
             if (ListView_Planet == null)
@@ -785,7 +817,7 @@ namespace AstroOfficeWeb.Client.Pages
                         Rotate = BirthDetails.CmbRotate,
                     };
 
-                    var kundaResponse = await Swagger!.PostAsync<GenKundaRequest, ApiResponse<string>>(ApiConst.POST_KundliBLL_GenKunda, kundaRequest);
+                    var kundaResponse = await Swagger!.PostAsync<GenKundaRequest, ApiResponse<string>>(KundliBLLApiConst.POST_GenKunda, kundaRequest);
 
                     this.Online_Result = kundaResponse?.Data ?? "";
 
@@ -824,7 +856,7 @@ namespace AstroOfficeWeb.Client.Pages
                         Rotate = 1 // Default value
                     };
 
-                    var kundliVO = await Swagger!.PostAsync<MapPersKVRequest, KundliVO>(ApiConst.POST_PredictionBLL_MapPersKV, mapPersKVRequest);
+                    var kundliVO = await Swagger!.PostAsync<MapPersKVRequest, KundliVO>(PredictionBLLApiConst.POST_MapPersKV, mapPersKVRequest);
                     if (kundliVO != null)
                     {
                         this.persKV = kundliVO;
@@ -845,7 +877,7 @@ namespace AstroOfficeWeb.Client.Pages
                         Rotate = BirthDetails.CmbRotate,
                         BhavChalit = false
                     };
-                    var processPlanetLaganResponse = await Swagger!.PostAsync<ProcessPlanetLaganRequest, ProcessPlanetLaganResponse>(ApiConst.POST_KPBLL_ProcessPlanetLagan, processPlanetLaganRequest);
+                    var processPlanetLaganResponse = await Swagger!.PostAsync<ProcessPlanetLaganRequest, ProcessPlanetLaganResponse>(KPBLLApiConst.POST_ProcessPlanetLagan, processPlanetLaganRequest);
 
                     this.kp_chart = processPlanetLaganResponse!.KpChart;
                     this.cusp_house = processPlanetLaganResponse!.CuspHouse;
@@ -861,7 +893,7 @@ namespace AstroOfficeWeb.Client.Pages
                         Prod = this.prod
                     };
 
-                    var kpPlanetMappingVOs = await Swagger!.PostAsync<ProcessKPChartGoodBadRequest, List<KPPlanetMappingVO>>(ApiConst.POST_KPBLL_ProcessKPChartGoodBad, processKPChartGoodBadRequest);
+                    var kpPlanetMappingVOs = await Swagger!.PostAsync<ProcessKPChartGoodBadRequest, List<KPPlanetMappingVO>>(KPBLLApiConst.POST_ProcessKPChartGoodBad, processKPChartGoodBadRequest);
 
                     if (kpPlanetMappingVOs != null)
                     {
@@ -883,7 +915,7 @@ namespace AstroOfficeWeb.Client.Pages
                         Lang = this.persKV.Language
                     };
 
-                    var imgResponse = await Swagger!.PostAsync<GenImageRequest, ApiResponse<string>>(ApiConst.POST_KundliBLL_GenImage, genImageRequest);
+                    var imgResponse = await Swagger!.PostAsync<GenImageRequest, ApiResponse<string>>(KundliBLLApiConst.POST_GenImage, genImageRequest);
 
                     imgSrc = imgResponse?.Data ?? "";
 
@@ -894,7 +926,7 @@ namespace AstroOfficeWeb.Client.Pages
 
         private async Task<string> GetCodeLang(string rulecode, string lang, bool paid, bool unicode)
         {
-            var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(ApiConst.GET_PredictionBLL_GetCodeLang, rulecode, lang, paid, unicode));
+            var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(PredictionBLLApiConst.GET_GetCodeLang, rulecode, lang, paid, unicode));
             if (response != null)
                 return response.Data ?? string.Empty;
             return string.Empty;
@@ -909,7 +941,7 @@ namespace AstroOfficeWeb.Client.Pages
                 Rotate = rotate,
             };
 
-            var kundaResponse = await Swagger!.PostAsync<GenKundaRequest, ApiResponse<string>>(ApiConst.POST_KundliBLL_GenKunda, kundaRequest);
+            var kundaResponse = await Swagger!.PostAsync<GenKundaRequest, ApiResponse<string>>(KundliBLLApiConst.POST_GenKunda, kundaRequest);
             if (kundaResponse == null)
             {
                 return string.Empty;
@@ -917,22 +949,109 @@ namespace AstroOfficeWeb.Client.Pages
             return kundaResponse.Data ?? string.Empty;
         }
 
-
-
-
-
-
-
         private async Task LoadCountry()
         {
             if (BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
             {
-                this.ListBirthCities = await Swagger!.GetAsync<List<DTOs.APlaceMaster>>(string.Format(ApiConst.GET_LocationBLL_GetPlaceListLike, BirthDetails!.TxtBirthPlace, BirthDetails!.CmbCountry));
+                this.ListBirthCities = await Swagger!.GetAsync<List<DTOs.APlaceMaster>>(string.Format(LocationBLLApiConst.GET_GetPlaceListLike, BirthDetails!.TxtBirthPlace, BirthDetails!.CmbCountry));
             }
             if (this.ListBirthCities != null && this.ListBirthCities.Any())
             {
                 await OnChange_ListBirthCities(new ChangeEventArgs { Value = 0 });
             }
+        }
+
+        private async Task Show_Falla(string falla)
+        {
+            imgSrcBhavChalit = await this.Get_Gen_Image(this.persKV.Lagna.ToString(), this.kp_chart, this.Online_Result, true, 1, this.persKV.Language); ;
+            imgSrcLagan = await this.Get_Gen_Image(this.persKV.Lagna.ToString(), this.kp_chart, this.Online_Result, false, 1, this.persKV.Language);
+            htmlStringFalla = falla;
+
+            await FaladeshModal.ShowAsync();
+        }
+
+        private async Task<string> Get_Fal_Double_Mahadasha(short planet, KundliVO persKV, string online_Result, ProductSettingsVO prod)
+        {
+            var request = new GetFalDoubleMahadashaRequest()
+            {
+                PlanetNo = planet,
+                PersonalKundli = persKV,
+                OnlineResult = online_Result,
+                TemporaryProduct = prod
+            };
+
+            var response = await Swagger!.PostAsync<GetFalDoubleMahadashaRequest, ApiResponse<string>>(KPBLLApiConst.POST_GetFalDoubleMahadasha, request);
+
+            return response?.Data ?? string.Empty;
+        }
+
+        private void Gen_AntarDasha(List<KPDashaVO> dasha_list, List<KPPlanetMappingVO> kp_chart)
+        {
+
+            if (ListView_Antardasha == null)
+            {
+                ListView_Antardasha = new();
+            }
+            else
+            {
+                ListView_Antardasha.Clear();
+            }
+
+            foreach (KPDashaVO dashaList in dasha_list)
+            {
+                var tr = new AntardashaTableTRModel();
+
+                tr.Planet = this.planet_list.Where(Map => Map.Planet == dashaList.Planet).SingleOrDefault<KPPlanetsVO>()?.Hindi ?? string.Empty;
+
+                string startDate = dashaList.StartDate.ToString("dd MMM yyyy");
+                string endDate = dashaList.EndDate.ToString("dd MMM yyyy");
+
+                tr.Period = string.Concat(startDate, " - ", endDate);
+
+                tr.Signi = string.Concat(dashaList.Signi_String, " | ", dashaList.Nak_Signi_String);
+
+                ListView_Antardasha.Add(tr);
+            }
+        }
+
+        private async Task Gen_Image(string lagna, List<KPPlanetMappingVO> lkmv, string Online_Result, bool bhav_chalit, short Kund_Size, string lang)
+        {
+            #region Gen Image Request
+
+            var genImageRequest = new GenImageRequest()
+            {
+                Lagna = lagna,
+                Lkmv = lkmv,
+                Online_Result = Online_Result,
+                Bhav_Chalit = bhav_chalit,
+                Kund_Size = Kund_Size,
+                Lang = lang
+            };
+
+            var imgResponse = await Swagger!.PostAsync<GenImageRequest, ApiResponse<string>>(KundliBLLApiConst.POST_GenImage, genImageRequest);
+
+            imgSrc = imgResponse?.Data ?? "";
+
+            #endregion
+        }
+
+        private async Task<string> Get_Gen_Image(string lagna, List<KPPlanetMappingVO> lkmv, string Online_Result, bool bhav_chalit, short Kund_Size, string lang)
+        {
+            var genImageRequest = new GenImageRequest()
+            {
+                Lagna = lagna,
+                Lkmv = lkmv,
+                Online_Result = Online_Result,
+                Bhav_Chalit = bhav_chalit,
+                Kund_Size = Kund_Size,
+                Lang = lang
+            };
+
+            var imgResponse = await Swagger!.PostAsync<GenImageRequest, ApiResponse<string>>(KundliBLLApiConst.POST_GenImage, genImageRequest);
+
+            imgSrc = imgResponse?.Data ?? "";
+
+            return imgSrc;
         }
 
         #endregion
@@ -957,30 +1076,6 @@ namespace AstroOfficeWeb.Client.Pages
 
             await this.Show_Falla(falDoubleMahadasha);
 
-        }
-
-        private async Task Show_Falla(string falla)
-        {
-            imgSrcBhavChalit = await this.Get_Gen_Image(this.persKV.Lagna.ToString(), this.kp_chart, this.Online_Result, true, 1, this.persKV.Language); ;
-            imgSrcLagan = await this.Get_Gen_Image(this.persKV.Lagna.ToString(), this.kp_chart, this.Online_Result, false, 1, this.persKV.Language);
-            htmlStringFalla = falla;
-
-            FaladeshModal.Show();
-        }
-
-        private async Task<string> Get_Fal_Double_Mahadasha(short planet, KundliVO persKV, string online_Result, ProductSettingsVO prod)
-        {
-            var request = new DTOs.GetFalDoubleMahadashaRequest()
-            {
-                PlanetNo = planet,
-                PersonalKundli = persKV,
-                OnlineResult = online_Result,
-                TemporaryProduct = prod
-            };
-
-            var response = await Swagger!.PostAsync<DTOs.GetFalDoubleMahadashaRequest, ApiResponse<string>>(ApiConst.POST_KPBLL_GetFalDoubleMahadasha, request);
-
-            return response?.Data ?? string.Empty;
         }
 
         private void OnClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
@@ -1021,35 +1116,6 @@ namespace AstroOfficeWeb.Client.Pages
 
         }
 
-        private void Gen_AntarDasha(List<KPDashaVO> dasha_list, List<KPPlanetMappingVO> kp_chart)
-        {
-
-            if (ListView_Antardasha == null)
-            {
-                ListView_Antardasha = new();
-            }
-            else
-            {
-                ListView_Antardasha.Clear();
-            }
-
-            foreach (KPDashaVO dashaList in dasha_list)
-            {
-                var tr = new AntardashaTableTRModel();
-
-                tr.Planet = this.planet_list.Where(Map => Map.Planet == dashaList.Planet).SingleOrDefault<KPPlanetsVO>()?.Hindi ?? string.Empty;
-
-                string startDate = dashaList.StartDate.ToString("dd MMM yyyy");
-                string endDate = dashaList.EndDate.ToString("dd MMM yyyy");
-
-                tr.Period = string.Concat(startDate, " - ", endDate);
-
-                tr.Signi = string.Concat(dashaList.Signi_String, " | ", dashaList.Nak_Signi_String);
-
-                ListView_Antardasha.Add(tr);
-            }
-        }
-
         private void OnChange_CmbAyanansh(ChangeEventArgs e)
         {
             string value = e.Value?.ToString() ?? "";
@@ -1070,16 +1136,19 @@ namespace AstroOfficeWeb.Client.Pages
             string value = e.Value.ToStringX();
             BirthDetails.CmbCategory = value;
         }
+
         private void OnChange_CmbLanguage(ChangeEventArgs e)
         {
             string value = e.Value.ToStringX();
             BirthDetails.CmbLanguage = value;
         }
+
         private void OnChange_CmbSkipBad(ChangeEventArgs e)
         {
             string value = e.Value.ToStringX();
             BirthDetails.CmbSkipBad = value;
         }
+
         private void OnChange_CmbTime(ChangeEventArgs e)
         {
             string value = e.Value.ToStringLower();
@@ -1105,15 +1174,15 @@ namespace AstroOfficeWeb.Client.Pages
             string datesChain = "";
             short num = 0;
             DateFinder.DateList = "";
-            if (DateFinder.Period == Helper.Period.Maha)
+            if (DateFinder.Period == Period.Maha)
             {
                 num = 1;
             }
-            if (DateFinder.Period == Helper.Period.Antar)
+            if (DateFinder.Period == Period.Antar)
             {
                 num = 2;
             }
-            if (DateFinder.Period == Helper.Period.Pryan)
+            if (DateFinder.Period == Period.Pryan)
             {
                 num = 3;
             }
@@ -1136,10 +1205,6 @@ namespace AstroOfficeWeb.Client.Pages
             DateFinder.DateList = datesChain;
             //  Application.UseWaitCursor = false;
         }
-
-
-
-
 
         private async Task OnChange_CmbRotate(ChangeEventArgs e)
         {
@@ -1203,47 +1268,6 @@ namespace AstroOfficeWeb.Client.Pages
 
                 await this.OnClick_BtnChart(new MouseEventArgs());
             }
-        }
-
-
-        private async Task Gen_Image(string lagna, List<KPPlanetMappingVO> lkmv, string Online_Result, bool bhav_chalit, short Kund_Size, string lang)
-        {
-            #region Gen Image Request
-
-            var genImageRequest = new GenImageRequest()
-            {
-                Lagna = lagna,
-                Lkmv = lkmv,
-                Online_Result = Online_Result,
-                Bhav_Chalit = bhav_chalit,
-                Kund_Size = Kund_Size,
-                Lang = lang
-            };
-
-            var imgResponse = await Swagger!.PostAsync<GenImageRequest, ApiResponse<string>>(ApiConst.POST_KundliBLL_GenImage, genImageRequest);
-
-            imgSrc = imgResponse?.Data ?? "";
-
-            #endregion
-        }
-
-        private async Task<string> Get_Gen_Image(string lagna, List<KPPlanetMappingVO> lkmv, string Online_Result, bool bhav_chalit, short Kund_Size, string lang)
-        {
-            var genImageRequest = new GenImageRequest()
-            {
-                Lagna = lagna,
-                Lkmv = lkmv,
-                Online_Result = Online_Result,
-                Bhav_Chalit = bhav_chalit,
-                Kund_Size = Kund_Size,
-                Lang = lang
-            };
-
-            var imgResponse = await Swagger!.PostAsync<GenImageRequest, ApiResponse<string>>(ApiConst.POST_KundliBLL_GenImage, genImageRequest);
-
-            imgSrc = imgResponse?.Data ?? "";
-
-            return imgSrc;
         }
 
         private async Task OnClick_BtnChart(MouseEventArgs e)
@@ -1374,36 +1398,6 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-        public string LblMahadasha
-        {
-            get { return string.IsNullOrEmpty(_lblMahadasha) ? "-" : _lblMahadasha; }
-            set { _lblMahadasha = value; }
-        }
-
-        public string LblAntar
-        {
-            get { return string.IsNullOrEmpty(_lblAntar) ? "-" : _lblAntar; }
-            set { _lblAntar = value; }
-        }
-
-        public string LblParyan
-        {
-            get { return string.IsNullOrEmpty(_lblParyan) ? "-" : _lblParyan; }
-            set { _lblParyan = value; }
-        }
-
-        public string LblSukhsmadasha
-        {
-            get { return string.IsNullOrEmpty(_lblSukhsmadasha) ? "-" : _lblSukhsmadasha; }
-            set { _lblSukhsmadasha = value; }
-        }
-
-
-        private string _lblMahadasha = string.Empty;
-        private string _lblAntar = string.Empty;
-        private string _lblParyan = string.Empty;
-        private string _lblSukhsmadasha = string.Empty;
-
         private void Gen_Mahadasha(List<KPDashaVO> dasha_list, List<KPPlanetMappingVO> kp_chart)
         {
             if (ListView_Mahadasha == null)
@@ -1480,9 +1474,9 @@ namespace AstroOfficeWeb.Client.Pages
             var selectedBirthCity = ListBirthCities![selectedBirthCityIndex];
             this.BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
 
-            var place = await Swagger!.GetAsync<DTOs.APlaceMaster>(string.Format(ApiConst.GET_LocationBLL_GetPlaceByID, selectedBirthCity?.Sno));
-            var country = await Swagger!.GetAsync<DTOs.ACountryMaster>(string.Format(ApiConst.GET_LocationBLL_GetCountryByCode, selectedBirthCity?.CountryCode));
-            var state = await Swagger!.GetAsync<DTOs.AStateMaster>(string.Format(ApiConst.GET_LocationBLL_GetStateByCode, place?.CountryCode));
+            var place = await Swagger!.GetAsync<DTOs.APlaceMaster>(string.Format(LocationBLLApiConst.GET_GetPlaceByID, selectedBirthCity?.Sno));
+            var country = await Swagger!.GetAsync<DTOs.ACountryMaster>(string.Format(LocationBLLApiConst.GET_GetCountryByCode, selectedBirthCity?.CountryCode));
+            var state = await Swagger!.GetAsync<DTOs.AStateMaster>(string.Format(LocationBLLApiConst.GET_GetStateByCode, place?.CountryCode));
 
             full_lon = (selectedBirthCity!.Longitude ?? "").Trim();
             full_lat = (selectedBirthCity!.Latitude ?? "").Trim();
@@ -1644,12 +1638,12 @@ namespace AstroOfficeWeb.Client.Pages
         {
             var request = new GetVarshaphalKundliMappingRequest()
             {
-                age = age,
-                kp_chart = kp_chart,
-                persKV = persKV
+                Age = age,
+                KP_Chart = kp_chart,
+                PersKV = persKV
             };
 
-            var reponse = await Swagger!.PostAsync<GetVarshaphalKundliMappingRequest, List<KPPlanetMappingVO>>(ApiConst.POST_KundliBLL_NEWGetVarshaphalKundliMapping, request);
+            var reponse = await Swagger!.PostAsync<GetVarshaphalKundliMappingRequest, List<KPPlanetMappingVO>>(KundliBLLApiConst.POST_NEWGetVarshaphalKundliMapping, request);
 
             if (reponse != null)
             {
@@ -1664,19 +1658,6 @@ namespace AstroOfficeWeb.Client.Pages
             this.show_vfal = false;
             long lagna = this.persKV.Lagna;
             await Gen_Image(lagna.ToString(), this.kp_chart, this.Online_Result, true, 1, this.persKV.Language);
-        }
-
-        #endregion
-
-
-
-        private async Task<bool> isBestKundali(string best_Online_Result, short rating, short engine)
-        {
-            var request = new DTOs.BestKundaliRequest() { best_Online_Result = best_Online_Result, rating = rating, engine = engine };
-
-            var response = await Swagger!.PostAsync<DTOs.BestKundaliRequest, ApiResponse<bool>>(ApiConst.POST_BestBLL_IsBestKundali, request);
-
-            return response?.Data ?? false;
         }
 
         private async Task BtnShow_TabKundaliDates_Click(MouseEventArgs e)
@@ -1731,11 +1712,11 @@ namespace AstroOfficeWeb.Client.Pages
                 {
                     num2 = 3;
                 }
-                if (BestKundaliDates.KundaliDatesRadio == Helper.KundaliDatesRadio.RedBook)
+                if (BestKundaliDates.KundaliDatesRadio == KundaliDatesRadio.RedBook)
                 {
                     num3 = 1;
                 }
-                if (BestKundaliDates.KundaliDatesRadio == Helper.KundaliDatesRadio.Kp)
+                if (BestKundaliDates.KundaliDatesRadio == KundaliDatesRadio.Kp)
                 {
                     num3 = 2;
                 }
@@ -1814,7 +1795,7 @@ namespace AstroOfficeWeb.Client.Pages
                     {
                         if (str5 != str6)
                         {
-                            if (await isBestKundali(str4, num2, num3))
+                            if (await IsBestKundali(str4, num2, num3))
                             {
                                 //TextBox textBox = this.txtbestdate;
                                 //textBox.Text = string.Concat(textBox.Text, timeOfDay, "\r\n\r\n");
@@ -1827,7 +1808,7 @@ namespace AstroOfficeWeb.Client.Pages
                     }
                     if (num3 == 2)
                     {
-                        if (await isBestKundali(str4, num2, num3))
+                        if (await IsBestKundali(str4, num2, num3))
                         {
                             //TextBox textBox1 = this.txtbestdate;
                             //textBox1.Text = string.Concat(textBox1.Text, timeOfDay.ToString(), "\r\n\r\n");
@@ -1868,20 +1849,6 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        #endregion
     }
 }

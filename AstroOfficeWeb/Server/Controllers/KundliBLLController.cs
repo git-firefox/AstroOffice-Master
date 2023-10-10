@@ -33,8 +33,10 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpPost]
         public IActionResult GenImage([FromBody] GenImageRequest request)
         {
-            var lkmv = request.Lkmv;
-            var bitmap = _kpbl.Gen_Image(request.Lagna, lkmv, request.Online_Result, request.Bhav_Chalit, request.Kund_Size, request.Lang);
+            if (request.Lkmv == null)
+                return BadRequest();
+
+            var bitmap = _kpbl.Gen_Image(request.Lagna, request.Lkmv, request.Online_Result, request.Bhav_Chalit, request.Kund_Size, request.Lang);
             return Ok(new ApiResponse<string> { Success = true, Data = bitmap.ToBase64String() });
         }
 
@@ -42,7 +44,10 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpPost]
         public IActionResult NEWGetVarshaphalKundliMapping([FromBody] GetVarshaphalKundliMappingRequest request)
         {
-            var getVarsh = _kpbl.NEW_GetVarshaphalKundliMapping(request.age, request.persKV, request.kp_chart);
+            if (request.PersKV == null || request.KP_Chart == null)
+                return BadRequest();
+
+            var getVarsh = _kpbl.NEW_GetVarshaphalKundliMapping(request.Age, request.PersKV, request.KP_Chart);
 
 
 
