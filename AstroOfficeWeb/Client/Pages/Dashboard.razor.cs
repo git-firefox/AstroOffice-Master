@@ -11,6 +11,7 @@ using AstroShared.Methods;
 using AstroOfficeWeb.Client.Services;
 using AstroOfficeWeb.Client.Shared;
 using Microsoft.Extensions.Logging;
+using System.Reflection;
 
 namespace AstroOfficeWeb.Client.Pages
 {
@@ -62,8 +63,8 @@ namespace AstroOfficeWeb.Client.Pages
         private List<KPHouseMappingVO> cusp_house = new List<KPHouseMappingVO>();
         private List<KPPlanetMappingVO> kp_chart = new List<KPPlanetMappingVO>();
         private List<KPPlanetsVO> planet_list = new List<KPPlanetsVO>();
-        private List<KPHouseMappingVO> last_cusp_house = new List<KPHouseMappingVO>();
-        private List<KPPlanetMappingVO> last_kp_chart = new List<KPPlanetMappingVO>();
+        private List<KPHouseMappingVO>? last_cusp_house = new List<KPHouseMappingVO>();
+        private List<KPPlanetMappingVO>? last_kp_chart = new List<KPPlanetMappingVO>();
         private List<KPRashiVO> rashi_list = new List<KPRashiVO>();
         private List<KPNAKVO> nak_list = new List<KPNAKVO>();
         private List<KPDashaVO> main_mahadasha = new List<KPDashaVO>();
@@ -1428,9 +1429,11 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-        private void OnClick_BtnRefresh(MouseEventArgs e)
+        private async Task OnClick_BtnRefresh(MouseEventArgs e)
         {
-
+            this.last_cusp_house = null;
+            this.last_kp_chart = null;
+            await this.OnClick_BtnChart(new MouseEventArgs());
         }
 
         private async Task OnFocus_TxtBirthplace(FocusEventArgs e)
@@ -2160,6 +2163,7 @@ namespace AstroOfficeWeb.Client.Pages
                 //this.TxtBirthplace.Focus();
             }
         }
+
 
 
     }
