@@ -9,6 +9,8 @@
         public static string POST_ProcessPlanetLagan = Base + "ProcessPlanetLagan";
         public static string POST_ProcessKPChartGoodBad = Base + "ProcessKPChartGoodBad";
         public static string POST_GetNewProducts = Base + "GetNewProducts";
+        public static string GET_GetKPLang = Base + "GetKPLang?mixsno={0}&language={1}&dashafal={2}&upay={3}&mini={4}";
+        public static string POST_TenthKamkajPred = Base + "TenthKamkajPred";
     }
 
     public static class CountryApiConst
@@ -57,6 +59,10 @@
     {
         public static string Base = "api/KPDAO/";
         public static string GET_GetUpayLogic = Base + "GetUpayLogic";
+        public static string POST_GetMixDasha = Base + "GetMixDasha";
+        public static string GET_GetKPCuspPred = Base + "GetKPCuspPred?showref={0}&house={1}";
+        
+
     }
     public static class BestBLLApiConst
     {
