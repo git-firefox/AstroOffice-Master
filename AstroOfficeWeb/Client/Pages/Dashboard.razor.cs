@@ -1060,7 +1060,7 @@ namespace AstroOfficeWeb.Client.Pages
 
         #region Handle events
 
-        private async Task OnDBLClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
+        private async Task OnDblClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
         {
             //this.TxtBrief.Text = "";
             //PredictionBLL predictionBLL = new PredictionBLL();
@@ -1921,6 +1921,82 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
+        private void OnClick_TR_ListView_Antardasha(AntardashaTableTRModel selectedTR)
+        {
+            this.antar_dasha_click = true;
+            this.sukshma_dasha_click = false;
+
+            short planet = this.planet_list.Where(Map => Map.Hindi == selectedTR.Planet).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+            DateTime startDate = (
+                from Map in this.main_mahadasha
+                where Map.Planet == planet
+                select Map).SingleOrDefault<KPDashaVO>()?.StartDate ?? default;
+
+            DateTime endDate = (
+                from Map in this.main_mahadasha
+                where Map.Planet == planet
+                select Map).SingleOrDefault<KPDashaVO>()?.EndDate ?? default;
+
+            List<KPDashaVO> kPDashaVOs = this.kpbl.Get_Antar_Dasha(startDate, endDate, planet, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
+
+            short num = (
+                from Map in this.planet_list
+                where Map.Hindi == selectedTR.Planet
+                select Map).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+            DateTime dateTime = (
+                from Map in kPDashaVOs
+                where Map.Planet == num
+                select Map).SingleOrDefault<KPDashaVO>()?.StartDate ?? default;
+
+            DateTime endDate1 = (
+                from Map in kPDashaVOs
+                where Map.Planet == num
+                select Map).SingleOrDefault<KPDashaVO>()?.EndDate ?? default;
+
+            List<KPDashaVO> prayatntarDasha = this.kpbl.Get_Prayatntar_Dasha(kPDashaVOs, dateTime, endDate1, planet, num, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
+
+            this.Gen_PryantarDasha(prayatntarDasha, this.kp_chart);
+
+            this.ListView_Sukhsmadasha?.Clear();
+
+            this.lblParyan = string.Empty;
+            this.lblSukhsmadasha = string.Empty;
+
+            string?[] text = new string?[] { selectedTR.Planet, " ", selectedTR.Period, "    कार्येश :  ", null, null, null };
+            string? str = selectedTR.Signi;
+            char[] chrArray = new char[] { '|' };
+            text[4] = str?.Split(chrArray)[0];
+            text[5] = "   नक्षत्र स्वामी : ";
+            string? text1 = selectedTR.Signi;
+            chrArray = new char[] { '|' };
+            text[6] = text1?.Split(chrArray)[1];
+            this.lblAntar = string.Concat(text);
+        }
+
+        private void Gen_PryantarDasha(List<KPDashaVO> dasha_list, List<KPPlanetMappingVO> kp_chart)
+        {
+            if (ListView_Prayantardasha == null) ListView_Prayantardasha = new();
+
+            else ListView_Prayantardasha.Clear();
+
+            foreach (KPDashaVO dashaList in dasha_list)
+            {
+                var tr = new PrayantardashaTableTRModel();
+
+                tr.Planet = this.planet_list.Where(Map => Map.Planet == dashaList.Planet).SingleOrDefault<KPPlanetsVO>()?.Hindi ?? string.Empty;
+
+                string startDate = dashaList.StartDate.ToString(format: "dd MMM yyyy");
+                string endDate = dashaList.EndDate.ToString("dd MMM yyyy");
+
+                tr.Period = string.Concat(startDate, " - ", endDate);
+                tr.Signi = string.Concat(dashaList.Signi_String, " | ", dashaList.Nak_Signi_String);
+
+                ListView_Prayantardasha.Add(tr);
+            }
+        }
+
         #endregion
 
 
@@ -2432,7 +2508,7 @@ namespace AstroOfficeWeb.Client.Pages
             return response;
         }
 
-        private async Task OnDblClick_tr_ListView_House(ChartHouseTableTRModel selectedTR)
+        private async Task OnDblClick_TR_ListView_House(ChartHouseTableTRModel selectedTR)
         {
             //       var d = Show_House_Wise_Pred(selectedTR);
 
