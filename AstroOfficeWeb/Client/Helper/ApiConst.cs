@@ -8,6 +8,7 @@
         public static string GET_GetKPHousesVOs = Base + "GetKPHousesVOs";
         public static string POST_ProcessPlanetLagan = Base + "ProcessPlanetLagan";
         public static string POST_ProcessKPChartGoodBad = Base + "ProcessKPChartGoodBad";
+        public static string POST_GetNewProducts = Base + "GetNewProducts";
     }
 
     public static class CountryApiConst

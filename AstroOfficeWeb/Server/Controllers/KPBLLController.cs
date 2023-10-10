@@ -123,5 +123,21 @@ namespace AstroOfficeWeb.Server.Controllers
 
             return Ok(new ApiResponse<string> { Data = html, Success = true });
         }
+
+
+        [HttpPost]
+
+        public IActionResult GetNewProducts(ProductSettingsVO prod)
+        {
+
+            var html = _kpbl.Get_New_Products(prod);
+            if (!string.IsNullOrEmpty(html))
+                html = html
+                    .Replace("\n", "<br />")
+                    .Replace("\r", "")
+                    .Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+            return Ok(new ApiResponse<string> { Data = html, Success = true});
+        }
+
     }
 }

@@ -10,6 +10,7 @@ using AstroShared.Models;
 using AstroShared.Methods;
 using AstroOfficeWeb.Client.Services;
 using AstroOfficeWeb.Client.Shared;
+using Microsoft.Extensions.Logging;
 
 namespace AstroOfficeWeb.Client.Pages
 {
@@ -1049,9 +1050,7 @@ namespace AstroOfficeWeb.Client.Pages
 
             var imgResponse = await Swagger!.PostAsync<GenImageRequest, ApiResponse<string>>(KundliBLLApiConst.POST_GenImage, genImageRequest);
 
-            imgSrc = imgResponse?.Data ?? "";
-
-            return imgSrc;
+            return imgResponse?.Data ?? "";
         }
 
         #endregion
@@ -1850,5 +1849,318 @@ namespace AstroOfficeWeb.Client.Pages
         }
 
         #endregion
+
+
+        private async Task<string> Get_New_Products(ProductSettingsVO prod)
+        {
+            var response = await Swagger!.PostAsync<ProductSettingsVO, ApiResponse<string>>(KPBLLApiConst.POST_GetNewProducts, prod);
+
+            return response?.Data ?? "";
+
+        }
+
+        private async Task OnClick_BtnFaladesh(MouseEventArgs e)
+        {
+            this.show_vfal = false;
+            this.isNumVarshVisible = false;
+            if ((this.full_lat.Length <= 0 ? false : this.full_lon.Length > 0))
+            {
+                //    Loader.Show();
+                string str = this.full_lon.Replace(":", ".");
+                string str1 = this.full_lat.Replace(":", ".");
+                str = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str.Substring(0, str.Length - 1))).ToString(), str.Substring(str.Length - 1, 1));
+                str1 = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str1.Substring(0, str1.Length - 1))).ToString(), str1.Substring(str1.Length - 1, 1));
+                string str2 = this.kkbl.longi2timezone(this.full_tz);
+                if (str.Length == 6)
+                {
+                    str = string.Concat("0", str);
+                }
+                if (str1.Length == 5)
+                {
+                    str1 = string.Concat("0", str1);
+                }
+                string[] text;
+                //string str3 = string.Concat(text);
+                string str3 = $"{BirthDetails.Dobdd}/{BirthDetails.Dobmm}/{BirthDetails.Dobyy},{BirthDetails.Tobhh}:{BirthDetails.Tobmm},{str},{str1},{str2},{this.ayan},{this.full_time_corr}";
+                text = new string[19];
+                DateTime date = DateTime.Now.Date;
+                int day = date.Day;
+                text[0] = day.ToString();
+                text[1] = "/";
+                date = DateTime.Now.Date;
+                day = date.Month;
+                text[2] = day.ToString();
+                text[3] = "/";
+                date = DateTime.Now.Date;
+                day = date.Year;
+                text[4] = day.ToString();
+                text[5] = ",";
+                date = DateTime.Now.Date;
+                day = date.Hour;
+                text[6] = day.ToString();
+                text[7] = ":";
+                date = DateTime.Now.Date;
+                day = date.Minute;
+                text[8] = day.ToString();
+                text[9] = ",";
+                text[10] = str;
+                text[11] = ",";
+                text[12] = str1;
+                text[13] = ",";
+                text[14] = str2;
+                text[15] = ",";
+                text[16] = this.ayan;
+                text[17] = ",";
+                text[18] = this.full_time_corr;
+                string str4 = string.Concat(text);
+                //  PredictionBLL predictionBLL = new PredictionBLL();
+                this.Online_Result = await this.Gen_Kunda(str3, 500f, BirthDetails.CmbRotate);
+                this.RP_Online_Result = await this.Gen_Kunda(str4, 500f, BirthDetails.CmbRotate);
+                //    PredictionBLL predictionBLL1 = new PredictionBLL();
+
+                var responseMrap_PersKV = await Map_PersKV(this.Online_Result, BirthDetails.TxtName, BirthDetails.BirthCity, BirthDetails.Dobdd.ToString(), BirthDetails.Dobmm.ToString(), BirthDetails.Dobyy.ToString(), BirthDetails.Tobhh.ToString(), BirthDetails.Tobmm.ToString(), "00", "admin", BirthDetails.Latitude.ToString(), BirthDetails.Longtitude.ToString(), BirthDetails.TxtTimezone, true, BirthDetails.CmbLanguage, BirthDetails.ChkShowRef, this.male, "YICC", "YICC", "YICC", "YICC", "YICC", "New Product", "01", "01", "2000", 1);
+                if (responseMrap_PersKV != null)
+                    this.persKV = responseMrap_PersKV;
+
+                this.persKV.FileCode = "500";
+                KundliBLL kundliBLL = new KundliBLL();
+                ProductSettingsVO productSettingsVO = new ProductSettingsVO()
+                {
+                    Online_Result = str3,
+                    Include = BirthDetails.ChkSahasaneLogic,
+                    Lang = BirthDetails.CmbLanguage,
+                    Male = this.male,
+                    PredFor = 0,
+                    ShowRef = BirthDetails.ChkShowRef,
+                    ShowUpay = true,
+                    ShowUpayCode = true,
+                    Sno = (long)555,
+                    Category = "",
+                    Rotate = BirthDetails.CmbRotate,
+                    Mini = false,
+                    ShowManyavar = true,
+                    NoCategory = true
+                };
+                this.kp_chart = new List<KPPlanetMappingVO>();
+                this.cusp_house = new List<KPHouseMappingVO>();
+                var responseLagan = await Process_Planet_Lagan(this.Online_Result, this.kp_chart, this.cusp_house, BirthDetails.CmbRotate, false);
+
+                if (responseLagan != null)
+                {
+                    this.kp_chart = responseLagan.KpChart;
+                    this.cusp_house = responseLagan.CuspHouse;
+                }
+
+
+
+                this.kp_chart = await Process_KPChart_GoodBad(this.kp_chart, this.persKV, productSettingsVO);
+                ProductSettingsVO lower = new ProductSettingsVO()
+                {
+                    Online_Result = str3,
+                    Include = BirthDetails.ChkSahasaneLogic,
+                    Lang = BirthDetails.CmbLanguage,
+                    Male = this.male,
+                    PredFor = 0,
+                    ShowRef = BirthDetails.ChkShowRef,
+                    ShowUpay = true,
+                    ShowUpayCode = true,
+                    Sno = (long)555,
+                    Rotate = BirthDetails.CmbRotate,
+                    Mini = false,
+                    ShowManyavar = true,
+                    Category = "all",
+                    Product_Name = "",
+                    Product = BirthDetails.CmbCategory,
+                    Karyesh = true
+                };
+
+                lower.ShowUpay = true;
+                lower.ShowUpayCode = true;
+                lower.OnlyMahadasha = false;
+                lower.Tool = false;
+                lower.ShowManyavar = false;
+                if (lower.Product.Contains("YICCCOMBO"))
+                {
+                    lower.Tool = false;
+                    lower.ShowUpay = true;
+                    lower.ShowUpayCode = true;
+                    lower.ShowManyavar = true;
+                }
+                if (lower.Product.ToLower() == "tradefair")
+                {
+                    lower.Tool = false;
+                    lower.ShowUpay = true;
+                    lower.ShowUpayCode = true;
+                    lower.ShowManyavar = false;
+                    lower.CurrentMahadasha = true;
+                    lower.NoCategory = true;
+                    lower.FreeUpay = true;
+                    lower.Tool507 = true;
+                    lower.Product = "YICCCOMBO1";
+                }
+                if (lower.Product.ToLower() == "tradefair_upay")
+                {
+                    lower.Tool = false;
+                    lower.ShowUpay = true;
+                    lower.ShowUpayCode = true;
+                    lower.ShowManyavar = false;
+                    lower.CurrentMahadasha = true;
+                    lower.NoCategory = true;
+                    lower.FreeUpay = true;
+                    lower.OnlyUpay = true;
+                    lower.Product = "YICCCOMBO1";
+                }
+                if (lower.Product.Contains("kpcusp"))
+                {
+                    lower.Tool = false;
+                    lower.ShowUpay = false;
+                    lower.ShowUpayCode = false;
+                    lower.ShowManyavar = false;
+                }
+                if ((lower.Product.ToLower() == "ratna" ? true : lower.Product.ToLower() == "ratnaonly"))
+                {
+                    lower.Tool = false;
+                    lower.ShowUpay = true;
+                    lower.ShowUpayCode = true;
+                    lower.ShowManyavar = false;
+                    lower.CurrentMahadasha = true;
+                    lower.NoCategory = true;
+                    lower.FreeUpay = true;
+                    lower.Product = lower.Product.ToLower();
+                }
+                if (lower.Product.ToLower() == "onlyyogyuti")
+                {
+                    lower.Tool = false;
+                    lower.ShowUpay = true;
+                    lower.ShowUpayCode = true;
+                    lower.ShowManyavar = false;
+                    lower.CurrentMahadasha = false;
+                    lower.NoCategory = false;
+                    lower.FreeUpay = false;
+                    lower.Product_Name = "onlyyogyuti";
+                    lower.Product = "YICCCOMBO2";
+                }
+                if (lower.Product.ToLower() == "scorety")
+                {
+                    lower.Tool = false;
+                    lower.ShowUpay = false;
+                    lower.ShowUpayCode = false;
+                    lower.ShowManyavar = false;
+                    lower.CurrentMahadasha = false;
+                    lower.NoCategory = false;
+                    lower.FreeUpay = false;
+                    lower.Product_Name = "scorety";
+                    lower.Product = "scorety";
+                }
+                if (lower.Product.ToLower() == "kamkaj")
+                {
+                    lower.Tool = false;
+                    lower.ShowUpay = false;
+                    lower.ShowUpayCode = false;
+                    lower.ShowManyavar = false;
+                    lower.CurrentMahadasha = false;
+                    lower.NoCategory = false;
+                    lower.FreeUpay = false;
+                    lower.Product_Name = "work_pred";
+                    lower.Product = "work_pred";
+                }
+                if (lower.Product.ToLower() == "toolonlyyogyuti")
+                {
+                    lower.Tool = false;
+                    lower.ShowUpay = false;
+                    lower.ShowUpayCode = false;
+                    lower.ShowManyavar = false;
+                    lower.CurrentMahadasha = false;
+                    lower.NoCategory = false;
+                    lower.FreeUpay = false;
+                    lower.Tool507 = true;
+                    lower.Product_Name = "toolonlyyogyuti";
+                    lower.Product = "YICCCOMBO2";
+                }
+                if (lower.Product.ToLower() == "manglik")
+                {
+                    lower.Tool = false;
+                    lower.ShowUpay = false;
+                    lower.ShowUpayCode = false;
+                    lower.ShowManyavar = false;
+                    lower.CurrentMahadasha = false;
+                    lower.NoCategory = false;
+                    lower.FreeUpay = false;
+                    lower.Tool507 = true;
+                    lower.Product_Name = "manglik";
+                    lower.Product = "manglik";
+                }
+                if (lower.Product.ToLower() == "redsigni")
+                {
+                    lower.Tool = false;
+                    lower.ShowUpay = false;
+                    lower.ShowUpayCode = false;
+                    lower.ShowManyavar = false;
+                    lower.CurrentMahadasha = false;
+                    lower.NoCategory = false;
+                    lower.FreeUpay = false;
+                    lower.Category = "";
+                    lower.Product_Name = "";
+                    lower.Product = "RedSigni";
+                }
+                if (lower.Product.ToLower() == "tool")
+                {
+                    lower.Category = "all";
+                    lower.ShowRef = false;
+                    lower.ShowUpay = false;
+                    lower.ShowUpayCode = false;
+                    lower.ShowManyavar = false;
+                    lower.CurrentMahadasha = true;
+                    lower.NoCategory = true;
+                    lower.FreeUpay = false;
+                    lower.Mobile = false;
+                    lower.Tool = false;
+                    lower.Tool507 = true;
+                    lower.Product_Name = "YICCCOMBO1";
+                    lower.Product = "married_life";
+                }
+                if ((lower.Product.ToLower() == "tool_disease" || lower.Product.ToLower() == "tool_married_life" || lower.Product.ToLower() == "tool_occupation" || lower.Product.ToLower() == "tool_parents" ? true : lower.Product.ToLower() == "tool_santan"))
+                {
+                    lower.Category = "all";
+                    lower.ShowRef = false;
+                    lower.ShowUpay = false;
+                    lower.ShowUpayCode = false;
+                    lower.ShowManyavar = false;
+                    lower.CurrentMahadasha = true;
+                    lower.NoCategory = true;
+                    lower.FreeUpay = false;
+                    lower.Mobile = false;
+                    lower.Tool = false;
+                    lower.Tool507 = true;
+                    lower.Product_Name = "YICCCOMBO1";
+                    lower.Product = lower.Product.Substring(5);
+                }
+                if (lower.Product.ToLower() == "firstpage")
+                {
+                    lower.Tool = false;
+                    lower.ShowUpay = false;
+                    lower.ShowUpayCode = false;
+                    lower.ShowManyavar = false;
+                    lower.CurrentMahadasha = false;
+                    lower.NoCategory = false;
+                    lower.FreeUpay = false;
+                    lower.Tool507 = true;
+                    lower.Product_Name = "firstpage";
+                    lower.Product = "firstpage";
+                }
+                var htmlString = await Get_New_Products(lower);
+                if (htmlString != null)
+                    await Show_Falla(htmlString);
+                //Loader.Close();
+            }
+            else
+            {
+                //MessageBox.Show("Please choose City from list.");
+                //this.TxtBirthplace.SelectAll();
+                //this.TxtBirthplace.Focus();
+            }
+        }
+
+
     }
 }
