@@ -19,5 +19,14 @@ namespace AstroOfficeWeb.Client.Helper
         {
             return jsRuntime.InvokeVoidAsync("fnShowModal", element);
         }
+        public static ValueTask LoadDateTimePickerAsync(this IJSRuntime jsRuntime, ElementReference? element, string format = "MM/DD/YYYY HH:mm:ss")
+        {
+            return jsRuntime.InvokeVoidAsync("fnLoadDateTimePicker", element, format);
+        }
+        
+        public static ValueTask<string> GetDateFromDateTimePickerAsync(this IJSRuntime jsRuntime, ElementReference? element)
+        {
+            return jsRuntime.InvokeAsync<string>("fnGetDateFromDateTimePicker", element);
+        }
     }
 }

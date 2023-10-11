@@ -93,3 +93,30 @@
     background-color: #e74c3c; /* Red color similar to Bootstrap's 'danger' color */
     color: white; /* Text color for the loader */
 }
+
+.background-divya-astro-color-dark-red {
+    background-color: rgb(145, 13, 13) !important;
+}
+
+.background-divya-astro-color-yellow {
+    background-color: rgb(233, 175, 0) !important;
+}
+
+.background-divya-astro-color-dark-blue {
+    background-color: rgb(16, 50, 75) !important;
+}
+
+.background-divya-astro-color-light-gray {
+    background-color: rgb(235, 235, 235) !important;
+}
+
+.background-divya-astro-color-brown {
+    background-color: rgb(117, 42, 41) !important;
+}
+
+.background-divya-astro-color-orange {
+    background-color: rgb(255, 112, 16) !important;
+}
+.background-divya-astro-color-extra-dark-blue {
+    background-color: rgb(3, 26, 42) !important;
+}

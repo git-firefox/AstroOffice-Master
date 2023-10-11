@@ -6,7 +6,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">@Title</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="() => OnConfirmationChange(false)">
+                <button type="button" class="close" title="close Prediction" data-dismiss="modal" aria-label="Close" @onclick="() => OnConfirmationChange(false)">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -15,10 +15,10 @@
                     <div class="col-md-6">
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Bhave Chalit</h3>
+                                <h3 class="card-title ">Bhave Chalit</h3>
                             </div>
                             <div class="card-body">
-                                <img class="img-fluid" src="@ImgSrcBhavChalit" />
+                                <img class="img-fluid" title="भाव चालित" src="@ImgSrcBhavChalit" />
                             </div>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                                 <h3 class="card-title">Lagan</h3>
                             </div>
                             <div class="card-body">
-                                <img class="img-fluid" src="@ImgSrcLagan" />
+                                <img class="img-fluid" title="लगन " src="@ImgSrcLagan" />
                             </div>
                         </div>
                     </div>
@@ -48,8 +48,8 @@
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">Close</button>
-                <button type="button" class="btn btn-primary" @onclick="() => OnConfirmationChange(true)">Print</button>
+                <button type="button" class="btn btn-default"  data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">Close</button>
+                <button type="button" class="btn btn-primary" title="Print Prediction" @onclick="() => OnConfirmationChange(true)">Print</button>
             </div>
         </div>
     </div>

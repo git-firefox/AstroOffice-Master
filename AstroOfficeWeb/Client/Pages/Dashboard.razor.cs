@@ -13,6 +13,7 @@ using AstroOfficeWeb.Client.Shared;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
 using System.Collections.Generic;
+using Microsoft.JSInterop;
 
 namespace AstroOfficeWeb.Client.Pages
 {
@@ -88,6 +89,9 @@ namespace AstroOfficeWeb.Client.Pages
 
         private InputText? inputTextName;
         private InputText? inputTextBirthPlace;
+        private ElementReference divDateOfBirth;
+        private ElementReference inputDateOfBirth;
+
         private FaladeshModal FaladeshModal = new();
 
         private string? imgSrc;
@@ -245,6 +249,8 @@ namespace AstroOfficeWeb.Client.Pages
             if (firstRender)
             {
                 await JSRuntime.FocusAsync(inputTextName?.Element);
+                await JSRuntime.LoadDateTimePickerAsync(divDateOfBirth);
+
             }
         }
 
@@ -475,13 +481,6 @@ namespace AstroOfficeWeb.Client.Pages
 
         #region Methods
 
-        private async Task Sel_Text(InputText s)
-        {
-            ListView_Planet?.Clear();
-            ListView_Ruling_Planet?.Clear();
-            ListView_House?.Clear();
-            await this.Gen_Kundali_Chart();
-        }
 
         private void Gen_KP_Chart(List<KPPlanetMappingVO> kp_chart)
         {
@@ -496,6 +495,7 @@ namespace AstroOfficeWeb.Client.Pages
 
             foreach (KPPlanetMappingVO list in kp_chart.Where(map => map.Planet <= 9).ToList<KPPlanetMappingVO>())
             {
+                var tr = new ChartPlanetTableTRModel();
                 //   ListViewItem listViewItem = new ListViewItem();
                 string planets = "";// 1st col
                 if (list.IsPakka)
@@ -513,14 +513,14 @@ namespace AstroOfficeWeb.Client.Pages
 
                 planets = string.Concat(this.planet_list[list.Planet - 1].Hindi, " ", planets);
 
-                //if (!list.IsBad)
-                //{
-                //    listViewItem.ForeColor = Color.Green;
-                //}
-                //else
-                //{
-                //    listViewItem.ForeColor = Color.Red;
-                //}
+                if (!list.isbad)
+                {
+                    tr.ForeColor = "text-success";
+                }
+                else
+                {
+                    tr.ForeColor = "text-danger";
+                }
 
                 //send column
                 string[] hindi = new string[] { this.planet_list[list.Rashi_Lord - 1].Hindi, "--", this.planet_list[list.Nak_Lord - 1].Hindi, "--", this.planet_list[list.Sub_Lord - 1].Hindi, "--", this.planet_list[list.Sub_Sub_Lord].Hindi };
@@ -555,7 +555,7 @@ namespace AstroOfficeWeb.Client.Pages
                         significators = string.Concat(significators, kPSigniVO.Signi, " ");
                     }
                 }
-                var tr = new ChartPlanetTableTRModel();
+
                 tr.Significators = significators.Trim();
                 tr.Planet = planets;
                 tr.RL_NL_SL_SSL = string.Concat(hindi);
@@ -2854,5 +2854,21 @@ namespace AstroOfficeWeb.Client.Pages
         }
 
         #endregion
+
+        private async Task OnFocusOut_DateOfBirthSelect(FocusEventArgs e)
+        {
+            var selectedDate = await JSRuntime.GetDateFromDateTimePickerAsync(divDateOfBirth);
+            //BirthDetails.Dobdd = selectedDate.Day;
+            //BirthDetails.Dobmm = selectedDate.Month;
+            //BirthDetails.Dobyy = selectedDate.Year;
+            //BirthDetails.Tobhh = selectedDate.Hour;
+            //BirthDetails.Tobmm = selectedDate.Minute;
+            //BirthDetails.Tobss = selectedDate.Second;
+            //ListView_Planet?.Clear();
+            //ListView_Ruling_Planet?.Clear();
+            //ListView_House?.Clear();
+            //await this.Gen_Kundali_Chart();
+        }
+
     }
 }

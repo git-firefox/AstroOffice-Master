@@ -6,7 +6,7 @@
 @inject HttpClient HttpClient
 @inject IJSRuntime JSRuntime
 
-<FaladeshModal @ref="FaladeshModal" Falla="@htmlStringFalla" ImgSrcLagan="@imgSrcLagan" ImgSrcBhavChalit="@imgSrcBhavChalit" />
+<FaladeshModal @ref="FaladeshModal" Falla="@htmlStringFalla" ImgSrcLagan="@imgSrcLagan" ImgSrcBhavChalit="@imgSrcBhavChalit"  />
 
 @* @User?.Identity?.Name *@
 <div class="container-fluid p-3">
@@ -17,7 +17,7 @@
             @* Birth Details *@
             <div class="col-md-4">
                 <div class="card card-primary">
-                    <div class="card-header">
+                    <div class="card-header background-divya-astro-color-dark-red">
                         <h3 class="card-title">Birth Details</h3>
                     </div>
                     <EditForm Model="BirthDetails">
@@ -227,6 +227,19 @@
                                 </div>
 
                                 <div class="col">
+
+                                    @* date and time  *@
+                                    <div class="col">
+
+                                        <div @ref="divDateOfBirth" class="input-group date" id="divDateOfBirth" data-target-input="nearest">
+                                            <div class="input-group-append" data-target="#divDateOfBirth" data-toggle="datetimepicker">
+                                                <input type="text" value="@BirthDetails.DateOfBirth" class="form-control datetimepicker-input" data-target="#divDateOfBirth"  @onfocusout="OnFocusOut_DateOfBirthSelect" />
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
                                     <fieldset class="border p-2">
                                         <legend class="w-auto small">Options</legend>
                                         <div class="row">
@@ -260,7 +273,7 @@
 
 
                                         <div class="row">
-                                            <div class="col">
+                                            <div class="col-6">
 
                                                 <div class="row align-items-end mt-2">
                                                     <div class="col">
@@ -297,9 +310,9 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col">
-                                                <InputTextArea class="form-control mt-2" rows="4" Placeholder="Enter ..." @bind-Value="BirthDetails!.Brief" />
-                                            </div>
+                                            @*  <div class="col">
+                                            <InputTextArea class="form-control mt-2" rows="4" Placeholder="Enter ..." @bind-Value="BirthDetails!.Brief" />
+                                            </div> *@
                                         </div>
 
                                         <div class="col">
@@ -328,7 +341,7 @@
                                     <div class="row align-items-end mt-2">
 
                                         <div class="col">
-                                            <button class="btn btn-block btn-secondary btn-sm"> ⨉ </button>
+                                            @*  <button class="btn btn-block btn-secondary btn-sm"> ⨉ </button> *@
                                         </div>
 
                                         <div class="col">
@@ -350,7 +363,7 @@
             @* Kundali Table *@
             <div class="col-md-4">
                 <div class="card card-success">
-                    <div class="card-header">
+                    <div class="card-header background-divya-astro-color-yellow">
                         <h3 class="card-title">Kundali Table</h3>
                     </div>
                     <div class="col-md-12">
@@ -381,7 +394,7 @@
             @* Kundali *@
             <div class="col-md-4">
                 <div class="card card-primary">
-                    <div class="card-header">
+                    <div class="card-header background-divya-astro-color-dark-red">
                         <h3 class="card-title">Kundali</h3>
                     </div>
 
@@ -455,7 +468,7 @@
                                     <div class="col-sm-7">
                                         <table class="table table-sm table-bordered table-hover">
 
-                                            <thead class="p-0">
+                                            <thead class="p-0 background-divya-astro-color-yellow">
                                                 <tr>
                                                     <th>House</th>
                                                     <th>RL-NL-SL-SSL</th>
@@ -480,8 +493,9 @@
                                     </div>
 
                                     <div class="col-sm-5">
+
                                         <table class="table table-sm  table-bordered table-hover">
-                                            <thead class="p-0">
+                                            <thead class="p-0 background-divya-astro-color-yellow">
                                                 <tr>
                                                     <th>Planet</th>
                                                     <th>RL-NL-SL-SSL</th>
@@ -492,7 +506,8 @@
                                             <tbody>
                                                 @foreach (var row in ListView_Planet ?? new List<ChartPlanetTableTRModel>())
                                                 {
-                                                    <tr title="@row.ToolTipText">
+
+                                                    <tr title="@row.ToolTipText" class="@row.ForeColor">
                                                         <td>@row.Planet</td>
                                                         <td>@row.RL_NL_SL_SSL</td>
                                                         <td>@row.Significators</td>
