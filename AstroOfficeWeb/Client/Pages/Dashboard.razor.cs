@@ -151,6 +151,7 @@ namespace AstroOfficeWeb.Client.Pages
         private string lblAntar = string.Empty;
         private string lblParyan = string.Empty;
         private string lblSukhsmadasha = string.Empty;
+
         #endregion
 
         #endregion
@@ -247,7 +248,103 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-        #region Methods
+        #region  Api Methods
+
+        private async Task<string> Gen_Kunda(string? detail, float lagan, short rotate)
+        {
+            var kundaRequest = new GenKundaRequest()
+            {
+                Detail = detail,
+                Lagan = lagan,
+                Rotate = rotate,
+            };
+
+            var kundaResponse = await Swagger!.PostAsync<GenKundaRequest, ApiResponse<string>>(KundliBLLApiConst.POST_GenKunda, kundaRequest);
+            if (kundaResponse == null)
+            {
+                return string.Empty;
+            }
+            return kundaResponse.Data ?? string.Empty;
+        }
+
+        private async Task<string> Get_Fal_Double_Mahadasha(short planet, KundliVO persKV, string online_Result, ProductSettingsVO prod)
+        {
+            var request = new GetFalDoubleMahadashaRequest()
+            {
+                PlanetNo = planet,
+                PersonalKundli = persKV,
+                OnlineResult = online_Result,
+                TemporaryProduct = prod
+            };
+
+            var response = await Swagger!.PostAsync<GetFalDoubleMahadashaRequest, ApiResponse<string>>(KPBLLApiConst.POST_GetFalDoubleMahadasha, request);
+
+            return response?.Data ?? string.Empty;
+        }
+
+        private async Task<string> Get_New_Products(ProductSettingsVO prod)
+        {
+            var response = await Swagger!.PostAsync<ProductSettingsVO, ApiResponse<string>>(KPBLLApiConst.POST_GetNewProducts, prod);
+
+            return response?.Data ?? "";
+
+        }
+
+        private async Task<string> Get_KP_Lang(short sno, string language, bool v1, bool v2, bool mini)
+        {
+            var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(KPBLLApiConst.GET_GetKPLang, sno, language, v1, v2, mini));
+            if (response != null)
+                return response.Data ?? string.Empty;
+            return string.Empty;
+        }
+
+        private async Task<string> Tenth_Kamkaj_Pred(List<KPHouseMappingVO> cusp_house, List<KPPlanetMappingVO> kp_chart, KundliVO persKV)
+        {
+            var request = new TenthKamkajPredRequestModel() { CuspHouse = cusp_house, KPChart = kp_chart, PersonalKundli = persKV };
+            var response = await Swagger!.PostAsync<TenthKamkajPredRequestModel, ApiResponse<string>>(KPBLLApiConst.POST_TenthKamkajPred, request);
+            return response?.Data ?? "";
+        }
+
+        private async Task<List<KPMixDashaVO>> Get_Mix_Dasha(short nakLord, short signi, short v1, string product, string v2)
+        {
+            var request = new GetMixDashaRequest()
+            {
+                Planet = nakLord,
+                House = signi,
+                FieldNumber = v1,
+                Category = product,
+                PType = v2
+
+            };
+
+            var response = await Swagger!.PostAsync<GetMixDashaRequest, List<KPMixDashaVO>>(KPDAOApiConst.POST_GetMixDasha, request);
+            if (response == null)
+                return new();
+            return response;
+        }
+
+        private async Task<List<KP_Sublord_Pred>> Get_KP_Cusp_Pred(bool showRef, short num)
+        {
+            var response = await Swagger!.GetAsync<List<KP_Sublord_Pred>>(string.Format(KPDAOApiConst.GET_GetKPCuspPred, showRef, num));
+            if (response == null)
+                return new();
+            return response;
+        }
+
+        private async Task<List<KPDashaVO>?> Get_List_35_Sala(string online_Result, KundliVO persKV, DateTime startDate, DateTime endDate)
+        {
+            var request = new GetList35SalaRequest()
+            {
+                Online_Result = online_Result,
+                PersKV = persKV,
+                Dasha_Starts = startDate,
+                Dasha_Ends = endDate
+            };
+
+            var response = await Swagger!.PostAsync<GetList35SalaRequest, List<KPDashaVO>>(PredictionBLLApiConst.POST_GetList35Sala, request);
+
+            return response;
+        }
 
         private async Task<bool> IsBestKundali(string best_Online_Result, short rating, short engine)
         {
@@ -256,14 +353,6 @@ namespace AstroOfficeWeb.Client.Pages
             var response = await Swagger!.PostAsync<BestKundaliRequest, ApiResponse<bool>>(BestBLLApiConst.POST_IsBestKundali, request);
 
             return response?.Data ?? false;
-        }
-
-        private async Task Sel_Text(InputText s)
-        {
-            ListView_Planet?.Clear();
-            ListView_Ruling_Planet?.Clear();
-            ListView_House?.Clear();
-            await this.Gen_Kundali_Chart();
         }
 
         private async Task<ProcessPlanetLaganResponse?> Process_Planet_Lagan(string Online_Result, List<KPPlanetMappingVO> kp_chart, List<KPHouseMappingVO> cusp_house, short rotate, bool bhav_chalit)
@@ -337,6 +426,61 @@ namespace AstroOfficeWeb.Client.Pages
                 return kpPlanetMappingVOs;
             }
             return new List<KPPlanetMappingVO>();
+        }
+
+        private async Task<string> GetCodeLang(string rulecode, string lang, bool paid, bool unicode)
+        {
+            var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(PredictionBLLApiConst.GET_GetCodeLang, rulecode, lang, paid, unicode));
+            if (response != null)
+                return response.Data ?? string.Empty;
+            return string.Empty;
+        }
+
+        private async Task<string> Get_Gen_Image(string lagna, List<KPPlanetMappingVO> lkmv, string Online_Result, bool bhav_chalit, short Kund_Size, string lang)
+        {
+            var genImageRequest = new GenImageRequest()
+            {
+                Lagna = lagna,
+                Lkmv = lkmv,
+                Online_Result = Online_Result,
+                Bhav_Chalit = bhav_chalit,
+                Kund_Size = Kund_Size,
+                Lang = lang
+            };
+
+            var imgResponse = await Swagger!.PostAsync<GenImageRequest, ApiResponse<string>>(KundliBLLApiConst.POST_GenImage, genImageRequest);
+
+            return imgResponse?.Data ?? "";
+        }
+
+        private async Task<List<KPPlanetMappingVO>> NEW_GetVarshaphalKundliMapping(int age, KundliVO persKV, List<KPPlanetMappingVO> kp_chart)
+        {
+            var request = new GetVarshaphalKundliMappingRequest()
+            {
+                Age = age,
+                KP_Chart = kp_chart,
+                PersKV = persKV
+            };
+
+            var reponse = await Swagger!.PostAsync<GetVarshaphalKundliMappingRequest, List<KPPlanetMappingVO>>(KundliBLLApiConst.POST_NEWGetVarshaphalKundliMapping, request);
+
+            if (reponse != null)
+            {
+                return reponse;
+            }
+            return new List<KPPlanetMappingVO>();
+        }
+
+        #endregion
+
+        #region Methods
+
+        private async Task Sel_Text(InputText s)
+        {
+            ListView_Planet?.Clear();
+            ListView_Ruling_Planet?.Clear();
+            ListView_House?.Clear();
+            await this.Gen_Kundali_Chart();
         }
 
         private void Gen_KP_Chart(List<KPPlanetMappingVO> kp_chart)
@@ -928,31 +1072,6 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-        private async Task<string> GetCodeLang(string rulecode, string lang, bool paid, bool unicode)
-        {
-            var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(PredictionBLLApiConst.GET_GetCodeLang, rulecode, lang, paid, unicode));
-            if (response != null)
-                return response.Data ?? string.Empty;
-            return string.Empty;
-        }
-
-        private async Task<string> Gen_Kunda(string? detail, float lagan, short rotate)
-        {
-            var kundaRequest = new GenKundaRequest()
-            {
-                Detail = detail,
-                Lagan = lagan,
-                Rotate = rotate,
-            };
-
-            var kundaResponse = await Swagger!.PostAsync<GenKundaRequest, ApiResponse<string>>(KundliBLLApiConst.POST_GenKunda, kundaRequest);
-            if (kundaResponse == null)
-            {
-                return string.Empty;
-            }
-            return kundaResponse.Data ?? string.Empty;
-        }
-
         private async Task LoadCountry()
         {
             if (BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
@@ -974,19 +1093,9 @@ namespace AstroOfficeWeb.Client.Pages
             await FaladeshModal.ShowAsync();
         }
 
-        private async Task<string> Get_Fal_Double_Mahadasha(short planet, KundliVO persKV, string online_Result, ProductSettingsVO prod)
+        private async Task Gen_Image(string lagna, List<KPPlanetMappingVO> lkmv, string Online_Result, bool bhav_chalit, short Kund_Size, string lang)
         {
-            var request = new GetFalDoubleMahadashaRequest()
-            {
-                PlanetNo = planet,
-                PersonalKundli = persKV,
-                OnlineResult = online_Result,
-                TemporaryProduct = prod
-            };
-
-            var response = await Swagger!.PostAsync<GetFalDoubleMahadashaRequest, ApiResponse<string>>(KPBLLApiConst.POST_GetFalDoubleMahadasha, request);
-
-            return response?.Data ?? string.Empty;
+            imgSrc = await Get_Gen_Image(lagna, lkmv, Online_Result, bhav_chalit, Kund_Size, lang);
         }
 
         private void Gen_AntarDasha(List<KPDashaVO> dasha_list, List<KPPlanetMappingVO> kp_chart)
@@ -1018,42 +1127,214 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-        private async Task Gen_Image(string lagna, List<KPPlanetMappingVO> lkmv, string Online_Result, bool bhav_chalit, short Kund_Size, string lang)
+        private void Gen_Mahadasha(List<KPDashaVO> dasha_list, List<KPPlanetMappingVO> kp_chart)
         {
-            #region Gen Image Request
-
-            var genImageRequest = new GenImageRequest()
+            if (ListView_Mahadasha == null)
             {
-                Lagna = lagna,
-                Lkmv = lkmv,
-                Online_Result = Online_Result,
-                Bhav_Chalit = bhav_chalit,
-                Kund_Size = Kund_Size,
-                Lang = lang
-            };
+                ListView_Mahadasha = new();
+            }
+            else
+            {
+                ListView_Mahadasha.Clear();
+            }
+            this.ListView_Mahadasha.Clear();
+            this.ListView_Antardasha?.Clear();
+            this.ListView_Prayantardasha?.Clear();
+            this.ListView_Sukhsmadasha?.Clear();
 
-            var imgResponse = await Swagger!.PostAsync<GenImageRequest, ApiResponse<string>>(KundliBLLApiConst.POST_GenImage, genImageRequest);
+            foreach (KPDashaVO dashaList in dasha_list)
+            {
+                var tr = new MahadashaTableTRModel();
 
-            imgSrc = imgResponse?.Data ?? "";
+                tr.Planet = this.planet_list.Where(Map => Map.Planet == dashaList.Planet).SingleOrDefault<KPPlanetsVO>()?.Hindi ?? string.Empty;
 
-            #endregion
+                string startDate = dashaList.StartDate.ToString(format: "dd MMM yyyy");
+                string endDate = dashaList.EndDate.ToString(format: "dd MMM yyyy");
+
+                tr.Period = string.Concat(startDate, " - ", endDate);
+                tr.Signi = string.Concat(dashaList.Signi_String, " | ", dashaList.Nak_Signi_String);
+
+                ListView_Mahadasha.Add(tr);
+            }
         }
 
-        private async Task<string> Get_Gen_Image(string lagna, List<KPPlanetMappingVO> lkmv, string Online_Result, bool bhav_chalit, short Kund_Size, string lang)
+        private void Gen_PryantarDasha(List<KPDashaVO> dasha_list, List<KPPlanetMappingVO> kp_chart)
         {
-            var genImageRequest = new GenImageRequest()
+            if (ListView_Prayantardasha == null) ListView_Prayantardasha = new();
+
+            else ListView_Prayantardasha.Clear();
+
+            foreach (KPDashaVO dashaList in dasha_list)
             {
-                Lagna = lagna,
-                Lkmv = lkmv,
-                Online_Result = Online_Result,
-                Bhav_Chalit = bhav_chalit,
-                Kund_Size = Kund_Size,
-                Lang = lang
+                var tr = new PrayantardashaTableTRModel();
+
+                tr.Planet = this.planet_list.Where(Map => Map.Planet == dashaList.Planet).SingleOrDefault<KPPlanetsVO>()?.Hindi ?? string.Empty;
+
+                string startDate = dashaList.StartDate.ToString(format: "dd MMM yyyy");
+                string endDate = dashaList.EndDate.ToString("dd MMM yyyy");
+
+                tr.Period = string.Concat(startDate, " - ", endDate);
+                tr.Signi = string.Concat(dashaList.Signi_String, " | ", dashaList.Nak_Signi_String);
+
+                ListView_Prayantardasha.Add(tr);
+            }
+        }
+
+        private async Task<string> Show_House_Wise_Pred(ChartHouseTableTRModel selectedTR)
+        {
+            string str = "";
+            short num = Convert.ToInt16(selectedTR.House);
+            string str1 = "";
+            //PredictionBLL predictionBLL = new PredictionBLL();
+            ProductSettingsVO productSettingsVO = new ProductSettingsVO()
+            {
+                Online_Result = this.Online_Result,
+                Include = BirthDetails.ChkSahasaneLogic,
+                Lang = BirthDetails.CmbLanguage,
+                Male = this.male,
+                PredFor = 0,
+                ShowRef = BirthDetails.ChkShowRef,
+                ShowUpay = false,
+                ShowUpayCode = true,
+                Sno = (long)555,
+                Category = "",
+                Product = "all",
+                Karyesh = true,
+                Rotate = BirthDetails.CmbRotate
             };
+            //KPDAO kPDAO = new KPDAO();
+            List<short> nums = new List<short>();
+            List<short> nums1 = new List<short>();
+            List<KP_Sublord_Pred> kPSublordPreds = new List<KP_Sublord_Pred>();
+            List<KP_Sublord_Pred> kPSublordPreds1 = new List<KP_Sublord_Pred>();
 
-            var imgResponse = await Swagger!.PostAsync<GenImageRequest, ApiResponse<string>>(KundliBLLApiConst.POST_GenImage, genImageRequest);
+            kPSublordPreds = await Get_KP_Cusp_Pred(this.persKV.ShowRef, num);//
 
-            return imgResponse?.Data ?? "";
+            short subLord = this.cusp_house.Where(Map => Map.House == num).SingleOrDefault<KPHouseMappingVO>()?.Sub_Lord ?? default;
+
+            short nakLord = this.kp_chart.Where(Map => Map.Planet == subLord).SingleOrDefault<KPPlanetMappingVO>()?.Nak_Lord ?? default;
+
+            List<KPSigniVO> signi = this.kp_chart.Where(Map => Map.Planet == nakLord).SingleOrDefault<KPPlanetMappingVO>()?.Signi ?? new();
+
+            List<KPMixDashaVO> kPMixDashaVOs = new List<KPMixDashaVO>();
+            //KPDAO kPDAO1 = new KPDAO();
+            signi = (
+                from Map in signi
+                where (Map.Rule == 1 || Map.Rule == 2 || Map.Rule == 8 ? true : Map.Rule == 9)
+                select Map).ToList<KPSigniVO>();
+            foreach (KPSigniVO kPSigniVO in signi)
+            {
+                if (num == 1)
+                {
+                    kPMixDashaVOs = (
+                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")//
+                        where (Map.general ? true : Map.nature)
+                        select Map).ToList<KPMixDashaVO>();
+                }
+                if (num == 2)
+                {
+                    kPMixDashaVOs = (
+                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
+                        where (Map.family ? true : Map.wealth)
+                        select Map).ToList<KPMixDashaVO>();
+                }
+                if (num == 3)
+                {
+                    kPMixDashaVOs = (
+                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
+                        where Map.sibling
+                        select Map).ToList<KPMixDashaVO>();
+                }
+                if (num == 4)
+                {
+                    kPMixDashaVOs = (
+                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
+                        where (Map.education ? true : Map.parents)
+                        select Map).ToList<KPMixDashaVO>();
+                }
+                if (num == 5)
+                {
+                    kPMixDashaVOs = (
+                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
+                        where (Map.santan ? true : Map.love_affair)
+                        select Map).ToList<KPMixDashaVO>();
+                }
+                if (num == 6)
+                {
+                    kPMixDashaVOs = (
+                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
+                        where (Map.disease ? true : Map.occupation)
+                        select Map).ToList<KPMixDashaVO>();
+                }
+                if (num == 7)
+                {
+                    kPMixDashaVOs = (
+                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
+                        where (Map.married_life ? true : Map.occupation)
+                        select Map).ToList<KPMixDashaVO>();
+                }
+                if (num == 8)
+                {
+                    kPMixDashaVOs = (
+                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
+                        where Map.disease
+                        select Map).ToList<KPMixDashaVO>();
+                }
+                if (num == 9)
+                {
+                    kPMixDashaVOs = (
+                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
+                        where (Map.education ? true : Map.nature)
+                        select Map).ToList<KPMixDashaVO>();
+                }
+                if (num == 10)
+                {
+                    kPMixDashaVOs = (
+                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
+                        where (Map.occupation ? true : Map.work_pred)
+                        select Map).ToList<KPMixDashaVO>();
+                }
+                if (num == 11)
+                {
+                    kPMixDashaVOs = (
+                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
+                        where (Map.parents ? true : Map.occupation)
+                        select Map).ToList<KPMixDashaVO>();
+                }
+                if (num == 12)
+                {
+                    kPMixDashaVOs = (
+                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
+                        where Map.disease
+                        select Map).ToList<KPMixDashaVO>();
+                }
+                kPMixDashaVOs = (
+                    from Map in kPMixDashaVOs
+                    where Map.House1 == kPSigniVO.Signi
+                    select Map).ToList<KPMixDashaVO>();
+                foreach (KPMixDashaVO kPMixDashaVO in kPMixDashaVOs)
+                {
+                    if (this.kpbl.isFewConditionMet(kPMixDashaVO, this.kp_chart, kPSigniVO.Signi.ToString()))//
+                    {
+                        if (!nums.Exists((short Map) => Map == kPMixDashaVO.Sno))
+                        {
+                            string str2 = str1;
+                            string?[] strArrays = new string?[] { str2, num.ToString(), " : ", null, null };
+                            strArrays[3] = kPSigniVO.Signi.ToString();
+                            strArrays[4] = " ";
+                            str1 = string.Concat(strArrays);
+                            str1 = string.Concat(str1, await Get_KP_Lang(kPMixDashaVO.Sno, this.persKV.Language, false, false, this.prod.Mini), "&nbsp;<br />&nbsp;<br />");
+                            nums.Add(kPMixDashaVO.Sno);
+                        }
+                    }
+                }
+            }
+            if (num == 10)
+            {
+                str1 = string.Concat(await Tenth_Kamkaj_Pred(this.cusp_house, this.kp_chart, this.persKV), "&nbsp;<br />", str1);//
+            }
+            str = string.Concat(str, str1);
+            return str;
         }
 
         #endregion
@@ -1171,21 +1452,6 @@ namespace AstroOfficeWeb.Client.Pages
             this.lblSukhsmadasha = string.Empty;
         }
 
-        private async Task<List<KPDashaVO>?> Get_List_35_Sala(string online_Result, KundliVO persKV, DateTime startDate, DateTime endDate)
-        {
-            var request = new GetList35SalaRequest()
-            {
-                Online_Result = online_Result,
-                PersKV = persKV,
-                Dasha_Starts = startDate,
-                Dasha_Ends = endDate
-            };
-
-            var response = await Swagger!.PostAsync<GetList35SalaRequest, List<KPDashaVO>>(PredictionBLLApiConst.POST_GetList35Sala, request);
-
-            return response;
-        }
-
         private void OnChange_CmbAyanansh(ChangeEventArgs e)
         {
             string value = e.Value?.ToString() ?? "";
@@ -1230,7 +1496,7 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-        private void BtnShow_TabDateFinder_Click(MouseEventArgs e)
+        private void OnClick_BtnShow_TabDateFinder(MouseEventArgs e)
         {
             //if (string.IsNullOrEmpty(this.CmbBOccassion.Text))
             //{
@@ -1468,37 +1734,6 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-        private void Gen_Mahadasha(List<KPDashaVO> dasha_list, List<KPPlanetMappingVO> kp_chart)
-        {
-            if (ListView_Mahadasha == null)
-            {
-                ListView_Mahadasha = new();
-            }
-            else
-            {
-                ListView_Mahadasha.Clear();
-            }
-            this.ListView_Mahadasha.Clear();
-            this.ListView_Antardasha?.Clear();
-            this.ListView_Prayantardasha?.Clear();
-            this.ListView_Sukhsmadasha?.Clear();
-
-            foreach (KPDashaVO dashaList in dasha_list)
-            {
-                var tr = new MahadashaTableTRModel();
-
-                tr.Planet = this.planet_list.Where(Map => Map.Planet == dashaList.Planet).SingleOrDefault<KPPlanetsVO>()?.Hindi ?? string.Empty;
-
-                string startDate = dashaList.StartDate.ToString(format: "dd MMM yyyy");
-                string endDate = dashaList.EndDate.ToString(format: "dd MMM yyyy");
-
-                tr.Period = string.Concat(startDate, " - ", endDate);
-                tr.Signi = string.Concat(dashaList.Signi_String, " | ", dashaList.Nak_Signi_String);
-
-                ListView_Mahadasha.Add(tr);
-            }
-        }
-
         private async Task OnClick_BtnRefresh(MouseEventArgs e)
         {
             this.last_cusp_house = null;
@@ -1706,24 +1941,6 @@ namespace AstroOfficeWeb.Client.Pages
             await Gen_Image(lagna.ToString(), kPPlanetMappingVOs, this.Online_Result, false, 1, this.persKV.Language);
         }
 
-        private async Task<List<KPPlanetMappingVO>> NEW_GetVarshaphalKundliMapping(int age, KundliVO persKV, List<KPPlanetMappingVO> kp_chart)
-        {
-            var request = new GetVarshaphalKundliMappingRequest()
-            {
-                Age = age,
-                KP_Chart = kp_chart,
-                PersKV = persKV
-            };
-
-            var reponse = await Swagger!.PostAsync<GetVarshaphalKundliMappingRequest, List<KPPlanetMappingVO>>(KundliBLLApiConst.POST_NEWGetVarshaphalKundliMapping, request);
-
-            if (reponse != null)
-            {
-                return reponse;
-            }
-            return new List<KPPlanetMappingVO>();
-        }
-
         private async Task OnClick_BhavChalit(MouseEventArgs e)
         {
             this.isNumVarshVisible = false;
@@ -1732,7 +1949,7 @@ namespace AstroOfficeWeb.Client.Pages
             await Gen_Image(lagna.ToString(), this.kp_chart, this.Online_Result, true, 1, this.persKV.Language);
         }
 
-        private async Task BtnShow_TabKundaliDates_Click(MouseEventArgs e)
+        private async Task OnClick_BtnShow_TabKundaliDates(MouseEventArgs e)
         {
             if ((this.full_lat.Length <= 0 ? false : this.full_lon.Length > 0))
             {
@@ -1975,37 +2192,69 @@ namespace AstroOfficeWeb.Client.Pages
             this.lblAntar = string.Concat(text);
         }
 
-        private void Gen_PryantarDasha(List<KPDashaVO> dasha_list, List<KPPlanetMappingVO> kp_chart)
+        private async Task OnDblClick_TR_ListView_House(ChartHouseTableTRModel selectedTR)
         {
-            if (ListView_Prayantardasha == null) ListView_Prayantardasha = new();
+            //       var d = Show_House_Wise_Pred(selectedTR);
 
-            else ListView_Prayantardasha.Clear();
-
-            foreach (KPDashaVO dashaList in dasha_list)
+            string str = "";
+            str = string.Concat(str, await Show_House_Wise_Pred(selectedTR));
+            str = string.Concat(str, "-------------------------------------");
+            str = string.Concat(str, "&nbsp;<br/>");
+            short num = Convert.ToInt16(selectedTR.House);
+            string str1 = "";
+            //PredictionBLL predictionBLL = new PredictionBLL();
+            ProductSettingsVO productSettingsVO = new ProductSettingsVO()
             {
-                var tr = new PrayantardashaTableTRModel();
+                Online_Result = this.Online_Result,
+                Include = BirthDetails.ChkSahasaneLogic,
+                Lang = BirthDetails.CmbLanguage,
+                Male = this.male,
+                PredFor = 0,
+                ShowRef = BirthDetails.ChkShowRef,
+                ShowUpay = false,
+                ShowUpayCode = true,
+                Sno = (long)555,
+                Category = "",
+                Product = BirthDetails.CmbCategory,
+                Karyesh = true,
+                Rotate = BirthDetails.CmbRotate
+            };
+            //    KPDAO kPDAO = new KPDAO();
+            List<short> nums = new List<short>();
+            List<KP_Sublord_Pred> kPSublordPreds = new List<KP_Sublord_Pred>();
+            List<KP_Sublord_Pred> kPSublordPreds1 = new List<KP_Sublord_Pred>();
+            kPSublordPreds = await Get_KP_Cusp_Pred(this.persKV.ShowRef, num);
+            short subLord = this.cusp_house.Where(Map => Map.House == num).SingleOrDefault<KPHouseMappingVO>()?.Sub_Lord ?? default;
+            short nakLord = this.kp_chart.Where(Map => Map.Planet == subLord).SingleOrDefault<KPPlanetMappingVO>()?.Nak_Lord ?? default;
+            List<KPSigniVO> signi = this.kp_chart.Where(Map => Map.Planet == nakLord).SingleOrDefault<KPPlanetMappingVO>()?.Signi ?? new List<KPSigniVO>();
+            foreach (KPSigniVO kPSigniVO in signi)
+            {
+                if ((kPSigniVO.Rule == 1 || kPSigniVO.Rule == 2 || kPSigniVO.Rule == 8 ? true : kPSigniVO.Rule == 9))
+                {
+                    kPSublordPreds1.AddRange(kPSublordPreds.Where(Map => Map.House != num ? false : Map.Sublord == kPSigniVO.Signi).ToList<KP_Sublord_Pred>());
 
-                tr.Planet = this.planet_list.Where(Map => Map.Planet == dashaList.Planet).SingleOrDefault<KPPlanetsVO>()?.Hindi ?? string.Empty;
-
-                string startDate = dashaList.StartDate.ToString(format: "dd MMM yyyy");
-                string endDate = dashaList.EndDate.ToString("dd MMM yyyy");
-
-                tr.Period = string.Concat(startDate, " - ", endDate);
-                tr.Signi = string.Concat(dashaList.Signi_String, " | ", dashaList.Nak_Signi_String);
-
-                ListView_Prayantardasha.Add(tr);
+                }
             }
-        }
-
-        #endregion
-
-
-        private async Task<string> Get_New_Products(ProductSettingsVO prod)
-        {
-            var response = await Swagger!.PostAsync<ProductSettingsVO, ApiResponse<string>>(KPBLLApiConst.POST_GetNewProducts, prod);
-
-            return response?.Data ?? "";
-
+            foreach (KP_Sublord_Pred kPSublordPred in kPSublordPreds1)
+            {
+                if (!nums.Exists((short Map) => (long)Map == kPSublordPred.Sno))
+                {
+                    string str2 = str1;
+                    string?[] predHindi = new string?[] { str2, null, null, null, null, null, null };
+                    short house = kPSublordPred.House;
+                    predHindi[1] = house.ToString();
+                    predHindi[2] = " : ";
+                    house = kPSublordPred.Sublord;
+                    predHindi[3] = house.ToString();
+                    predHindi[4] = "  ";
+                    predHindi[5] = kPSublordPred.Pred_Hindi;
+                    predHindi[6] = "&nbsp;<br />&nbsp;<br />";
+                    str1 = string.Concat(predHindi);
+                }
+                nums.Add(Convert.ToInt16(kPSublordPred.Sno));
+            }
+            str = string.Concat(str, str1);
+            await Show_Falla(str);
         }
 
         private async Task OnClick_BtnFaladesh(MouseEventArgs e)
@@ -2310,271 +2559,6 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-        private async Task<string> Show_House_Wise_Pred(ChartHouseTableTRModel selectedTR)
-        {
-            string str = "";
-            short num = Convert.ToInt16(selectedTR.House);
-            string str1 = "";
-            //PredictionBLL predictionBLL = new PredictionBLL();
-            ProductSettingsVO productSettingsVO = new ProductSettingsVO()
-            {
-                Online_Result = this.Online_Result,
-                Include = BirthDetails.ChkSahasaneLogic,
-                Lang = BirthDetails.CmbLanguage,
-                Male = this.male,
-                PredFor = 0,
-                ShowRef = BirthDetails.ChkShowRef,
-                ShowUpay = false,
-                ShowUpayCode = true,
-                Sno = (long)555,
-                Category = "",
-                Product = "all",
-                Karyesh = true,
-                Rotate = BirthDetails.CmbRotate
-            };
-            //KPDAO kPDAO = new KPDAO();
-            List<short> nums = new List<short>();
-            List<short> nums1 = new List<short>();
-            List<KP_Sublord_Pred> kPSublordPreds = new List<KP_Sublord_Pred>();
-            List<KP_Sublord_Pred> kPSublordPreds1 = new List<KP_Sublord_Pred>();
-
-            kPSublordPreds = await Get_KP_Cusp_Pred(this.persKV.ShowRef, num);//
-
-            short subLord = this.cusp_house.Where(Map => Map.House == num).SingleOrDefault<KPHouseMappingVO>()?.Sub_Lord ?? default;
-
-            short nakLord = this.kp_chart.Where(Map => Map.Planet == subLord).SingleOrDefault<KPPlanetMappingVO>()?.Nak_Lord ?? default;
-
-            List<KPSigniVO> signi = this.kp_chart.Where(Map => Map.Planet == nakLord).SingleOrDefault<KPPlanetMappingVO>()?.Signi ?? new();
-
-            List<KPMixDashaVO> kPMixDashaVOs = new List<KPMixDashaVO>();
-            //KPDAO kPDAO1 = new KPDAO();
-            signi = (
-                from Map in signi
-                where (Map.Rule == 1 || Map.Rule == 2 || Map.Rule == 8 ? true : Map.Rule == 9)
-                select Map).ToList<KPSigniVO>();
-            foreach (KPSigniVO kPSigniVO in signi)
-            {
-                if (num == 1)
-                {
-                    kPMixDashaVOs = (
-                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")//
-                        where (Map.general ? true : Map.nature)
-                        select Map).ToList<KPMixDashaVO>();
-                }
-                if (num == 2)
-                {
-                    kPMixDashaVOs = (
-                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
-                        where (Map.family ? true : Map.wealth)
-                        select Map).ToList<KPMixDashaVO>();
-                }
-                if (num == 3)
-                {
-                    kPMixDashaVOs = (
-                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
-                        where Map.sibling
-                        select Map).ToList<KPMixDashaVO>();
-                }
-                if (num == 4)
-                {
-                    kPMixDashaVOs = (
-                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
-                        where (Map.education ? true : Map.parents)
-                        select Map).ToList<KPMixDashaVO>();
-                }
-                if (num == 5)
-                {
-                    kPMixDashaVOs = (
-                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
-                        where (Map.santan ? true : Map.love_affair)
-                        select Map).ToList<KPMixDashaVO>();
-                }
-                if (num == 6)
-                {
-                    kPMixDashaVOs = (
-                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
-                        where (Map.disease ? true : Map.occupation)
-                        select Map).ToList<KPMixDashaVO>();
-                }
-                if (num == 7)
-                {
-                    kPMixDashaVOs = (
-                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
-                        where (Map.married_life ? true : Map.occupation)
-                        select Map).ToList<KPMixDashaVO>();
-                }
-                if (num == 8)
-                {
-                    kPMixDashaVOs = (
-                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
-                        where Map.disease
-                        select Map).ToList<KPMixDashaVO>();
-                }
-                if (num == 9)
-                {
-                    kPMixDashaVOs = (
-                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
-                        where (Map.education ? true : Map.nature)
-                        select Map).ToList<KPMixDashaVO>();
-                }
-                if (num == 10)
-                {
-                    kPMixDashaVOs = (
-                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
-                        where (Map.occupation ? true : Map.work_pred)
-                        select Map).ToList<KPMixDashaVO>();
-                }
-                if (num == 11)
-                {
-                    kPMixDashaVOs = (
-                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
-                        where (Map.parents ? true : Map.occupation)
-                        select Map).ToList<KPMixDashaVO>();
-                }
-                if (num == 12)
-                {
-                    kPMixDashaVOs = (
-                        from Map in await Get_Mix_Dasha(nakLord, kPSigniVO.Signi, 1, this.prod.Product, "house_dasha")
-                        where Map.disease
-                        select Map).ToList<KPMixDashaVO>();
-                }
-                kPMixDashaVOs = (
-                    from Map in kPMixDashaVOs
-                    where Map.House1 == kPSigniVO.Signi
-                    select Map).ToList<KPMixDashaVO>();
-                foreach (KPMixDashaVO kPMixDashaVO in kPMixDashaVOs)
-                {
-                    if (this.kpbl.isFewConditionMet(kPMixDashaVO, this.kp_chart, kPSigniVO.Signi.ToString()))//
-                    {
-                        if (!nums.Exists((short Map) => Map == kPMixDashaVO.Sno))
-                        {
-                            string str2 = str1;
-                            string?[] strArrays = new string?[] { str2, num.ToString(), " : ", null, null };
-                            strArrays[3] = kPSigniVO.Signi.ToString();
-                            strArrays[4] = " ";
-                            str1 = string.Concat(strArrays);
-                            str1 = string.Concat(str1, await Get_KP_Lang(kPMixDashaVO.Sno, this.persKV.Language, false, false, this.prod.Mini), "&nbsp;<br />&nbsp;<br />");
-                            nums.Add(kPMixDashaVO.Sno);
-                        }
-                    }
-                }
-            }
-            if (num == 10)
-            {
-                str1 = string.Concat(await Tenth_Kamkaj_Pred(this.cusp_house, this.kp_chart, this.persKV), "&nbsp;<br />", str1);//
-            }
-            str = string.Concat(str, str1);
-            return str;
-        }
-
-        private async Task<string> Get_KP_Lang(short sno, string language, bool v1, bool v2, bool mini)
-        {
-            var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(KPBLLApiConst.GET_GetKPLang, sno, language, v1, v2, mini));
-            if (response != null)
-                return response.Data ?? string.Empty;
-            return string.Empty;
-        }
-
-        private async Task<string> Tenth_Kamkaj_Pred(List<KPHouseMappingVO> cusp_house, List<KPPlanetMappingVO> kp_chart, KundliVO persKV)
-        {
-            var request = new TenthKamkajPredRequestModel() { CuspHouse = cusp_house, KPChart = kp_chart, PersonalKundli = persKV };
-            var response = await Swagger!.PostAsync<TenthKamkajPredRequestModel, ApiResponse<string>>(KPBLLApiConst.POST_TenthKamkajPred, request);
-            return response?.Data ?? "";
-        }
-
-        private async Task<List<KPMixDashaVO>> Get_Mix_Dasha(short nakLord, short signi, short v1, string product, string v2)
-        {
-            var request = new GetMixDashaRequest()
-            {
-                Planet = nakLord,
-                House = signi,
-                FieldNumber = v1,
-                Category = product,
-                PType = v2
-
-            };
-
-            var response = await Swagger!.PostAsync<GetMixDashaRequest, List<KPMixDashaVO>>(KPDAOApiConst.POST_GetMixDasha, request);
-            if (response == null)
-                return new();
-            return response;
-        }
-
-        private async Task<List<KP_Sublord_Pred>> Get_KP_Cusp_Pred(bool showRef, short num)
-        {
-            var response = await Swagger!.GetAsync<List<KP_Sublord_Pred>>(string.Format(KPDAOApiConst.GET_GetKPCuspPred, showRef, num));
-            if (response == null)
-                return new();
-            return response;
-        }
-
-        private async Task OnDblClick_TR_ListView_House(ChartHouseTableTRModel selectedTR)
-        {
-            //       var d = Show_House_Wise_Pred(selectedTR);
-
-            string str = "";
-            str = string.Concat(str, await Show_House_Wise_Pred(selectedTR));
-            str = string.Concat(str, "-------------------------------------");
-            str = string.Concat(str, "&nbsp;<br/>");
-            short num = Convert.ToInt16(selectedTR.House);
-            string str1 = "";
-            //PredictionBLL predictionBLL = new PredictionBLL();
-            ProductSettingsVO productSettingsVO = new ProductSettingsVO()
-            {
-                Online_Result = this.Online_Result,
-                Include = BirthDetails.ChkSahasaneLogic,
-                Lang = BirthDetails.CmbLanguage,
-                Male = this.male,
-                PredFor = 0,
-                ShowRef = BirthDetails.ChkShowRef,
-                ShowUpay = false,
-                ShowUpayCode = true,
-                Sno = (long)555,
-                Category = "",
-                Product = BirthDetails.CmbCategory,
-                Karyesh = true,
-                Rotate = BirthDetails.CmbRotate
-            };
-            //    KPDAO kPDAO = new KPDAO();
-            List<short> nums = new List<short>();
-            List<KP_Sublord_Pred> kPSublordPreds = new List<KP_Sublord_Pred>();
-            List<KP_Sublord_Pred> kPSublordPreds1 = new List<KP_Sublord_Pred>();
-            kPSublordPreds = await Get_KP_Cusp_Pred(this.persKV.ShowRef, num);
-            short subLord = this.cusp_house.Where(Map => Map.House == num).SingleOrDefault<KPHouseMappingVO>()?.Sub_Lord ?? default;
-            short nakLord = this.kp_chart.Where(Map => Map.Planet == subLord).SingleOrDefault<KPPlanetMappingVO>()?.Nak_Lord ?? default;
-            List<KPSigniVO> signi = this.kp_chart.Where(Map => Map.Planet == nakLord).SingleOrDefault<KPPlanetMappingVO>()?.Signi ?? new List<KPSigniVO>();
-            foreach (KPSigniVO kPSigniVO in signi)
-            {
-                if ((kPSigniVO.Rule == 1 || kPSigniVO.Rule == 2 || kPSigniVO.Rule == 8 ? true : kPSigniVO.Rule == 9))
-                {
-                    kPSublordPreds1.AddRange(kPSublordPreds.Where(Map => Map.House != num ? false : Map.Sublord == kPSigniVO.Signi).ToList<KP_Sublord_Pred>());
-
-                }
-            }
-            foreach (KP_Sublord_Pred kPSublordPred in kPSublordPreds1)
-            {
-                if (!nums.Exists((short Map) => (long)Map == kPSublordPred.Sno))
-                {
-                    string str2 = str1;
-                    string?[] predHindi = new string?[] { str2, null, null, null, null, null, null };
-                    short house = kPSublordPred.House;
-                    predHindi[1] = house.ToString();
-                    predHindi[2] = " : ";
-                    house = kPSublordPred.Sublord;
-                    predHindi[3] = house.ToString();
-                    predHindi[4] = "  ";
-                    predHindi[5] = kPSublordPred.Pred_Hindi;
-                    predHindi[6] = "&nbsp;<br />&nbsp;<br />";
-                    str1 = string.Concat(predHindi);
-                }
-                nums.Add(Convert.ToInt16(kPSublordPred.Sno));
-            }
-            str = string.Concat(str, str1);
-            await Show_Falla(str);
-
-
-
-
-        }
+        #endregion
     }
 }
