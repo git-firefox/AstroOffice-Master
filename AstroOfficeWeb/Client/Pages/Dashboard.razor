@@ -567,7 +567,7 @@
                                                                 <tbody>
                                                                     @foreach (var row in ListView_Antardasha ?? new List<AntardashaTableTRModel>())
                                                                     {
-                                                                        <tr @onclick="()=> OnClick_TR_ListView_Antardasha(row)">
+                                                                        <tr @onclick="()=> OnClick_TR_ListView_Antardasha(row)" @ondblclick="()=> OnDblClick_TR_ListView_Antardasha(row)">
                                                                             <td>@row.Planet</td>
                                                                             <td>@row.Period</td>
                                                                             <td>@row.Signi</td>
@@ -623,7 +623,7 @@
                                                                 <tbody>
                                                                     @foreach (var row in ListView_Prayantardasha ?? new List<PrayantardashaTableTRModel>())
                                                                     {
-                                                                        <tr>
+                                                                        <tr @onclick="()=> OnClick_TR_ListView_Prayantardasha(row)" @ondblclick="()=> OnDblClick_TR_ListView_Prayantardasha(row)">
                                                                             <td>@row.Planet</td>
                                                                             <td>@row.Period</td>
                                                                             <td>@row.Signi</td>
@@ -656,7 +656,7 @@
                                                                 <tbody>
                                                                     @foreach (var row in ListView_Sukhsmadasha ?? new List<SukhsmadashaTableTRModel>())
                                                                     {
-                                                                        <tr>
+                                                                        <tr @onclick="()=> OnClick_TR_ListView_Sukhsmadasha(row)" @ondblclick="()=> OnDblClick_TR_ListView_Sukhsmadasha(row)">
                                                                             <td>@row.Planet</td>
                                                                             <td>@row.Period</td>
                                                                             <td>@row.Signi</td>

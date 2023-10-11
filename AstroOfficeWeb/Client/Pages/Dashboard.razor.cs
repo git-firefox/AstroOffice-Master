@@ -1341,117 +1341,6 @@ namespace AstroOfficeWeb.Client.Pages
 
         #region Handle events
 
-        private async Task OnDblClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
-        {
-            //this.TxtBrief.Text = "";
-            //PredictionBLL predictionBLL = new PredictionBLL();
-            short planet = (
-                from Map in this.planet_list
-                where Map.Hindi == selectedTR.Planet
-                select Map).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
-
-            this.prod.ShowUpay = true;
-            this.prod.ShowUpayCode = true;
-            this.persKV.Paid = true;
-            this.prod.ShowUpayBelow = true;
-            this.prod.Paid = true;
-            string falDoubleMahadasha = await Get_Fal_Double_Mahadasha(planet, this.persKV, this.Online_Result, this.prod);
-
-            await this.Show_Falla(falDoubleMahadasha);
-
-        }
-
-        private async Task OnClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
-        {
-            this.maha_dasha_click = true;
-            this.sukshma_dasha_click = false;
-
-            short planet = (
-                from Map in this.planet_list
-                where Map.Hindi == selectedTR.Planet
-                select Map).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
-
-            DateTime startDate = (
-                from Map in this.main_mahadasha
-                where Map.Planet == planet
-                select Map).SingleOrDefault<KPDashaVO>()?.StartDate ?? default;
-
-            DateTime endDate = (
-                from Map in this.main_mahadasha
-                where Map.Planet == planet
-                select Map).SingleOrDefault<KPDashaVO>()?.EndDate ?? default;
-
-            this.main_antardasha = this.kpbl.Get_Antar_Dasha(startDate, endDate, planet, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
-
-            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;", selectedTR.Period, "&nbsp;&nbsp;&nbsp;&nbsp;कार्येश :&nbsp;&nbsp;", null, null, null };
-            string? str = selectedTR.Signi;
-            char[] chrArray = new char[] { '|' };
-            text[4] = str?.Split(chrArray)[0];
-            text[5] = "&nbsp;&nbsp;&nbsp;नक्षत्र स्वामी :&nbsp;";
-            string? text1 = selectedTR.Signi;
-            chrArray = new char[] { '|' };
-            text[6] = text1?.Split(chrArray)[1];
-            this.lblMahadasha = string.Concat(text);
-
-            if (this.BirthDetails.SalaChakkar)
-            {
-                if (ListView_Years35 == null)
-                {
-                    ListView_Years35 = new();
-                }
-                else
-                {
-                    ListView_Years35.Clear();
-                }
-                List<KPDashaVO>? list35Sala = await Get_List_35_Sala(this.Online_Result, this.persKV, startDate, endDate);
-
-                if (list35Sala != null)
-                {
-                    foreach (KPDashaVO kPDashaVO in list35Sala)
-                    {
-                        text = new string[5];
-                        DateTime dateTime = kPDashaVO.StartDate;
-                        text[0] = dateTime.ToString("dd");
-                        text[1] = " ";
-                        dateTime = kPDashaVO.StartDate;
-                        text[2] = await GetCodeLang(string.Concat("M", dateTime.ToString("%M")), this.persKV.Language, this.persKV.Paid, true);
-                        text[3] = " ";
-                        dateTime = kPDashaVO.StartDate;
-                        text[4] = dateTime.ToString("yyyy");
-                        string str1 = string.Concat(text);
-                        text = new string[5];
-                        dateTime = kPDashaVO.EndDate;
-                        text[0] = dateTime.ToString("dd");
-                        text[1] = " ";
-                        dateTime = kPDashaVO.EndDate;
-                        text[2] = await GetCodeLang(string.Concat("M", dateTime.ToString("%M")), this.persKV.Language, this.persKV.Paid, true);
-                        text[3] = " ";
-                        dateTime = kPDashaVO.EndDate;
-                        text[4] = dateTime.ToString("yyyy");
-                        string str2 = string.Concat(text);
-
-                        var tr = new Years35TableTRModel();
-
-                        tr.Planet = this.planet_list.Where(Map => Map.Planet == kPDashaVO.Planet).FirstOrDefault<KPPlanetsVO>()?.Hindi ?? string.Empty;
-                        tr.Antar = kPDashaVO.Duration;
-                        tr.Period = string.Concat(str1, " - ", str2);
-                        tr.Age = kPDashaVO.Nak_Signi_String;
-                        ListView_Years35.Add(tr);
-                    }
-                }
-            }
-            else
-            {
-                this.Gen_AntarDasha(this.main_antardasha, this.kp_chart);
-            }
-
-            this.ListView_Prayantardasha?.Clear();
-            this.ListView_Sukhsmadasha?.Clear();
-            this.lblParyan = string.Empty;
-            this.lblAntar = string.Empty;
-            this.lblSukhsmadasha = string.Empty;
-        }
-
         private void OnChange_CmbAyanansh(ChangeEventArgs e)
         {
             string value = e.Value?.ToString() ?? "";
@@ -2138,6 +2027,117 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
+        private async Task OnClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
+        {
+            this.maha_dasha_click = true;
+            this.sukshma_dasha_click = false;
+
+            short planet = (
+                from Map in this.planet_list
+                where Map.Hindi == selectedTR.Planet
+                select Map).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+            DateTime startDate = (
+                from Map in this.main_mahadasha
+                where Map.Planet == planet
+                select Map).SingleOrDefault<KPDashaVO>()?.StartDate ?? default;
+
+            DateTime endDate = (
+                from Map in this.main_mahadasha
+                where Map.Planet == planet
+                select Map).SingleOrDefault<KPDashaVO>()?.EndDate ?? default;
+
+            this.main_antardasha = this.kpbl.Get_Antar_Dasha(startDate, endDate, planet, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
+
+            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;", selectedTR.Period, "&nbsp;&nbsp;&nbsp;&nbsp;कार्येश :&nbsp;&nbsp;", null, null, null };
+            string? str = selectedTR.Signi;
+            char[] chrArray = new char[] { '|' };
+            text[4] = str?.Split(chrArray)[0];
+            text[5] = "&nbsp;&nbsp;&nbsp;नक्षत्र स्वामी :&nbsp;";
+            string? text1 = selectedTR.Signi;
+            chrArray = new char[] { '|' };
+            text[6] = text1?.Split(chrArray)[1];
+            this.lblMahadasha = string.Concat(text);
+
+            if (this.BirthDetails.SalaChakkar)
+            {
+                if (ListView_Years35 == null)
+                {
+                    ListView_Years35 = new();
+                }
+                else
+                {
+                    ListView_Years35.Clear();
+                }
+                List<KPDashaVO>? list35Sala = await Get_List_35_Sala(this.Online_Result, this.persKV, startDate, endDate);
+
+                if (list35Sala != null)
+                {
+                    foreach (KPDashaVO kPDashaVO in list35Sala)
+                    {
+                        text = new string[5];
+                        DateTime dateTime = kPDashaVO.StartDate;
+                        text[0] = dateTime.ToString("dd");
+                        text[1] = " ";
+                        dateTime = kPDashaVO.StartDate;
+                        text[2] = await GetCodeLang(string.Concat("M", dateTime.ToString("%M")), this.persKV.Language, this.persKV.Paid, true);
+                        text[3] = " ";
+                        dateTime = kPDashaVO.StartDate;
+                        text[4] = dateTime.ToString("yyyy");
+                        string str1 = string.Concat(text);
+                        text = new string[5];
+                        dateTime = kPDashaVO.EndDate;
+                        text[0] = dateTime.ToString("dd");
+                        text[1] = " ";
+                        dateTime = kPDashaVO.EndDate;
+                        text[2] = await GetCodeLang(string.Concat("M", dateTime.ToString("%M")), this.persKV.Language, this.persKV.Paid, true);
+                        text[3] = " ";
+                        dateTime = kPDashaVO.EndDate;
+                        text[4] = dateTime.ToString("yyyy");
+                        string str2 = string.Concat(text);
+
+                        var tr = new Years35TableTRModel();
+
+                        tr.Planet = this.planet_list.Where(Map => Map.Planet == kPDashaVO.Planet).FirstOrDefault<KPPlanetsVO>()?.Hindi ?? string.Empty;
+                        tr.Antar = kPDashaVO.Duration;
+                        tr.Period = string.Concat(str1, " - ", str2);
+                        tr.Age = kPDashaVO.Nak_Signi_String;
+                        ListView_Years35.Add(tr);
+                    }
+                }
+            }
+            else
+            {
+                this.Gen_AntarDasha(this.main_antardasha, this.kp_chart);
+            }
+
+            this.ListView_Prayantardasha?.Clear();
+            this.ListView_Sukhsmadasha?.Clear();
+            this.lblParyan = string.Empty;
+            this.lblAntar = string.Empty;
+            this.lblSukhsmadasha = string.Empty;
+        }
+
+        private async Task OnDblClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
+        {
+            //this.TxtBrief.Text = "";
+            //PredictionBLL predictionBLL = new PredictionBLL();
+            short planet = (
+                from Map in this.planet_list
+                where Map.Hindi == selectedTR.Planet
+                select Map).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+            this.prod.ShowUpay = true;
+            this.prod.ShowUpayCode = true;
+            this.persKV.Paid = true;
+            this.prod.ShowUpayBelow = true;
+            this.prod.Paid = true;
+            string falDoubleMahadasha = await Get_Fal_Double_Mahadasha(planet, this.persKV, this.Online_Result, this.prod);
+
+            await this.Show_Falla(falDoubleMahadasha);
+
+        }
+
         private void OnClick_TR_ListView_Antardasha(AntardashaTableTRModel selectedTR)
         {
             this.antar_dasha_click = true;
@@ -2191,6 +2191,16 @@ namespace AstroOfficeWeb.Client.Pages
             text[6] = text1?.Split(chrArray)[1];
             this.lblAntar = string.Concat(text);
         }
+
+        private void OnDblClick_TR_ListView_Antardasha(AntardashaTableTRModel selectedTR) { }
+
+        private void OnClick_TR_ListView_Prayantardasha(PrayantardashaTableTRModel selectedTR) { }
+
+        private void OnDblClick_TR_ListView_Prayantardasha(PrayantardashaTableTRModel selectedTR) { }
+
+        private void OnClick_TR_ListView_Sukhsmadasha(SukhsmadashaTableTRModel selectedTR) { }
+
+        private void OnDblClick_TR_ListView_Sukhsmadasha(SukhsmadashaTableTRModel selectedTR) { }
 
         private async Task OnDblClick_TR_ListView_House(ChartHouseTableTRModel selectedTR)
         {
