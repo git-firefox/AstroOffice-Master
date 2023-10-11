@@ -318,7 +318,7 @@
 
                                         <div class="col">
                                             <div class="form-check">
-                                                <InputCheckbox id="ChkMfal" class="form-check-input" @bind-Value="BirthDetails!.Mfal" />
+                                                <InputCheckbox id="ChkMfal" class="form-check-input" @bind-Value="BirthDetails!.ChkMfal" />
                                                 <label class="form-check-label" for="ChkMfal">mfal</label>
                                             </div>
                                         </div>
@@ -588,7 +588,7 @@
                                                                 <tbody>
                                                                     @foreach (var row in ListView_Years35 ?? new List<Years35TableTRModel>())
                                                                     {
-                                                                        <tr>
+                                                                        <tr @ondblclick="()=> OnDblClick_TR_ListView_Years35(row)">
                                                                             <td>@row.Planet</td>
                                                                             <td>@row.Antar</td>
                                                                             <td>@row.Period</td>

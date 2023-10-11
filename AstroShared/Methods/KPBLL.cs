@@ -3754,7 +3754,99 @@ namespace AstroShared.Methods
             }
             return flag;
         }
-   
-    
+
+        public string Get_Signi_String_Without_NakRashi(short planet, List<KPPlanetMappingVO> kp_chart, bool include)
+        {
+            string str = "";
+            KPSigniVO kPSigniVO = new KPSigniVO();
+            List<KPSigniVO> kPSigniVOs = new List<KPSigniVO>();
+            kPSigniVO.Rule = 1;
+            kPSigniVO.WhichPlanet = 0;
+            kPSigniVO.Signi = (
+                from Map in kp_chart
+                where Map.Planet == planet
+                select Map).SingleOrDefault<KPPlanetMappingVO>().House;
+            kPSigniVOs.Add(kPSigniVO);
+            kPSigniVOs.AddRange((
+                from Map in kp_chart
+                where Map.Planet == planet
+                select Map).SingleOrDefault<KPPlanetMappingVO>().Signi);
+            short rule = 0;
+            foreach (KPSigniVO kPSigniVO1 in
+                from Map in kPSigniVOs
+                orderby Map.Rule
+                select Map)
+            {
+                if (include)
+                {
+                    if (rule != kPSigniVO1.Rule)
+                    {
+                        str = string.Concat(str, " ");
+                        rule = kPSigniVO1.Rule;
+                    }
+                    str = string.Concat(str, kPSigniVO1.Signi, " ");
+                }
+                else if ((kPSigniVO1.Rule == 1 || kPSigniVO1.Rule == 8 ? true : kPSigniVO1.Rule == 9))
+                {
+                    if (rule != kPSigniVO1.Rule)
+                    {
+                        str = string.Concat(str, " ");
+                        rule = kPSigniVO1.Rule;
+                    }
+                    str = string.Concat(str, kPSigniVO1.Signi, " ");
+                }
+            }
+            str = str.Trim();
+            char[] chrArray = new char[] { ',' };
+            str = str.TrimEnd(chrArray);
+            chrArray = new char[] { ',' };
+            str = str.TrimStart(chrArray);
+            str = str.Replace("  ", " ");
+            return str;
+        }
+
+        public string Get_Signi_String_Only_Rashi(short planet, List<KPPlanetMappingVO> kp_chart, bool include)
+        {
+            string str = "";
+            KPSigniVO kPSigniVO = new KPSigniVO();
+            List<KPSigniVO> kPSigniVOs = new List<KPSigniVO>();
+            kPSigniVOs.AddRange((
+                from Map in kp_chart
+                where Map.Planet == planet
+                select Map).SingleOrDefault<KPPlanetMappingVO>().Signi);
+            short rule = 0;
+            foreach (KPSigniVO kPSigniVO1 in
+                from Map in kPSigniVOs
+                orderby Map.Rule
+                select Map)
+            {
+                if (include)
+                {
+                    if (rule != kPSigniVO1.Rule)
+                    {
+                        str = string.Concat(str, " ");
+                        rule = kPSigniVO1.Rule;
+                    }
+                    str = string.Concat(str, kPSigniVO1.Signi, " ");
+                }
+                else if (kPSigniVO1.Rule == 9)
+                {
+                    if (rule != kPSigniVO1.Rule)
+                    {
+                        str = string.Concat(str, " ");
+                        rule = kPSigniVO1.Rule;
+                    }
+                    str = string.Concat(str, kPSigniVO1.Signi, " ");
+                }
+            }
+            str = str.Trim();
+            char[] chrArray = new char[] { ',' };
+            str = str.TrimEnd(chrArray);
+            chrArray = new char[] { ',' };
+            str = str.TrimStart(chrArray);
+            str = str.Replace("  ", " ");
+            return str;
+        }
+
     }
 }
