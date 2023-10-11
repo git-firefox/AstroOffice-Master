@@ -15,6 +15,7 @@
         public string? Significators { get; set; }
 
         public string? ToolTipText {  get; set; }
+        public string? ForeColor {  get; set; }
     }
 
 }

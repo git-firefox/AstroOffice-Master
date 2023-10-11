@@ -19,6 +19,9 @@ namespace AstroOfficeWeb.Shared.Models
         public int Tobhh { get; set; } = 13;
         public int Tobmm { get; set; } = 25;
         public int Tobss { get; set; } = 00;
+
+        public DateTime DateOfBirth { get; set; } = new DateTime(2006, 06, 12, 13, 25, 00);
+
         public string TxtBirthPlace { get; set; } = "Delhi";
         public string BirthCity { get; set; } = string.Empty;
         public bool IsMale { get; set; }
