@@ -2401,6 +2401,7 @@ namespace AstroOfficeWeb.Client.Pages
 
         private string Get_Dasha_Pred(short planet, string houses, DateTime startdate, DateTime enddate, KundliVO persKV, string ptype, ProductSettingsVO prod, List<KPPlanetMappingVO> kp_chart)
         {
+
             throw new NotImplementedException();
         }
 
@@ -2409,11 +2410,13 @@ namespace AstroOfficeWeb.Client.Pages
             throw new NotImplementedException();
         }
 
+        //ok
         private string Get_Planet_Chain_Pred(string houses, DateTime startdate, DateTime enddate, KundliVO persKV, string ptype, short nak_swami, ProductSettingsVO prod, short age)
         {
             throw new NotImplementedException();
         }
 
+        //ok
         private string Get_Planet_Nak_Planet_Sublord_Fal(KundliVO persKV, short house, string? houses)
         {
             throw new NotImplementedException();
@@ -2853,8 +2856,6 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-        #endregion
-
         private async Task OnFocusOut_DateOfBirthSelect(FocusEventArgs e)
         {
             var selectedDate = await JSRuntime.GetDateFromDateTimePickerAsync(divDateOfBirth);
@@ -2869,6 +2870,8 @@ namespace AstroOfficeWeb.Client.Pages
             //ListView_House?.Clear();
             //await this.Gen_Kundali_Chart();
         }
+
+        #endregion
 
     }
 }
