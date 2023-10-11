@@ -354,7 +354,7 @@
                         <h3 class="card-title">Kundali Table</h3>
                     </div>
                     <div class="col-md-12">
-                        <table class="table table-sm table-striped table-hover">
+                        <table class="table table-sm table-hover">
 
                             <thead class="p-0">
                                 <tr>
@@ -390,19 +390,19 @@
 
                             <div class="row">
                                 <div class="col">
-                                    <button type="button" class="btn btn-block btn-secondary btn-sm" @onclick="OnClick_BhavChalit"> Bhav Chalit </button>
+                                    <button type="button" class="btn btn-block btn-secondary btn-sm" title="Bhav Chalit" @onclick="OnClick_BhavChalit"> Bhav Chalit </button>
                                 </div>
                                 <div class="col">
-                                    <button type="button" class="btn btn-block btn-secondary btn-sm" @onclick="OnClick_Lagan"> Lagan </button>
+                                    <button type="button" class="btn btn-block btn-secondary btn-sm" title="Lagan" @onclick="OnClick_Lagan"> Lagan </button>
                                 </div>
                                 <div class="col">
-                                    <button type="button" class="btn btn-block btn-secondary btn-sm" @onclick="OnClick_Chandra"> Chandra </button>
+                                    <button type="button" class="btn btn-block btn-secondary btn-sm" title="Chandra" @onclick="OnClick_Chandra"> Chandra </button>
                                 </div>
                                 <div class="col">
-                                    <button type="button" class="btn btn-block btn-secondary btn-sm" @onclick="OnClick_Gochar"> Gochar </button>
+                                    <button type="button" class="btn btn-block btn-secondary btn-sm" title="Gochar" @onclick="OnClick_Gochar"> Gochar </button>
                                 </div>
                                 <div class="col">
-                                    <button type="button" class="btn btn-block btn-secondary btn-sm" @onclick="OnClick_Varsh"> Varsh </button>
+                                    <button type="button" class="btn btn-block btn-secondary btn-sm" title="Varsh" @onclick="OnClick_Varsh"> Varsh </button>
                                 </div>
                             </div>
 
@@ -453,7 +453,7 @@
                             <div class="tab-pane fade active show" id="birthdetails-tabs-charts" role="tabpanel" aria-labelledby="birthdetails-tabs-charts-tab">
                                 <div class="row">
                                     <div class="col-sm-7">
-                                        <table class="table table-sm table-bordered table-striped table-hover">
+                                        <table class="table table-sm table-bordered table-hover">
 
                                             <thead class="p-0">
                                                 <tr>
@@ -480,7 +480,7 @@
                                     </div>
 
                                     <div class="col-sm-5">
-                                        <table class="table table-sm  table-bordered table-striped table-hover">
+                                        <table class="table table-sm  table-bordered table-hover">
                                             <thead class="p-0">
                                                 <tr>
                                                     <th>Planet</th>
@@ -492,7 +492,7 @@
                                             <tbody>
                                                 @foreach (var row in ListView_Planet ?? new List<ChartPlanetTableTRModel>())
                                                 {
-                                                    <tr>
+                                                    <tr title="@row.ToolTipText">
                                                         <td>@row.Planet</td>
                                                         <td>@row.RL_NL_SL_SSL</td>
                                                         <td>@row.Significators</td>

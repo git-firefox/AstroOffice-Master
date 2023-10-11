@@ -559,7 +559,9 @@ namespace AstroOfficeWeb.Client.Pages
                 tr.Significators = significators.Trim();
                 tr.Planet = planets;
                 tr.RL_NL_SL_SSL = string.Concat(hindi);
+                tr.ToolTipText = str2;
                 ListView_Planet.Add(tr);
+
             }
         }
 

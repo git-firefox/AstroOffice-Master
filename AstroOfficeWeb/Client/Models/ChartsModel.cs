@@ -13,6 +13,8 @@
         public string? Planet { get; set; }
         public string? RL_NL_SL_SSL { get; set; }
         public string? Significators { get; set; }
+
+        public string? ToolTipText {  get; set; }
     }
 
 }
