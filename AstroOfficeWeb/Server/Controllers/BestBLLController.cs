@@ -23,5 +23,17 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(new ApiResponse<bool> { Data = flag, Message = "Ok", Success = true });
         }
 
+        [HttpPost]
+        public IActionResult IsBestKundaliKPAuto(IsBestKundaliKPRequest request)
+        {
+            if (request.BestOnlineResult == null)
+                return BadRequest();
+
+            var vIsBestKundaliKPAuto = _bestbll.isBestKundali_KP_Auto(request.BestOnlineResult, request.Rating);
+
+            return Ok(new ApiResponse<bool> { Data = vIsBestKundaliKPAuto, Success = true });
+        }
+
+
     }
 }

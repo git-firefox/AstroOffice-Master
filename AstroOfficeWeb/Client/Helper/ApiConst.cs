@@ -71,6 +71,8 @@
     {
         public static string Base = "api/BestBLL/";
         public static string POST_IsBestKundali = Base + "IsBestKundali";
+        public static string POST_IsBestKundaliKPAuto = Base + "IsBestKundaliKPAuto";
+
     }
 
     public static class KPPredBLLApiConst

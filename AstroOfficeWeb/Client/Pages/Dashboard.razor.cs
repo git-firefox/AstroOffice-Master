@@ -3101,19 +3101,229 @@ namespace AstroOfficeWeb.Client.Pages
         private async Task OnFocusOut_DateOfBirthSelect(FocusEventArgs e)
         {
             var selectedDate = await JSRuntime.GetDateFromDateTimePickerAsync(divDateOfBirth);
-            //BirthDetails.Dobdd = selectedDate.Day;
-            //BirthDetails.Dobmm = selectedDate.Month;
-            //BirthDetails.Dobyy = selectedDate.Year;
-            //BirthDetails.Tobhh = selectedDate.Hour;
-            //BirthDetails.Tobmm = selectedDate.Minute;
-            //BirthDetails.Tobss = selectedDate.Second;
-            //ListView_Planet?.Clear();
-            //ListView_Ruling_Planet?.Clear();
-            //ListView_House?.Clear();
-            //await this.Gen_Kundali_Chart();
+
+            string[] dateArray = selectedDate.Split(',');
+
+            BirthDetails.Dobmm = Convert.ToInt32(dateArray[0]);
+            BirthDetails.Dobdd = Convert.ToInt32(dateArray[1]);
+            BirthDetails.Dobyy = Convert.ToInt32(dateArray[2]);
+            BirthDetails.Tobhh = Convert.ToInt32(dateArray[3]);
+            BirthDetails.Tobmm = Convert.ToInt32(dateArray[4]);
+            BirthDetails.Tobss = Convert.ToInt32(dateArray[5]);
+            ListView_Planet?.Clear();
+            ListView_Ruling_Planet?.Clear();
+            ListView_House?.Clear();
+            await this.Gen_Kundali_Chart();
         }
 
         #endregion
 
+        public DateTime DateOfBirth
+        {
+            get { return new DateTime(this.BirthDetails.Dobyy, this.BirthDetails.Dobmm, this.BirthDetails.Dobdd, this.BirthDetails.Tobhh, this.BirthDetails.Tobmm, this.BirthDetails.Tobss); }
+            set { new DateTime(this.BirthDetails.Dobyy, this.BirthDetails.Dobmm, this.BirthDetails.Dobdd, this.BirthDetails.Tobhh, this.BirthDetails.Tobmm, this.BirthDetails.Tobss); }
+        }
+
+        private async Task OnClick_BtnMinus(MouseEventArgs e)
+        {
+            short num = Convert.ToInt16(BirthDetails.TimeValue);
+            DateTime tob = this.persKV.Tob;
+            if (BirthDetails.CmbTime.ToLower() == "minute")
+            {
+                tob = tob.AddMinutes((double)(-num));
+            }
+            if (BirthDetails.CmbTime.ToLower() == "hour")
+            {
+                tob = tob.AddHours((double)(-num));
+            }
+            if (BirthDetails.CmbTime.ToLower() == "day")
+            {
+                tob = tob.AddDays((double)(-num));
+            }
+            if (BirthDetails.CmbTime.ToLower() == "lagan")
+            {
+                short num1 = 120;
+                short num2 = 0;
+                double degreeHouseDecimal = this.cusp_house.Where(Map => Map.House == 1).SingleOrDefault<KPHouseMappingVO>()?.DegreeHouse_Decimal ?? default;
+                num2 = Convert.ToInt16(num1 - Convert.ToInt16(degreeHouseDecimal) * 4);
+                if (num2 <= 5)
+                {
+                    num2 = 5;
+                }
+                num2 = Convert.ToInt16(num2 + 20);
+                tob = tob.AddMinutes((double)(-num2));
+            }
+
+
+
+            BirthDetails.Dobmm = tob.Month;
+            BirthDetails.Dobdd = tob.Day;
+            BirthDetails.Dobyy = tob.Year;
+            BirthDetails.Tobhh = tob.Hour;
+            BirthDetails.Tobmm = tob.Minute;
+
+
+            //string str = BirthDetails.Dobdd.ToString();
+            //int day = tob.Day;
+            //str.Text = day.ToString();
+            //TextBox textBox = this.dobmm;
+            //day = tob.Month;
+            //textBox.Text = day.ToString();
+            //TextBox str1 = this.dobyy;
+            //day = tob.Year;
+            //str1.Text = day.ToString();
+            //TextBox textBox1 = this.tobhh;
+            //day = tob.Hour;
+            //textBox1.Text = day.ToString();
+            //TextBox str2 = this.tobmm;
+            //day = tob.Minute;
+            //str2.Text = day.ToString();
+
+            await this.OnClick_BtnChart(new MouseEventArgs());
+
+            //BestBLL bestBLL = new BestBLL();
+
+            short num3 = 0;
+            if (BirthDetails.CmbSkipBad == "Skip Average")
+            {
+                num3 = 1;
+            }
+            if (BirthDetails.CmbSkipBad == "Skip Bad")
+            {
+                num3 = 2;
+            }
+            if (BirthDetails.CmbSkipBad == "Skip Worst")
+            {
+                num3 = 3;
+            }
+            string[] globalFullLonNew = new string[19];
+            int day = tob.Day;
+            globalFullLonNew[0] = day.ToString();
+            globalFullLonNew[1] = "/";
+            day = tob.Month;
+            globalFullLonNew[2] = day.ToString();
+            globalFullLonNew[3] = "/";
+            day = tob.Year;
+            globalFullLonNew[4] = day.ToString();
+            globalFullLonNew[5] = ",";
+            day = tob.Hour;
+            globalFullLonNew[6] = day.ToString();
+            globalFullLonNew[7] = ":";
+            day = tob.Minute;
+            globalFullLonNew[8] = day.ToString();
+            globalFullLonNew[9] = ",";
+            globalFullLonNew[10] = this.global_full_lonNew;
+            globalFullLonNew[11] = ",";
+            globalFullLonNew[12] = this.global_full_latNew;
+            globalFullLonNew[13] = ",";
+            globalFullLonNew[14] = this.global_newtz;
+            globalFullLonNew[15] = ",";
+            globalFullLonNew[16] = this.ayan;
+            globalFullLonNew[17] = ",";
+            globalFullLonNew[18] = this.full_time_corr;
+            string str3 = string.Concat(globalFullLonNew);
+            //      PredictionBLL predictionBLL = new PredictionBLL();
+            if ((await IsBestKundali_KP_Auto(await Gen_Kunda(str3, 500f, Convert.ToInt16(BirthDetails.CmbRotate)), num3) ? false : BirthDetails.CmbSkipBad != "Show All"))
+            {
+                await OnClick_BtnMinus(e);
+            }
+        }
+
+        private async Task<bool> IsBestKundali_KP_Auto(string best_Online_Result, short rating)
+        {
+            var request = new IsBestKundaliKPRequest { BestOnlineResult = best_Online_Result, Rating = rating };
+
+            var response = await Swagger!.PostAsync<IsBestKundaliKPRequest, ApiResponse<bool>>(BestBLLApiConst.POST_IsBestKundaliKPAuto, request);
+
+            if (response == null)
+                return default;
+
+            return response?.Data ?? default;
+
+
+        }
+
+        private async Task OnClick_BtnPlus(MouseEventArgs e)
+        {
+            short num = Convert.ToInt16(BirthDetails.TimeValue);
+            DateTime tob = this.persKV.Tob;
+            if (BirthDetails.CmbTime.ToLower() == "minute")
+            {
+                tob = tob.AddMinutes((double)(num));
+            }
+            if (BirthDetails.CmbTime.ToLower() == "hour")
+            {
+                tob = tob.AddHours((double)(num));
+            }
+            if (BirthDetails.CmbTime.ToLower() == "day")
+            {
+                tob = tob.AddDays((double)(num));
+            }
+            if (BirthDetails.CmbTime.ToLower() == "lagan")
+            {
+                short num1 = 120;
+                short num2 = 0;
+                double degreeHouseDecimal = this.cusp_house.Where(Map => Map.House == 1).SingleOrDefault<KPHouseMappingVO>()?.DegreeHouse_Decimal ?? default;
+                num2 = Convert.ToInt16(num1 - Convert.ToInt16(degreeHouseDecimal) * 4);
+                if (num2 <= 5)
+                {
+                    num2 = 5;
+                }
+                num2 = Convert.ToInt16(num2 + 20);
+                tob = tob.AddMinutes((double)(num2));
+            }
+            BirthDetails.Dobmm = tob.Month;
+            BirthDetails.Dobdd = tob.Day;
+            BirthDetails.Dobyy = tob.Year;
+            BirthDetails.Tobhh = tob.Hour;
+            BirthDetails.Tobmm = tob.Minute;
+            await this.OnClick_BtnChart(new MouseEventArgs());
+
+            short num3 = 0;
+            if (BirthDetails.CmbSkipBad == "Skip Average")
+            {
+                num3 = 1;
+            }
+            if (BirthDetails.CmbSkipBad == "Skip Bad")
+            {
+                num3 = 2;
+            }
+            if (BirthDetails.CmbSkipBad == "Skip Worst")
+            {
+                num3 = 3;
+            }
+            string[] globalFullLonNew = new string[19];
+            int day = tob.Day;
+            globalFullLonNew[0] = day.ToString();
+            globalFullLonNew[1] = "/";
+            day = tob.Month;
+            globalFullLonNew[2] = day.ToString();
+            globalFullLonNew[3] = "/";
+            day = tob.Year;
+            globalFullLonNew[4] = day.ToString();
+            globalFullLonNew[5] = ",";
+            day = tob.Hour;
+            globalFullLonNew[6] = day.ToString();
+            globalFullLonNew[7] = ":";
+            day = tob.Minute;
+            globalFullLonNew[8] = day.ToString();
+            globalFullLonNew[9] = ",";
+            globalFullLonNew[10] = this.global_full_lonNew;
+            globalFullLonNew[11] = ",";
+            globalFullLonNew[12] = this.global_full_latNew;
+            globalFullLonNew[13] = ",";
+            globalFullLonNew[14] = this.global_newtz;
+            globalFullLonNew[15] = ",";
+            globalFullLonNew[16] = this.ayan;
+            globalFullLonNew[17] = ",";
+            globalFullLonNew[18] = this.full_time_corr;
+            string str3 = string.Concat(globalFullLonNew);
+            //      PredictionBLL predictionBLL = new PredictionBLL();
+            if ((await IsBestKundali_KP_Auto(await Gen_Kunda(str3, 500f, Convert.ToInt16(BirthDetails.CmbRotate)), num3) ? false : BirthDetails.CmbSkipBad != "Show All"))
+            {
+                await OnClick_BtnPlus(e);
+            }
+
+        }
     }
 }

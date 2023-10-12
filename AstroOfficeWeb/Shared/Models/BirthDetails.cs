@@ -11,7 +11,7 @@ namespace AstroOfficeWeb.Shared.Models
         public string CmbCountry { get; set; } = "Ind.";
         public string TxtName { get; set; } = "SHIVA";
         public string? CmbSkipBad { get; set; }
-        public string? CmbTime { get; set; }
+        public string CmbTime { get; set; }
         public int TimeValue { get; set; } = 2;
         public int Dobdd { get; set; } = 12;
         public int Dobmm { get; set; } = 06;
@@ -20,7 +20,7 @@ namespace AstroOfficeWeb.Shared.Models
         public int Tobmm { get; set; } = 25;
         public int Tobss { get; set; } = 00;
 
-        public DateTime DateOfBirth { get; set; } = new DateTime(2006, 06, 12, 13, 25, 00);
+        //public DateTime DateOfBirth { get; set; } = new DateTime(2006, 06, 12, 13, 25, 00);
 
         public string TxtBirthPlace { get; set; } = "Delhi";
         public string BirthCity { get; set; } = string.Empty;
