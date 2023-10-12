@@ -11,6 +11,10 @@
         public static string POST_GetNewProducts = Base + "GetNewProducts";
         public static string GET_GetKPLang = Base + "GetKPLang?mixsno={0}&language={1}&dashafal={2}&upay={3}&mini={4}";
         public static string POST_TenthKamkajPred = Base + "TenthKamkajPred";
+        public static string POST_GetPlanetNakPlanetSublordFal = Base + "GetPlanetNakPlanetSublordFal";
+        public static string POST_GetPlanetChainPred = Base + "GetPlanetChainPred";
+        public static string POST_GetDashaPred = Base + "GetDashaPred";
+        public static string POST_GetDashaPredIntelli = Base + "GetDashaPredIntelli";
     }
 
     public static class CountryApiConst
@@ -46,8 +50,6 @@
         public static string POST_GenKunda = Base + "GenKunda";
         public static string POST_GenImage = Base + "GenImage";
         public static string POST_NEWGetVarshaphalKundliMapping = Base + "NEWGetVarshaphalKundliMapping";
-
-
     }
     public static class PredictionBLLApiConst
     {
@@ -64,8 +66,6 @@
         public static string GET_GetUpayLogic = Base + "GetUpayLogic";
         public static string POST_GetMixDasha = Base + "GetMixDasha";
         public static string GET_GetKPCuspPred = Base + "GetKPCuspPred?showref={0}&house={1}";
-        
-
     }
     public static class BestBLLApiConst
     {
