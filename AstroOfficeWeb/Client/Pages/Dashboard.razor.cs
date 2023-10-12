@@ -592,6 +592,7 @@ namespace AstroOfficeWeb.Client.Pages
 
             foreach (KPHouseMappingVO cuspHouse in cusp_house)
             {
+                var tr = new ChartHouseTableTRModel();
                 //ListViewItem listViewItem = new ListViewItem()
                 //{
                 //    ForeColor = Color.Black,
@@ -608,10 +609,10 @@ namespace AstroOfficeWeb.Client.Pages
                     signiString = this.kpbl.Get_Signi_String(nakLord, this.last_kp_chart, BirthDetails.ChkSahasaneLogic);
                     str = this.kpbl.Get_Signi_String(nakLord1, this.kp_chart, BirthDetails.ChkSahasaneLogic);
                 }
-                //if ((this.last_cusp_house.Count <= 0 ? false : signiString != str))
-                //{
-                //    listViewItem.ForeColor = Color.Blue;
-                //}
+                if ((this.last_cusp_house.Count <= 0 ? false : signiString != str))
+                {
+                    tr.ForeColor ="text-primary";
+                }
                 //if (!this.LstVHouses.InvokeRequired)
                 //{
                 //    this.LstVHouses.Items.Add(listViewItem);
@@ -753,7 +754,7 @@ namespace AstroOfficeWeb.Client.Pages
                 //this.LstVHouses.Items[this.LstVHouses.Items.Count - 1].SubItems.Add(str3);
                 //this.LstVHouses.Items[this.LstVHouses.Items.Count - 1].SubItems.Add(str4);
 
-                var tr = new ChartHouseTableTRModel();
+
                 tr.House = cuspHouse.House;
                 tr.RL_NL_SL_SSL = string.Concat(hindi);
                 tr.NakSigni = str3;
