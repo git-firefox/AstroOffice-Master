@@ -493,7 +493,7 @@
                                             <tbody>
                                                 @foreach (var row in ListView_House ?? new List<ChartHouseTableTRModel>())
                                                 {
-                                                    <tr @ondblclick="()=> OnDblClick_TR_ListView_House(row)">
+                                                    <tr class="@row.ForeColor" @ondblclick="()=> OnDblClick_TR_ListView_House(row)">
                                                         <td>@row.House</td>
                                                         <td>@row.RL_NL_SL_SSL</td>
                                                         <td>@row.NakSigni</td>

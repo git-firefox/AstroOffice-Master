@@ -18,7 +18,7 @@
     border-color: #1861ac;
 }*/
 
-.valid.modified:not([type=checkbox]) {
+.valid.modified:not([type="checkbox"]):not([type="radio"]) {
     outline: 1px solid #26b050;
 }
 
