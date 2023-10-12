@@ -1846,11 +1846,11 @@ namespace AstroOfficeWeb.Client.Pages
 
         private async Task OnChange_ListBirthCities(ChangeEventArgs e)
         {
-            var task6 = Swagger!.GetAsync<List<DTOs.APlaceMaster>>(string.Format(LocationBLLApiConst.GET_GetPlaceListLike, BirthDetails!.TxtBirthPlace, BirthDetails!.CmbCountry));
+            //var task6 = Swagger!.GetAsync<List<DTOs.APlaceMaster>>(string.Format(LocationBLLApiConst.GET_GetPlaceListLike, BirthDetails!.TxtBirthPlace, BirthDetails!.CmbCountry));
 
-            await Task.WhenAll(task6);
+            //await Task.WhenAll(task6);
 
-            this.ListBirthCities = task6.Result;
+            //this.ListBirthCities = task6.Result;
 
 
             string value = e.Value.ToStringLower();
