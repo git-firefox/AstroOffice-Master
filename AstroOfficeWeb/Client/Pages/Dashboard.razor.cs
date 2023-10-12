@@ -31,6 +31,8 @@ namespace AstroOfficeWeb.Client.Pages
 
         #region Define Variables
 
+        private IList<Task> TaskList { get; set; } = new List<Task>();
+
         private string Online_Result = "";
         private string RP_Online_Result = "";
 
@@ -198,7 +200,7 @@ namespace AstroOfficeWeb.Client.Pages
 
             if (!this.no_countryload && this.BirthDetails.CmbCountry != null)
             {
-                await this.LoadCountry();// !
+                await this.LoadCountry();
             }
             this.no_countryload = false;
             #endregion
@@ -1074,6 +1076,7 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
+
         private async Task LoadCountry()
         {
             if (BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
@@ -1499,6 +1502,21 @@ namespace AstroOfficeWeb.Client.Pages
                 return string.Empty;
             return response?.Data ?? string.Empty;
         }
+
+        private async Task<bool> IsBestKundali_KP_Auto(string best_Online_Result, short rating)
+        {
+            var request = new IsBestKundaliKPRequest { BestOnlineResult = best_Online_Result, Rating = rating };
+
+            var response = await Swagger!.PostAsync<IsBestKundaliKPRequest, ApiResponse<bool>>(BestBLLApiConst.POST_IsBestKundaliKPAuto, request);
+
+            if (response == null)
+                return default;
+
+            return response?.Data ?? default;
+
+
+        }
+
         #endregion
 
         #region Handle events
@@ -1828,13 +1846,31 @@ namespace AstroOfficeWeb.Client.Pages
 
         private async Task OnChange_ListBirthCities(ChangeEventArgs e)
         {
+            await Task.Delay(1000);
             string value = e.Value.ToStringLower();
             var selectedBirthCity = ListBirthCities![selectedBirthCityIndex];
-            this.BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
 
-            var place = await Swagger!.GetAsync<DTOs.APlaceMaster>(string.Format(LocationBLLApiConst.GET_GetPlaceByID, selectedBirthCity?.Sno));
-            var country = await Swagger!.GetAsync<DTOs.ACountryMaster>(string.Format(LocationBLLApiConst.GET_GetCountryByCode, selectedBirthCity?.CountryCode));
-            var state = await Swagger!.GetAsync<DTOs.AStateMaster>(string.Format(LocationBLLApiConst.GET_GetStateByCode, place?.CountryCode));
+            this.BirthDetails.BirthPlace = selectedBirthCity?.Place ?? "";
+
+            var task1 = Swagger!.GetAsync<DTOs.APlaceMaster>(string.Format(LocationBLLApiConst.GET_GetPlaceByID, selectedBirthCity?.Sno));
+
+            var task2 = Swagger!.GetAsync<DTOs.ACountryMaster>(string.Format(LocationBLLApiConst.GET_GetCountryByCode, selectedBirthCity?.CountryCode));
+
+            await Task.WhenAll(task1, task2);
+
+            var place = task1.Result;
+
+            var country = task2.Result;
+
+            var task3 = Swagger!.GetAsync<DTOs.AStateMaster>(string.Format(LocationBLLApiConst.GET_GetStateByCode, place?.CountryCode));
+
+            await Task.WhenAll(task3);
+
+            var state = task3.Result;
+
+            //var place = await Swagger!.GetAsync<DTOs.APlaceMaster>(string.Format(LocationBLLApiConst.GET_GetPlaceByID, selectedBirthCity?.Sno));
+            //var country = await Swagger!.GetAsync<DTOs.ACountryMaster>(string.Format(LocationBLLApiConst.GET_GetCountryByCode, selectedBirthCity?.CountryCode));
+            //var state = await Swagger!.GetAsync<DTOs.AStateMaster>(string.Format(LocationBLLApiConst.GET_GetStateByCode, place?.CountryCode));
 
             full_lon = (selectedBirthCity!.Longitude ?? "").Trim();
             full_lat = (selectedBirthCity!.Latitude ?? "").Trim();
@@ -1910,7 +1946,7 @@ namespace AstroOfficeWeb.Client.Pages
             // PredictionBLL predictionBLL1 = new PredictionBLL();
             KundliVO kundliVO = new KundliVO();
             string text = BirthDetails.TxtName;
-            string text1 = BirthDetails.TxtBirthPlace;
+            string text1 = BirthDetails.BirthPlace ?? string.Empty;
             string str2 = DateTime.Now.ToString("dd");
             string str3 = DateTime.Now.ToString("MM");
             string str4 = DateTime.Now.ToString("yyyy");
@@ -3116,8 +3152,6 @@ namespace AstroOfficeWeb.Client.Pages
             await this.Gen_Kundali_Chart();
         }
 
-        #endregion
-
         public DateTime DateOfBirth
         {
             get { return new DateTime(this.BirthDetails.Dobyy, this.BirthDetails.Dobmm, this.BirthDetails.Dobdd, this.BirthDetails.Tobhh, this.BirthDetails.Tobmm, this.BirthDetails.Tobss); }
@@ -3128,19 +3162,19 @@ namespace AstroOfficeWeb.Client.Pages
         {
             short num = Convert.ToInt16(BirthDetails.TimeValue);
             DateTime tob = this.persKV.Tob;
-            if (BirthDetails.CmbTime.ToLower() == "minute")
+            if (BirthDetails?.CmbTime?.ToLower() == "minute")
             {
                 tob = tob.AddMinutes((double)(-num));
             }
-            if (BirthDetails.CmbTime.ToLower() == "hour")
+            if (BirthDetails?.CmbTime?.ToLower() == "hour")
             {
                 tob = tob.AddHours((double)(-num));
             }
-            if (BirthDetails.CmbTime.ToLower() == "day")
+            if (BirthDetails?.CmbTime?.ToLower() == "day")
             {
                 tob = tob.AddDays((double)(-num));
             }
-            if (BirthDetails.CmbTime.ToLower() == "lagan")
+            if (BirthDetails?.CmbTime?.ToLower() == "lagan")
             {
                 short num1 = 120;
                 short num2 = 0;
@@ -3156,7 +3190,7 @@ namespace AstroOfficeWeb.Client.Pages
 
 
 
-            BirthDetails.Dobmm = tob.Month;
+            BirthDetails!.Dobmm = tob.Month;
             BirthDetails.Dobdd = tob.Day;
             BirthDetails.Dobyy = tob.Year;
             BirthDetails.Tobhh = tob.Hour;
@@ -3229,37 +3263,23 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-        private async Task<bool> IsBestKundali_KP_Auto(string best_Online_Result, short rating)
-        {
-            var request = new IsBestKundaliKPRequest { BestOnlineResult = best_Online_Result, Rating = rating };
-
-            var response = await Swagger!.PostAsync<IsBestKundaliKPRequest, ApiResponse<bool>>(BestBLLApiConst.POST_IsBestKundaliKPAuto, request);
-
-            if (response == null)
-                return default;
-
-            return response?.Data ?? default;
-
-
-        }
-
         private async Task OnClick_BtnPlus(MouseEventArgs e)
         {
             short num = Convert.ToInt16(BirthDetails.TimeValue);
             DateTime tob = this.persKV.Tob;
-            if (BirthDetails.CmbTime.ToLower() == "minute")
+            if (BirthDetails?.CmbTime?.ToLower() == "minute")
             {
                 tob = tob.AddMinutes((double)(num));
             }
-            if (BirthDetails.CmbTime.ToLower() == "hour")
+            if (BirthDetails?.CmbTime?.ToLower() == "hour")
             {
                 tob = tob.AddHours((double)(num));
             }
-            if (BirthDetails.CmbTime.ToLower() == "day")
+            if (BirthDetails?.CmbTime?.ToLower() == "day")
             {
                 tob = tob.AddDays((double)(num));
             }
-            if (BirthDetails.CmbTime.ToLower() == "lagan")
+            if (BirthDetails?.CmbTime?.ToLower() == "lagan")
             {
                 short num1 = 120;
                 short num2 = 0;
@@ -3272,7 +3292,7 @@ namespace AstroOfficeWeb.Client.Pages
                 num2 = Convert.ToInt16(num2 + 20);
                 tob = tob.AddMinutes((double)(num2));
             }
-            BirthDetails.Dobmm = tob.Month;
+            BirthDetails!.Dobmm = tob.Month;
             BirthDetails.Dobdd = tob.Day;
             BirthDetails.Dobyy = tob.Year;
             BirthDetails.Tobhh = tob.Hour;
@@ -3325,5 +3345,7 @@ namespace AstroOfficeWeb.Client.Pages
             }
 
         }
+
+        #endregion
     }
 }
