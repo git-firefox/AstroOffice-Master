@@ -1499,6 +1499,21 @@ namespace AstroOfficeWeb.Client.Pages
                 return string.Empty;
             return response?.Data ?? string.Empty;
         }
+
+        private async Task<bool> IsBestKundali_KP_Auto(string best_Online_Result, short rating)
+        {
+            var request = new IsBestKundaliKPRequest { BestOnlineResult = best_Online_Result, Rating = rating };
+
+            var response = await Swagger!.PostAsync<IsBestKundaliKPRequest, ApiResponse<bool>>(BestBLLApiConst.POST_IsBestKundaliKPAuto, request);
+
+            if (response == null)
+                return default;
+
+            return response?.Data ?? default;
+
+
+        }
+
         #endregion
 
         #region Handle events
@@ -3116,8 +3131,6 @@ namespace AstroOfficeWeb.Client.Pages
             await this.Gen_Kundali_Chart();
         }
 
-        #endregion
-
         public DateTime DateOfBirth
         {
             get { return new DateTime(this.BirthDetails.Dobyy, this.BirthDetails.Dobmm, this.BirthDetails.Dobdd, this.BirthDetails.Tobhh, this.BirthDetails.Tobmm, this.BirthDetails.Tobss); }
@@ -3128,19 +3141,19 @@ namespace AstroOfficeWeb.Client.Pages
         {
             short num = Convert.ToInt16(BirthDetails.TimeValue);
             DateTime tob = this.persKV.Tob;
-            if (BirthDetails.CmbTime.ToLower() == "minute")
+            if (BirthDetails?.CmbTime?.ToLower() == "minute")
             {
                 tob = tob.AddMinutes((double)(-num));
             }
-            if (BirthDetails.CmbTime.ToLower() == "hour")
+            if (BirthDetails?.CmbTime?.ToLower() == "hour")
             {
                 tob = tob.AddHours((double)(-num));
             }
-            if (BirthDetails.CmbTime.ToLower() == "day")
+            if (BirthDetails?.CmbTime?.ToLower() == "day")
             {
                 tob = tob.AddDays((double)(-num));
             }
-            if (BirthDetails.CmbTime.ToLower() == "lagan")
+            if (BirthDetails?.CmbTime?.ToLower() == "lagan")
             {
                 short num1 = 120;
                 short num2 = 0;
@@ -3156,7 +3169,7 @@ namespace AstroOfficeWeb.Client.Pages
 
 
 
-            BirthDetails.Dobmm = tob.Month;
+            BirthDetails!.Dobmm = tob.Month;
             BirthDetails.Dobdd = tob.Day;
             BirthDetails.Dobyy = tob.Year;
             BirthDetails.Tobhh = tob.Hour;
@@ -3229,37 +3242,23 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-        private async Task<bool> IsBestKundali_KP_Auto(string best_Online_Result, short rating)
-        {
-            var request = new IsBestKundaliKPRequest { BestOnlineResult = best_Online_Result, Rating = rating };
-
-            var response = await Swagger!.PostAsync<IsBestKundaliKPRequest, ApiResponse<bool>>(BestBLLApiConst.POST_IsBestKundaliKPAuto, request);
-
-            if (response == null)
-                return default;
-
-            return response?.Data ?? default;
-
-
-        }
-
         private async Task OnClick_BtnPlus(MouseEventArgs e)
         {
             short num = Convert.ToInt16(BirthDetails.TimeValue);
             DateTime tob = this.persKV.Tob;
-            if (BirthDetails.CmbTime.ToLower() == "minute")
+            if (BirthDetails?.CmbTime?.ToLower() == "minute")
             {
                 tob = tob.AddMinutes((double)(num));
             }
-            if (BirthDetails.CmbTime.ToLower() == "hour")
+            if (BirthDetails?.CmbTime?.ToLower() == "hour")
             {
                 tob = tob.AddHours((double)(num));
             }
-            if (BirthDetails.CmbTime.ToLower() == "day")
+            if (BirthDetails?.CmbTime?.ToLower() == "day")
             {
                 tob = tob.AddDays((double)(num));
             }
-            if (BirthDetails.CmbTime.ToLower() == "lagan")
+            if (BirthDetails?.CmbTime?.ToLower() == "lagan")
             {
                 short num1 = 120;
                 short num2 = 0;
@@ -3272,7 +3271,7 @@ namespace AstroOfficeWeb.Client.Pages
                 num2 = Convert.ToInt16(num2 + 20);
                 tob = tob.AddMinutes((double)(num2));
             }
-            BirthDetails.Dobmm = tob.Month;
+            BirthDetails!.Dobmm = tob.Month;
             BirthDetails.Dobdd = tob.Day;
             BirthDetails.Dobyy = tob.Year;
             BirthDetails.Tobhh = tob.Hour;
@@ -3325,5 +3324,7 @@ namespace AstroOfficeWeb.Client.Pages
             }
 
         }
+
+        #endregion
     }
 }
