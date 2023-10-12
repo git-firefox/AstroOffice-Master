@@ -72,4 +72,10 @@
         public static string Base = "api/BestBLL/";
         public static string POST_IsBestKundali = Base + "IsBestKundali";
     }
+
+    public static class KPPredBLLApiConst
+    {
+        public static string Base = "api/KPPredBLL/";
+        public static string POST_GetRedSigniPlanetWise = Base + "GetRedSigniPlanetWise";
+    }
 }

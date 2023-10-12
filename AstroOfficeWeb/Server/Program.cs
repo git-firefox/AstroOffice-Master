@@ -46,6 +46,7 @@ builder.Services.AddTransient<PredictionBLL>();
 builder.Services.AddTransient<KundliBLL>();
 builder.Services.AddTransient<KPDAO>();
 builder.Services.AddTransient<BestBLL>();
+builder.Services.AddTransient<KPPredBLL>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
