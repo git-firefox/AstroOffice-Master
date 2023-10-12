@@ -49,8 +49,6 @@ namespace AstroOfficeWeb.Server.Controllers
 
             var getVarsh = _kpbl.NEW_GetVarshaphalKundliMapping(request.Age, request.PersKV, request.KP_Chart);
 
-
-
             return Ok(getVarsh);
         }
 

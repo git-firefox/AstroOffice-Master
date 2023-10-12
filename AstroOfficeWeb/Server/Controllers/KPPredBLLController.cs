@@ -23,6 +23,8 @@ namespace AstroOfficeWeb.Server.Controllers
 
             var dataString = _kpPredBLL.Get_Red_Signi_PlanetWise(request.KPChart, request.CuspHouse, request.ProductSettings, request.PersonalKundli, request.Planet);
 
+            dataString = dataString.Replace("\n", "<br />").Replace("\r", "").Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+
             return Ok(new ApiResponse<string> { Data = dataString, Success = true });
         }
     }

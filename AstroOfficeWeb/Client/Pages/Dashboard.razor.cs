@@ -2381,11 +2381,11 @@ namespace AstroOfficeWeb.Client.Pages
             this.lblParyan = string.Empty;
             this.lblSukhsmadasha = string.Empty;
 
-            string?[] text = new string?[] { selectedTR.Planet, " ", selectedTR.Period, "    कार्येश :  ", null, null, null };
+            string?[] text = new string?[] { selectedTR.Planet, " ", selectedTR.Period, "&nbsp;&nbsp;&nbsp;&nbsp;कार्येश :&nbsp;&nbsp;", null, null, null };
             string? str = selectedTR.Signi;
             char[] chrArray = new char[] { '|' };
             text[4] = str?.Split(chrArray)[0];
-            text[5] = "   नक्षत्र स्वामी : ";
+            text[5] = "&nbsp;&nbsp;&nbsp;नक्षत्र स्वामी :&nbsp;";
             string? text1 = selectedTR.Signi;
             chrArray = new char[] { '|' };
             text[6] = text1?.Split(chrArray)[1];
@@ -2455,9 +2455,9 @@ namespace AstroOfficeWeb.Client.Pages
             //KPBLL kPBLL = new KPBLL();
 
             planetNakPlanetSublordFal = await Get_Planet_Nak_Planet_Sublord_Fal(this.persKV, bhavChalitHouse1, this.main_antardasha.Where(Map => Map.Planet == num).SingleOrDefault<KPDashaVO>()?.Signi_String);
-            planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "###################################################&nbsp;&nbsp;<br />&nbsp;<br />");
+            planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "<br />###################################################&nbsp;&nbsp;<br />&nbsp;<br />");
             planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Planet_Chain_Pred(str, startDate, endDate, this.persKV, "multi", num, productSettingsVO, num1));
-            planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "--------------------------------&nbsp;&nbsp;<br />&nbsp;<br />");
+            planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "<br />--------------------------------&nbsp;&nbsp;<br />&nbsp;<br />");
 
             short nakLord2 = this.kp_chart.Where(Map => Map.Planet == num2).SingleOrDefault<KPPlanetMappingVO>()?.Nak_Lord ?? default;
             short bhavChalitHouse2 = this.kp_chart.Where(Map => Map.Planet == num2).SingleOrDefault<KPPlanetMappingVO>()?.Bhav_Chalit_House ?? default;
@@ -2475,7 +2475,7 @@ namespace AstroOfficeWeb.Client.Pages
             if (num1 > 16)
             {
                 planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred_Intelli(nakLord, str1, startDate, endDate, this.persKV, "oldvfal", productSettingsVO, this.kp_chart, num, bhavChalitHouse, bhavChalitHouse2));
-                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$&nbsp;&nbsp;<br />&nbsp;<br />");
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "<br />$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$&nbsp;&nbsp;<br />&nbsp;<br />");
                 if (bhavChalitHouse != bhavChalitHouse2)
                 {
                     planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred(num, bhavChalitHouse.ToString(), startDate, endDate, this.persKV, "oldvfal", productSettingsVO, this.kp_chart));
@@ -2485,7 +2485,7 @@ namespace AstroOfficeWeb.Client.Pages
             else
             {
                 planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, Get_Dasha_Pred_Intelli(nakLord, str1, startDate, endDate, this.persKV, "oldcvfal", productSettingsVO, this.kp_chart, num, bhavChalitHouse, bhavChalitHouse2));
-                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$&nbsp;&nbsp;<br />&nbsp;<br />");
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "<br />$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$&nbsp;&nbsp;<br />&nbsp;<br />");
                 if (bhavChalitHouse != bhavChalitHouse2)
                 {
                     planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred(num, bhavChalitHouse.ToString(), startDate, endDate, this.persKV, "oldcvfal", productSettingsVO, this.kp_chart));
@@ -2499,6 +2499,8 @@ namespace AstroOfficeWeb.Client.Pages
         PrayantardashaTableTRModel? SelectedPrayantardashaTableTR { get; set; }
         private void OnClick_TR_ListView_Prayantardasha(PrayantardashaTableTRModel selectedTR)
         {
+            SelectedPrayantardashaTableTR = selectedTR;
+
             this.maha_dasha_click = false;
 
             short planet = this.planet_list.Where(Map => Map.Hindi == selectedTR.Planet).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
@@ -2640,14 +2642,14 @@ namespace AstroOfficeWeb.Client.Pages
 
             planetNakPlanetSublordFal = await Get_Planet_Nak_Planet_Sublord_Fal(this.persKV, bhavChalitHouse, this.main_pryaantardasha.Where(Map => Map.Planet == num2).SingleOrDefault<KPDashaVO>()?.Signi_String);
 
-            planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "###################################################&nbsp;&nbsp;<br />&nbsp;<br />");
+            planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "<br />###################################################&nbsp;&nbsp;<br />&nbsp;<br />");
             planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Planet_Chain_Pred(str, startDate, endDate, this.persKV, "multi", num2, productSettingsVO, num1));
-            planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "--------------------------------&nbsp;&nbsp;<br />&nbsp;<br />");
+            planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "<br />--------------------------------&nbsp;&nbsp;<br />&nbsp;<br />");
             //KPBLL kPBLL2 = new KPBLL();
             if (num1 > 16)
             {
                 planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred_Intelli(planet, str1, startDate, endDate, this.persKV, "oldmfal", productSettingsVO, this.kp_chart, num2, bhavChalitHouse1, bhavChalitHouse2));
-                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$&nbsp;&nbsp;<br />&nbsp;<br />");
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "<br />$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$&nbsp;&nbsp;<br />&nbsp;<br />");
                 if (bhavChalitHouse1 != bhavChalitHouse2)
                 {
                     planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred(num2, bhavChalitHouse1.ToString(), startDate, endDate, this.persKV, "oldmfal", productSettingsVO, this.kp_chart));
@@ -2657,7 +2659,7 @@ namespace AstroOfficeWeb.Client.Pages
             else
             {
                 planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred_Intelli(planet, str1, startDate, endDate, this.persKV, "oldcmfal", productSettingsVO, this.kp_chart, num2, bhavChalitHouse1, bhavChalitHouse2));
-                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "\r\n\r\n $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ \r\n\r\n");
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "&nbsp;<br />&nbsp;<br />&nbsp;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$&nbsp;&nbsp;<br />&nbsp;<br />");
                 if (bhavChalitHouse1 != bhavChalitHouse2)
                 {
                     planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred(num2, bhavChalitHouse1.ToString(), startDate, endDate, this.persKV, "oldcmfal", productSettingsVO, this.kp_chart));
@@ -2722,7 +2724,7 @@ namespace AstroOfficeWeb.Client.Pages
             //BestBLL bestBLL = new BestBLL();
             //KPPredBLL kPPredBLL = new KPPredBLL();
             redSigniPlanetWise = await Get_Red_Signi_PlanetWise(this.kp_chart, this.cusp_house, this.prod, this.persKV, num);
-            redSigniPlanetWise = string.Concat(redSigniPlanetWise, "-------------------------------- \r\n\r\n");
+            redSigniPlanetWise = string.Concat(redSigniPlanetWise, "<br />--------------------------------&nbsp;&nbsp;<br />&nbsp;<br />");
 
             redSigniPlanetWise = string.Concat(redSigniPlanetWise, await this.Get_Dasha_Pred(planet, this.main_sukhsmadasha.Where(Map => Map.Planet == planet).SingleOrDefault<KPDashaVO>()?.Signi_String, startDate, endDate, this.persKV, "life", productSettingsVO, this.kp_chart));
 
@@ -2735,7 +2737,7 @@ namespace AstroOfficeWeb.Client.Pages
 
             string str = "";
             str = string.Concat(str, await Show_House_Wise_Pred(selectedTR));
-            str = string.Concat(str, "-------------------------------------");
+            str = string.Concat(str, "<br />-------------------------------------");
             str = string.Concat(str, "&nbsp;<br/>");
             short num = Convert.ToInt16(selectedTR.House);
             string str1 = "";

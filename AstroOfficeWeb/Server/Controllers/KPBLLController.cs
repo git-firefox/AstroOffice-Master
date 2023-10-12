@@ -184,6 +184,8 @@ namespace AstroOfficeWeb.Server.Controllers
 
             var dataString = _kpbl.Get_Planet_Nak_Planet_Sublord_Fal(request.PersKV, request.House, request.Houses);
 
+            dataString = dataString.Replace("\n", "<br />").Replace("\r", " ").Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+            
             return Ok(new ApiResponse<string> { Data = dataString, Success = true });
         }
 
@@ -195,6 +197,8 @@ namespace AstroOfficeWeb.Server.Controllers
 
             var dataString = _kpbl.Get_Planet_Chain_Pred(request.Houses, request.StartDate, request.EndDate, request.PersKV, request.PType, request.NakSwami, request.Prod, request.Age);
 
+            dataString = dataString.Replace("\n", "<br />").Replace("\r", " ").Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+
             return Ok(new ApiResponse<string> { Data = dataString, Success = true });
         }
 
@@ -205,6 +209,8 @@ namespace AstroOfficeWeb.Server.Controllers
                 return BadRequest();
 
             var dataString = _kpbl.Get_Dasha_Pred(request.Planet, request.Houses, request.StartDate, request.EndDate, request.PersKV, request.PType, request.Prod, request.KPChart);
+            
+            dataString = dataString.Replace("\n", "<br />").Replace("\r", " ").Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
 
             return Ok(new ApiResponse<string> { Data = dataString, Success = true });
         }
@@ -216,6 +222,8 @@ namespace AstroOfficeWeb.Server.Controllers
                 return BadRequest();
 
             var dataString = _kpbl.Get_Dasha_Pred_Intelli(request.Planet, request.Houses, request.StartDate, request.EndDate, request.PersKV, request.PType, request.Prod, request.KPChart, request.ActualPlanet, request.ActualPlanetHouse, request.NakSwamiHouse);
+
+            dataString = dataString.Replace("\n", "<br />").Replace("\r", " ").Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
 
             return Ok(new ApiResponse<string> { Data = dataString, Success = true });
         }
