@@ -90,6 +90,9 @@ namespace AstroOfficeWeb.Server.Controllers
         {
             //_kpbl.Process_Planet_Lagan(request.OnlineResult, ref request.KpChart, ref request.CuspHouse, request.Rotate, request.BhavChalit);
 
+            if (request.KpChart == null || request.CuspHouse == null)
+                return BadRequest();
+
             List<KPPlanetMappingVO> kPPlanets = request.KpChart;
             List<KPHouseMappingVO> kPHouseMappings = request.CuspHouse;
 
@@ -147,8 +150,11 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpPost]
         public IActionResult TenthKamkajPred([FromBody] TenthKamkajPredRequestModel request)
         {
+            if (request.CuspHouse == null || request.KPChart == null || request.PersonalKundli == null)
+                return BadRequest();
 
             var html = _kpbl.Tenth_Kamkaj_Pred(request.CuspHouse, request.KPChart, request.PersonalKundli);
+
             if (!string.IsNullOrEmpty(html))
                 html = html
                    .Replace("\n", "<br />")
@@ -169,5 +175,50 @@ namespace AstroOfficeWeb.Server.Controllers
             var vGetKpLan = _kpbl.Get_KP_Lang(mixsno, language, dashafal, upay, mini);
             return Ok(new ApiResponse<string> { Data = vGetKpLan, Success = true });
         }
+
+        [HttpPost]
+        public IActionResult GetPlanetNakPlanetSublordFal(GetPlanetNakPlanetSublordFalRequest request)
+        {
+            if (request.PersKV == null || request.Houses == null)
+                return BadRequest();
+
+            var dataString = _kpbl.Get_Planet_Nak_Planet_Sublord_Fal(request.PersKV, request.House, request.Houses);
+
+            return Ok(new ApiResponse<string> { Data = dataString, Success = true });
+        }
+
+        [HttpPost]
+        public IActionResult GetPlanetChainPred(GetPlanetChainPredRequest request)
+        {
+            if (request.PersKV == null || request.Houses == null || request.PType == null || request.Prod == null)
+                return BadRequest();
+
+            var dataString = _kpbl.Get_Planet_Chain_Pred(request.Houses, request.StartDate, request.EndDate, request.PersKV, request.PType, request.NakSwami, request.Prod, request.Age);
+
+            return Ok(new ApiResponse<string> { Data = dataString, Success = true });
+        }
+
+        [HttpPost]
+        public IActionResult GetDashaPred(GetDashaPredRequest request)
+        {
+            if (request.PersKV == null || request.Houses == null || request.PType == null || request.Prod == null || request.KPChart == null)
+                return BadRequest();
+
+            var dataString = _kpbl.Get_Dasha_Pred(request.Planet, request.Houses, request.StartDate, request.EndDate, request.PersKV, request.PType, request.Prod, request.KPChart);
+
+            return Ok(new ApiResponse<string> { Data = dataString, Success = true });
+        }
+
+        [HttpPost]
+        public IActionResult GetDashaPredIntelli(GetDashaPredIntelliRequest request)
+        {
+            if (request.PersKV == null || request.Houses == null || request.PType == null || request.Prod == null || request.KPChart == null)
+                return BadRequest();
+
+            var dataString = _kpbl.Get_Dasha_Pred_Intelli(request.Planet, request.Houses, request.StartDate, request.EndDate, request.PersKV, request.PType, request.Prod, request.KPChart, request.ActualPlanet, request.ActualPlanetHouse, request.NakSwamiHouse);
+
+            return Ok(new ApiResponse<string> { Data = dataString, Success = true });
+        }
+
     }
 }

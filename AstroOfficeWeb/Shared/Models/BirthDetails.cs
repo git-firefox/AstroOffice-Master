@@ -32,7 +32,7 @@ namespace AstroOfficeWeb.Shared.Models
         public short CmbRotate { get; set; } = 1;
         public bool ChkSahasaneLogic { get; set; }
         public bool SalaChakkar { get; set; }
-        public bool Mfal { get; set; } = false;
+        public bool ChkMfal { get; set; } = false;
         public string Longtitude { get; set; } = string.Empty;
         public string Latitude { get; set; } = string.Empty;
         public string CmbLanguage { get; set; } = "Hindi";

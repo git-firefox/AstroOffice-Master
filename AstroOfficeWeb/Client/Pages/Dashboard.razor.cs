@@ -1339,6 +1339,166 @@ namespace AstroOfficeWeb.Client.Pages
             return str;
         }
 
+        private void Gen_SukhsmaDasha(List<KPDashaVO> dasha_list, List<KPPlanetMappingVO> kp_chart)
+        {
+            if (this.ListView_Sukhsmadasha == null)
+                this.ListView_Sukhsmadasha = new();
+            else
+                this.ListView_Sukhsmadasha.Clear();
+
+            foreach (KPDashaVO dashaList in dasha_list)
+            {
+                var tr = new SukhsmadashaTableTRModel();
+
+                tr.Planet = this.planet_list.Where(Map => Map.Planet == dashaList.Planet).SingleOrDefault<KPPlanetsVO>()?.Hindi ?? default;
+
+                string startDate = dashaList.StartDate.ToString(format: "dd MMM yyyy");
+                string endDate = dashaList.EndDate.ToString(format: "dd MMM yyyy");
+
+                tr.Period = string.Concat(startDate, " - ", endDate);
+                tr.Signi = string.Concat(dashaList.Signi_String, " | ", dashaList.Nak_Signi_String);
+
+                ListView_Sukhsmadasha.Add(tr);
+            }
+        }
+
+
+        public async Task<string> Get_Fal_Antar(string Online_Result, short planet_no, string? antar_string, string? age_string, KundliVO persKV, ProductSettingsVO tmpprod, bool mfal)
+        {
+            var request = new GetFalAntarRequest()
+            {
+                Online_Result = Online_Result,
+                PlanetNo = planet_no,
+                AntarString = antar_string,
+                AgeString = age_string,
+                PersKV = persKV,
+                Prod = tmpprod,
+                Mfal = mfal,
+            };
+
+            var response = await Swagger!.PostAsync<GetFalAntarRequest, ApiResponse<string>>(PredictionBLLApiConst.POST_GetFalAntar, request);
+
+            if (response == null)
+                return string.Empty;
+
+            return response.Data ?? string.Empty;
+        }
+
+        public async Task<string> Get_Fal_Double_Antar_Hyphen_Wala(string antar_string, string? age_string, short planet_no, short maha_planet_no, ProductSettingsVO prod, KundliVO persKV)
+        {
+            var request = new GetFalDoubleAntarHyphenWalaRequest
+            {
+                AntarString = antar_string,
+                AgeString = age_string,
+                PlanetNo = planet_no,
+                MahaPlanetNo = maha_planet_no,
+                Prod = prod,
+                PersKV = persKV
+            };
+
+            var response = await Swagger!.PostAsync<GetFalDoubleAntarHyphenWalaRequest, ApiResponse<string>>(PredictionBLLApiConst.POST_GetFalDoubleAntarHyphenWala, request);
+
+            if (response == null)
+                return string.Empty;
+
+            return response.Data ?? string.Empty;
+        }
+
+        private async Task<string> Get_Dasha_Pred(short planet, string? houses, DateTime startdate, DateTime enddate, KundliVO persKV, string ptype, ProductSettingsVO prod, List<KPPlanetMappingVO> kp_chart)
+        {
+            var request = new GetDashaPredRequest
+            {
+                Planet = planet,
+                Houses = houses,
+                StartDate = startdate,
+                EndDate = enddate,
+                PersKV = persKV,
+                PType = ptype,
+                Prod = prod,
+                KPChart = kp_chart
+            };
+            var response = await Swagger!.PostAsync<GetDashaPredRequest, ApiResponse<string>>(KPBLLApiConst.POST_GetDashaPred, request);
+            if (response == null)
+                return string.Empty;
+            return response?.Data ?? string.Empty;
+        }
+
+        private async Task<string> Get_Dasha_Pred_Intelli(short planet, string houses, DateTime startdate, DateTime enddate, KundliVO persKV, string ptype, ProductSettingsVO prod, List<KPPlanetMappingVO> kp_chart, short actual_planet, short actual_planet_house, short nak_swami_house)
+        {
+            var request = new GetDashaPredIntelliRequest
+            {
+                Planet = planet,
+                Houses = houses,
+                StartDate = startdate,
+                EndDate = enddate,
+                PersKV = persKV,
+                PType = ptype,
+                Prod = prod,
+                KPChart = kp_chart,
+                ActualPlanet = actual_planet,
+                ActualPlanetHouse = actual_planet_house,
+                NakSwamiHouse = nak_swami_house
+            };
+
+            var response = await Swagger!.PostAsync<GetDashaPredIntelliRequest, ApiResponse<string>>(KPBLLApiConst.POST_GetDashaPredIntelli, request);
+            if (response == null)
+                return string.Empty;
+            return response?.Data ?? string.Empty;
+        }
+
+        private async Task<string> Get_Planet_Chain_Pred(string houses, DateTime startdate, DateTime enddate, KundliVO persKV, string ptype, short nak_swami, ProductSettingsVO prod, short age)
+        {
+            var request = new GetPlanetChainPredRequest
+            {
+                Houses = houses,
+                StartDate = startdate,
+                EndDate = enddate,
+                PersKV = persKV,
+                PType = ptype,
+                NakSwami = nak_swami,
+                Prod = prod,
+                Age = age
+            };
+
+            var response = await Swagger!.PostAsync<GetPlanetChainPredRequest, ApiResponse<string>>(KPBLLApiConst.POST_GetPlanetChainPred, request);
+            if (response == null)
+                return string.Empty;
+            return response?.Data ?? string.Empty;
+        }
+
+        private async Task<string> Get_Planet_Nak_Planet_Sublord_Fal(KundliVO persKV, short house, string? houses)
+        {
+            var request = new GetPlanetNakPlanetSublordFalRequest
+            {
+                PersKV = persKV,
+                House = house,
+                Houses = houses
+            };
+
+            var response = await Swagger!.PostAsync<GetPlanetNakPlanetSublordFalRequest, ApiResponse<string>>(KPBLLApiConst.POST_GetPlanetNakPlanetSublordFal, request);
+            if (response == null)
+                return string.Empty;
+            return response?.Data ?? string.Empty;
+
+        }
+
+        private async Task<string> Get_Red_Signi_PlanetWise(List<KPPlanetMappingVO> kp_chart, List<KPHouseMappingVO> cusp_house, ProductSettingsVO prod, KundliVO persKV, short planet)
+        {
+            var request = new GetRedSigniPlanetWiseRequest
+            {
+                KPChart = kp_chart,
+                CuspHouse = cusp_house,
+                ProductSettings = prod,
+                PersonalKundli = persKV,
+                Planet = planet
+            };
+
+            var response = await Swagger!.PostAsync<GetRedSigniPlanetWiseRequest, ApiResponse<string>>(KPPredBLLApiConst.POST_GetRedSigniPlanetWise, request);
+
+            if (response == null)
+                return string.Empty;
+            return response?.Data ?? string.Empty;
+        }
         #endregion
 
         #region Handle events
@@ -2029,8 +2189,11 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
+        MahadashaTableTRModel? SelectedMahadashaTableTR { get; set; }
         private async Task OnClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
         {
+            this.SelectedMahadashaTableTR = selectedTR;
+
             this.maha_dasha_click = true;
             this.sukshma_dasha_click = false;
 
@@ -2140,8 +2303,43 @@ namespace AstroOfficeWeb.Client.Pages
 
         }
 
+        private async Task OnDblClick_TR_ListView_Years35(Years35TableTRModel selectedTR)
+        {
+            string falAntar = "";
+            if (SelectedMahadashaTableTR != null)
+            {
+                short planet = this.planet_list.Where(Map => Map.Hindi == selectedTR.Planet).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+                short num = planet;
+                //PredictionBLL predictionBLL = new PredictionBLL();
+                this.prod.ShowUpay = true;
+                this.prod.ShowUpayCode = true;
+                this.persKV.Paid = true;
+                this.prod.ShowUpayBelow = true;
+                this.prod.Paid = true;
+                if (!(selectedTR.Antar == "-"))
+                {
+                    this.prod.Vfal = true;
+                    falAntar = await Get_Fal_Antar(this.Online_Result, num, selectedTR.Antar, selectedTR.Age, this.persKV, this.prod, this.BirthDetails.ChkMfal);
+                    this.prod.Vfal = false;
+                }
+                else
+                {
+                    short planet1 = this.planet_list.Where(Map => Map.Hindi == SelectedMahadashaTableTR.Planet).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+                    falAntar = await Get_Fal_Double_Antar_Hyphen_Wala(selectedTR.Antar, selectedTR.Age, planet, planet1, this.prod, this.persKV);
+                }
+                await this.Show_Falla(falAntar);
+            }
+            else
+            {
+                //MessageBox.Show("Please Select Mahadasha");
+            }
+        }
+
+        AntardashaTableTRModel? SelectedAntardashaTableTR { get; set; }
         private void OnClick_TR_ListView_Antardasha(AntardashaTableTRModel selectedTR)
         {
+            SelectedAntardashaTableTR = selectedTR;
             this.antar_dasha_click = true;
             this.sukshma_dasha_click = false;
 
@@ -2194,15 +2392,342 @@ namespace AstroOfficeWeb.Client.Pages
             this.lblAntar = string.Concat(text);
         }
 
-        private void OnDblClick_TR_ListView_Antardasha(AntardashaTableTRModel selectedTR) { }
+        private async Task OnDblClick_TR_ListView_Antardasha(AntardashaTableTRModel selectedTR)
+        {
+            string planetNakPlanetSublordFal = "";
 
-        private void OnClick_TR_ListView_Prayantardasha(PrayantardashaTableTRModel selectedTR) { }
+            short planet = this.planet_list.Where(Map => Map.Hindi == selectedTR.Planet).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
 
-        private void OnDblClick_TR_ListView_Prayantardasha(PrayantardashaTableTRModel selectedTR) { }
+            short nakLord = this.planet_list.Where(Map => Map.Hindi == selectedTR.Planet).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
 
-        private void OnClick_TR_ListView_Sukhsmadasha(SukhsmadashaTableTRModel selectedTR) { }
+            ProductSettingsVO productSettingsVO = new ProductSettingsVO()
+            {
+                Online_Result = this.Online_Result,
+                Include = this.BirthDetails.ChkSahasaneLogic,
+                Lang = this.BirthDetails.CmbLanguage,
+                Male = this.male,
+                PredFor = 0,
+                ShowRef = this.BirthDetails.ChkShowRef,
+                Sno = (long)555,
+                Category = "all",
+                Product = "all",
+                Karyesh = true,
+                Rotate = Convert.ToInt16(this.BirthDetails.CmbRotate),
+                ShowUpay = true,
+                ShowUpayCode = true
+            };
 
-        private void OnDblClick_TR_ListView_Sukhsmadasha(SukhsmadashaTableTRModel selectedTR) { }
+            this.persKV.Paid = true;
+            productSettingsVO.ShowUpayBelow = true;
+            productSettingsVO.Paid = true;
+
+            DateTime startDate = this.main_antardasha.Where(Map => Map.Planet == nakLord).SingleOrDefault<KPDashaVO>()?.StartDate ?? default;
+            DateTime endDate = (from Map in this.main_antardasha where Map.Planet == nakLord select Map).SingleOrDefault<KPDashaVO>()?.EndDate ?? default;
+            short num = nakLord;
+            short bhavChalitHouse = this.kp_chart.Where(Map => Map.Planet == num).SingleOrDefault<KPPlanetMappingVO>()?.Bhav_Chalit_House ?? default;
+
+            PredictionBLL predictionBLL = new PredictionBLL();
+
+            short num1 = Convert.ToInt16(predictionBLL.CalculateAgeCorrect(this.persKV.Dob, startDate));
+            nakLord = this.kp_chart.Where(Map => Map.Planet == nakLord).SingleOrDefault<KPPlanetMappingVO>()?.Nak_Lord ?? default;
+
+            short bhavChalitHouse1 = 0;
+            string str = "";
+            short num2 = nakLord;
+
+            short nakLord1 = this.kp_chart.Where(Map => Map.Planet == planet).SingleOrDefault<KPPlanetMappingVO>()?.Nak_Lord ?? default;
+
+            bhavChalitHouse1 = this.kp_chart.Where(Map => Map.Planet == num2).SingleOrDefault<KPPlanetMappingVO>()?.Bhav_Chalit_House ?? default;
+
+            str = string.Concat(this.main_mahadasha.Where(Map => Map.Planet == planet).SingleOrDefault<KPDashaVO>()?.Signi_String, " ", this.main_antardasha.Where(Map => Map.Planet == num).SingleOrDefault<KPDashaVO>()?.Signi_String);
+
+            string str1 = "";
+
+            string signiStringWithoutNakRashi = this.kpbl.Get_Signi_String_Without_NakRashi(nakLord, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
+
+            char[] chrArray = new char[] { ' ' };
+            signiStringWithoutNakRashi.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+
+            string signiStringWithoutNakRashi1 = this.kpbl.Get_Signi_String_Without_NakRashi(planet, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
+
+            chrArray = new char[] { ' ' };
+            signiStringWithoutNakRashi1.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+            //KPBLL kPBLL = new KPBLL();
+
+            planetNakPlanetSublordFal = await Get_Planet_Nak_Planet_Sublord_Fal(this.persKV, bhavChalitHouse1, this.main_antardasha.Where(Map => Map.Planet == num).SingleOrDefault<KPDashaVO>()?.Signi_String);
+            planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "###################################################&nbsp;&nbsp;<br />&nbsp;<br />");
+            planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Planet_Chain_Pred(str, startDate, endDate, this.persKV, "multi", num, productSettingsVO, num1));
+            planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "--------------------------------&nbsp;&nbsp;<br />&nbsp;<br />");
+
+            short nakLord2 = this.kp_chart.Where(Map => Map.Planet == num2).SingleOrDefault<KPPlanetMappingVO>()?.Nak_Lord ?? default;
+            short bhavChalitHouse2 = this.kp_chart.Where(Map => Map.Planet == num2).SingleOrDefault<KPPlanetMappingVO>()?.Bhav_Chalit_House ?? default;
+            short bhavChalitHouse3 = this.kp_chart.Where(Map => Map.Planet == nakLord2).SingleOrDefault<KPPlanetMappingVO>()?.Bhav_Chalit_House ?? default;
+
+            str1 = (nakLord2 == num2 ? bhavChalitHouse2.ToString() : string.Concat(bhavChalitHouse2.ToString(), " ", bhavChalitHouse3.ToString()));
+
+            if (nakLord2 == num2)
+            {
+                str1 = string.Concat(str1, " ", this.kpbl.Get_Signi_String_Only_Rashi(num2, this.kp_chart, false));
+            }
+
+            KPBLL kPBLL1 = new KPBLL();
+
+            if (num1 > 16)
+            {
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred_Intelli(nakLord, str1, startDate, endDate, this.persKV, "oldvfal", productSettingsVO, this.kp_chart, num, bhavChalitHouse, bhavChalitHouse2));
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$&nbsp;&nbsp;<br />&nbsp;<br />");
+                if (bhavChalitHouse != bhavChalitHouse2)
+                {
+                    planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred(num, bhavChalitHouse.ToString(), startDate, endDate, this.persKV, "oldvfal", productSettingsVO, this.kp_chart));
+                }
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred(nakLord, str1, startDate, endDate, this.persKV, "oldvfal", productSettingsVO, this.kp_chart));
+            }
+            else
+            {
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, Get_Dasha_Pred_Intelli(nakLord, str1, startDate, endDate, this.persKV, "oldcvfal", productSettingsVO, this.kp_chart, num, bhavChalitHouse, bhavChalitHouse2));
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$&nbsp;&nbsp;<br />&nbsp;<br />");
+                if (bhavChalitHouse != bhavChalitHouse2)
+                {
+                    planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred(num, bhavChalitHouse.ToString(), startDate, endDate, this.persKV, "oldcvfal", productSettingsVO, this.kp_chart));
+                }
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred(nakLord, str1, startDate, endDate, this.persKV, "oldcvfal", productSettingsVO, this.kp_chart));
+            }
+
+            await this.Show_Falla(planetNakPlanetSublordFal);
+        }
+
+        PrayantardashaTableTRModel? SelectedPrayantardashaTableTR { get; set; }
+        private void OnClick_TR_ListView_Prayantardasha(PrayantardashaTableTRModel selectedTR)
+        {
+            this.maha_dasha_click = false;
+
+            short planet = this.planet_list.Where(Map => Map.Hindi == selectedTR.Planet).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+            DateTime startDate = this.main_mahadasha.Where(Map => Map.Planet == planet).SingleOrDefault<KPDashaVO>()?.StartDate ?? default;
+
+            DateTime endDate = this.main_mahadasha.Where(Map => Map.Planet == planet).SingleOrDefault<KPDashaVO>()?.EndDate ?? default;
+
+            this.main_antardasha = this.kpbl.Get_Antar_Dasha(startDate, endDate, planet, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
+
+            short num = this.planet_list.Where(Map => Map.Hindi == selectedTR.Planet).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+            DateTime dateTime = this.main_antardasha.Where(Map => Map.Planet == num).SingleOrDefault<KPDashaVO>()?.StartDate ?? default;
+
+            DateTime endDate1 = this.main_antardasha.Where(Map => Map.Planet == num).SingleOrDefault<KPDashaVO>()?.EndDate ?? default;
+
+            this.main_pryaantardasha = this.kpbl.Get_Prayatntar_Dasha(this.main_antardasha, dateTime, endDate1, planet, num, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
+
+            short planet1 = this.planet_list.Where(Map => Map.Hindi == selectedTR.Planet).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+            DateTime startDate1 = this.main_pryaantardasha.Where(Map => Map.Planet == planet1).SingleOrDefault<KPDashaVO>()?.StartDate ?? default;
+
+            DateTime dateTime1 = this.main_pryaantardasha.Where(Map => Map.Planet == planet1).SingleOrDefault<KPDashaVO>()?.EndDate ?? default;
+
+            this.main_sukhsmadasha = this.kpbl.Get_Sukhsma_Dasha(this.main_pryaantardasha, startDate1, dateTime1, planet, num, planet1, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
+
+            this.Gen_SukhsmaDasha(this.main_sukhsmadasha, this.kp_chart);
+
+            this.lblSukhsmadasha = string.Empty;
+            this.lblParyan = string.Empty;
+
+            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;", selectedTR.Period, "&nbsp;&nbsp;&nbsp;&nbsp;कार्येश :&nbsp;&nbsp;", null, null, null };
+
+            string? str = selectedTR.Signi;
+            char[] chrArray = new char[] { '|' };
+            text[4] = str?.Split(chrArray)[0];
+            text[5] = "&nbsp;&nbsp;&nbsp;नक्षत्र स्वामी : ";
+            string? text1 = selectedTR.Signi;
+            chrArray = new char[] { '|' };
+            text[6] = text1?.Split(chrArray)[1];
+
+            this.lblParyan = string.Concat(text);
+        }
+
+        private async Task OnDblClick_TR_ListView_Prayantardasha(PrayantardashaTableTRModel selectedTR)
+        {
+            if (SelectedAntardashaTableTR?.Planet == null) return;
+            if (SelectedMahadashaTableTR?.Planet == null) return;
+
+            string planetNakPlanetSublordFal = "";
+
+            short planet = this.planet_list.Where(Map => Map.Hindi == selectedTR.Planet).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+            short num = this.planet_list.Where(Map => Map.Hindi == SelectedAntardashaTableTR.Planet).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+            short planet1 = this.planet_list.Where(Map => Map.Hindi == SelectedMahadashaTableTR.Planet).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+            short nakLord = this.kp_chart.Where(Map => Map.Planet == num).SingleOrDefault<KPPlanetMappingVO>()?.Nak_Lord ?? default;
+
+            short nakLord1 = this.kp_chart.Where(Map => Map.Planet == planet1).SingleOrDefault<KPPlanetMappingVO>()?.Nak_Lord ?? default;
+
+            ProductSettingsVO productSettingsVO = new ProductSettingsVO()
+            {
+                Online_Result = this.Online_Result,
+                Include = this.BirthDetails.ChkSahasaneLogic,
+                Lang = this.BirthDetails.CmbLanguage,
+                Male = this.male,
+                PredFor = 0,
+                ShowRef = this.BirthDetails.ChkShowRef,
+                ShowUpay = true,
+                ShowUpayCode = true,
+                ShowUpayBelow = true
+            };
+
+            this.persKV.Paid = true;
+            productSettingsVO.Sno = (long)555;
+            productSettingsVO.Category = "all";
+            productSettingsVO.Product = "all";
+            productSettingsVO.Karyesh = true;
+            productSettingsVO.Rotate = this.BirthDetails.CmbRotate;
+
+            DateTime startDate = this.main_pryaantardasha.Where(Map => Map.Planet == planet).SingleOrDefault<KPDashaVO>()?.StartDate ?? default;
+
+            DateTime endDate = this.main_pryaantardasha.Where(Map => Map.Planet == planet).SingleOrDefault<KPDashaVO>()?.EndDate ?? default;
+
+            PredictionBLL predictionBLL = new PredictionBLL();
+            short num1 = Convert.ToInt16(predictionBLL.CalculateAgeCorrect(this.persKV.Dob, startDate));
+            KPBLL kPBLL = new KPBLL();
+            short bhavChalitHouse = 0;
+            string str = "";
+            short num2 = planet;
+
+            short bhavChalitHouse1 = this.kp_chart.Where(Map => Map.Planet == num2).SingleOrDefault<KPPlanetMappingVO>()?.Bhav_Chalit_House ?? default;
+
+            planet = this.kp_chart.Where(Map => Map.Planet == planet).SingleOrDefault<KPPlanetMappingVO>()?.Nak_Lord ?? default;
+
+            bhavChalitHouse = this.kp_chart.Where(Map => Map.Planet == planet).SingleOrDefault<KPPlanetMappingVO>()?.Bhav_Chalit_House ?? default;
+
+            string?[] signiString = new string?[]
+            {
+                this.main_mahadasha.Where(Map => Map.Planet == planet1).SingleOrDefault<KPDashaVO>()?.Signi_String,
+                " ",
+                this.main_antardasha.Where(Map => Map.Planet == num).SingleOrDefault<KPDashaVO>()?.Signi_String,
+                " ",
+                this.main_pryaantardasha.Where(Map => Map.Planet == num2).SingleOrDefault<KPDashaVO>()?.Signi_String
+            };
+
+            str = string.Concat(signiString);
+            string str1 = "";
+            string? signiString1 = this.main_pryaantardasha.Where(Map => Map.Planet == planet).SingleOrDefault<KPDashaVO>()?.Signi_String;
+
+            char[] chrArray = new char[] { ' ' };
+
+            signiString1?.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+
+            string? signiString2 = this.main_antardasha.Where(Map => Map.Planet == nakLord).SingleOrDefault<KPDashaVO>()?.Signi_String;
+
+            chrArray = new char[] { ' ' };
+
+            signiString2?.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+
+            string? str2 = this.main_mahadasha.Where(Map => Map.Planet == planet1).SingleOrDefault<KPDashaVO>()?.Signi_String;
+
+            chrArray = new char[] { ' ' };
+
+            str2?.Split(chrArray, StringSplitOptions.RemoveEmptyEntries);
+
+            short nakLord2 = this.kp_chart.Where(Map => Map.Planet == planet).SingleOrDefault<KPPlanetMappingVO>()?.Nak_Lord ?? default;
+
+            short bhavChalitHouse2 = this.kp_chart.Where(Map => Map.Planet == planet).SingleOrDefault<KPPlanetMappingVO>()?.Bhav_Chalit_House ?? default;
+
+            short bhavChalitHouse3 = this.kp_chart.Where(Map => Map.Planet == nakLord2).SingleOrDefault<KPPlanetMappingVO>()?.Bhav_Chalit_House ?? default;
+
+            str1 = (nakLord2 == planet ? bhavChalitHouse2.ToString() : string.Concat(bhavChalitHouse2.ToString(), " ", bhavChalitHouse3.ToString()));
+            if (nakLord2 == planet)
+            {
+                str1 = string.Concat(str1, " ", this.kpbl.Get_Signi_String_Only_Rashi(planet, this.kp_chart, false));
+            }
+
+            planetNakPlanetSublordFal = await Get_Planet_Nak_Planet_Sublord_Fal(this.persKV, bhavChalitHouse, this.main_pryaantardasha.Where(Map => Map.Planet == num2).SingleOrDefault<KPDashaVO>()?.Signi_String);
+
+            planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "###################################################&nbsp;&nbsp;<br />&nbsp;<br />");
+            planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Planet_Chain_Pred(str, startDate, endDate, this.persKV, "multi", num2, productSettingsVO, num1));
+            planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "--------------------------------&nbsp;&nbsp;<br />&nbsp;<br />");
+            //KPBLL kPBLL2 = new KPBLL();
+            if (num1 > 16)
+            {
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred_Intelli(planet, str1, startDate, endDate, this.persKV, "oldmfal", productSettingsVO, this.kp_chart, num2, bhavChalitHouse1, bhavChalitHouse2));
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$&nbsp;&nbsp;<br />&nbsp;<br />");
+                if (bhavChalitHouse1 != bhavChalitHouse2)
+                {
+                    planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred(num2, bhavChalitHouse1.ToString(), startDate, endDate, this.persKV, "oldmfal", productSettingsVO, this.kp_chart));
+                }
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred(planet, str1, startDate, endDate, this.persKV, "oldmfal", productSettingsVO, this.kp_chart));
+            }
+            else
+            {
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred_Intelli(planet, str1, startDate, endDate, this.persKV, "oldcmfal", productSettingsVO, this.kp_chart, num2, bhavChalitHouse1, bhavChalitHouse2));
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, "\r\n\r\n $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ \r\n\r\n");
+                if (bhavChalitHouse1 != bhavChalitHouse2)
+                {
+                    planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred(num2, bhavChalitHouse1.ToString(), startDate, endDate, this.persKV, "oldcmfal", productSettingsVO, this.kp_chart));
+                }
+                planetNakPlanetSublordFal = string.Concat(planetNakPlanetSublordFal, await Get_Dasha_Pred(planet, str1, startDate, endDate, this.persKV, "oldcmfal", productSettingsVO, this.kp_chart));
+            }
+            await this.Show_Falla(planetNakPlanetSublordFal);
+        }
+
+        private void OnClick_TR_ListView_Sukhsmadasha(SukhsmadashaTableTRModel selectedTR)
+        {
+
+            this.sukshma_dasha_click = true;
+            this.antar_dasha_click = false;
+
+            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;", selectedTR.Period, "&nbsp;&nbsp;&nbsp;&nbsp;कार्येश :&nbsp;&nbsp;", null, null, null };
+            string? str = selectedTR.Signi;
+            char[] chrArray = new char[] { '|' };
+            text[4] = str?.Split(chrArray)[0];
+            text[5] = "&nbsp;&nbsp;&nbsp;नक्षत्र स्वामी :&nbsp;";
+            string? text1 = selectedTR.Signi;
+            chrArray = new char[] { '|' };
+            text[6] = text1?.Split(chrArray)[1];
+            this.lblSukhsmadasha = string.Concat(text);
+        }
+
+        private async Task OnDblClick_TR_ListView_Sukhsmadasha(SukhsmadashaTableTRModel selectedTR)
+        {
+            if (SelectedPrayantardashaTableTR == null) return;
+
+            string redSigniPlanetWise = "";
+
+            short planet = this.planet_list.Where(Map => Map.Hindi == selectedTR.Planet).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+            short num = planet;
+
+            short planet1 = this.planet_list.Where(Map => Map.Hindi == SelectedPrayantardashaTableTR.Planet).SingleOrDefault<KPPlanetsVO>()?.Planet ?? default;
+
+            DateTime startDate = this.main_sukhsmadasha.Where(Map => Map.Planet == planet).SingleOrDefault<KPDashaVO>()?.StartDate ?? default;
+
+            DateTime endDate = this.main_sukhsmadasha.Where(Map => Map.Planet == planet).SingleOrDefault<KPDashaVO>()?.EndDate ?? default;
+
+            ProductSettingsVO productSettingsVO = new ProductSettingsVO()
+            {
+                Online_Result = this.Online_Result,
+                Include = this.BirthDetails.ChkSahasaneLogic,
+                Lang = this.BirthDetails.CmbLanguage,
+                Male = this.male,
+                PredFor = 0,
+                ShowRef = this.BirthDetails.ChkShowRef,
+                ShowUpay = false,
+                ShowUpayCode = true,
+                Sno = (long)555,
+                Category = "all",
+                Product = "all",
+                Karyesh = true,
+                Rotate = this.BirthDetails.CmbRotate
+            };
+
+            planet = this.kp_chart.Where(Map => Map.Planet == planet).SingleOrDefault<KPPlanetMappingVO>()?.Nak_Lord ?? default;
+
+            //BestBLL bestBLL = new BestBLL();
+            //KPPredBLL kPPredBLL = new KPPredBLL();
+            redSigniPlanetWise = await Get_Red_Signi_PlanetWise(this.kp_chart, this.cusp_house, this.prod, this.persKV, num);
+            redSigniPlanetWise = string.Concat(redSigniPlanetWise, "-------------------------------- \r\n\r\n");
+
+            redSigniPlanetWise = string.Concat(redSigniPlanetWise, await this.Get_Dasha_Pred(planet, this.main_sukhsmadasha.Where(Map => Map.Planet == planet).SingleOrDefault<KPDashaVO>()?.Signi_String, startDate, endDate, this.persKV, "life", productSettingsVO, this.kp_chart));
+
+            await this.Show_Falla(redSigniPlanetWise);
+        }
 
         private async Task OnDblClick_TR_ListView_House(ChartHouseTableTRModel selectedTR)
         {
@@ -2571,8 +3096,6 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-        #endregion
-
         private async Task OnFocusOut_DateOfBirthSelect(FocusEventArgs e)
         {
             var selectedDate = await JSRuntime.GetDateFromDateTimePickerAsync(divDateOfBirth);
@@ -2587,6 +3110,8 @@ namespace AstroOfficeWeb.Client.Pages
             //ListView_House?.Clear();
             //await this.Gen_Kundali_Chart();
         }
+
+        #endregion
 
     }
 }
