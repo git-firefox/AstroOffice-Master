@@ -1846,13 +1846,7 @@ namespace AstroOfficeWeb.Client.Pages
 
         private async Task OnChange_ListBirthCities(ChangeEventArgs e)
         {
-            //var task6 = Swagger!.GetAsync<List<DTOs.APlaceMaster>>(string.Format(LocationBLLApiConst.GET_GetPlaceListLike, BirthDetails!.TxtBirthPlace, BirthDetails!.CmbCountry));
-
-            //await Task.WhenAll(task6);
-
-            //this.ListBirthCities = task6.Result;
-
-
+            await Task.Delay(1000);
             string value = e.Value.ToStringLower();
             var selectedBirthCity = ListBirthCities![selectedBirthCityIndex];
 
