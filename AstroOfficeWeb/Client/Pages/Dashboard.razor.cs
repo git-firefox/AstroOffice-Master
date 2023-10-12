@@ -31,6 +31,8 @@ namespace AstroOfficeWeb.Client.Pages
 
         #region Define Variables
 
+        private IList<Task> TaskList { get; set; } = new List<Task>();
+
         private string Online_Result = "";
         private string RP_Online_Result = "";
 
@@ -198,7 +200,7 @@ namespace AstroOfficeWeb.Client.Pages
 
             if (!this.no_countryload && this.BirthDetails.CmbCountry != null)
             {
-                await this.LoadCountry();// !
+                await this.LoadCountry();
             }
             this.no_countryload = false;
             #endregion
@@ -1074,6 +1076,7 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
+
         private async Task LoadCountry()
         {
             if (BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
@@ -1843,13 +1846,37 @@ namespace AstroOfficeWeb.Client.Pages
 
         private async Task OnChange_ListBirthCities(ChangeEventArgs e)
         {
+            var task6 = Swagger!.GetAsync<List<DTOs.APlaceMaster>>(string.Format(LocationBLLApiConst.GET_GetPlaceListLike, BirthDetails!.TxtBirthPlace, BirthDetails!.CmbCountry));
+
+            await Task.WhenAll(task6);
+
+            this.ListBirthCities = task6.Result;
+
+
             string value = e.Value.ToStringLower();
             var selectedBirthCity = ListBirthCities![selectedBirthCityIndex];
-            this.BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
 
-            var place = await Swagger!.GetAsync<DTOs.APlaceMaster>(string.Format(LocationBLLApiConst.GET_GetPlaceByID, selectedBirthCity?.Sno));
-            var country = await Swagger!.GetAsync<DTOs.ACountryMaster>(string.Format(LocationBLLApiConst.GET_GetCountryByCode, selectedBirthCity?.CountryCode));
-            var state = await Swagger!.GetAsync<DTOs.AStateMaster>(string.Format(LocationBLLApiConst.GET_GetStateByCode, place?.CountryCode));
+            this.BirthDetails.BirthPlace = selectedBirthCity?.Place ?? "";
+
+            var task1 = Swagger!.GetAsync<DTOs.APlaceMaster>(string.Format(LocationBLLApiConst.GET_GetPlaceByID, selectedBirthCity?.Sno));
+
+            var task2 = Swagger!.GetAsync<DTOs.ACountryMaster>(string.Format(LocationBLLApiConst.GET_GetCountryByCode, selectedBirthCity?.CountryCode));
+
+            await Task.WhenAll(task1, task2);
+
+            var place = task1.Result;
+
+            var country = task2.Result;
+
+            var task3 = Swagger!.GetAsync<DTOs.AStateMaster>(string.Format(LocationBLLApiConst.GET_GetStateByCode, place?.CountryCode));
+
+            await Task.WhenAll(task3);
+
+            var state = task3.Result;
+
+            //var place = await Swagger!.GetAsync<DTOs.APlaceMaster>(string.Format(LocationBLLApiConst.GET_GetPlaceByID, selectedBirthCity?.Sno));
+            //var country = await Swagger!.GetAsync<DTOs.ACountryMaster>(string.Format(LocationBLLApiConst.GET_GetCountryByCode, selectedBirthCity?.CountryCode));
+            //var state = await Swagger!.GetAsync<DTOs.AStateMaster>(string.Format(LocationBLLApiConst.GET_GetStateByCode, place?.CountryCode));
 
             full_lon = (selectedBirthCity!.Longitude ?? "").Trim();
             full_lat = (selectedBirthCity!.Latitude ?? "").Trim();
@@ -1925,7 +1952,7 @@ namespace AstroOfficeWeb.Client.Pages
             // PredictionBLL predictionBLL1 = new PredictionBLL();
             KundliVO kundliVO = new KundliVO();
             string text = BirthDetails.TxtName;
-            string text1 = BirthDetails.TxtBirthPlace;
+            string text1 = BirthDetails.BirthPlace ?? string.Empty;
             string str2 = DateTime.Now.ToString("dd");
             string str3 = DateTime.Now.ToString("MM");
             string str4 = DateTime.Now.ToString("yyyy");
