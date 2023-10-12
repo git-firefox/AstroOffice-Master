@@ -66,10 +66,10 @@
                                         <input value="@BirthDetails!.TxtName" class="form-control form-control-sm" readonly />
                                     }
                                 </div>
-                                <div class="col">
+                              @*   <div class="col">
                                     @if (dobddEnabled)
                                     {
-                                        <InputNumber @bind-Value="BirthDetails!.Dobdd" class="form-control form-control-sm" min="1" max="31" />
+                                        <InputNumber @bind-Value="BirthDetails!.Dobdd" class="form-control form-control-sm" min="1" max="31"/>
                                     }
                                     else
                                     {
@@ -125,7 +125,20 @@
                                     {
                                         <input value="@BirthDetails!.Tobss" class="form-control form-control-sm" readonly />
                                     }
+                                </div> *@
+
+                                <div class="col-7">
+
+                                    <div @ref="divDateOfBirth" class="input-group date" id="divDateOfBirth" data-target-input="nearest">
+                                        <div class="input-group-append" data-target="#divDateOfBirth" data-toggle="datetimepicker">
+                                            <input type="text" value="@BirthDetails.DateOfBirth" class="form-control datetimepicker-input" data-target="#divDateOfBirth" @onfocusout="OnFocusOut_DateOfBirthSelect" />
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+
                                 </div>
+
+
                             </div>
 
                             <div class="row align-items-end mt-1">
@@ -229,7 +242,7 @@
                                 <div class="col">
 
                                     @* date and time  *@
-                                    <div class="col">
+                                   @*  <div class="col">
 
                                         <div @ref="divDateOfBirth" class="input-group date" id="divDateOfBirth" data-target-input="nearest">
                                             <div class="input-group-append" data-target="#divDateOfBirth" data-toggle="datetimepicker">
@@ -238,7 +251,7 @@
                                             </div>
                                         </div>
 
-                                    </div>
+                                    </div> *@
 
                                     <fieldset class="border p-2">
                                         <legend class="w-auto small">Options</legend>
