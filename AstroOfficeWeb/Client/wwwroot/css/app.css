@@ -271,4 +271,7 @@ header {
 }
     .date-finder textarea.form-control {
         padding: 0;
+        font-size: 16px;
+        font-weight: 600;
+        line-height:20px;
     }
