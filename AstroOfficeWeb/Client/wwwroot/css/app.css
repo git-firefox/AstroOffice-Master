@@ -17,7 +17,16 @@
     background-color: #1b6ec2;
     border-color: #1861ac;
 }*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
 .valid.modified:not([type="checkbox"]):not([type="radio"]) {
     outline: 1px solid #26b050;
 }
@@ -29,7 +38,9 @@
 .validation-message {
     color: red;
 }
-
+body {
+    background: #fdeec0;
+}
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -81,7 +92,7 @@
 
 /* Loader image styling */
 .loader-img {
-    animation: rotate-loader-img 4s linear infinite normal both;
+    /*animation: rotate-loader-img 4s linear infinite normal both;*/
     width: 100px; /* Adjust the size as needed */
     height: 100px;
     border-radius: 50%;
@@ -120,3 +131,144 @@
 .background-divya-astro-color-extra-dark-blue {
     background-color: rgb(3, 26, 42) !important;
 }
+header {
+    background:#910d0d;
+}
+
+.card-frame{
+    position:relative;
+    border:none !important;
+    box-shadow:none !important;
+    height:512px!important;
+    background:transparent;
+}
+    .card-frame .card-header{
+        background:transparent !important;
+        border:none !important;
+        margin-top:40px;
+    }
+        .card-frame .card-header h2 {
+            color: #910d0d;
+            margin-bottom:0;
+        }
+    .card-frame .card-body {
+        padding: 1.25rem 3.5rem;
+    }
+    .card-frame:before {
+        background-image: url('../images/frame.png');
+        width: 100%;
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 103%;
+    }
+.btn-custom {
+    background: #17384e !important;
+    color:#fff !important;
+}
+
+.card-frame .card-body .table th {
+    font-size: 18px;
+    color: #ffffff;
+    background: #17384e;
+}
+.card-frame .card-body .table td{
+    font-weight:600!important;
+    font-size:15px;
+}
+.card-frame .card-body .table td, .card-frame .card-body .table th {
+    border-color:#17384e!important;
+    padding:3px 15px!important;
+}
+.card-frame .card-body .table thead th {
+    border-width:1px !important;
+}
+.occasion-selection{
+    position:relative;
+
+}
+    .occasion-selection input.form-control{
+        padding-left:50px;
+    }
+    .occasion-selection .input-group-append {
+        position: absolute;
+        width: 40px;
+        overflow: hidden;
+        left: 0;
+        border: none;
+        z-index: 99999;
+        border-radius: 0.25rem;
+        border-right: 1px solid #c3c3c3;
+    }
+        .occasion-selection .input-group-append .custom-select {
+            background: #fff url('../images/down.png') right 0.75rem center/18px 18px no-repeat;
+        }
+.card-tabs {
+    margin-bottom: 0;
+    box-shadow: none;
+    background: #910d0d;
+    padding:10px;
+    border-radius:10px;
+}
+    .card-tabs  .nav-tabs {
+        border-bottom: none;
+    }
+    .card-tabs .card-header {
+        padding: 1.25rem;
+    }
+        .card-tabs .nav-tabs .nav-link{
+            border-radius:3px;
+            border:1px solid #fff!important;
+            color:#fff;
+            font-weight:500;
+            padding:5px 10px;
+            width:200px;
+            text-align:center;
+            margin-right:10px;
+        }
+            .card-tabs .nav-tabs .nav-link.active {
+                color: #910d0d;
+                font-weight: 600;
+            }
+.chart-table {
+    background: #fff5d9;
+    padding:15px;
+    border-radius:10px;
+}
+    .chart-table table {
+        margin: 0;
+        border-radius: 5px;
+        overflow:hidden;
+    }
+        .chart-table table td,
+        .chart-table table th{
+            padding: 0.25rem .5rem;
+        }
+        .chart-table table td{
+            font-weight:600;
+            font-size:14px;
+        }
+#birthdetails-tabs-mahadasha .mahadasha-name {
+    background: #ffe79d;
+    padding:15px;
+    height:142px;
+    border-radius: 5px;
+}
+
+#birthdetails-tabs-mahadasha .mahadasha-name label{
+    margin:0;
+}
+.date-finder textarea.form-control,
+.date-finder {
+    background: #ffe79d;
+    border:none;
+    padding: 15px;
+    border-radius: 5px;
+}
+    .date-finder textarea.form-control {
+        padding: 0;
+    }
