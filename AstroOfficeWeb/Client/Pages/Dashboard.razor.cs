@@ -3139,13 +3139,15 @@ namespace AstroOfficeWeb.Client.Pages
         private NavigationManager? NavigationManager { get; set; }
         [Inject]
         private Text7PdfService? Text7PdfService { get; set; }
-        private void ConfirmationChangedModel(bool isConfirm)
+        private async Task ConfirmationChangedModel(bool isConfirm)
         {
             if (isConfirm)
             {
-                var pdfBytes = Text7PdfService.GeneratePDF();
+                var pdfBytes = Text7PdfService!.GeneratePDF(htmlStringFalla, imgSrcBhavChalit, imgSrcLagan);
+                string base64Data = Convert.ToBase64String(pdfBytes);
+                //string dataUrl = $"data:application/pdf;base64,{base64Data}";
+                await JSRuntime.OpenDocumentInNewTabAsync("falladesh.pdf", base64Data);
                 //NavigationManager!.NavigateTo($"/pdfdisplay?pdfData={Convert.ToBase64String(pdfBytes)}");
-                //NavigationManager!.NavigateTo($"/print-view");
             }
         }
         private async Task OnFocusOut_DateOfBirthSelect(FocusEventArgs e)
