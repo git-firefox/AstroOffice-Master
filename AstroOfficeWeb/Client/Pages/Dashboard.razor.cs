@@ -611,7 +611,7 @@ namespace AstroOfficeWeb.Client.Pages
                 }
                 if ((this.last_cusp_house.Count <= 0 ? false : signiString != str))
                 {
-                    tr.ForeColor ="text-primary";
+                    tr.ForeColor = "text-primary";
                 }
                 //if (!this.LstVHouses.InvokeRequired)
                 //{
@@ -3135,6 +3135,19 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
+        [Inject]
+        private NavigationManager? NavigationManager { get; set; }
+        [Inject]
+        private Text7PdfService? Text7PdfService { get; set; }
+        private void ConfirmationChangedModel(bool isConfirm)
+        {
+            if (isConfirm)
+            {
+                var pdfBytes = Text7PdfService.GeneratePDF();
+                //NavigationManager!.NavigateTo($"/pdfdisplay?pdfData={Convert.ToBase64String(pdfBytes)}");
+                //NavigationManager!.NavigateTo($"/print-view");
+            }
+        }
         private async Task OnFocusOut_DateOfBirthSelect(FocusEventArgs e)
         {
             var selectedDate = await JSRuntime.GetDateFromDateTimePickerAsync(divDateOfBirth);

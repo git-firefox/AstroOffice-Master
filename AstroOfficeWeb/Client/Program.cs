@@ -19,5 +19,6 @@ builder.Services.AddScoped<IAuthenticationStateService, AuthenticationStateServi
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ISwaggerApiService, SwaggerApiService>();
 builder.Services.AddScoped<KaranService>();
+builder.Services.AddScoped<Text7PdfService>();
 
 await builder.Build().RunAsync();

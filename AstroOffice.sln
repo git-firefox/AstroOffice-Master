@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AstroOfficeWeb.Client", "As
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AstroOfficeWeb.Shared", "AstroOfficeWeb\Shared\AstroOfficeWeb.Shared.csproj", "{601FDE57-5849-421B-BB1D-ED0EC253C8B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AstroShared", "AstroShared\AstroShared.csproj", "{AB1087B0-F090-49A0-AF0B-EF697A4ACA23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AstroShared", "AstroShared\AstroShared.csproj", "{AB1087B0-F090-49A0-AF0B-EF697A4ACA23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,11 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\PdfDisplay.razor" />
     <Content Remove="wwwroot\images\logo.png" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.2.1" />
+    <PackageReference Include="itext7" Version="8.0.1" />
+    <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.22" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.15" PrivateAssets="all" />
@@ -24,7 +28,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Pages\PdfDisplay.razor" />
     <None Include="wwwroot\images\logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\PdfDisplay.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\PdfDisplay.razor" />
   </ItemGroup>
 
 </Project>
