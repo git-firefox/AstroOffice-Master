@@ -6,7 +6,7 @@
 @inject HttpClient HttpClient
 @inject IJSRuntime JSRuntime
 
-<FaladeshModal @ref="FaladeshModal" Falla="@htmlStringFalla" ImgSrcLagan="@imgSrcLagan" ImgSrcBhavChalit="@imgSrcBhavChalit"  />
+<FaladeshModal @ref="FaladeshModal" Falla="@htmlStringFalla" ImgSrcLagan="@imgSrcLagan" ImgSrcBhavChalit="@imgSrcBhavChalit" />
 
 @* @User?.Identity?.Name *@
 <div class="container-fluid p-3">
@@ -31,8 +31,7 @@
                                         }
                                     </select>
                                 </div>
-                                <div class="col">
-                                    @* <InputSelect @bind-Value="BirthDetails!.CmbTime" class="form-control form-control-sm" aria-label="Selection of Time"> *@
+                                <div class="col">                                  
                                     <select @onchange="OnChange_CmbTime" class="form-control form-control-sm" aria-label="Selection of Time">
                                         @foreach (var item in BirthDetailsLookups.CmbTimeItems)
                                         {
@@ -43,8 +42,7 @@
                                 <div class="col-auto">
                                     <button type="button" class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnMinus">  <i class="fa fa-minus"></i> </button>
                                 </div>
-                                <div class="col-2">
-                                    @* <input type="text" class="form-control form-control-sm" />*@
+                                <div class="col-2">                                  
                                     <InputNumber @bind-Value="BirthDetails.TimeValue" class="form-control form-control-sm" />
                                 </div>
                                 <div class="col-auto">
@@ -70,11 +68,11 @@
                                             @if (CmbCountry != null)
                                             {
                                                 <select @bind="BirthDetails!.CmbCountry" class="form-control form-control-sm mb-2" aria-label="Selection of brith country">
-                                                        @foreach (var item in CmbCountry)
-                                                        {
-                                                            <option value="@item.Value">@item.Text</option>
-                                                        }
-                                                    </select>
+                                                    @foreach (var item in CmbCountry)
+                                                    {
+                                                        <option value="@item.Value">@item.Text</option>
+                                                    }
+                                                </select>
                                             }
                                             @if ((IsAdmin || UserCanEdit) && txtBirthPlaceEnabled)
                                             {
@@ -93,8 +91,7 @@
                                                     }
                                                 </select>
                                             }
-                                           
-                                           
+
                                             <div class="row">
                                                 <div class="col-6">
                                                     <div class="form-group row align-items-center mb-2">
@@ -129,7 +126,7 @@
                                                     }
                                                 </div>
                                             </div>
-                                           
+
                                             <div class="form-check form-check-inline">
                                                 <InputCheckbox id="ref" class="form-check-input" @bind-Value="BirthDetails!.ChkShowRef" />
                                                 <label class="form-check-label" for="ref">Show Ref. Code</label>
@@ -236,16 +233,13 @@
                                                 <div class="row">
                                                     <div class="col-6 mb-2">
 
-                                                                <select @onchange="OnChange_CmbCategory" value="@BirthDetails!.CmbCategory" class="form-control form-control-sm">
-                                                                    @foreach (var item in BirthDetailsLookups.BirthCategoryItems)
-                                                                    {
-                                                                        <option value="@item.Text">@item.Text</option>
-                                                                    }
-                                                                </select>
+                                                        <select @onchange="OnChange_CmbCategory" value="@BirthDetails!.CmbCategory" class="form-control form-control-sm">
+                                                            @foreach (var item in BirthDetailsLookups.BirthCategoryItems)
+                                                            {
+                                                                <option value="@item.Text">@item.Text</option>
+                                                            }
+                                                        </select>
 
-                                                       
-
-                                                        
                                                     </div>
                                                     <div class="col-6 mb-2">
                                                         @* <InputSelect @bind-Value="BirthDetails!.CmbAyanansh" class="form-control form-control-sm" aria-label="Default select example"> *@
@@ -273,25 +267,20 @@
                                                     <div class="col-12 mb-2">
                                                         <div class="form-check">
                                                             <InputCheckbox id="ChkSalachakkar" class="form-check-input" @bind-Value="BirthDetails!.SalaChakkar" />
-                                                            <label class="form-check-label" for="ChkSalachakkar">35 sala chakkar</label>
+                                                            <label class="form-check-label" for="ChkSalachakkar">35 Sala Chakkar</label>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-12 mb-2">
                                                         <div class="form-check">
                                                             <InputCheckbox id="ChkMfal" class="form-check-input" @bind-Value="BirthDetails!.ChkMfal" />
-                                                            <label class="form-check-label" for="ChkMfal">mfal</label>
+                                                            <label class="form-check-label" for="ChkMfal">Mfal</label>
                                                         </div>
                                                     </div>
                                                     @*  <div class="col">
                                                     <InputTextArea class="form-control mt-2" rows="4" Placeholder="Enter ..." @bind-Value="BirthDetails!.Brief" />
                                                     </div> *@
                                                 </div>
-
-                                                
-
-                                                
-
                                             </fieldset>
                                         </div>
                                     </div>
@@ -308,15 +297,10 @@
 
                                     </div>
                                 </div>
-                               
-                                
-
-                            
-
 
                             </div>
 
-                          
+
                         </div>
                     </EditForm>
                 </div>
@@ -328,8 +312,8 @@
                     <div class="card-header p-0 text-center mb-2">
                         <h2 class="font-weight-bold">Kundali Table</h2>
                     </div>
-                   <div class="card-body">
-                       <div class="row">
+                    <div class="card-body">
+                        <div class="row">
                             <div class="col-md-12">
                                 <table class="table table-sm table-hover">
 
@@ -352,8 +336,8 @@
 
                                 </table>
                             </div>
-                       </div>
-                   </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -385,10 +369,10 @@
                                 </div>
                             </div>
 
-                                <div class="row justify-content-end mt-2">
-                                    <div class="col-2">
-                            @if (isNumVarshVisible)
-                            {
+                            <div class="row justify-content-end mt-2">
+                                <div class="col-2">
+                                    @if (isNumVarshVisible)
+                                    {
                                         <InputNumber @bind-Value="BirthDetails.KundaliUdvYear" class="form-control form-control-sm" min="1" max="120" />
                                     }
                                     else
@@ -397,7 +381,7 @@
                                         <InputNumber @bind-Value="BirthDetails.KundaliUdvYear" class="form-control form-control-sm" style="opacity:0" min="1" max="120" />
                                     }
                                 </div>
-                                </div>
+                            </div>
 
                             @if (!string.IsNullOrEmpty(imgSrc))
                             {
@@ -669,13 +653,21 @@
                                             <div class="row mt-2">
                                                 <div class="col">
                                                     <div class="d-flex justify-content-between">
-                                                        <label> Choose occassion</label>
+                                                        <label> Choose Occassion</label>
+
+                                                        <div class="input-group">
+
+
+                                                        <input class="form-control"type="text" name="product" @bind="DateFinder!.Occassion" list="productName" />
+                                                        <div class="input-group-append">
                                                         <InputSelect @bind-Value="DateFinder!.Occassion" class="form-control custom-select" aria-label="Section of Occassion">
                                                             @foreach (var item in DateFinder.OccassionList)
                                                             {
                                                                 <option value="@item.Text">@item.Text</option>
                                                             }
                                                         </InputSelect>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -742,7 +734,6 @@
                                                             <InputRadioGroup Name="DateFinderDashaRadioButtons" @bind-Value="DateFinder!.Dasha">
                                                                 <div class="col">
                                                                     <div class="form-check">
-                                                                        @*  <input class="form-check-input" type="radio" name="exampleRadios" id="rbDasha" value="option1" checked>*@
                                                                         <InputRadio Value="Dasha.Dasha" class="form-check-input" id="rbDasha" />
                                                                         <label class="form-check-label" for="rbDasha">
                                                                             Dasha
@@ -806,10 +797,9 @@
                                                                     <InputDate @bind-Value="BestKundaliDates.Pick_start_date" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
                                                                 </div>
                                                             </div>
-
                                                             <div class="col">
                                                                 <div>
-                                                                    <input type="time" @bind="BestKundaliDates.StartingTime" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
+                                                                    <input type="time" @bind="BestKundaliDates.StartingTime" class="form-control" step="1" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -826,10 +816,9 @@
                                                                     <InputDate @bind-Value="BestKundaliDates.Pick_end_date" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
                                                                 </div>
                                                             </div>
-
                                                             <div class="col">
                                                                 <div>
-                                                                    <input type="time" @bind="BestKundaliDates.EndingTime" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
+                                                                    <input type="time" @bind="BestKundaliDates.EndingTime" class="form-control" step="1" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -839,7 +828,7 @@
                                             <div class="row mt-2">
                                                 <div class="col">
                                                     <div class="d-flex justify-content-between">
-                                                        <label>Choose rating</label>
+                                                        <label>Choose Rating</label>
                                                         <InputSelect @bind-Value="BestKundaliDates.Comborating" class="form-control custom-select" aria-label="Selecttion of rating">
 
                                                             @foreach (var item in BestKundaliDates.ComboratingSelect)
@@ -855,7 +844,6 @@
                                                 <InputRadioGroup Name="KundaliDatesRadio" @bind-Value="BestKundaliDates!.KundaliDatesRadio">
                                                     <div class="col">
                                                         <div class="form-check">
-                                                            @* <input class="form-check-input" type="radio" name="exampleRadios" id="dasha" value="option1" checked>*@
                                                             <InputRadio Value="KundaliDatesRadio.Kp" class="form-check-input" id="rbKp" />
                                                             <label class="form-check-label" for="rbKp">
                                                                 KP
@@ -864,7 +852,6 @@
                                                     </div>
                                                     <div class="col">
                                                         <div class="form-check">
-                                                            @* <input class="form-check-input" type="radio" name="exampleRadios" id="nakswami" value="option2">*@
                                                             <InputRadio Value="KundaliDatesRadio.RedBook" class="form-check-input" id="rbRedBook" />
                                                             <label class="form-check-label" for="rbRedBook">
                                                                 Red Book
@@ -874,17 +861,16 @@
                                                 </InputRadioGroup>
                                             </div>
                                             <div class="row">
+
+                                                <label class="d-flex flex-row-reverse">
+                                                    @BestKundaliDates.countProcess
+                                                </label>
+
                                                 <div class="col">
+
                                                     <div class="d-flex flex-row-reverse">
                                                         <button type="button" class="btn btn-warning" @onclick="OnClick_BtnShow_TabKundaliDates">Show</button>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <label class="d-flex flex-row-reverse">
-                                                        @BestKundaliDates.countProcess
-                                                    </label>
                                                 </div>
                                             </div>
 

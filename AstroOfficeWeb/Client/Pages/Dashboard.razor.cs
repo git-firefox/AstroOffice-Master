@@ -611,7 +611,7 @@ namespace AstroOfficeWeb.Client.Pages
                 }
                 if ((this.last_cusp_house.Count <= 0 ? false : signiString != str))
                 {
-                    tr.ForeColor ="text-primary";
+                    tr.ForeColor = "text-primary";
                 }
                 //if (!this.LstVHouses.InvokeRequired)
                 //{
@@ -3161,6 +3161,7 @@ namespace AstroOfficeWeb.Client.Pages
 
         private async Task OnClick_BtnMinus(MouseEventArgs e)
         {
+            //await Task.Delay(5000);
             short num = Convert.ToInt16(BirthDetails.TimeValue);
             DateTime tob = this.persKV.Tob;
             if (BirthDetails?.CmbTime?.ToLower() == "minute")
@@ -3214,54 +3215,64 @@ namespace AstroOfficeWeb.Client.Pages
             //day = tob.Minute;
             //str2.Text = day.ToString();
 
-            await this.OnClick_BtnChart(new MouseEventArgs());
+            var task = this.OnClick_BtnChart(new MouseEventArgs());
+            if (task.IsCompletedSuccessfully)
+            {
 
-            //BestBLL bestBLL = new BestBLL();
 
-            short num3 = 0;
-            if (BirthDetails.CmbSkipBad == "Skip Average")
-            {
-                num3 = 1;
+                //BestBLL bestBLL = new BestBLL();
+
+                short num3 = 0;
+                if (BirthDetails.CmbSkipBad == "Skip Average")
+                {
+                    num3 = 1;
+                }
+                if (BirthDetails.CmbSkipBad == "Skip Bad")
+                {
+                    num3 = 2;
+                }
+                if (BirthDetails.CmbSkipBad == "Skip Worst")
+                {
+                    num3 = 3;
+                }
+                string[] globalFullLonNew = new string[19];
+                int day = tob.Day;
+                globalFullLonNew[0] = day.ToString();
+                globalFullLonNew[1] = "/";
+                day = tob.Month;
+                globalFullLonNew[2] = day.ToString();
+                globalFullLonNew[3] = "/";
+                day = tob.Year;
+                globalFullLonNew[4] = day.ToString();
+                globalFullLonNew[5] = ",";
+                day = tob.Hour;
+                globalFullLonNew[6] = day.ToString();
+                globalFullLonNew[7] = ":";
+                day = tob.Minute;
+                globalFullLonNew[8] = day.ToString();
+                globalFullLonNew[9] = ",";
+                globalFullLonNew[10] = this.global_full_lonNew;
+                globalFullLonNew[11] = ",";
+                globalFullLonNew[12] = this.global_full_latNew;
+                globalFullLonNew[13] = ",";
+                globalFullLonNew[14] = this.global_newtz;
+                globalFullLonNew[15] = ",";
+                globalFullLonNew[16] = this.ayan;
+                globalFullLonNew[17] = ",";
+                globalFullLonNew[18] = this.full_time_corr;
+                string str3 = string.Concat(globalFullLonNew);
+                //      PredictionBLL predictionBLL = new PredictionBLL();
+                var task2 = Gen_Kunda(str3, 500f, Convert.ToInt16(BirthDetails.CmbRotate));
+                if (task2.IsCompletedSuccessfully)
+                {
+                    if ((await IsBestKundali_KP_Auto(task2.Result, num3) ? false : BirthDetails.CmbSkipBad != "Show All"))
+                    {
+                        await OnClick_BtnMinus(e);
+                    }
+
+                }
             }
-            if (BirthDetails.CmbSkipBad == "Skip Bad")
-            {
-                num3 = 2;
-            }
-            if (BirthDetails.CmbSkipBad == "Skip Worst")
-            {
-                num3 = 3;
-            }
-            string[] globalFullLonNew = new string[19];
-            int day = tob.Day;
-            globalFullLonNew[0] = day.ToString();
-            globalFullLonNew[1] = "/";
-            day = tob.Month;
-            globalFullLonNew[2] = day.ToString();
-            globalFullLonNew[3] = "/";
-            day = tob.Year;
-            globalFullLonNew[4] = day.ToString();
-            globalFullLonNew[5] = ",";
-            day = tob.Hour;
-            globalFullLonNew[6] = day.ToString();
-            globalFullLonNew[7] = ":";
-            day = tob.Minute;
-            globalFullLonNew[8] = day.ToString();
-            globalFullLonNew[9] = ",";
-            globalFullLonNew[10] = this.global_full_lonNew;
-            globalFullLonNew[11] = ",";
-            globalFullLonNew[12] = this.global_full_latNew;
-            globalFullLonNew[13] = ",";
-            globalFullLonNew[14] = this.global_newtz;
-            globalFullLonNew[15] = ",";
-            globalFullLonNew[16] = this.ayan;
-            globalFullLonNew[17] = ",";
-            globalFullLonNew[18] = this.full_time_corr;
-            string str3 = string.Concat(globalFullLonNew);
-            //      PredictionBLL predictionBLL = new PredictionBLL();
-            if ((await IsBestKundali_KP_Auto(await Gen_Kunda(str3, 500f, Convert.ToInt16(BirthDetails.CmbRotate)), num3) ? false : BirthDetails.CmbSkipBad != "Show All"))
-            {
-                await OnClick_BtnMinus(e);
-            }
+
         }
 
         private async Task OnClick_BtnPlus(MouseEventArgs e)
