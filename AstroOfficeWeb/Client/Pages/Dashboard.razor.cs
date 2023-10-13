@@ -130,25 +130,25 @@ namespace AstroOfficeWeb.Client.Pages
         #region  Mahadasha Lables
         public string LblMahadasha
         {
-            get { return string.IsNullOrEmpty(lblMahadasha) ? "-" : lblMahadasha; }
+            get { return string.IsNullOrEmpty(lblMahadasha) ? "" : lblMahadasha; }
             set { lblMahadasha = value; }
         }
 
         public string LblAntar
         {
-            get { return string.IsNullOrEmpty(lblAntar) ? "-" : lblAntar; }
+            get { return string.IsNullOrEmpty(lblAntar) ? "" : lblAntar; }
             set { lblAntar = value; }
         }
 
         public string LblParyan
         {
-            get { return string.IsNullOrEmpty(lblParyan) ? "-" : lblParyan; }
+            get { return string.IsNullOrEmpty(lblParyan) ? "" : lblParyan; }
             set { lblParyan = value; }
         }
 
         public string LblSukhsmadasha
         {
-            get { return string.IsNullOrEmpty(lblSukhsmadasha) ? "-" : lblSukhsmadasha; }
+            get { return string.IsNullOrEmpty(lblSukhsmadasha) ? "" : lblSukhsmadasha; }
             set { lblSukhsmadasha = value; }
         }
 
@@ -2251,11 +2251,11 @@ namespace AstroOfficeWeb.Client.Pages
 
             this.main_antardasha = this.kpbl.Get_Antar_Dasha(startDate, endDate, planet, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
 
-            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;", selectedTR.Period, "&nbsp;&nbsp;&nbsp;&nbsp;कार्येश :&nbsp;&nbsp;", null, null, null };
+            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;&nbsp;:&nbsp;&nbsp;", selectedTR.Period, ";<br/>कार्येश&nbsp;&nbsp:&nbsp;&nbsp;", null, null, null };
             string? str = selectedTR.Signi;
             char[] chrArray = new char[] { '|' };
             text[4] = str?.Split(chrArray)[0];
-            text[5] = "&nbsp;&nbsp;&nbsp;नक्षत्र स्वामी :&nbsp;";
+            text[5] = "<br/>नक्षत्र स्वामी&nbsp;&nbsp:&nbsp;&nbsp;";
             string? text1 = selectedTR.Signi;
             chrArray = new char[] { '|' };
             text[6] = text1?.Split(chrArray)[1];
@@ -2418,11 +2418,11 @@ namespace AstroOfficeWeb.Client.Pages
             this.lblParyan = string.Empty;
             this.lblSukhsmadasha = string.Empty;
 
-            string?[] text = new string?[] { selectedTR.Planet, " ", selectedTR.Period, "&nbsp;&nbsp;&nbsp;&nbsp;कार्येश :&nbsp;&nbsp;", null, null, null };
+            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;&nbsp;:&nbsp;&nbsp;", selectedTR.Period, "<br/>कार्येश :&nbsp;&nbsp;", null, null, null };
             string? str = selectedTR.Signi;
             char[] chrArray = new char[] { '|' };
             text[4] = str?.Split(chrArray)[0];
-            text[5] = "&nbsp;&nbsp;&nbsp;नक्षत्र स्वामी :&nbsp;";
+            text[5] = "<br/>नक्षत्र स्वामी :&nbsp;";
             string? text1 = selectedTR.Signi;
             chrArray = new char[] { '|' };
             text[6] = text1?.Split(chrArray)[1];
@@ -2569,12 +2569,12 @@ namespace AstroOfficeWeb.Client.Pages
             this.lblSukhsmadasha = string.Empty;
             this.lblParyan = string.Empty;
 
-            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;", selectedTR.Period, "&nbsp;&nbsp;&nbsp;&nbsp;कार्येश :&nbsp;&nbsp;", null, null, null };
+            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;&nbsp;:&nbsp;&nbsp;", selectedTR.Period, "<br/>कार्येश :&nbsp;&nbsp;", null, null, null };
 
             string? str = selectedTR.Signi;
             char[] chrArray = new char[] { '|' };
             text[4] = str?.Split(chrArray)[0];
-            text[5] = "&nbsp;&nbsp;&nbsp;नक्षत्र स्वामी : ";
+            text[5] = "<br/>नक्षत्र स्वामी : ";
             string? text1 = selectedTR.Signi;
             chrArray = new char[] { '|' };
             text[6] = text1?.Split(chrArray)[1];
@@ -2712,11 +2712,11 @@ namespace AstroOfficeWeb.Client.Pages
             this.sukshma_dasha_click = true;
             this.antar_dasha_click = false;
 
-            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;", selectedTR.Period, "&nbsp;&nbsp;&nbsp;&nbsp;कार्येश :&nbsp;&nbsp;", null, null, null };
+            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;&nbsp;:&nbsp;&nbsp;", selectedTR.Period, "<br/>कार्येश :&nbsp;&nbsp;", null, null, null };
             string? str = selectedTR.Signi;
             char[] chrArray = new char[] { '|' };
             text[4] = str?.Split(chrArray)[0];
-            text[5] = "&nbsp;&nbsp;&nbsp;नक्षत्र स्वामी :&nbsp;";
+            text[5] = "<br/>नक्षत्र स्वामी :&nbsp;";
             string? text1 = selectedTR.Signi;
             chrArray = new char[] { '|' };
             text[6] = text1?.Split(chrArray)[1];
