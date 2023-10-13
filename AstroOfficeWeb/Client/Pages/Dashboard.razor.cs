@@ -3137,19 +3137,30 @@ namespace AstroOfficeWeb.Client.Pages
 
         [Inject]
         private NavigationManager? NavigationManager { get; set; }
-        [Inject]
-        private Text7PdfService? Text7PdfService { get; set; }
         private async Task ConfirmationChangedModel(bool isConfirm)
         {
             if (isConfirm)
             {
-                var pdfBytes = Text7PdfService!.GeneratePDF(htmlStringFalla, imgSrcBhavChalit, imgSrcLagan);
-                string base64Data = Convert.ToBase64String(pdfBytes);
+                var base64Data = await GeneratePDF(htmlStringFalla, imgSrcBhavChalit, imgSrcLagan);
                 //string dataUrl = $"data:application/pdf;base64,{base64Data}";
                 await JSRuntime.OpenDocumentInNewTabAsync("falladesh.pdf", base64Data);
                 //NavigationManager!.NavigateTo($"/pdfdisplay?pdfData={Convert.ToBase64String(pdfBytes)}");
             }
         }
+
+        private async Task<string> GeneratePDF(string? htmlStringFalla, string? imgSrcBhavChalit, string? imgSrcLagan)
+        {
+            var request = new GeneratePDFRequest()
+            {
+                Falla = htmlStringFalla ?? "",
+                ImgBhavChalit = imgSrcBhavChalit ?? "",
+                ImgLagan = imgSrcLagan ?? ""
+            };
+            var response = await Swagger!.PostAsync<GeneratePDFRequest, ApiResponse<string>>(PdfApiConst.POST_GeneratePDF, request);
+            if (response == null) return "";
+            return response.Data ?? "";
+        }
+
         private async Task OnFocusOut_DateOfBirthSelect(FocusEventArgs e)
         {
             var selectedDate = await JSRuntime.GetDateFromDateTimePickerAsync(divDateOfBirth);

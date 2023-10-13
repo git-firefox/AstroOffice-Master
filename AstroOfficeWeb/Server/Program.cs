@@ -8,6 +8,8 @@ using ASDLL.DataAccess.Core;
 using ASModels;
 using AstroOfficeWeb.Shared.Models;
 using AutoMapper;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +49,7 @@ builder.Services.AddTransient<KundliBLL>();
 builder.Services.AddTransient<KPDAO>();
 builder.Services.AddTransient<BestBLL>();
 builder.Services.AddTransient<KPPredBLL>();
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
