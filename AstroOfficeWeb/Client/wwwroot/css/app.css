@@ -87,16 +87,15 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: radial-gradient(rgba(145, 13, 13, 1), rgba(145, 13, 13, 0.5));
+    background: #fff;
 }
 
 /* Loader image styling */
 .loader-img {
     /*animation: rotate-loader-img 4s linear infinite normal both;*/
-    width: 100px; /* Adjust the size as needed */
-    height: 100px;
+    width: 300px; /* Adjust the size as needed */
+    height: 300px;
     border-radius: 50%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add a subtle shadow for depth */
 }
 
 /* Additional Bootstrap styling for loader */
@@ -154,18 +153,21 @@ header {
     .card-frame .card-body {
         padding: 1.25rem 3.5rem;
     }
-    .card-frame:before {
-        background-image: url('../images/frame.png');
-        width: 100%;
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-        background-size: cover;
-        background-repeat: no-repeat;
-        height: 103%;
-    }
+        .card-frame .card-body img {
+            mix-blend-mode: multiply;
+        }
+        .card-frame:before {
+            background-image: url('../images/frame.png');
+            width: 100%;
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 103%;
+        }
 .btn-custom {
     background: #17384e !important;
     color:#fff !important;
@@ -272,3 +274,58 @@ header {
     .date-finder textarea.form-control {
         padding: 0;
     }
+.faladesh .modal-content {
+    background: #ffe79d;
+}
+    .faladesh .modal-content h4.modal-title {
+        color: #910d0d;
+        font-size:24px;
+        font-weight:600;
+    }
+    .faladesh .modal-content .close {
+        color: #910d0d;
+        opacity: 1;
+        font-size: 30px;
+    }
+    .faladesh .modal-content .modal-header {
+        border-bottom-color: #910d0d;
+    }
+    .faladesh .modal-content .modal-footer {
+        border-top:1px solid #910d0d;
+    }
+    .faladesh .card{
+        background:transparent;
+        box-shadow:none;
+    }
+        .faladesh .card .card-header {
+            padding: 8px 15px;
+            text-align: center;
+            border-radius: 5px;
+            background: #910d0d;
+            color:#fff;
+        }
+        .faladesh .card .card-header h3{
+            text-align:center;
+            float:unset;
+        }
+        .faladesh .card .card-body {
+            padding: 15px 0;
+            font-weight:600;
+        }
+    .faladesh .card .card-body img{
+        width:100%;
+        mix-blend-mode:multiply;
+    }
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+::-webkit-scrollbar {
+    width: 6px;
+    background-color: #910d0d;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #910d0d;
+}

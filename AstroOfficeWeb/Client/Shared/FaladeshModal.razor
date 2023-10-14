@@ -1,7 +1,7 @@
 ﻿@inherits BaseComponent
 @inject IJSRuntime JSRuntime
 
-<div @ref="ER_FaladeshModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+<div @ref="ER_FaladeshModal" class="modal fade faladesh" data-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -13,7 +13,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="card card-primary">
+                        <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title ">Bhave Chalit</h3>
                             </div>
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="card card-primary">
+                        <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Lagan</h3>
                             </div>
@@ -36,20 +36,20 @@
 
                 <div class="row">
                     <div class="col">
-                        <div class="card card-primary">
+                        <div class="card ">
                             <div class="card-header">
                                 <h3 class="card-title">Falla</h3>
                             </div>
-                            <div class="card-body overflow-auto">
+                            <div class="card-body overflow-auto mb-0">
                                 @(new MarkupString(Falla))
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default"  data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">Close</button>
-                <button type="button" class="btn btn-primary" title="Print Prediction" @onclick="() => OnConfirmationChange(true)">Print</button>
+            <div class="modal-footer">
+                @* <button type="button" class="btn btn-default"  data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">Close</button> *@
+                <button type="button" class="btn btn-custom" title="Print Prediction" @onclick="() => OnConfirmationChange(true)">Print</button>
             </div>
         </div>
     </div>
