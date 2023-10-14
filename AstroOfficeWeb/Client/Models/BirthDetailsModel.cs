@@ -1,7 +1,5 @@
-﻿//using ASDLL.ASDLL.ValueObjects;
-using AstroOfficeWeb.Client.Helper;
-using AstroOfficeWeb.Shared;
-using AstroOfficeWeb.Shared.DTOs;
+﻿using AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Shared.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace AstroOfficeWeb.Client.Models

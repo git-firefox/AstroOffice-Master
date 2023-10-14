@@ -1,11 +1,12 @@
 ﻿@*@page "/dashboard"*@
 @page "/"
+@using AstroOfficeWeb.Shared.Models;
 @attribute [Authorize]
 @inherits BaseComponent
 @inject HttpClient HttpClient
 @inject IJSRuntime JSRuntime
 
-<FaladeshModal @ref="FaladeshModal" Falla="@htmlStringFalla" ImgSrcLagan="@imgSrc" ImgSrcBhavChalit="@imgSrcBhavChalit" />
+<FaladeshModal @ref="FaladeshModal" Falla="@htmlStringFalla" ImgSrcLagan="@imgSrcLagan" ImgSrcBhavChalit="@imgSrcBhavChalit" />
 
 @* @User?.Identity?.Name *@
 <div class="container-fluid p-3">
@@ -331,7 +332,7 @@
                                         </div>
 
                                         <div class="col">
-                                            <button class="btn btn-block btn-secondary btn-sm"> Faladesh </button>
+                                            <button class="btn btn-block btn-secondary btn-sm" @onclick="OnClick_BtnFaladesh"> Faladesh </button>
                                         </div>
 
                                         <div class="col">
@@ -466,7 +467,7 @@
                                             <tbody>
                                                 @foreach (var row in ListView_House ?? new List<ChartHouseTableTRModel>())
                                                 {
-                                                    <tr>
+                                                    <tr @ondblclick="()=> OnDblClick_TR_ListView_House(row)">
                                                         <td>@row.House</td>
                                                         <td>@row.RL_NL_SL_SSL</td>
                                                         <td>@row.NakSigni</td>
@@ -508,10 +509,10 @@
                                 <div class="row">
                                     <div class="col">
 
-                                        <div class="d-flex justify-content-start"><label>महादशा : </label><label>@LblMahadasha</label></div>
-                                        <div class="d-flex justify-content-start"><label>अन्तर्दशा : </label><label>@LblAntar</label></div>
-                                        <div class="d-flex justify-content-start"><label>प्र्यंतरदशा : </label><label>@LblParyan</label></div>
-                                        <div class="d-flex justify-content-start"><label>सुक्ष्मदशा : </label><label>@LblSukhsmadasha</label></div>
+                                        <div class="d-flex justify-content-start"><label>महादशा : </label><label> @(new MarkupString(LblMahadasha)) </label></div>
+                                        <div class="d-flex justify-content-start"><label>अन्तर्दशा : </label><label> @(new MarkupString(LblAntar)) </label></div>
+                                        <div class="d-flex justify-content-start"><label>प्र्यंतरदशा : </label><label> @(new MarkupString(LblParyan)) </label></div>
+                                        <div class="d-flex justify-content-start"><label>सुक्ष्मदशा : </label><label> @(new MarkupString(LblSukhsmadasha)) </label></div>
 
                                         <div class="row mt-2">
                                             <div class="col-3">
@@ -533,7 +534,7 @@
                                                             <tbody>
                                                                 @foreach (var row in ListView_Mahadasha ?? new List<MahadashaTableTRModel>())
                                                                 {
-                                                                    <tr @onclick="()=>OnClick_TR_ListView_Mahadasha(row)" @ondblclick="() => OnDBLClick_TR_ListView_Mahadasha(row)">
+                                                                    <tr @onclick="()=>OnClick_TR_ListView_Mahadasha(row)" @ondblclick="() => OnDblClick_TR_ListView_Mahadasha(row)">
                                                                         <td>@row.Planet</td>
                                                                         <td>@row.Period</td>
                                                                         <td>@row.Signi</td>
@@ -566,7 +567,7 @@
                                                                 <tbody>
                                                                     @foreach (var row in ListView_Antardasha ?? new List<AntardashaTableTRModel>())
                                                                     {
-                                                                        <tr>
+                                                                        <tr @onclick="()=> OnClick_TR_ListView_Antardasha(row)" @ondblclick="()=> OnDblClick_TR_ListView_Antardasha(row)">
                                                                             <td>@row.Planet</td>
                                                                             <td>@row.Period</td>
                                                                             <td>@row.Signi</td>
@@ -622,7 +623,7 @@
                                                                 <tbody>
                                                                     @foreach (var row in ListView_Prayantardasha ?? new List<PrayantardashaTableTRModel>())
                                                                     {
-                                                                        <tr>
+                                                                        <tr @onclick="()=> OnClick_TR_ListView_Prayantardasha(row)" @ondblclick="()=> OnDblClick_TR_ListView_Prayantardasha(row)">
                                                                             <td>@row.Planet</td>
                                                                             <td>@row.Period</td>
                                                                             <td>@row.Signi</td>
@@ -655,7 +656,7 @@
                                                                 <tbody>
                                                                     @foreach (var row in ListView_Sukhsmadasha ?? new List<SukhsmadashaTableTRModel>())
                                                                     {
-                                                                        <tr>
+                                                                        <tr @onclick="()=> OnClick_TR_ListView_Sukhsmadasha(row)" @ondblclick="()=> OnDblClick_TR_ListView_Sukhsmadasha(row)">
                                                                             <td>@row.Planet</td>
                                                                             <td>@row.Period</td>
                                                                             <td>@row.Signi</td>
@@ -682,9 +683,9 @@
                                                     <div class="d-flex justify-content-between">
                                                         <label> Choose occassion</label>
                                                         <InputSelect @bind-Value="DateFinder!.Occassion" class="form-control custom-select" aria-label="Section of Occassion">
-                                                            @foreach (var Datefinders in DateFinder.OccassionList)
+                                                            @foreach (var item in DateFinder.OccassionList)
                                                             {
-                                                                <option value="@Datefinders">@Datefinders</option>
+                                                                <option value="@item.Text">@item.Text</option>
                                                             }
                                                         </InputSelect>
                                                     </div>
@@ -787,10 +788,10 @@
                                             <div class="row mt-5">
                                                 <div class="col">
                                                     <div class="d-flex flex-row-reverse">
-                                                        <button type="button" class="btn btn-warning" @onclick="BtnShow_TabDateFinder_Click">Show</button>
+                                                        <button type="button" class="btn btn-warning" @onclick="OnClick_BtnShow_TabDateFinder">Show</button>
                                                     </div>
                                                 </div>
-                                            </div>1
+                                            </div>
                                         </EditForm>
                                     </div>
 
@@ -814,7 +815,7 @@
                                                         <div class="row align-items-end mt-2">
                                                             <div class="col">
                                                                 <div>
-                                                                    <InputDate @bind-Value="BestKundaliDates.Pick_start_date"  class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
+                                                                    <InputDate @bind-Value="BestKundaliDates.Pick_start_date" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
                                                                 </div>
                                                             </div>
 
@@ -853,9 +854,9 @@
                                                         <label>Choose rating</label>
                                                         <InputSelect @bind-Value="BestKundaliDates.Comborating" class="form-control custom-select" aria-label="Selecttion of rating">
 
-                                                            @foreach (var BirthCategory in BestKundaliDates.ComboratingSelect)
+                                                            @foreach (var item in BestKundaliDates.ComboratingSelect)
                                                             {
-                                                                <option value="@BirthCategory">@BirthCategory</option>
+                                                                <option value="@item.Text">@item.Text</option>
                                                             }
                                                         </InputSelect>
                                                     </div>
@@ -887,7 +888,7 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <div class="d-flex flex-row-reverse">
-                                                        <button type="button" class="btn btn-warning" @onclick="BtnShow_TabKundaliDates_Click">Show</button>
+                                                        <button type="button" class="btn btn-warning" @onclick="OnClick_BtnShow_TabKundaliDates">Show</button>
                                                     </div>
                                                 </div>
                                             </div>

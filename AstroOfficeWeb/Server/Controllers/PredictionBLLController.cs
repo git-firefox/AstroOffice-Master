@@ -33,5 +33,15 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(new ApiResponse<string> { Data = code, Success = true });
         }
 
+        [HttpPost]
+        public IActionResult GetList35Sala(GetList35SalaRequest request)
+        {
+            if (request.Online_Result == null || request.PersKV == null)
+            {
+                return BadRequest();
+            }
+            var dashaVOs = _predictionBLL.Get_List_35_Sala(request.Online_Result, request.PersKV, request.Dasha_Starts, request.Dasha_Ends);
+            return Ok(dashaVOs);
+        }
     }
 }

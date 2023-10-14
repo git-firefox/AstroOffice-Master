@@ -9,10 +9,15 @@ namespace AstroOfficeWeb.Client.Helper
         public static ValueTask FocusAsync(this IJSRuntime jsRuntime, ElementReference? element)
         {
             return jsRuntime.InvokeVoidAsync("fnFocusBlazorElement", element);
-        }  
+        }
         public static ValueTask SelectAsync(this IJSRuntime jsRuntime, ElementReference? element)
         {
             return jsRuntime.InvokeVoidAsync("fnSelectTextBlazorElement", element);
+        }
+
+        public static ValueTask ShowModalAsync(this IJSRuntime jsRuntime, ElementReference? element)
+        {
+            return jsRuntime.InvokeVoidAsync("fnShowModal", element);
         }
     }
 }

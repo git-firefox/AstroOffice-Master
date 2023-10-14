@@ -39,7 +39,7 @@ namespace AstroOfficeWeb.Client.Services
         /// <returns>Task<SignInResponse></returns>
         public async Task<SignInResponse> LoginAsync(SignInRequest signInRequest)
         {
-            var response = await _apiService.PostAsync<SignInRequest, SignInResponse>(ApiConst.POST_SignIn, signInRequest);
+            var response = await _apiService.PostAsync<SignInRequest, SignInResponse>(AccountApiConst.POST_SignIn, signInRequest);
 
             if (response!.IsAuthSuccessful)
             {
@@ -54,7 +54,7 @@ namespace AstroOfficeWeb.Client.Services
 
         public async Task<SignUpResponse> RegisterUserAsync(SignUpRequest signUpRequest)
         {
-            var response = await _apiService.PostAsync<SignUpRequest, SignUpResponse>(ApiConst.POST_SignUp, signUpRequest);
+            var response = await _apiService.PostAsync<SignUpRequest, SignUpResponse>(AccountApiConst.POST_SignUp, signUpRequest);
             return response ?? new SignUpResponse { IsRegisterationSuccessful = false };
         }
 

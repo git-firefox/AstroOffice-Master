@@ -1,8 +1,5 @@
 ﻿using ASDLL.DataAccess.Core;
-using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Models;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AstroOfficeWeb.Server.Controllers
@@ -22,7 +19,7 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpPost]
         public IActionResult IsBestKundali(BestKundaliRequest request)
         {
-            bool flag = _bestbll.isBestKundali(request.best_Online_Result, request.rating, request.engine);
+            bool flag = _bestbll.isBestKundali(request.Best_Online_Result, request.Rating, request.Engine);
             return Ok(new ApiResponse<bool> { Data = flag, Message = "Ok", Success = true });
         }
 

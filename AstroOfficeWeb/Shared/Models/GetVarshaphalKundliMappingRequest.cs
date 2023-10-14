@@ -9,9 +9,9 @@ namespace AstroOfficeWeb.Shared.Models
 {
     public class GetVarshaphalKundliMappingRequest
     {
-        public int age { get; set; }
-        public KundliVO? persKV { get; set; }
-        public List<KPPlanetMappingVO>? kp_chart { get; set; }
+        public int Age { get; set; }
+        public KundliVO? PersKV { get; set; }
+        public List<KPPlanetMappingVO>? KP_Chart { get; set; }
 
     }
 }

@@ -36,7 +36,7 @@ namespace AstroOfficeWeb.Client.Pages
             var planetMappingVOs = await KaranService!.GetKPPlanetMappingVOs();
             var houseMappingVOs = await KaranService!.GetKPHouseMappingVOs();
             var savedStateModel = await KaranService!.GetSavedStateModel();
-            var kPs = await Swagger!.GetAsync<List<KPUpay>>(ApiConst.GET_KPDAO_GetUpayLogic);
+            var kPs = await Swagger!.GetAsync<List<KPUpay>>(KPDAOApiConst.GET_GetUpayLogic);
 
             this.SavedStateModel = savedStateModel;
             this.KPUpays = kPs ?? new List<KPUpay>();

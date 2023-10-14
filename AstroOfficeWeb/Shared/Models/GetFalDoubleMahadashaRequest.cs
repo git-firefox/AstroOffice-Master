@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ASModels = AstroShared.Models;
 
-namespace AstroOfficeWeb.Shared.DTOs
+namespace AstroOfficeWeb.Shared.Models
 {
     public class GetFalDoubleMahadashaRequest
     {
