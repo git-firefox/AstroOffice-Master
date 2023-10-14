@@ -23,11 +23,17 @@ namespace AstroOfficeWeb.Client.Helper
         {
             return jsRuntime.InvokeVoidAsync("fnLoadDateTimePicker", element, format);
         }
-        
+
         public static ValueTask<string> GetDateFromDateTimePickerAsync(this IJSRuntime jsRuntime, ElementReference? element)
         {
             return jsRuntime.InvokeAsync<string>("fnGetDateFromDateTimePicker", element);
         }
+
+        public static ValueTask OpenDocumentInNewTabAsync(this IJSRuntime jsRuntime, string fileName, string base64Data)
+        {
+            return jsRuntime.InvokeVoidAsync("fnOpenDocumentInNewTab", fileName, base64Data);
+        }
+
         //public static ValueTask<DateTime> GetDateFromDateTimePickerAsync(this IJSRuntime jsRuntime, ElementReference? element)
         //{
         //    return jsRuntime.InvokeAsync<DateTime>("fnGetDateFromDateTimePicker", element);

@@ -80,4 +80,9 @@
         public static string Base = "api/KPPredBLL/";
         public static string POST_GetRedSigniPlanetWise = Base + "GetRedSigniPlanetWise";
     }
+    public static class PdfApiConst
+    {
+        public static string Base = "api/Pdf/";
+        public static string POST_GeneratePDF = Base + "GeneratePDF";
+    }
 }
