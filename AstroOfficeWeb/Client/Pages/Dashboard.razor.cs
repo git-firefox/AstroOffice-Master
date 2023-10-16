@@ -190,56 +190,90 @@ namespace AstroOfficeWeb.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            var countryMasters = await Swagger!.GetAsync<List<DTOs.ACountryMaster>>(CountryApiConst.GET_GetCountry);
-            var planetVOs = (await Swagger!.GetAsync<List<PlanetVO>>(PlanetBLLApiConst.GET_GetKPPlanetsVOs)) ?? new List<PlanetVO>();
-            var kP249s = (await Swagger!.GetAsync<List<KP249VO>>(KPBLLApiConst.GET_Fill_249)) ?? new List<KP249VO>();
+            var countryMasters = await GetCountry();
+            var planetVOs = await GetAllPlanets();
+            var kP249s = await Fill_249();
 
 
-            #region LoadCountry
             this.CmbCountry = countryMasters?.Select(cm => new SelectListItem(cm.Country, cm.CountryCode)).ToList();
 
-            if (!this.no_countryload && this.BirthDetails.CmbCountry != null)
+            if (!this.no_countryload && this.BirthDetails.CmbCountry != null && BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
             {
-                await this.LoadCountry();
-            }
-            this.no_countryload = false;
-            #endregion
-
-            string str = this.full_lon.Replace(":", ".");
-            string str1 = this.full_lat.Replace(":", ".");
-            str = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str.Substring(0, str.Length - 1))).ToString(), str.Substring(str.Length - 1, 1));
-            str1 = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str1.Substring(0, str1.Length - 1))).ToString(), str1.Substring(str1.Length - 1, 1));
-            string str2 = this.kkbl.longi2timezone(this.full_tz);
-
-            if (str.Length == 6)
-            {
-                str = string.Concat("0", str);
-            }
-            if (str1.Length == 5)
-            {
-                str1 = string.Concat("0", str1);
+                this.ListBirthCities = await this.GetPlaceListLike(place: BirthDetails?.TxtBirthPlace?.Trim(), countrycode: this.BirthDetails?.CmbCountry);
+                this.no_countryload = false;
             }
 
-            string text = $"{this.BirthDetails.Dobdd}/{this.BirthDetails.Dobmm}/{this.BirthDetails.Dobyy},{this.BirthDetails.Tobhh}:{this.BirthDetails.Tobmm},{str},{str1},{str2},{this.ayan},{this.full_time_corr}";
-
-            this.Online_Result = await Gen_Kunda(text, 500f, this.BirthDetails.CmbRotate);
-            this.pvl = planetVOs;
-            this.kp249 = kP249s;
-
-            var kundliVO = await Map_PersKV(Online_Result, BirthDetails.TxtName, BirthDetails.BirthCity, BirthDetails.Dobdd.ToString(), BirthDetails.Dobmm.ToString(), BirthDetails.Dobyy.ToString(), BirthDetails.Tobhh.ToString(), BirthDetails.Tobmm.ToString(), "00", "admin", BirthDetails.Longtitude, BirthDetails.Latitude, BirthDetails.TxtTimezone, true, BirthDetails.CmbLanguage, BirthDetails.ChkShowRef, this.male, "YICC", "YICC", "YICC", "YICC", "YICC", "New Product", "01", "01", "2000", 1);
-            if (kundliVO != null)
+            Task? task = null;
+            if (ListBirthCities != null && ListBirthCities.Any())
             {
-                this.persKV = kundliVO;
+                selectedBirthCityIndex = 0;
+                task = OnChange_ListBirthCities(new ChangeEventArgs { Value = selectedBirthCityIndex });
             }
 
-            await Gen_Image(this.persKV!.Lagna.ToString(), this.kp_chart, Online_Result, false, 1, this.persKV.Language);
+            if (task != null && task.IsCompletedSuccessfully)
+            {
+                string str = this.full_lon.Replace(":", ".");
+                string str1 = this.full_lat.Replace(":", ".");
+                str = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str.Substring(0, str.Length - 1))).ToString(), str.Substring(str.Length - 1, 1));
+                str1 = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str1.Substring(0, str1.Length - 1))).ToString(), str1.Substring(str1.Length - 1, 1));
+                string str2 = this.kkbl.longi2timezone(this.full_tz);
 
-            await this.OnKeyDown_TxtBirthplace(new KeyboardEventArgs());
-            await this.OnClick_BtnChart(new MouseEventArgs());
+                if (str.Length == 6)
+                {
+                    str = string.Concat("0", str);
+                }
+                if (str1.Length == 5)
+                {
+                    str1 = string.Concat("0", str1);
+                }
 
+                string text = $"{this.BirthDetails!.Dobdd}/{this.BirthDetails.Dobmm}/{this.BirthDetails.Dobyy},{this.BirthDetails.Tobhh}:{this.BirthDetails.Tobmm},{str},{str1},{str2},{this.ayan},{this.full_time_corr}";
+
+                this.Online_Result = await Gen_Kunda(text, 500f, this.BirthDetails.CmbRotate);
+
+                if (planetVOs != null)
+                {
+                    this.pvl = planetVOs;
+                }
+
+                if (kP249s != null)
+                {
+                    this.kp249 = kP249s;
+                }
+
+                var kundliVO = await Map_PersKV(Online_Result, BirthDetails.TxtName, BirthDetails.BirthCity, BirthDetails.Dobdd.ToString(), BirthDetails.Dobmm.ToString(), BirthDetails.Dobyy.ToString(), BirthDetails.Tobhh.ToString(), BirthDetails.Tobmm.ToString(), "00", "admin", BirthDetails.Longtitude, BirthDetails.Latitude, BirthDetails.TxtTimezone, true, BirthDetails.CmbLanguage, BirthDetails.ChkShowRef, this.male, "YICC", "YICC", "YICC", "YICC", "YICC", "New Product", "01", "01", "2000", 1);
+
+                if (kundliVO != null)
+                {
+                    this.persKV = kundliVO;
+                }
+
+                await Gen_Image(this.persKV!.Lagna.ToString(), this.kp_chart, Online_Result, false, 1, this.persKV.Language);
+
+                await this.OnKeyDown_TxtBirthplace(new KeyboardEventArgs());
+
+                await this.OnClick_BtnChart(new MouseEventArgs());
+            }
             await base.OnInitializedAsync();
         }
 
+        private async Task<List<DTOs.ACountryMaster>?> GetCountry()
+        {
+            var countryMasters = await Swagger!.GetAsync<List<DTOs.ACountryMaster>>(CountryApiConst.GET_GetCountry);
+            return countryMasters;
+        }
+
+        private async Task<List<PlanetVO>?> GetAllPlanets()
+        {
+            var planetVOs = await Swagger!.GetAsync<List<PlanetVO>>(PlanetBLLApiConst.GET_GetKPPlanetsVOs);
+            return planetVOs;
+        }
+
+        private async Task<List<KP249VO>?> Fill_249()
+        {
+            var kP249s = await Swagger!.GetAsync<List<KP249VO>>(KPBLLApiConst.GET_Fill_249);
+            return kP249s;
+        }
         protected override void OnAfterRender(bool firstRender)
         {
             base.OnAfterRender(firstRender);
@@ -963,53 +997,14 @@ namespace AstroOfficeWeb.Client.Pages
 
                     text = BirthDetails.Dobdd + "/" + BirthDetails.Dobmm + "/" + BirthDetails.Dobyy + "," + BirthDetails.Tobhh + ":" + BirthDetails.Tobmm + "," + str1 + "," + str2 + "," + str3 + "," + this.ayan + "," + full_time_corr;
 
-                    var kundaRequest = new GenKundaRequest()
-                    {
-                        Detail = text,
-                        Lagan = 500f,
-                        Rotate = BirthDetails.CmbRotate,
-                    };
-
-                    var kundaResponse = await Swagger!.PostAsync<GenKundaRequest, ApiResponse<string>>(KundliBLLApiConst.POST_GenKunda, kundaRequest);
-
-                    this.Online_Result = kundaResponse?.Data ?? "";
+                    this.Online_Result = await Gen_Kunda(text, 500f, BirthDetails.CmbRotate);
 
                     #endregion
 
                     #region Map Pers KVRequest
 
-                    MapPersKVRequest mapPersKVRequest = new MapPersKVRequest
-                    {
-                        Online_Result = Online_Result,
-                        Name = BirthDetails.TxtName,
-                        City = BirthDetails.BirthCity,
-                        DD = BirthDetails.Dobdd.ToString(),
-                        MM = BirthDetails.Dobmm.ToString(),
-                        YY = BirthDetails.Dobyy.ToString(),
-                        HH = BirthDetails.Tobhh.ToString(),
-                        Min = BirthDetails.Tobmm.ToString(),
-                        SS = "00", // Default value
-                        Username = "admin", // Dsefault value
-                        Lon = BirthDetails.Longtitude.ToString(),
-                        Lat = BirthDetails.Latitude.ToString(),
-                        TZ = BirthDetails.TxtTimezone.ToString(),
-                        Paid = true, // Default value
-                        Lang = BirthDetails.CmbLanguage,
-                        ShowRef = BirthDetails.ChkShowRef, // Set to true or false as needed
-                        Male = this.male, // Set to true or false as needed
-                        Domain = "YICC", // Default value
-                        FilePrefix = "YICC", // Default value
-                        VcnPrefix = "YICC", // Default value
-                        Source = "YICC", // Default value
-                        HeaderTitle = "YICC", // Default value
-                        Product = "New Product", // Default value
-                        WDD = "01", // Default value
-                        WMM = "01", // Default value
-                        WYY = "2000", // Default value
-                        Rotate = 1 // Default value
-                    };
+                    var kundliVO = await Map_PersKV(Online_Result, BirthDetails.TxtName, BirthDetails.BirthCity, BirthDetails.Dobdd.ToString(), BirthDetails.Dobmm.ToString(), BirthDetails.Dobyy.ToString(), BirthDetails.Tobhh.ToString(), BirthDetails.Tobmm.ToString(), "00", "admin", BirthDetails.Longtitude.ToString(), BirthDetails.Latitude.ToString(), BirthDetails.TxtTimezone.ToString(), true, BirthDetails.CmbLanguage, BirthDetails.ChkShowRef, this.male, "YICC", "YICC", "YICC", "YICC", "YICC", "New Product", "01", "01", "2000", this.BirthDetails.CmbRotate);
 
-                    var kundliVO = await Swagger!.PostAsync<MapPersKVRequest, KundliVO>(PredictionBLLApiConst.POST_MapPersKV, mapPersKVRequest);
                     if (kundliVO != null)
                     {
                         this.persKV = kundliVO;
@@ -1078,16 +1073,22 @@ namespace AstroOfficeWeb.Client.Pages
         }
 
 
-        private async Task LoadCountry()
+        //private async Task LoadCountry()
+        //{
+        //    if (BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
+        //    {
+        //        this.ListBirthCities = await Swagger!.GetAsync<List<DTOs.APlaceMaster>>(string.Format(LocationBLLApiConst.GET_GetPlaceListLike, BirthDetails!.TxtBirthPlace, BirthDetails!.CmbCountry));
+        //    }
+        //    if (this.ListBirthCities != null && this.ListBirthCities.Any())
+        //    {
+        //        await OnChange_ListBirthCities(new ChangeEventArgs { Value = 0 });
+        //    }
+        //}
+
+        private async Task<List<DTOs.APlaceMaster>?> GetPlaceListLike(string? place, string? countrycode)
         {
-            if (BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
-            {
-                this.ListBirthCities = await Swagger!.GetAsync<List<DTOs.APlaceMaster>>(string.Format(LocationBLLApiConst.GET_GetPlaceListLike, BirthDetails!.TxtBirthPlace, BirthDetails!.CmbCountry));
-            }
-            if (this.ListBirthCities != null && this.ListBirthCities.Any())
-            {
-                await OnChange_ListBirthCities(new ChangeEventArgs { Value = 0 });
-            }
+            var response = await Swagger!.GetAsync<List<DTOs.APlaceMaster>>(string.Format(LocationBLLApiConst.GET_GetPlaceListLike, place, countrycode));
+            return response;
         }
 
         private async Task Show_Falla(string falla)
@@ -1818,11 +1819,17 @@ namespace AstroOfficeWeb.Client.Pages
 
         private async Task OnInput_TxtBirthplace(ChangeEventArgs e)
         {
-            if (!no_countryload)
+            if (!this.no_countryload && this.BirthDetails.CmbCountry != null && BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
             {
-                await LoadCountry();
+                this.ListBirthCities = await this.GetPlaceListLike(place: BirthDetails?.TxtBirthPlace?.Trim(), countrycode: this.BirthDetails?.CmbCountry);
+                this.no_countryload = false;
             }
-            no_countryload = false;
+
+            if (ListBirthCities != null && ListBirthCities.Any())
+            {
+                selectedBirthCityIndex = 0;
+                await OnChange_ListBirthCities(new ChangeEventArgs { Value = selectedBirthCityIndex });
+            }
         }
 
         private async Task OnKeyDown_TxtBirthplace(KeyboardEventArgs e)
@@ -1847,7 +1854,7 @@ namespace AstroOfficeWeb.Client.Pages
 
         private async Task OnChange_ListBirthCities(ChangeEventArgs e)
         {
-            await Task.Delay(1000);
+            //await Task.Delay(1000);
             string value = e.Value.ToStringLower();
             var selectedBirthCity = ListBirthCities![selectedBirthCityIndex];
 
@@ -1903,7 +1910,7 @@ namespace AstroOfficeWeb.Client.Pages
             if (country!.ZoneStart != null)
                 BirthDetails.TxtTimezone = country!.ZoneStart.Replace(':', '.').Replace('E', ' ').Replace('W', ' ').Replace('S', ' ').Replace('N', ' ').Trim();
 
-            await Gen_Kundali_Chart();
+            //await Gen_Kundali_Chart();
         }
 
         private async Task OnClick_Lagan(MouseEventArgs e)
