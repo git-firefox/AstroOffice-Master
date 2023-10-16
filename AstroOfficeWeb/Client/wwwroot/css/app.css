@@ -88,6 +88,7 @@ body {
     align-items: center;
     min-height: 100vh;
     background: #fff;
+    background: radial-gradient(rgba(145, 13, 13, 1), rgba(145, 13, 13, 0.5));
 }
 
 /* Loader image styling */
