@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AstroOfficeWeb.Shared.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace AstroOfficeWeb.Server.Controllers
 {
@@ -7,10 +9,18 @@ namespace AstroOfficeWeb.Server.Controllers
     [ApiController]
     public class CreditController : ControllerBase
     {
-        //[HttpGet]
-        //public IActionResult Balance([FromQuery] string ApiKey, [FromQuery] string ClientId)
-        //{
-        //    return Ok();
-        //}
+        public readonly SSExpertSystemSetting _setting;
+
+        public CreditController(IOptions<SSExpertSystemSetting> ssExpertSystemSetting)
+        {
+            _setting = ssExpertSystemSetting.Value;
+        }
+
+        [HttpGet]
+        public IActionResult Balance([FromQuery] string ApiKey, [FromQuery] string ClientId)
+        {       
+
+            return Ok();
+        }
     }
 }

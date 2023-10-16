@@ -16,6 +16,8 @@ namespace AstroOfficeWeb.Server.Controllers
         {
             _kpPredBLL = kpPredBLL;
         }
+
+        [HttpPost]
         public IActionResult GetRedSigniPlanetWise(GetRedSigniPlanetWiseRequest request)
         {
             if (request.PersonalKundli == null || request.ProductSettings == null || request.CuspHouse == null || request.KPChart == null)

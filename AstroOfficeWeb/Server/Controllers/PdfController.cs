@@ -18,6 +18,7 @@ namespace AstroOfficeWeb.Server.Controllers
             _converter = converter;
         }
 
+        [HttpPost]
         public IActionResult GeneratePDF([FromBody] GeneratePDFRequest request)
         {
             string falla = request.Falla;

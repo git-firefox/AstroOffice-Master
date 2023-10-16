@@ -79,6 +79,7 @@ builder.Services.AddSwaggerGen(sg =>
 
 var sectionJWTSettings = builder.Configuration.GetSection("JWTSettings");
 builder.Services.Configure<JWTSettings>(sectionJWTSettings);
+builder.Services.Configure<SSExpertSystemSetting>(builder.Configuration.GetSection(SSExpertSystemSetting.SSExpertSystemSection));
 
 var jwtSettings = sectionJWTSettings.Get<JWTSettings>();
 var key = Encoding.ASCII.GetBytes(jwtSettings.SecretKey);
