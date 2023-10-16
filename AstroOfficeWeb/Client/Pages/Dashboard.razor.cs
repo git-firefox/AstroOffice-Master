@@ -2262,6 +2262,12 @@ namespace AstroOfficeWeb.Client.Pages
             text[6] = text1?.Split(chrArray)[1];
             this.lblMahadasha = string.Concat(text);
 
+            this.ListView_Prayantardasha?.Clear();
+            this.ListView_Sukhsmadasha?.Clear();
+            this.lblParyan = string.Empty;
+            this.lblAntar = string.Empty;
+            this.lblSukhsmadasha = string.Empty;
+
             if (this.BirthDetails.SalaChakkar)
             {
                 if (isSelectedMahadashaTableTRTaskRunning)
@@ -2324,12 +2330,6 @@ namespace AstroOfficeWeb.Client.Pages
             {
                 this.Gen_AntarDasha(this.main_antardasha, this.kp_chart);
             }
-
-            this.ListView_Prayantardasha?.Clear();
-            this.ListView_Sukhsmadasha?.Clear();
-            this.lblParyan = string.Empty;
-            this.lblAntar = string.Empty;
-            this.lblSukhsmadasha = string.Empty;
         }
 
         private async Task OnDblClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
