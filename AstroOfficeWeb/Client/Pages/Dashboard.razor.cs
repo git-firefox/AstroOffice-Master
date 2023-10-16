@@ -212,49 +212,49 @@ namespace AstroOfficeWeb.Client.Pages
 
             //if (task != null && task.IsCompleted)
             //{
-                await Gen_Kundali_Chart();
+            await Gen_Kundali_Chart();
 
-                string str = this.full_lon.Replace(":", ".");
-                string str1 = this.full_lat.Replace(":", ".");
-                str = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str.Substring(0, str.Length - 1))).ToString(), str.Substring(str.Length - 1, 1));
-                str1 = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str1.Substring(0, str1.Length - 1))).ToString(), str1.Substring(str1.Length - 1, 1));
-                string str2 = this.kkbl.longi2timezone(this.full_tz);
+            string str = this.full_lon.Replace(":", ".");
+            string str1 = this.full_lat.Replace(":", ".");
+            str = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str.Substring(0, str.Length - 1))).ToString(), str.Substring(str.Length - 1, 1));
+            str1 = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str1.Substring(0, str1.Length - 1))).ToString(), str1.Substring(str1.Length - 1, 1));
+            string str2 = this.kkbl.longi2timezone(this.full_tz);
 
-                if (str.Length == 6)
-                {
-                    str = string.Concat("0", str);
-                }
-                if (str1.Length == 5)
-                {
-                    str1 = string.Concat("0", str1);
-                }
+            if (str.Length == 6)
+            {
+                str = string.Concat("0", str);
+            }
+            if (str1.Length == 5)
+            {
+                str1 = string.Concat("0", str1);
+            }
 
-                string text = $"{this.BirthDetails!.Dobdd}/{this.BirthDetails.Dobmm}/{this.BirthDetails.Dobyy},{this.BirthDetails.Tobhh}:{this.BirthDetails.Tobmm},{str},{str1},{str2},{this.ayan},{this.full_time_corr}";
+            string text = $"{this.BirthDetails!.Dobdd}/{this.BirthDetails.Dobmm}/{this.BirthDetails.Dobyy},{this.BirthDetails.Tobhh}:{this.BirthDetails.Tobmm},{str},{str1},{str2},{this.ayan},{this.full_time_corr}";
 
-                this.Online_Result = await Gen_Kunda(text, 500f, this.BirthDetails.CmbRotate);
+            this.Online_Result = await Gen_Kunda(text, 500f, this.BirthDetails.CmbRotate);
 
-                if (planetVOs != null)
-                {
-                    this.pvl = planetVOs;
-                }
+            if (planetVOs != null)
+            {
+                this.pvl = planetVOs;
+            }
 
-                if (kP249s != null)
-                {
-                    this.kp249 = kP249s;
-                }
+            if (kP249s != null)
+            {
+                this.kp249 = kP249s;
+            }
 
-                var kundliVO = await Map_PersKV(Online_Result, BirthDetails.TxtName, BirthDetails.BirthCity, BirthDetails.Dobdd.ToString(), BirthDetails.Dobmm.ToString(), BirthDetails.Dobyy.ToString(), BirthDetails.Tobhh.ToString(), BirthDetails.Tobmm.ToString(), "00", "admin", BirthDetails.Longtitude, BirthDetails.Latitude, BirthDetails.TxtTimezone, true, BirthDetails.CmbLanguage, BirthDetails.ChkShowRef, this.male, "YICC", "YICC", "YICC", "YICC", "YICC", "New Product", "01", "01", "2000", 1);
+            var kundliVO = await Map_PersKV(Online_Result, BirthDetails.TxtName, BirthDetails.BirthCity, BirthDetails.Dobdd.ToString(), BirthDetails.Dobmm.ToString(), BirthDetails.Dobyy.ToString(), BirthDetails.Tobhh.ToString(), BirthDetails.Tobmm.ToString(), "00", "admin", BirthDetails.Longtitude, BirthDetails.Latitude, BirthDetails.TxtTimezone, true, BirthDetails.CmbLanguage, BirthDetails.ChkShowRef, this.male, "YICC", "YICC", "YICC", "YICC", "YICC", "New Product", "01", "01", "2000", 1);
 
-                if (kundliVO != null)
-                {
-                    this.persKV = kundliVO;
-                }
+            if (kundliVO != null)
+            {
+                this.persKV = kundliVO;
+            }
 
-                await Gen_Image(this.persKV!.Lagna.ToString(), this.kp_chart, Online_Result, false, 1, this.persKV.Language);
+            await Gen_Image(this.persKV!.Lagna.ToString(), this.kp_chart, Online_Result, false, 1, this.persKV.Language);
 
-                await this.OnKeyDown_TxtBirthplace(new KeyboardEventArgs());
+            await this.OnKeyDown_TxtBirthplace(new KeyboardEventArgs());
 
-                await this.OnClick_BtnChart(new MouseEventArgs());
+            await this.OnClick_BtnChart(new MouseEventArgs());
             //}
             await base.OnInitializedAsync();
         }
