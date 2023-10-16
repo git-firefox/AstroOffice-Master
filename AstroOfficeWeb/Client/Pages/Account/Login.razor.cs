@@ -1,9 +1,11 @@
 ﻿//using AstroOfficeWeb.Client.Components;
 using AstroOfficeWeb.Client.Models;
 using AstroOfficeWeb.Client.Services.IService;
+using AstroOfficeWeb.Client.Shared;
 using AstroOfficeWeb.Shared;
 using AstroOfficeWeb.Shared.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System.Net;
 using System.Net.Http.Json;
 using System.Security.Claims;
@@ -14,6 +16,8 @@ namespace AstroOfficeWeb.Client.Pages.Account
     public partial class Login
     {
 
+        private MobileOtpModal MobileOtpModal = new();
+        private MobileOtpModal ForgotPasswordModal = new();
         private LoginModel? LoginModel { get; set; }
 
         [Inject]
@@ -49,5 +53,24 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
             }
         }
+
+        private void OnClick_BtnMobileOTP(MouseEventArgs e)
+        {
+            MobileOtpModal?.ShowAsync();
+        }
+        private void OnClick_BtnForgotPassword(MouseEventArgs e)
+        {
+            ForgotPasswordModal?.ShowForgotPasswordAsync();
+        }
+
+        private void OnConfirmationChanged_MobileOtpModal(bool isConfirm)
+        {
+
+        }
+        private void OnConfirmationChanged_ForgotPasswordModal(bool isConfirm)
+        {
+            
+        }
+
     }
 }
