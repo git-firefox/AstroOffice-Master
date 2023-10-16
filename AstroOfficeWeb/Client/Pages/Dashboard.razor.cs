@@ -2226,6 +2226,7 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
+        private bool isSelectedMahadashaTableTRTaskRunning = false;
         MahadashaTableTRModel? SelectedMahadashaTableTR { get; set; }
         private async Task OnClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
         {
@@ -2263,6 +2264,12 @@ namespace AstroOfficeWeb.Client.Pages
 
             if (this.BirthDetails.SalaChakkar)
             {
+                if (isSelectedMahadashaTableTRTaskRunning)
+                {
+                    // Task is already running, don't allow another click
+                    return;
+                }
+
                 if (ListView_Years35 == null)
                 {
                     ListView_Years35 = new();
@@ -2271,6 +2278,9 @@ namespace AstroOfficeWeb.Client.Pages
                 {
                     ListView_Years35.Clear();
                 }
+
+                isSelectedMahadashaTableTRTaskRunning = true;
+
                 List<KPDashaVO>? list35Sala = await Get_List_35_Sala(this.Online_Result, this.persKV, startDate, endDate);
 
                 if (list35Sala != null)
@@ -2307,6 +2317,8 @@ namespace AstroOfficeWeb.Client.Pages
                         ListView_Years35.Add(tr);
                     }
                 }
+
+                isSelectedMahadashaTableTRTaskRunning = false;
             }
             else
             {

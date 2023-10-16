@@ -65,6 +65,7 @@
                                             {
                                                 <input value="@BirthDetails!.TxtName" class="form-control form-control-sm mb-2" readonly />
                                             }
+
                                             @if (CmbCountry != null)
                                             {
                                                 <select @bind="BirthDetails!.CmbCountry" class="form-control form-control-sm mb-2" aria-label="Selection of brith country">
@@ -373,7 +374,7 @@
                                 <div class="col-2">
                                     @if (isNumVarshVisible)
                                     {
-                                        <InputNumber @bind-Value="BirthDetails.KundaliUdvYear" class="form-control form-control-sm" min="1" max="120" />
+                                        <InputNumber  id="1" @bind-Value="BirthDetails.KundaliUdvYear" class="form-control form-control-sm" min="1" max="120" />
                                     }
                                     else
                                     {
