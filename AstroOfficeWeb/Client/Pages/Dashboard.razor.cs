@@ -2251,7 +2251,7 @@ namespace AstroOfficeWeb.Client.Pages
 
             this.main_antardasha = this.kpbl.Get_Antar_Dasha(startDate, endDate, planet, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
 
-            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;&nbsp;:&nbsp;&nbsp;", selectedTR.Period, ";<br/>कार्येश&nbsp;&nbsp:&nbsp;&nbsp;", null, null, null };
+            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;&nbsp;:&nbsp;&nbsp;", selectedTR.Period, "<br/>कार्येश&nbsp;&nbsp:&nbsp;&nbsp;", null, null, null };
             string? str = selectedTR.Signi;
             char[] chrArray = new char[] { '|' };
             text[4] = str?.Split(chrArray)[0];

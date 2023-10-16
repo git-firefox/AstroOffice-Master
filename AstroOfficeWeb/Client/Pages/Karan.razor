@@ -3,42 +3,43 @@
 @attribute [Authorize]
 
 <div class="container-fluid p-3">
-    <h1 class="py-4 font-weight-bold ">Karan</h1>
+    <h1 class="pt-4 pb-2 font-weight-bold ">Karan</h1>
     <section class="content">
         <div class="row">
             <div class="col-sm-12 col-md-12">
-                <table class="table table-bordered table-hover">
-                    <thead class="p-0">
-                        <tr>
-                            <th>Problem</th>
-                            <th>House</th>
-                            <th>Significators</th>
-                            <th>Good</th>
-                            <th>Bad</th>
-                            <th>Karan Planet</th>
-                            <th>Position</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (KaranModelTableData != null)
-                        {
-                            foreach (var row in KaranModelTableData)
+                <div class="chart-table table-responsive">
+                    <table class="table">
+                        <thead class="p-0 background-divya-astro-color-yellow">
+                            <tr>
+                                <th>Problem</th>
+                                <th>House</th>
+                                <th>Significators</th>
+                                <th>Good</th>
+                                <th>Bad</th>
+                                <th>Karan Planet</th>
+                                <th>Position</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (KaranModelTableData != null)
                             {
-                                <tr>
-                                    <td>@row.Problem</td>
-                                    <td>@row.House</td>
-                                    <td>@row.Significators</td>
-                                    <td>@row.Good</td>
-                                    <td>@row.Bad</td>
-                                    <td>@row.KaranPlanet</td>
-                                    <td>@row.Position</td>
+                                foreach (var row in KaranModelTableData)
+                                {
+                                    <tr>
+                                        <td>@row.Problem</td>
+                                        <td>@row.House</td>
+                                        <td>@row.Significators</td>
+                                        <td>@row.Good</td>
+                                        <td>@row.Bad</td>
+                                        <td>@row.KaranPlanet</td>
+                                        <td>@row.Position</td>
 
-                                </tr>
+                                    </tr>
+                                }
                             }
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </section>
