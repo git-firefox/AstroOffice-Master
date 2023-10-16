@@ -210,8 +210,10 @@ namespace AstroOfficeWeb.Client.Pages
                 task = OnChange_ListBirthCities(new ChangeEventArgs { Value = selectedBirthCityIndex });
             }
 
-            if (task != null && task.IsCompletedSuccessfully)
-            {
+            //if (task != null && task.IsCompleted)
+            //{
+                await Gen_Kundali_Chart();
+
                 string str = this.full_lon.Replace(":", ".");
                 string str1 = this.full_lat.Replace(":", ".");
                 str = string.Concat(this.kkbl.DecimalToDMS(Convert.ToDouble(str.Substring(0, str.Length - 1))).ToString(), str.Substring(str.Length - 1, 1));
@@ -253,7 +255,7 @@ namespace AstroOfficeWeb.Client.Pages
                 await this.OnKeyDown_TxtBirthplace(new KeyboardEventArgs());
 
                 await this.OnClick_BtnChart(new MouseEventArgs());
-            }
+            //}
             await base.OnInitializedAsync();
         }
 
