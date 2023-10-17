@@ -17,16 +17,13 @@ namespace AstroOfficeWeb.Server.Controllers
         public CreditController(IOptions<SSExpertSystemSettings> ssExpertSystemSetting)
         {
             _setting = ssExpertSystemSetting.Value;
-            _httpClient = new(BaseApiConst.Base);
+            _httpClient = new(_setting.BaseUrl);
         }
 
         [HttpGet]
         public async Task<IActionResult> Balance()
         {
-
-            string url = string.Format(BalanceApiConst.Balance, _setting.APIKey, _setting.ClientId);
-            string d = WebUtility.UrlEncode(url);
-            var response = await _httpClient.GetAsync<BalanceListResponse>(d);
+            var response = await _httpClient.GetAsync<BalanceListResponse>(string.Format(BalanceApiConst.Balance, _setting.APIKey.ToUrlEncode(), _setting.ClientId.ToUrlEncode()));
             return Ok(response);
         }
     }

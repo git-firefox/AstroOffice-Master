@@ -33,6 +33,15 @@
             BtnExit = new Button();
             TxtUserName = new TextBox();
             TxtPassword = new TextBox();
+            textBox1 = new TextBox();
+            textBox2 = new TextBox();
+            textBox3 = new TextBox();
+            textBox4 = new TextBox();
+            textBox5 = new TextBox();
+            textBox6 = new TextBox();
+            checkBox1 = new CheckBox();
+            panel1 = new Panel();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // BtnAccess
@@ -88,14 +97,81 @@
             TxtPassword.Size = new Size(95, 25);
             TxtPassword.TabIndex = 1;
             // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(40, 16);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(24, 23);
+            textBox1.TabIndex = 4;
+            // 
+            // textBox2
+            // 
+            textBox2.Location = new Point(72, 16);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(24, 23);
+            textBox2.TabIndex = 5;
+            // 
+            // textBox3
+            // 
+            textBox3.Location = new Point(168, 16);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(24, 23);
+            textBox3.TabIndex = 6;
+            // 
+            // textBox4
+            // 
+            textBox4.Location = new Point(104, 16);
+            textBox4.Name = "textBox4";
+            textBox4.Size = new Size(24, 23);
+            textBox4.TabIndex = 7;
+            // 
+            // textBox5
+            // 
+            textBox5.Location = new Point(136, 16);
+            textBox5.Name = "textBox5";
+            textBox5.Size = new Size(24, 23);
+            textBox5.TabIndex = 7;
+            // 
+            // textBox6
+            // 
+            textBox6.Location = new Point(8, 16);
+            textBox6.Name = "textBox6";
+            textBox6.Size = new Size(24, 23);
+            textBox6.TabIndex = 8;
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(32, 64);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(83, 19);
+            checkBox1.TabIndex = 9;
+            checkBox1.Text = "checkBox1";
+            checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(textBox6);
+            panel1.Controls.Add(textBox1);
+            panel1.Controls.Add(textBox2);
+            panel1.Controls.Add(textBox5);
+            panel1.Controls.Add(textBox3);
+            panel1.Controls.Add(textBox4);
+            panel1.Location = new Point(120, 64);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(216, 56);
+            panel1.TabIndex = 10;
+            // 
             // FrmLogin
             // 
             AcceptButton = BtnAccess;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(255, 128, 0);
-            ClientSize = new Size(442, 65);
+            ClientSize = new Size(442, 143);
             ControlBox = false;
+            Controls.Add(panel1);
+            Controls.Add(checkBox1);
             Controls.Add(BtnExit);
             Controls.Add(BtnAccess);
             Controls.Add(TxtPassword);
@@ -107,6 +183,8 @@
             Padding = new Padding(12);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AstroScience Login";
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -117,5 +195,13 @@
         private Button BtnExit;
         private TextBox TxtUserName;
         private TextBox TxtPassword;
+        private TextBox textBox1;
+        private TextBox textBox2;
+        private TextBox textBox3;
+        private TextBox textBox4;
+        private TextBox textBox5;
+        private TextBox textBox6;
+        private CheckBox checkBox1;
+        private Panel panel1;
     }
 }

@@ -29,5 +29,7 @@ namespace ASModels.Astrooff
         public bool? CanReport { get; set; }
         [Column("active")]
         public bool? Active { get; set; }
+        public string? MobileNumber { get; set; }
+        public string? MobileOtp { get; set; }
     }
 }
