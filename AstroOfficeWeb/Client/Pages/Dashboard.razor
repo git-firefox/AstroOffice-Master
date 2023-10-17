@@ -65,6 +65,7 @@
                                             {
                                                 <input value="@BirthDetails!.TxtName" class="form-control form-control-sm mb-2" readonly />
                                             }
+
                                             @if (CmbCountry != null)
                                             {
                                                 <select @bind="BirthDetails!.CmbCountry" class="form-control form-control-sm mb-2" aria-label="Selection of brith country">
@@ -221,8 +222,8 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-2">
-                                                            <button type="button" class="btn btn-block btn-secondary btn-sm"> ✓ </button>
+                                                        <div class="col-3">
+                                                            <button type="button" class="btn btn-custom"> ✓ </button>
                                                         </div>
 
 
@@ -353,7 +354,7 @@
 
                             <div class="row">
                                 <div class="col">
-                                    <button type="button" class="btn btn-block btn-custom btn-sm" title="Bhav Chalit" @onclick="OnClick_BhavChalit"> Bhav Chalit </button>
+                                    <button type="button" class="btn btn-block btn-custom btn-sm" title="Bhav Chalit" @onclick="OnClick_BhavChalit"> Bhav </button>
                                 </div>
                                 <div class="col">
                                     <button type="button" class="btn btn-block btn-custom btn-sm" title="Lagan" @onclick="OnClick_Lagan"> Lagan </button>
@@ -365,7 +366,7 @@
                                     <button type="button" class="btn btn-block btn-custom btn-sm" title="Gochar" @onclick="OnClick_Gochar"> Gochar </button>
                                 </div>
                                 <div class="col">
-                                    <button type="button" class="btn btn-block btn-custom btn-sm" title="Varsh" @onclick="OnClick_Varsh"> Varsh </button>
+                                    <button type="button" class="btn btn-block btn-custom btn-smbtn btn-block btn-custom btn-sm" title="Varsh" @onclick="OnClick_Varsh"> Varsh </button>
                                 </div>
                             </div>
 
@@ -373,7 +374,7 @@
                                 <div class="col-2">
                                     @if (isNumVarshVisible)
                                     {
-                                        <InputNumber @bind-Value="BirthDetails.KundaliUdvYear" class="form-control form-control-sm" min="1" max="120" />
+                                        <InputNumber  id="1" @bind-Value="BirthDetails.KundaliUdvYear" class="form-control form-control-sm" min="1" max="120" />
                                     }
                                     else
                                     {
@@ -500,7 +501,7 @@
                                 </div>
 
                                 <div class="row mt-2">
-                                    <div class="col-md-3">
+                                    <div class="col-6 col-xl-3">
                                         <div class="card mb-0">
                                            
                                                 <div class="chart-table table-responsive">
@@ -531,7 +532,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-6 col-xl-3">
                                         <div class="card mb-0">                                         
 
 
@@ -585,7 +586,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-6 col-xl-3">
                                         @if (!BirthDetails.SalaChakkar)
                                         {
                                             <div class="card mb-0">
@@ -616,7 +617,7 @@
                                         }
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-6 col-xl-3">
                                         @if (!BirthDetails.SalaChakkar)
                                         {
                                             <div class="card mb-0">
@@ -651,7 +652,7 @@
                             @* Date Finder *@
                             <div class="tab-pane fade" id="birthdetails-tabs-date-finder" role="tabpanel" aria-labelledby="birthdetails-tabs-date-finder-tab">
                                 <div class="row">
-                                    <div class="col-3">
+                                    <div class="col-4">
                                         <div class="date-finder">
                                             <EditForm Model="DateFinder">
                                                 <div class="row mt-2">
@@ -691,7 +692,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="row mt-2">
+                                                <div class="row mt-3">
                                                     <div class="col">
                                                             <h6 class="font-weight-bold">Choose Period</h6>
                                                             <div class="row">
@@ -774,10 +775,10 @@
                                         </div>
                                     </div>
 
-                                    <div class="col">
+                                    <div class="col-8">
                                         <div class="date-finder">
                                             <EditForm Model="DateFinder">
-                                            <InputTextArea class="form-control" rows="10" Placeholder="Date Lists ..." @bind-Value="DateFinder.DateList" />
+                                            <InputTextArea class="form-control" rows="13" Placeholder="Date Lists ..." @bind-Value="DateFinder.DateList" />
                                         </EditForm>
                                         </div>
                                     </div>
@@ -787,7 +788,7 @@
                             @* Best Kundali Dates *@
                             <div class="tab-pane fade " id="birthdetails-tabs-best-kundali-dates" role="tabpanel" aria-labelledby="birthdetails-tabs-best-kundali-dates-tab">
                                 <div class="row">
-                                    <div class="col-3">
+                                    <div class="col-4">
 
                                         <div class="date-finder">
                                         <EditForm Model="BestKundaliDates">
@@ -830,7 +831,7 @@
                                                         </div>
                                                 </div>
                                             </div>
-                                            <div class="row mt-2">
+                                            <div class="row mt-3">
                                                 <div class="col">
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         <label class="text-nowrap mr-3">Choose Rating</label>
@@ -868,7 +869,7 @@
                                             <div class="row align-items-center">
 
                                                 <div class="col">
-                                                        <label>
+                                                        <label class="mb-0">
                                                             @BestKundaliDates.countProcess
                                                         </label>
                                                 </div>
@@ -885,11 +886,11 @@
                                         </div>
                                     </div>
 
-                                    <div class="col">
+                                    <div class="col-8">
 
                                         <div class="date-finder">
                                         <EditForm Model="BestKundaliDates">
-                                            <InputTextArea class="form-control" rows="10" Placeholder="Best Dates..." @bind-Value="BestKundaliDates.BestDate" />
+                                            <InputTextArea class="form-control" rows="13" Placeholder="Best Dates..." @bind-Value="BestKundaliDates.BestDate" />
                                         </EditForm>
                                         </div>
                                     </div>

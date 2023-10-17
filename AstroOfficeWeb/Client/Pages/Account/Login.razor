@@ -3,6 +3,11 @@
 
 @*<h3>Login</h3>*@
 @* <div class="d-flex justify-content-center align-items-center" style="height: 80vh;"> *@
+
+<MobileOtpModal @ref="MobileOtpModal" IsForgotPassword="false" ConfirmationChanged="OnConfirmationChanged_MobileOtpModal" />
+<MobileOtpModal @ref="ForgotPasswordModal" IsForgotPassword="true" ConfirmationChanged="OnConfirmationChanged_ForgotPasswordModal" />
+
+
 <div class="login-page">
     <div class="login-box">
         <div class="login-logo">
@@ -34,7 +39,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row ">
                         <div class="col-8">
                             <div class="icheck-primary">
                                 <InputCheckbox id="ChkRememberMe" @bind-Value="LoginModel!.RememberMe" />
@@ -60,8 +65,10 @@
                 </div> *@
 
                 <div class="text-center">
-                    <p class="mb-1"><a href="">I forgot my password</a></p>
-                    <p class="mb-0"> Don't have an account? <a href="">Sign Up</a> </p>
+                    <p class="mb-1 mt-3"><button class="btn btn-link" @onclick="OnClick_BtnForgotPassword">I forgot my password</button></p>
+                    <p class="m-0">- OR -</p>
+                    <p><button class="btn btn-link" @onclick="OnClick_BtnMobileOTP">Login with OTP</button></p>                                     
+                    <p class="mb-0 "> Don't have an account? <button class="btn btn-link">Sign Up</button> </p>
                 </div>
             </div>
         </div>

@@ -2239,6 +2239,7 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
+        private bool isSelectedMahadashaTableTRTaskRunning = false;
         MahadashaTableTRModel? SelectedMahadashaTableTR { get; set; }
         private async Task OnClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
         {
@@ -2264,7 +2265,7 @@ namespace AstroOfficeWeb.Client.Pages
 
             this.main_antardasha = this.kpbl.Get_Antar_Dasha(startDate, endDate, planet, this.kp_chart, this.BirthDetails.ChkSahasaneLogic);
 
-            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;&nbsp;:&nbsp;&nbsp;", selectedTR.Period, ";<br/>कार्येश&nbsp;&nbsp:&nbsp;&nbsp;", null, null, null };
+            string?[] text = new string?[] { selectedTR.Planet, "&nbsp;&nbsp;:&nbsp;&nbsp;", selectedTR.Period, "<br/>कार्येश&nbsp;&nbsp:&nbsp;&nbsp;", null, null, null };
             string? str = selectedTR.Signi;
             char[] chrArray = new char[] { '|' };
             text[4] = str?.Split(chrArray)[0];
@@ -2274,8 +2275,20 @@ namespace AstroOfficeWeb.Client.Pages
             text[6] = text1?.Split(chrArray)[1];
             this.lblMahadasha = string.Concat(text);
 
+            this.ListView_Prayantardasha?.Clear();
+            this.ListView_Sukhsmadasha?.Clear();
+            this.lblParyan = string.Empty;
+            this.lblAntar = string.Empty;
+            this.lblSukhsmadasha = string.Empty;
+
             if (this.BirthDetails.SalaChakkar)
             {
+                if (isSelectedMahadashaTableTRTaskRunning)
+                {
+                    // Task is already running, don't allow another click
+                    return;
+                }
+
                 if (ListView_Years35 == null)
                 {
                     ListView_Years35 = new();
@@ -2284,6 +2297,9 @@ namespace AstroOfficeWeb.Client.Pages
                 {
                     ListView_Years35.Clear();
                 }
+
+                isSelectedMahadashaTableTRTaskRunning = true;
+
                 List<KPDashaVO>? list35Sala = await Get_List_35_Sala(this.Online_Result, this.persKV, startDate, endDate);
 
                 if (list35Sala != null)
@@ -2320,17 +2336,13 @@ namespace AstroOfficeWeb.Client.Pages
                         ListView_Years35.Add(tr);
                     }
                 }
+
+                isSelectedMahadashaTableTRTaskRunning = false;
             }
             else
             {
                 this.Gen_AntarDasha(this.main_antardasha, this.kp_chart);
             }
-
-            this.ListView_Prayantardasha?.Clear();
-            this.ListView_Sukhsmadasha?.Clear();
-            this.lblParyan = string.Empty;
-            this.lblAntar = string.Empty;
-            this.lblSukhsmadasha = string.Empty;
         }
 
         private async Task OnDblClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)

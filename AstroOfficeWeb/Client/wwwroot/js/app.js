@@ -18,6 +18,77 @@ window.fnShowModal = function (element) {
     }
     console.log(element);
 }
+
+window.fnShowOtpModal = function (element) {
+    if (element instanceof HTMLDivElement) {
+
+        $('[data-mask]', element).inputmask({'placeholder': ''});
+        const inputs = $('.otp-field > input', element);
+
+        const button = $('.btn[data-dismiss!="modal"]', element);
+
+        inputs[0].focus();
+        button.prop('disabled', true);
+
+        inputs.first().on('paste', function (event) {
+            event.preventDefault();
+
+            const pastedValue = (event.originalEvent.clipboardData || window.clipboardData).getData('text');
+            const otpLength = inputs.length;
+
+            inputs.each(function (index) {
+                if (index < pastedValue.length) {
+                    $(this).val(pastedValue[index]);
+                    $(this).prop('disabled', false);
+                    $(this)[0].focus();
+                } else {
+                    $(this).val(''); 
+                    $(this)[0].focus();
+                }
+            });
+        });
+
+        inputs.each(function (index1) {
+            $(this).on('keyup', function (e) {
+                const currentInput = $(this);
+                const nextInput = currentInput.next();
+                const prevInput = currentInput.prev();
+
+                if (currentInput.val().length > 1) {
+                    currentInput.val('');
+                    return;
+                }
+
+                if (nextInput.length && nextInput.prop('disabled') && currentInput.val() !== '') {
+                    nextInput.prop('disabled', false);
+                    nextInput[0].focus();
+                }
+
+                if (e.key === 'Backspace') {
+                    inputs.each(function (index2) {
+                        if (index1 <= index2 && prevInput.length) {
+                            $(this).prop('disabled', true);
+                            $(this).val('');
+                            prevInput[0].focus();
+                        }
+                    });
+                }
+
+                button.removeClass('active');
+                button.prop('disabled', true);
+
+                const inputsNo = inputs.length;
+                if (!inputs.eq(inputsNo - 1).prop('disabled') && inputs.eq(inputsNo - 1).val() !== '') {
+                    button.addClass('active');
+                    button.prop('disabled', false);
+                }
+            });
+        });
+
+        $(element).modal('show');
+    }
+    console.log(element);
+}
 window.fnCloseModal = function (element) {
     if (element instanceof HTMLDivElement) {
         $(element).modal('hide');
@@ -55,19 +126,19 @@ window.fnOpenDocumentInNewTab = function (fileName, base64Data) {
         byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     var byteArray = new Uint8Array(byteNumbers);
-    var pdfBlob = new Blob([byteArray], { type: "application/pdf" });
+    var pdfBlob = new Blob([byteArray], { type: 'application/pdf' });
 
     // Create a URL for the Blob
     var pdfUrl = URL.createObjectURL(pdfBlob);
 
     // Open the PDF in a new tab
-    window.open(pdfUrl, "_blank");
+    window.open(pdfUrl, '_blank');
 
     // Clean up resources
     URL.revokeObjectURL(pdfUrl);
 
 
-    //var newWindow = window.open(dataUrl, "_blank");
+    //var newWindow = window.open(dataUrl, '_blank');
     console.log(pdfUrl);
     console.log(byteNumbers);
     console.log(base64Data);
@@ -92,3 +163,5 @@ function fnBase64Blob(base64Data) {
         return blob;
     }
 }
+
+
