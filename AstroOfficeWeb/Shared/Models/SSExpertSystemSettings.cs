@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AstroOfficeWeb.Shared.Models
 {
-    public class SSExpertSystemSetting
+    public class SSExpertSystemSettings
     {
         public static string SSExpertSystemSection = "SSExpertSystemConfiguration";
         public string APIKey { get; set; } = string.Empty;
