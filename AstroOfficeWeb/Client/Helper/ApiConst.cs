@@ -85,4 +85,10 @@
         public static string Base = "api/Pdf/";
         public static string POST_GeneratePDF = Base + "GeneratePDF";
     }
+    public static class SMSApiConst
+    {
+        public static string Base = "api/SMS/";
+        public static string GET_VerifyOtp = Base + "VerifyOtp?mobileNumber={0}&otp={1}";
+        public static string GET_SendOtp = Base + "SendOtp?mobileNumber={0}";
+    }
 }

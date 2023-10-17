@@ -1,4 +1,7 @@
-﻿using AstroOfficeWeb.Client.Shared;
+﻿using AstroOfficeWeb.Client.Helper;
+using AstroOfficeWeb.Client.Services.IService;
+using AstroOfficeWeb.Client.Shared;
+using AstroOfficeWeb.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -8,21 +11,35 @@ namespace AstroOfficeWeb.Client.Pages.Account
     {
         [Inject]
         private NavigationManager? NavigationManager { get; set; }
+        private string? MobileNUmber { get; set; }
 
+        [Inject]
+        ISwaggerApiService? Swagger { get; set; }
         private MobileOtpModal MobileOtpModal = new();
 
-        private void OnClick_BtnMobileVerifyOTP(MouseEventArgs e)
+        private async Task OnClick_BtnMobileVerifyOTP(MouseEventArgs e)
         {
-            MobileOtpModal?.ShowAsync();
+            var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(SMSApiConst.GET_SendOtp, MobileNUmber));
+            
+            if(response == null)
+            {
+                return;
+            }
+
+            if (response.Success)
+            {
+                MobileOtpModal?.ShowAsync();
+            }
+
         }
-        private void OnConfirmationChanged(bool  isConfirm)
+        private void OnConfirmationChanged(bool isConfirm)
         {
-            if(isConfirm)
+            if (isConfirm)
             {
                 MobileOtpModal?.CloseAsync();
                 NavigationManager!.NavigateTo("/changePassword");
             }
         }
     }
- 
+
 }
