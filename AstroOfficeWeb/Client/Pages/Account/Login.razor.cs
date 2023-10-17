@@ -5,6 +5,7 @@ using AstroOfficeWeb.Client.Shared;
 using AstroOfficeWeb.Shared;
 using AstroOfficeWeb.Shared.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using System.Net;
 using System.Net.Http.Json;
@@ -39,20 +40,44 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
         private async Task OnValidSubmitAsync()
         {
-            try
+
+            bool isPasswordValid = await CheckPassword(LoginModel.Password); // Replace with your validation logic
+           
+
+            if (!isPasswordValid)
             {
-                var response = await AuthenticationService!.LoginAsync(new SignInRequest
-                {
-                    UserName = LoginModel!.UserName,
-                    Password = LoginModel!.Password
-                });
-                if (response != null) { }
+                // Password is incorrect; show an error message
+                isPasswordValid = false;
             }
-            catch
+            else
             {
 
+
+                try
+                {
+                    var response = await AuthenticationService!.LoginAsync(new SignInRequest
+                    {
+                        UserName = LoginModel!.UserName,
+                        Password = LoginModel!.Password
+                    });
+                    if (response != null) { }
+                }
+                catch
+                {
+
+                }
             }
         }
+
+        private Task<bool> CheckPassword(string password)
+        {
+            // Replace this with your actual password validation logic
+            // For this example, we're checking against a hard-coded password
+            string correctPassword = "astro";
+
+            return Task.FromResult(password == correctPassword);
+        }
+
 
         private void OnClick_BtnMobileOTP(MouseEventArgs e)
         {
@@ -69,7 +94,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
         }
         private void OnConfirmationChanged_ForgotPasswordModal(bool isConfirm)
         {
-            
+
         }
 
     }

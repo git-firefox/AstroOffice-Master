@@ -1,11 +1,14 @@
-﻿@inherits BaseComponent
+﻿@using System.Timers;
+@inherits BaseComponent
 @inject IJSRuntime JSRuntime
 
 <div @ref="ER_MobileOtpModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-body">  @if (!IsForgotPassword)
-                {
+            <div class="modal-body"> 
+                
+              @*   @if (!IsForgotPassword) { *@
+
                     <div class="container-fluid ">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-6 col-lg-4" style="min-width: 500px;">
@@ -26,6 +29,11 @@
                                             <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
                                         </div>
 
+
+
+
+                                    <p> OTP valid till: @timeLeft seconds</p>
+
                                         <button type="button" class="btn btn-primary mb-3" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">
                                             Close
                                         </button>
@@ -43,13 +51,13 @@
                             </div>
                         </div>
                     </div>
-                }
+                @*    }
                 else
                 {
                 <form>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <label for="userNameId">User Name</label>
+                            <input type="email" class="form-control" id="userNameId" aria-describedby="emailHelp">
                         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                     </div>
                     <div class="form-group">
@@ -63,7 +71,7 @@
                         <button type="button" class="btn btn-primary" @onclick="() => OnConfirmationChange(true)">Confirm</button>
                         <button type="button" class="btn btn-primary" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">Close</button>
                 </form>
-                }
+                } *@
             </div>
         </div>
     </div>
@@ -80,10 +88,41 @@
     [Parameter]
     public bool IsForgotPassword { get; set; } = false;
 
+    private int totalTime = 120; // 2 minutes in seconds
+    private int timeLeft;
+
+    private int minutes => timeLeft / 60;
+    private int seconds => timeLeft % 60;
+
+    private Timer timer;
+
+
     public async Task ShowAsync()
     {
+
+        if (timer != null)
+        {
+            // If a timer is already running, stop and dispose of it
+            timer.Stop();
+            timer.Dispose();
+        }
+   
         IsShow = true;
         await JSRuntime.ShowOtpModalAsync(ER_MobileOtpModal);
+
+        timeLeft = 120;
+        timer = new Timer(1000); // Interval in milliseconds (1 second)
+        timer.Elapsed += TimerElapsed;
+        timer.Start();
+
+        StateHasChanged();
+    }
+
+
+    public async Task CloseAsync()
+    {
+        IsShow = false;
+        await JSRuntime.CloseModalAsync(ER_MobileOtpModal);
         StateHasChanged();
     }
 
@@ -101,5 +140,30 @@
     {
         IsShow = false;
         await ConfirmationChanged.InvokeAsync(value);
+    }
+
+
+    private void TimerElapsed(object sender, ElapsedEventArgs e)
+    {
+        if (timeLeft > 0)
+        {
+            timeLeft--;
+            StateHasChanged();
+        }
+        else
+        {
+            timer.Stop();
+            IsShow = false; // Hide the modal when the countdown is complete
+            timer.Dispose(); // Dispose of the timer
+        }
+    }
+    public void Dispose()
+    {
+        // Ensure the timer is disposed when the component is disposed
+        if (timer != null)
+        {
+            timer.Stop();
+            timer.Dispose();
+        }
     }
 }

@@ -17,7 +17,13 @@ namespace AstroOfficeWeb.Client.Helper
 
         public static ValueTask ShowModalAsync(this IJSRuntime jsRuntime, ElementReference? element)
         {
-            return jsRuntime.InvokeVoidAsync("fnShowModal", element);
+            return jsRuntime.InvokeVoidAsync("startCountdown", element);
+        } 
+        
+      
+        public static ValueTask CloseModalAsync(this IJSRuntime jsRuntime, ElementReference? element)
+        {
+            return jsRuntime.InvokeVoidAsync("fnCloseModal", element);
         }
         public static ValueTask ShowOtpModalAsync(this IJSRuntime jsRuntime, ElementReference? element)
         {

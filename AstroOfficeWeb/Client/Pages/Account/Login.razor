@@ -5,7 +5,6 @@
 @* <div class="d-flex justify-content-center align-items-center" style="height: 80vh;"> *@
 
 <MobileOtpModal @ref="MobileOtpModal" IsForgotPassword="false" ConfirmationChanged="OnConfirmationChanged_MobileOtpModal" />
-<MobileOtpModal @ref="ForgotPasswordModal" IsForgotPassword="true" ConfirmationChanged="OnConfirmationChanged_ForgotPasswordModal" />
 
 
 <div class="login-page">
@@ -19,13 +18,13 @@
 
                 <EditForm Model="LoginModel" OnInvalidSubmit="OnInvalidSubmit" OnValidSubmit="OnValidSubmitAsync">
                     <DataAnnotationsValidator />
-                    <ValidationSummary />
+                  
                     <ValidationMessage For="() => LoginModel!.UserName" />
                     <div class="input-group mb-3">
-                        <InputText @bind-Value="LoginModel!.UserName" class="form-control" placeholder="UserName" />
+                        <InputText @bind-Value="LoginModel!.UserName" class="form-control" placeholder="User Name" />
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-user"></span>
+                                <span class="fas fa-user"></span> 
                                 @* <span class="fas fa-envelope"></span> *@
                             </div>
                         </div>
@@ -65,13 +64,14 @@
                 </div> *@
 
                 <div class="text-center">
-                    <p class="mb-1 mt-3"><button class="btn btn-link" @onclick="OnClick_BtnForgotPassword">I forgot my password</button></p>
+                    @* <p class="mb-1 mt-3"><button class="btn btn-link" @onclick="OnClick_BtnForgotPassword">I forgot my password</button></p> <a href="/forgot"> I forgot my password</a> *@
+                    <p class="mb-1 mt-3"><button class="btn btn-link"> <NavLink href="/forgotpass">Forgot Password</NavLink>  </button></p>
                     <p class="m-0">- OR -</p>
                     <p><button class="btn btn-link" @onclick="OnClick_BtnMobileOTP">Login with OTP</button></p>                                     
-                    <p class="mb-0 "> Don't have an account? <button class="btn btn-link">Sign Up</button> </p>
+                    <p class="mb-0 "> Don't have an account? <button class="btn btn-link">  <NavLink href="/register">Sign Up</NavLink></button> </p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@* </div> *@
+@* </div> *@ 

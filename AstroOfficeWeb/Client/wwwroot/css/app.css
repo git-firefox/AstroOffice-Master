@@ -371,6 +371,7 @@ header {
 ::-webkit-scrollbar-thumb {
     background-color: #910d0d;
 }
+
 @media(min-width:1200px) and (max-width:1399px) {
     .card-frame .card-body {
         padding: .75rem 1.5rem;
@@ -380,24 +381,56 @@ header {
         background-image: url(../images/laptop-frame.png);
         height: 99%;
     }
+
     .form-check {
         padding-left: 1rem;
     }
+
     .card-frame .card-header {
         margin-bottom: 0 !important;
         margin-top: 48px;
     }
+
     .card-frame .card-body .table th {
         font-size: 16px;
     }
+
     .card-frame .card-body .table td {
         font-size: 14px;
     }
+
     .col-xl-3:has(.chart-table) {
         -ms-flex: 0 0 50%;
         flex: 0 0 50%;
         max-width: 50%;
-        margin-bottom:15px;
+        margin-bottom: 15px;
+    }
+}
+
+#passwordToggleIcon {
+    cursor: pointer;
+    color: #999;
+}
+
+    #passwordToggleIcon.active {
+        color: #007bff; /* Change color to indicate active state */
+    }
+.data-loader {
+    position: relative;
+    backdrop-filter: blur(50px);
+}
+    .data-loader .overlay {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        background: #fdeec0;
+        opacity: 0.9;
     }
 
-}
+        .data-loader .overlay i {
+            color: #910d0d !important;
+            font-size: 40px;
+        }
