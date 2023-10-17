@@ -4,8 +4,10 @@
 <div @ref="ER_MobileOtpModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-body">  @if (!IsForgotPassword)
-                {
+            <div class="modal-body"> 
+                
+              @*   @if (!IsForgotPassword) { *@
+
                     <div class="container-fluid ">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-6 col-lg-4" style="min-width: 500px;">
@@ -43,13 +45,13 @@
                             </div>
                         </div>
                     </div>
-                }
+                @*    }
                 else
                 {
                 <form>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <label for="userNameId">User Name</label>
+                            <input type="email" class="form-control" id="userNameId" aria-describedby="emailHelp">
                         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                     </div>
                     <div class="form-group">
@@ -63,7 +65,7 @@
                         <button type="button" class="btn btn-primary" @onclick="() => OnConfirmationChange(true)">Confirm</button>
                         <button type="button" class="btn btn-primary" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">Close</button>
                 </form>
-                }
+                } *@
             </div>
         </div>
     </div>
