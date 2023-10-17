@@ -18,11 +18,39 @@ window.fnShowModal = function (element) {
     }
     console.log(element);
 }
+window.fnCloseModal = function (element) {
+    if (element instanceof HTMLDivElement) {
+        $(element).modal('hide');
+    }
+    console.log(element);
+}
+
+function togglePasswordVisibility(inputId, iconId) {
+    const inputField = document.getElementById(inputId);
+    const toggleIcon = document.getElementById(iconId);
+
+    if (inputField.type === "password") {
+        inputField.type = "text";
+        toggleIcon.classList.remove("fa-eye-slash");
+        toggleIcon.classList.add("fa-eye");
+    } else {
+        inputField.type = "password";
+        toggleIcon.classList.remove("fa-eye");
+        toggleIcon.classList.add("fa-eye-slash");
+    }
+
+    // Return the focus to the input field
+    inputField.focus();
+} 
+   
+
+
+
 
 window.fnShowOtpModal = function (element) {
     if (element instanceof HTMLDivElement) {
 
-        $('[data-mask]', element).inputmask({'placeholder': ''});
+        $('[data-mask]', element).inputmask({ 'placeholder': '' });
         const inputs = $('.otp-field > input', element);
 
         const button = $('.btn[data-dismiss!="modal"]', element);
@@ -42,7 +70,7 @@ window.fnShowOtpModal = function (element) {
                     $(this).prop('disabled', false);
                     $(this)[0].focus();
                 } else {
-                    $(this).val(''); 
+                    $(this).val('');
                     $(this)[0].focus();
                 }
             });
@@ -89,6 +117,15 @@ window.fnShowOtpModal = function (element) {
     }
     console.log(element);
 }
+
+
+
+function applyInputMask() {
+    $("#mobileInput").inputmask("999 999 9999", { "placeholder": "" });
+}
+
+
+
 window.fnCloseModal = function (element) {
     if (element instanceof HTMLDivElement) {
         $(element).modal('hide');

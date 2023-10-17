@@ -1,4 +1,5 @@
-﻿@inherits BaseComponent
+﻿@using System.Timers;
+@inherits BaseComponent
 @inject IJSRuntime JSRuntime
 
 <div @ref="ER_MobileOtpModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
@@ -27,6 +28,11 @@
                                             <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
                                             <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
                                         </div>
+
+
+
+
+                                    <p> OTP valid till: @timeLeft seconds</p>
 
                                         <button type="button" class="btn btn-primary mb-3" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">
                                             Close
@@ -82,10 +88,41 @@
     [Parameter]
     public bool IsForgotPassword { get; set; } = false;
 
+    private int totalTime = 120; // 2 minutes in seconds
+    private int timeLeft;
+
+    private int minutes => timeLeft / 60;
+    private int seconds => timeLeft % 60;
+
+    private Timer timer;
+
+
     public async Task ShowAsync()
     {
+
+        if (timer != null)
+        {
+            // If a timer is already running, stop and dispose of it
+            timer.Stop();
+            timer.Dispose();
+        }
+   
         IsShow = true;
         await JSRuntime.ShowOtpModalAsync(ER_MobileOtpModal);
+
+        timeLeft = 120;
+        timer = new Timer(1000); // Interval in milliseconds (1 second)
+        timer.Elapsed += TimerElapsed;
+        timer.Start();
+
+        StateHasChanged();
+    }
+
+
+    public async Task CloseAsync()
+    {
+        IsShow = false;
+        await JSRuntime.CloseModalAsync(ER_MobileOtpModal);
         StateHasChanged();
     }
 
@@ -103,5 +140,30 @@
     {
         IsShow = false;
         await ConfirmationChanged.InvokeAsync(value);
+    }
+
+
+    private void TimerElapsed(object sender, ElapsedEventArgs e)
+    {
+        if (timeLeft > 0)
+        {
+            timeLeft--;
+            StateHasChanged();
+        }
+        else
+        {
+            timer.Stop();
+            IsShow = false; // Hide the modal when the countdown is complete
+            timer.Dispose(); // Dispose of the timer
+        }
+    }
+    public void Dispose()
+    {
+        // Ensure the timer is disposed when the component is disposed
+        if (timer != null)
+        {
+            timer.Stop();
+            timer.Dispose();
+        }
     }
 }
