@@ -142,11 +142,11 @@
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(32, 64);
+            checkBox1.Location = new Point(8, 80);
             checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(83, 19);
+            checkBox1.Size = new Size(103, 19);
             checkBox1.TabIndex = 9;
-            checkBox1.Text = "checkBox1";
+            checkBox1.Text = "Login with otp";
             checkBox1.UseVisualStyleBackColor = true;
             // 
             // panel1
@@ -159,7 +159,7 @@
             panel1.Controls.Add(textBox4);
             panel1.Location = new Point(120, 64);
             panel1.Name = "panel1";
-            panel1.Size = new Size(216, 56);
+            panel1.Size = new Size(200, 56);
             panel1.TabIndex = 10;
             // 
             // FrmLogin
