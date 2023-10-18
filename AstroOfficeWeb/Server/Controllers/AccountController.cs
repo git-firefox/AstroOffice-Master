@@ -13,7 +13,7 @@ using AstroOfficeWeb.Shared.Models;
 
 namespace AstroOfficeWeb.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -27,8 +27,7 @@ namespace AstroOfficeWeb.Server.Controllers
             _jwtSettings = options.Value;
         }
 
-        // GET api/<UserController>/5
-        [HttpPost(nameof(SignIn))]
+        [HttpPost]
         public IActionResult SignIn([FromBody] SignInRequest signInReques)
         {
             var response = new SignInResponse
@@ -80,15 +79,75 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{userName}")]
-        public IActionResult Get(string userName)
+        // GET api/<UserController>/5
+        [HttpPost]
+        public IActionResult SignInWithOtp([FromBody] SignInWithOtpRequest request)
+        {
+            var response = new SignInResponse
+            {
+                IsAuthSuccessful = false,
+                ErrorMessage = "Invalid Authentication"
+            };
+
+            if (request == null || !ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var aUser = _balUser.GetUserByMobileNumber(request!.MobileNumber);
+
+            if(aUser.MobileOtp != request.Otp)
+            {
+                response.IsAuthSuccessful = false;
+                response.ErrorMessage = "Invalid OTP. Verification failed.";
+                return Ok(response);
+            }
+
+            if (aUser.Sno <= 0)
+            {
+                return Unauthorized(response);
+            }
+
+            var userDTO = new AUserDTO()
+            {
+                UserName = aUser.Username ?? "",
+                CanAddNew = aUser.CanAdd.GetValueOrDefault(),
+                CanModify = aUser.CanEdit.GetValueOrDefault(),
+                CanReport = aUser.CanReport.GetValueOrDefault(),
+                ActiveUserId = aUser.Sno,
+                IsAdmin = aUser.Adminuser.GetValueOrDefault()
+            };
+
+            var signinCredentials = GetSigningCredentials();
+            var claims = GetClaims(aUser);
+
+            var tokenOptions = new JwtSecurityToken(
+                issuer: _jwtSettings.ValidIssuer,
+                audience: _jwtSettings.ValidAudience,
+                claims: claims,
+                expires: DateTime.Now.AddDays(30),
+                signingCredentials: signinCredentials
+            );
+
+            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+            response.IsAuthSuccessful = true;
+            response.Token = token;
+            response.UserDTO = userDTO;
+            response.ErrorMessage = "";
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        public IActionResult UserNameSearch(string userName)
         {
             var aUser = _balUser.UserNameSearch(userName);
 
             return Ok(aUser);
         }
 
-        [HttpGet("GetSelectedUser")]
+        [HttpGet]
         public IActionResult GetSelectedUser(long sno)
         {
             var aUser = _balUser.GetSelectedUser(sno);
@@ -97,21 +156,21 @@ namespace AstroOfficeWeb.Server.Controllers
         }
 
         // POST api/<UserController>
-        [HttpPost]
-        public IActionResult Post([FromForm] AUser au)
+        [HttpPut]
+        public IActionResult UpdateUser([FromForm] AUser au)
         {
             var aUSer = _balUser.UpdateUser(au);
             return Ok(aUSer);
         }
 
-        [HttpGet("GetAllUsers")]
+        [HttpGet]
         public IActionResult GetAllUsers()
         {
             var aUSer = _balUser.GetAllUsers();
             return Ok(aUSer);
         }
 
-        [HttpPost(nameof(SignUp))]
+        [HttpPost]
         public IActionResult SignUp([FromBody] SignUpRequest signUpRequest)
         {
             var signUpResponse = new SignUpResponse();

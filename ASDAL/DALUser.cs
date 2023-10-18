@@ -105,7 +105,7 @@ namespace ASDAL
             return aUser;
         }
 
-        public AUser UserByMobileNumber(string mobileNumber)
+        public AUser UserByMobileNumber(string? mobileNumber)
         {
             try
             {

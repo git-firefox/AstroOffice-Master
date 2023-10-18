@@ -52,6 +52,21 @@ namespace AstroOfficeWeb.Client.Services
             return response;
         }
 
+        public async Task<SignInResponse> LoginWithOtpAsync(SignInWithOtpRequest signInRequest)
+        {
+            var response = await _apiService.PostAsync<SignInWithOtpRequest, SignInResponse>(AccountApiConst.POST_SignIn, signInRequest);
+
+            if (response!.IsAuthSuccessful)
+            {
+                await _localStorage.SetItemAsync(ApplicationConst.Local_Token, response.Token);
+                await _localStorage.SetItemAsync(ApplicationConst.Local_UserDetails, response.UserDTO);
+                ((AuthenticationStateService)_authStateProvider).NotifyUserLoggedIn(response.Token);
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", response.Token);
+            }
+
+            return response;
+        }
+
         public async Task<SignUpResponse> RegisterUserAsync(SignUpRequest signUpRequest)
         {
             var response = await _apiService.PostAsync<SignUpRequest, SignUpResponse>(AccountApiConst.POST_SignUp, signUpRequest);
