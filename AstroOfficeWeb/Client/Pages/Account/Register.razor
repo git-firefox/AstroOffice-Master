@@ -1,94 +1,69 @@
 ﻿@page "/register"
 @inject IJSRuntime JSRuntime
 
-<div class="hold-transition register-page">
-    <div class="register-box">
-        <div class="register-logo">
-            <a><b>Registration</b></a>
-        </div>
 
-        <div class="card">
-            <div class="card-body register-card-body">
-                <p class="login-box-msg">Register a new membership</p>
-
-                <form action="../../index.html" method="post">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="User Name">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-user"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="mobileInput" placeholder="Mobile no.">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-mobile"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Retype password">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="icheck-primary">
-                                <input type="checkbox" id="agreeTerms" name="terms" value="agree">
-                                <label for="agreeTerms">
-                                    I agree to the <a href="#">terms</a>
-                                </label>
-                            </div>
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Register</button>
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                </form>
-
-              @*   <div class="social-auth-links text-center">
-                    <p>- OR -</p>
-                    <a href="#" class="btn btn-block btn-primary">
-                        <i class="fab fa-facebook mr-2"></i>
-                        Sign up using Facebook
-                    </a>
-                    <a href="#" class="btn btn-block btn-danger">
-                        <i class="fab fa-google-plus mr-2"></i>
-                        Sign up using Google+
-                    </a>
-                </div> *@
-
-                <a href="/login" class="text-center">I already have a membership</a>
+<div class="login-page" style="min-height: 332.781px;">
+    <div class="login-box card-frame">
+        <div>
+            <div class="login-logo">
+                <h3>Registration Page</h3>
             </div>
-            <!-- /.form-box -->
-        </div><!-- /.card -->
+            <div class="card">
+                <div class="card-body register-card-body">
+                    <p class="login-box-msg">Register a new membership</p>
+
+                    <EditForm Model="registrationModel" OnValidSubmit="RegisterUser">
+                        <DataAnnotationsValidator />
+                        <div class="input-group mb-4">
+                            <InputText @bind-Value="registrationModel.UserName" class="form-control" placeholder="User Name" />
+                            <i class="fas fa-user"></i>
+                            <ValidationMessage For="@(() => registrationModel.UserName)" />
+                        </div>
+                        <div class="input-group mb-4">
+                            @* <InputText @bind-Value="registrationModel.MobileNumber" class="form-control" placeholder="Mobile no." /> *@
+
+                            <InputText @ref="InputMobileNumber" @bind-Value="registrationModel.MobileNumber" class="form-control" placeholder="Mobile no." @onfocusout="OnFocusOut_MobileNumber" />
+                            <i class="fas fa-mobile"></i>
+                            <ValidationMessage For="@(() => registrationModel.MobileNumber)" />
+                        </div>
+                        <div class="input-group mb-4">
+                            <InputText @bind-Value="registrationModel.Password" type="@(PasswordIsClicked ? "text" : "password")" class="form-control" placeholder="Password" />
+                            <i class="fas @(PasswordIsClicked ? "fa-eye-slash" : "fa-eye")" @onclick="()=>{PasswordIsClicked = !PasswordIsClicked; }"></i>
+                            <ValidationMessage For="@(() => registrationModel.Password)" />
+                        </div>
+                        <div class="input-group">
+                            <InputText @bind-Value="registrationModel.RetypePassword" type="@(ConfirmPasswordIsClicked ? "text" : "password")" class="form-control" placeholder="Retype password" />
+                            <i class="fas @(ConfirmPasswordIsClicked ? "fa-eye-slash" : "fa-eye")" @onclick="()=>{ConfirmPasswordIsClicked = !ConfirmPasswordIsClicked; }"></i>
+                            <ValidationMessage For="@(() => registrationModel.RetypePassword)" />
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="icheck-primary">
+                                    <InputCheckbox @bind-Value="registrationModel.AgreeTerms" id="agreeTerms" />
+                                    <label for="agreeTerms">
+                                        I agree to the <a href="javascript:;">terms</a>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <button type="submit" class="btn btn-custom btn-block">Register</button>
+                            </div>
+                            <div class="col-12 mt-3 text-center">
+                                <a href="/login" class="text-center forgot-link">I already have a membership</a>
+                            </div>
+                        </div>
+                    </EditForm>
+
+                    
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-
-
-@code {
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("applyInputMask");
-        }
-    }
+@code{
+    private string? Password { get; set; }
+    private bool PasswordIsClicked { get; set; } = false;
+    private string? ConfirmPassword { get; set; }
+    private bool ConfirmPasswordIsClicked { get; set; } = false;
 }

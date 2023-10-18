@@ -10,5 +10,10 @@
         {
             return obj != null ? obj.ToString()!.Trim() : string.Empty;
         }
+        public static string ToMobileNumber(this object? obj, string seperator)
+        {
+            string mobileString = obj.ToStringX().Replace(seperator, string.Empty);
+            return mobileString;
+        }
     }
 }

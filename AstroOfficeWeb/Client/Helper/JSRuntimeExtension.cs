@@ -18,9 +18,9 @@ namespace AstroOfficeWeb.Client.Helper
         public static ValueTask ShowModalAsync(this IJSRuntime jsRuntime, ElementReference? element)
         {
             return jsRuntime.InvokeVoidAsync("startCountdown", element);
-        } 
-        
-      
+        }
+
+
         public static ValueTask CloseModalAsync(this IJSRuntime jsRuntime, ElementReference? element)
         {
             return jsRuntime.InvokeVoidAsync("fnCloseModal", element);
@@ -42,6 +42,21 @@ namespace AstroOfficeWeb.Client.Helper
         public static ValueTask OpenDocumentInNewTabAsync(this IJSRuntime jsRuntime, string fileName, string base64Data)
         {
             return jsRuntime.InvokeVoidAsync("fnOpenDocumentInNewTab", fileName, base64Data);
+        }
+
+        public static ValueTask ApplyInputMaskAsync(this IJSRuntime jsRuntime, ElementReference? element, string mask, string placeHolder = "")
+        {
+            return jsRuntime.InvokeVoidAsync("fnApplyInputMask", element, mask, placeHolder);
+        }
+
+        public static ValueTask<object> GetInputMaskValueAsync(this IJSRuntime jsRuntime, ElementReference? element)
+        {
+            return jsRuntime.InvokeAsync<object>("fnGetInputMaskValue", element);
+        } 
+        
+        public static ValueTask<object> GetOtpValueAsync(this IJSRuntime jsRuntime, ElementReference? element)
+        {
+            return jsRuntime.InvokeAsync<object>("fnGetOtpValue", element);
         }
 
         //public static ValueTask<DateTime> GetDateFromDateTimePickerAsync(this IJSRuntime jsRuntime, ElementReference? element)

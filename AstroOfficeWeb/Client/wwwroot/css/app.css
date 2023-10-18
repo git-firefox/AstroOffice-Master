@@ -185,12 +185,17 @@ header {
     background: #17384e !important;
     color: #fff !important;
 }
+    .btn-custom.btn-custom-outline {
+        background: transparent !important;
+        border: 1px solid #17384e;
+        color: #17384e !important;
+    }
 
-.card-frame .card-body .table th {
-    font-size: 18px;
-    color: #ffffff;
-    background: #17384e;
-}
+    .card-frame .card-body .table th {
+        font-size: 18px;
+        color: #ffffff;
+        background: #17384e;
+    }
 
 .card-frame .card-body .table td {
     font-weight: 600 !important;
@@ -434,3 +439,87 @@ header {
             color: #910d0d !important;
             font-size: 40px;
         }
+.login-page, .register-page {
+    background: #910d0d;
+}
+.login-box, .register-box {
+    width: 610px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+    .login-card-body, .register-card-body,
+    .login-box .card, .register-box .card {
+        background: transparent;
+        box-shadow: none;
+        padding: 0 3.5rem !important;
+    }
+.login-logo, .register-logo {
+    position: relative;
+    margin-bottom: 0rem;
+}
+    .login-logo h3, .register-logo h3 {
+        font-size: 30px;
+        font-weight: 600;
+        color: #910d0d;
+    }
+
+.login-box.card-frame .card-body .input-group {
+    position: relative;
+}
+    .login-box.card-frame .card-body .input-group i {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 15px;
+        color: #9d2d0b;
+        z-index: 999;
+    }
+.login-box.card-frame .card-body input {
+    background: transparent;
+    border: 1px solid #9d2d0b !important;
+    line-height: 1;
+    outline: none !important;
+    border-radius: 5px !important;
+    color: #9d2d0b;
+    font-size: 14px;
+    font-weight: 600;
+}
+    .login-box.card-frame .card-body input::placeholder {
+        color: #9d2d0b;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    .login-box.card-frame .card-body input:focus {
+        background: transparent;
+    }
+    .down-form label {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+        color: #9d2d0b;
+    }
+
+ a.forgot-link {
+    color: #9d2d0b;
+    font-size: 15px;
+    font-weight: 600;
+}
+.down-form .btn-custom a {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #17384e;
+}
+.validation-message {
+    color: red;
+    position: absolute;
+    font-size: 12px;
+    font-weight: 600;
+    bottom: -16px;
+    right: 0;
+}
+.sign-up {
+    color: #17384e;
+    font-size: 15px;
+    font-weight: 500;
+}

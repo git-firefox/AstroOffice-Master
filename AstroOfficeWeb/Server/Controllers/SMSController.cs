@@ -74,8 +74,8 @@ namespace AstroOfficeWeb.Server.Controllers
             {
                 response.Success = true;
                 response.Message = "OTP has been successfully verified.";
-                user.MobileOtp = null;
-                await _context.SaveChangesAsync();
+                //user.MobileOtp = null;
+                //await _context.SaveChangesAsync();
             }
             else
             {
