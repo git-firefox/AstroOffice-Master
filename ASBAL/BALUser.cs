@@ -41,5 +41,9 @@ namespace ASBAL
         {
             return _du.UserNameSearch(userName);
         }
+        public AUser GetUserByMobileNumber(string mobileNumber)
+        {
+            return _du.UserByMobileNumber(mobileNumber);
+        }
     }
 }

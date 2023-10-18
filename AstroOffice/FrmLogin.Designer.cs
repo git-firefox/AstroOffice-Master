@@ -33,23 +33,21 @@
             BtnExit = new Button();
             TxtUserName = new TextBox();
             TxtPassword = new TextBox();
-            TxtNum2 = new TextBox();
-            TxtNum3 = new TextBox();
-            TxtNum6 = new TextBox();
-            TxtNum4 = new TextBox();
-            TxtNum5 = new TextBox();
-            TxtNum1 = new TextBox();
-            checkBox1 = new CheckBox();
-            panel1 = new Panel();
+            ChkLoginOption = new CheckBox();
+            Panel_VerifyOtp = new Panel();
+            MTxtOtp = new MaskedTextBox();
+            BtnCancelVefication = new Button();
             VerifyOtp = new Button();
             BtnResendOtp = new Button();
-            TxtMobileNumber = new TextBox();
             BtnSendOtp = new Button();
-            panel2 = new Panel();
-            Panel_Cred = new Panel();
-            panel1.SuspendLayout();
-            panel2.SuspendLayout();
-            Panel_Cred.SuspendLayout();
+            Panel_SendOtp = new Panel();
+            MTxtMobileNumber = new MaskedTextBox();
+            Panel_Credentials = new Panel();
+            FlowLayoutPanel_LoginOptions = new FlowLayoutPanel();
+            Panel_VerifyOtp.SuspendLayout();
+            Panel_SendOtp.SuspendLayout();
+            Panel_Credentials.SuspendLayout();
+            FlowLayoutPanel_LoginOptions.SuspendLayout();
             SuspendLayout();
             // 
             // BtnAccess
@@ -89,7 +87,7 @@
             // TxtUserName
             // 
             TxtUserName.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
-            TxtUserName.Location = new Point(8, 16);
+            TxtUserName.Location = new Point(8, 12);
             TxtUserName.Margin = new Padding(4, 6, 4, 3);
             TxtUserName.Name = "TxtUserName";
             TxtUserName.Size = new Size(95, 25);
@@ -98,90 +96,68 @@
             // TxtPassword
             // 
             TxtPassword.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
-            TxtPassword.Location = new Point(119, 16);
+            TxtPassword.Location = new Point(122, 12);
             TxtPassword.Margin = new Padding(4, 6, 4, 3);
             TxtPassword.Name = "TxtPassword";
             TxtPassword.PasswordChar = '*';
             TxtPassword.Size = new Size(95, 25);
             TxtPassword.TabIndex = 1;
-            TxtPassword.TextChanged += TxtPassword_TextChanged;
             // 
-            // TxtNum2
+            // ChkLoginOption
             // 
-            TxtNum2.Location = new Point(40, 16);
-            TxtNum2.Name = "TxtNum2";
-            TxtNum2.Size = new Size(24, 23);
-            TxtNum2.TabIndex = 4;
+            ChkLoginOption.AutoSize = true;
+            ChkLoginOption.Location = new Point(130, 99);
+            ChkLoginOption.Name = "ChkLoginOption";
+            ChkLoginOption.Size = new Size(169, 19);
+            ChkLoginOption.TabIndex = 9;
+            ChkLoginOption.Text = "Login with Mobile Number";
+            ChkLoginOption.UseVisualStyleBackColor = true;
+            ChkLoginOption.CheckedChanged += ChkLoginOption_CheckedChanged;
             // 
-            // TxtNum3
+            // Panel_VerifyOtp
             // 
-            TxtNum3.Location = new Point(72, 16);
-            TxtNum3.Name = "TxtNum3";
-            TxtNum3.Size = new Size(24, 23);
-            TxtNum3.TabIndex = 5;
+            Panel_VerifyOtp.Controls.Add(MTxtOtp);
+            Panel_VerifyOtp.Controls.Add(BtnCancelVefication);
+            Panel_VerifyOtp.Controls.Add(VerifyOtp);
+            Panel_VerifyOtp.Controls.Add(BtnResendOtp);
+            Panel_VerifyOtp.Location = new Point(12, 63);
+            Panel_VerifyOtp.Name = "Panel_VerifyOtp";
+            Panel_VerifyOtp.Size = new Size(424, 139);
+            Panel_VerifyOtp.TabIndex = 10;
+            Panel_VerifyOtp.Visible = false;
             // 
-            // TxtNum6
+            // MTxtOtp
             // 
-            TxtNum6.Location = new Point(168, 16);
-            TxtNum6.Name = "TxtNum6";
-            TxtNum6.Size = new Size(24, 23);
-            TxtNum6.TabIndex = 6;
+            MTxtOtp.BackColor = Color.FromArgb(255, 128, 0);
+            MTxtOtp.BorderStyle = BorderStyle.FixedSingle;
+            MTxtOtp.Font = new Font("Segoe UI Black", 24F, FontStyle.Regular, GraphicsUnit.Point);
+            MTxtOtp.Location = new Point(8, 12);
+            MTxtOtp.Mask = "0 - 0 - 0 - 0 - 0 - 0";
+            MTxtOtp.Name = "MTxtOtp";
+            MTxtOtp.Size = new Size(408, 51);
+            MTxtOtp.TabIndex = 15;
+            MTxtOtp.TextAlign = HorizontalAlignment.Center;
             // 
-            // TxtNum4
+            // BtnCancelVefication
             // 
-            TxtNum4.Location = new Point(104, 16);
-            TxtNum4.Name = "TxtNum4";
-            TxtNum4.Size = new Size(24, 23);
-            TxtNum4.TabIndex = 7;
-            // 
-            // TxtNum5
-            // 
-            TxtNum5.Location = new Point(136, 16);
-            TxtNum5.Name = "TxtNum5";
-            TxtNum5.Size = new Size(24, 23);
-            TxtNum5.TabIndex = 7;
-            // 
-            // TxtNum1
-            // 
-            TxtNum1.Location = new Point(8, 16);
-            TxtNum1.Name = "TxtNum1";
-            TxtNum1.Size = new Size(24, 23);
-            TxtNum1.TabIndex = 8;
-            // 
-            // checkBox1
-            // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(160, 216);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(103, 19);
-            checkBox1.TabIndex = 9;
-            checkBox1.Text = "Login with otp";
-            checkBox1.UseVisualStyleBackColor = true;
-            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
-            // 
-            // panel1
-            // 
-            panel1.Controls.Add(VerifyOtp);
-            panel1.Controls.Add(BtnResendOtp);
-            panel1.Controls.Add(TxtNum1);
-            panel1.Controls.Add(TxtNum2);
-            panel1.Controls.Add(TxtNum3);
-            panel1.Controls.Add(TxtNum5);
-            panel1.Controls.Add(TxtNum6);
-            panel1.Controls.Add(TxtNum4);
-            panel1.Location = new Point(8, 152);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(424, 48);
-            panel1.TabIndex = 10;
+            BtnCancelVefication.BackColor = Color.Khaki;
+            BtnCancelVefication.FlatStyle = FlatStyle.Flat;
+            BtnCancelVefication.Location = new Point(328, 83);
+            BtnCancelVefication.Name = "BtnCancelVefication";
+            BtnCancelVefication.Size = new Size(88, 31);
+            BtnCancelVefication.TabIndex = 9;
+            BtnCancelVefication.Text = "Cancel";
+            BtnCancelVefication.UseVisualStyleBackColor = false;
+            BtnCancelVefication.Click += BtnCancelVefication_Click;
             // 
             // VerifyOtp
             // 
             VerifyOtp.BackColor = Color.Khaki;
             VerifyOtp.FlatStyle = FlatStyle.Flat;
-            VerifyOtp.Location = new Point(232, 8);
+            VerifyOtp.Location = new Point(8, 83);
             VerifyOtp.Name = "VerifyOtp";
             VerifyOtp.Size = new Size(88, 31);
-            VerifyOtp.TabIndex = 10;
+            VerifyOtp.TabIndex = 7;
             VerifyOtp.Text = "Verify Otp";
             VerifyOtp.UseVisualStyleBackColor = false;
             VerifyOtp.Click += VerifyOtp_Click;
@@ -190,20 +166,13 @@
             // 
             BtnResendOtp.BackColor = Color.Khaki;
             BtnResendOtp.FlatStyle = FlatStyle.Flat;
-            BtnResendOtp.Location = new Point(328, 8);
+            BtnResendOtp.Location = new Point(102, 83);
             BtnResendOtp.Name = "BtnResendOtp";
             BtnResendOtp.Size = new Size(88, 31);
-            BtnResendOtp.TabIndex = 9;
+            BtnResendOtp.TabIndex = 8;
             BtnResendOtp.Text = "Resend Otp";
             BtnResendOtp.UseVisualStyleBackColor = false;
-            // 
-            // TxtMobileNumber
-            // 
-            TxtMobileNumber.Location = new Point(8, 16);
-            TxtMobileNumber.Name = "TxtMobileNumber";
-            TxtMobileNumber.Size = new Size(100, 23);
-            TxtMobileNumber.TabIndex = 11;
-            TxtMobileNumber.TextChanged += TxtMobileNumber_TextChanged;
+            BtnResendOtp.Click += BtnResendOtp_Click;
             // 
             // BtnSendOtp
             // 
@@ -217,25 +186,42 @@
             BtnSendOtp.UseVisualStyleBackColor = false;
             BtnSendOtp.Click += BtnSendOtp_Click;
             // 
-            // panel2
+            // Panel_SendOtp
             // 
-            panel2.Controls.Add(BtnSendOtp);
-            panel2.Controls.Add(TxtMobileNumber);
-            panel2.Location = new Point(8, 88);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(424, 48);
-            panel2.TabIndex = 13;
+            Panel_SendOtp.Controls.Add(MTxtMobileNumber);
+            Panel_SendOtp.Controls.Add(BtnSendOtp);
+            Panel_SendOtp.Location = new Point(3, 3);
+            Panel_SendOtp.Name = "Panel_SendOtp";
+            Panel_SendOtp.Size = new Size(424, 48);
+            Panel_SendOtp.TabIndex = 13;
             // 
-            // Panel_Cred
+            // MTxtMobileNumber
             // 
-            Panel_Cred.Controls.Add(TxtUserName);
-            Panel_Cred.Controls.Add(TxtPassword);
-            Panel_Cred.Controls.Add(BtnAccess);
-            Panel_Cred.Controls.Add(BtnExit);
-            Panel_Cred.Location = new Point(8, 16);
-            Panel_Cred.Name = "Panel_Cred";
-            Panel_Cred.Size = new Size(424, 48);
-            Panel_Cred.TabIndex = 14;
+            MTxtMobileNumber.Location = new Point(8, 13);
+            MTxtMobileNumber.Mask = "000-000-0000";
+            MTxtMobileNumber.Name = "MTxtMobileNumber";
+            MTxtMobileNumber.Size = new Size(100, 23);
+            MTxtMobileNumber.TabIndex = 13;
+            // 
+            // Panel_Credentials
+            // 
+            Panel_Credentials.Controls.Add(TxtUserName);
+            Panel_Credentials.Controls.Add(TxtPassword);
+            Panel_Credentials.Controls.Add(BtnAccess);
+            Panel_Credentials.Controls.Add(BtnExit);
+            Panel_Credentials.Location = new Point(3, 57);
+            Panel_Credentials.Name = "Panel_Credentials";
+            Panel_Credentials.Size = new Size(424, 48);
+            Panel_Credentials.TabIndex = 14;
+            // 
+            // FlowLayoutPanel_LoginOptions
+            // 
+            FlowLayoutPanel_LoginOptions.Controls.Add(Panel_SendOtp);
+            FlowLayoutPanel_LoginOptions.Controls.Add(Panel_Credentials);
+            FlowLayoutPanel_LoginOptions.Location = new Point(8, 15);
+            FlowLayoutPanel_LoginOptions.Name = "FlowLayoutPanel_LoginOptions";
+            FlowLayoutPanel_LoginOptions.Size = new Size(433, 54);
+            FlowLayoutPanel_LoginOptions.TabIndex = 15;
             // 
             // FrmLogin
             // 
@@ -243,12 +229,11 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(255, 128, 0);
-            ClientSize = new Size(442, 250);
+            ClientSize = new Size(454, 210);
             ControlBox = false;
-            Controls.Add(Panel_Cred);
-            Controls.Add(panel2);
-            Controls.Add(panel1);
-            Controls.Add(checkBox1);
+            Controls.Add(FlowLayoutPanel_LoginOptions);
+            Controls.Add(Panel_VerifyOtp);
+            Controls.Add(ChkLoginOption);
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
@@ -256,12 +241,13 @@
             Padding = new Padding(12);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AstroScience Login";
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
-            Panel_Cred.ResumeLayout(false);
-            Panel_Cred.PerformLayout();
+            Panel_VerifyOtp.ResumeLayout(false);
+            Panel_VerifyOtp.PerformLayout();
+            Panel_SendOtp.ResumeLayout(false);
+            Panel_SendOtp.PerformLayout();
+            Panel_Credentials.ResumeLayout(false);
+            Panel_Credentials.PerformLayout();
+            FlowLayoutPanel_LoginOptions.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -272,26 +258,16 @@
         private Button BtnExit;
         private TextBox TxtUserName;
         private TextBox TxtPassword;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private TextBox textBox4;
-        private TextBox textBox5;
-        private TextBox textBox6;
-        private CheckBox checkBox1;
-        private Panel panel1;
-        private TextBox TxtMobileNumber;
-        private FlowLayoutPanel flowLayoutPanel1;
+        private CheckBox ChkLoginOption;
+        private Panel Panel_VerifyOtp;
         private Button BtnSendOtp;
-        private Panel panel2;
-        private Panel Panel_Cred;
+        private Panel Panel_SendOtp;
+        private Panel Panel_Credentials;
         private Button BtnResendOtp;
         private Button VerifyOtp;
-        private TextBox TxtNum2;
-        private TextBox TxtNum3;
-        private TextBox TxtNum6;
-        private TextBox TxtNum4;
-        private TextBox TxtNum5;
-        private TextBox TxtNum1;
+        private Button BtnCancelVefication;
+        private MaskedTextBox MTxtOtp;
+        private MaskedTextBox MTxtMobileNumber;
+        private FlowLayoutPanel FlowLayoutPanel_LoginOptions;
     }
 }

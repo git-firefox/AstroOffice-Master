@@ -28,7 +28,7 @@ namespace AstroOffice
         {
             _httpClient = new HttpClientHelper("https://localhost:7085/api/");
             InitializeComponent();
-            panel1.Visible = checkBox1.Checked;
+            Panel_SendOtp.Visible = ChkLoginOption.Checked;
         }
 
         private void BtnAccess_Click(object sender, EventArgs e)
@@ -76,78 +76,125 @@ namespace AstroOffice
             Application.ExitThread();
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void ChkLoginOption_CheckedChanged(object sender, EventArgs e)
         {
-            panel1.Visible = checkBox1.Checked;
+            Panel_SendOtp.Visible = ChkLoginOption.Checked;
+            Panel_Credentials.Visible = !Panel_SendOtp.Visible;
+            MTxtMobileNumber.Text = string.Empty;
         }
 
-        private void TxtMobileNumber_TextChanged(object sender, EventArgs e)
+        private async void BtnSendOtp_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void TxtPassword_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnSendOtp_Click(object sender, EventArgs e)
-        {
-            var mobileNumber = TxtMobileNumber.Text;
-            if (string.IsNullOrEmpty(mobileNumber))
+            string mobileNumber = string.Concat(MTxtMobileNumber.Text.Where(c => char.IsDigit(c)));
+            if (string.IsNullOrEmpty(mobileNumber) || mobileNumber.Length < 10)
             {
-                MessageBox.Show("Enter Mobile Number ");
+                MessageBox.Show("Enter valid mobile number.");
             }
             else
             {
-                var response = _httpClient.GetAsync<ApiResponse<string>>($"SMS/SendOtp?mobileNumber={mobileNumber}").Result;
+                var response = await _httpClient.GetAsync<ApiResponse<string>>($"SMS/SendOtp?mobileNumber={mobileNumber}");
+                if (response.Success)
+                {
+                    MessageBox.Show(response.Message);
+                    Panel_SendOtp.Visible = false;
+                    ChkLoginOption.Visible = false;
+                    Panel_VerifyOtp.Visible = true;
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(response.Message))
+                    {
+                        MessageBox.Show(response.Message);
+                    }
+                }
             }
         }
 
-        private void VerifyOtp_Click(object sender, EventArgs e)
+        private async void VerifyOtp_Click(object sender, EventArgs e)
         {
+            string mobileNumber = string.Concat(MTxtMobileNumber.Text.Where(c => char.IsDigit(c))); ;
+            string otp = string.Concat(MTxtOtp.Text.Where(c => char.IsDigit(c)));
             var bALUser = Program.ServiceProvider.GetRequiredService<BALUser>();
 
-            this.Hide();
-            Loader.Show();
-            AUser aUser = bALUser.UserNameSearch(this.TxtUserName.Text);
-
-            Loader.Close();
-
-            if (aUser.Sno <= 0)
+            try
             {
-                MessageBox.Show("Invalid User name or Password");
-                this.Show();
-                return;
-            }
+                this.Hide();
+                Loader.Show();
+                AUser aUser = bALUser.GetUserByMobileNumber(mobileNumber);
 
-            string otp = TxtNum1.Text + TxtNum2.Text + TxtNum3.Text + TxtNum4.Text + TxtNum5.Text + TxtNum6.Text;
 
-            if (otp == aUser.MobileOtp)
-            {
-                AUserLog aUserLog = new()
+                if (aUser.Sno <= 0)
                 {
-                    Username = aUser.Username,
-                    Loginsuccess = new bool?(true),
-                    Logintime = new DateTime?(DateTime.Now),
-                    Systemname = Environment.UserName.ToString()
-                };
-                AstroGlobal.Username = aUser.Username;
-                AstroGlobal.CanAddNew = aUser.CanAdd.Value;
-                AstroGlobal.CanModify = aUser.CanEdit.Value;
-                AstroGlobal.CanReport = aUser.CanReport.Value;
-                AstroGlobal.ActiveUserId = aUser.Sno;
-                AstroGlobal.Username = aUser.Username;
-                AstroGlobal.IsAdmin = aUser.Adminuser.Value;
-                new FrmNewKP().Show();
-                Hide();
+                    MessageBox.Show("Invalid User name or Password");
+                    this.Show();
+                    return;
+                }
+                var response = await _httpClient.GetAsync<ApiResponse<string>>($"SMS/VerifyOtp?mobileNumber={mobileNumber}&otp={otp}");
+
+                if (otp == aUser.MobileOtp && response.Success)
+                {
+                    AUserLog aUserLog = new()
+                    {
+                        Username = aUser.Username,
+                        Loginsuccess = new bool?(true),
+                        Logintime = new DateTime?(DateTime.Now),
+                        Systemname = Environment.UserName.ToString()
+                    };
+                    AstroGlobal.Username = aUser.Username;
+                    AstroGlobal.CanAddNew = aUser.CanAdd.Value;
+                    AstroGlobal.CanModify = aUser.CanEdit.Value;
+                    AstroGlobal.CanReport = aUser.CanReport.Value;
+                    AstroGlobal.ActiveUserId = aUser.Sno;
+                    AstroGlobal.Username = aUser.Username;
+                    AstroGlobal.IsAdmin = aUser.Adminuser.Value;
+                    new FrmNewKP().Show();
+                    this.Hide(); Loader.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Invalid Otp.");
+                    Loader.Close();
+                    this.Show();
+                    return;
+                }
+            }
+            catch
+            {
+                this.Show();
+                Loader.Close();
+            }
+        }
+
+        private void BtnCancelVefication_Click(object sender, EventArgs e)
+        {
+            ChkLoginOption.Checked = false;
+            Panel_VerifyOtp.Visible = false;
+            ChkLoginOption.Visible = true;
+        }
+
+        private async void BtnResendOtp_Click(object sender, EventArgs e)
+        {
+            string mobileNumber = string.Concat(MTxtMobileNumber.Text.Where(c => char.IsDigit(c))); ;
+            if (string.IsNullOrEmpty(mobileNumber) || mobileNumber.Length < 10)
+            {
+                MessageBox.Show("Enter valid mobile number.");
             }
             else
             {
-                MessageBox.Show("Invalid Otp.");
-                this.Show();
-                return;
+                var response = await _httpClient.GetAsync<ApiResponse<string>>($"SMS/SendOtp?mobileNumber={mobileNumber}");
+                if (response.Success)
+                {
+                    MessageBox.Show(response.Message);
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(response.Message))
+                    {
+                        MessageBox.Show(response.Message);
+                    }
+                }
             }
         }
+
     }
 }

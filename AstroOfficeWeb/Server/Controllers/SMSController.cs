@@ -30,7 +30,7 @@ namespace AstroOfficeWeb.Server.Controllers
             var user = await _context.AUsers.FirstOrDefaultAsync(a => a.MobileNumber == mobileNumber && a.Active == true);
 
             if (user == null)
-                return NotFound();
+                return Ok(new ApiResponse<string> { Success = false, Message = "This mobile number is not registered." });
 
             string otp = OtpHelper.GenerateOtp();
 
@@ -47,7 +47,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
             if (response == null)
             {
-                return StatusCode(500);
+                return Ok(new ApiResponse<string> { Success = false, Message = "An unexpected error occurred. Please try again later." });
             }
 
             if (response.ErrorCode == 0)
@@ -74,8 +74,8 @@ namespace AstroOfficeWeb.Server.Controllers
             {
                 response.Success = true;
                 response.Message = "OTP has been successfully verified.";
-                user.MobileOtp = null;
-                await _context.SaveChangesAsync();
+                //user.MobileOtp = null;
+                //await _context.SaveChangesAsync();
             }
             else
             {

@@ -104,5 +104,20 @@ namespace ASDAL
             }
             return aUser;
         }
+
+        public AUser UserByMobileNumber(string mobileNumber)
+        {
+            try
+            {
+                var user = _context.AUsers.First<AUser>(aa => aa.MobileNumber == mobileNumber && aa.Active == true);
+                return user;
+            }
+            catch (Exception exception)
+            {
+                _ = exception;
+                //_ = MessageBox.Show(exception.Message);
+                return new AUser();
+            }
+        }
     }
 }

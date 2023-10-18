@@ -31,14 +31,43 @@ namespace AstroOffice.Helper
 
         public async Task<TResponse?> GetAsync<TResponse>(string url)
         {
-            var response = await _client.GetAsync(_client.BaseAddress + url);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var contentTemp = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<TResponse>(contentTemp);
-                return result;
+                var response = await _client.GetAsync(_client.BaseAddress + url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var contentTemp = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<TResponse>(contentTemp);
+                    return result;
+                }
+                return default;
             }
-            return default;
+            catch (Exception e)
+            {
+                _ = e;
+                return default;
+
+            }
+        }
+        public async Task<TResponse?> Get2Async<TResponse>(string url)
+        {
+            try
+            {
+                var response = await _client.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var contentTemp = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<TResponse>(contentTemp);
+                    return result;
+                }
+                return default;
+            }
+            catch (Exception e)
+            {
+                _ = e;
+                return default;
+
+            }
         }
     }
 }
