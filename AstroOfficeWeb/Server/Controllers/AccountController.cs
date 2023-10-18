@@ -8,6 +8,10 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Models;
+using AstroOfficeWeb.Shared;
+using AstroOfficeWeb.Server.Helper;
+using ASModels;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -96,7 +100,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
             var aUser = _balUser.GetUserByMobileNumber(request!.MobileNumber);
 
-            if(aUser.MobileOtp != request.Otp)
+            if (aUser.MobileOtp != request.Otp)
             {
                 response.IsAuthSuccessful = false;
                 response.ErrorMessage = "Invalid OTP. Verification failed.";
@@ -161,6 +165,39 @@ namespace AstroOfficeWeb.Server.Controllers
         {
             var aUSer = _balUser.UpdateUser(au);
             return Ok(aUSer);
+        }
+
+        [HttpPut]
+        public IActionResult UpdateUserPasswordByOtp([FromBody] UpdateUserPasswordByOtpRequest request)
+        {
+            var response = new ApiResponse<string>();
+            var user = _balUser.GetUserByMobileNumber(request.MobileNumber);
+
+            if (request.NewPassword == null || request.Otp == null)
+            {
+                response.Success = false;
+                return Ok(response);
+            }
+
+            if (user.Sno == 0)
+            {
+                response.Success = false;
+                response.Message = ApiMessageConst.UserNotFound;
+            }
+            else
+            {
+                if (_balUser.IsUserPassUpdatedByOtp(request.MobileNumber, request.NewPassword, request.Otp))
+                {
+                    response.Success = true;
+                    response.Message = ApiMessageConst.UserPassUpdated;
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = ApiMessageConst.UserPassNotUpdated;
+                }
+            }
+            return Ok(response);
         }
 
         [HttpGet]

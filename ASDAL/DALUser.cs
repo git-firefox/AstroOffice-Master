@@ -119,5 +119,24 @@ namespace ASDAL
                 return new AUser();
             }
         }
+
+        public bool IsUserPassUpdatedByOtp(string? mobileNumber, string password, string otp)
+        {
+            if (string.IsNullOrEmpty(password)) return false;
+
+            try
+            {
+                var user = _context.AUsers.First<AUser>(aa => aa.MobileNumber == mobileNumber && aa.Active == true && aa.MobileOtp == otp);
+                user.Password = ENCEK.ENCEK.CellGell_ENC_RET(password, "cellgell.com");
+                _context.AUsers.Update(user);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception exception)
+            {
+                _ = exception;
+                return false;
+            }
+        }
     }
 }
