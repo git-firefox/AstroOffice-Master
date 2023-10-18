@@ -106,7 +106,7 @@
             // ChkLoginOption
             // 
             ChkLoginOption.AutoSize = true;
-            ChkLoginOption.Location = new Point(130, 99);
+            ChkLoginOption.Location = new Point(130, 104);
             ChkLoginOption.Name = "ChkLoginOption";
             ChkLoginOption.Size = new Size(169, 19);
             ChkLoginOption.TabIndex = 9;
@@ -120,7 +120,7 @@
             Panel_VerifyOtp.Controls.Add(BtnCancelVefication);
             Panel_VerifyOtp.Controls.Add(VerifyOtp);
             Panel_VerifyOtp.Controls.Add(BtnResendOtp);
-            Panel_VerifyOtp.Location = new Point(12, 63);
+            Panel_VerifyOtp.Location = new Point(3, 111);
             Panel_VerifyOtp.Name = "Panel_VerifyOtp";
             Panel_VerifyOtp.Size = new Size(424, 139);
             Panel_VerifyOtp.TabIndex = 10;
@@ -218,9 +218,11 @@
             // 
             FlowLayoutPanel_LoginOptions.Controls.Add(Panel_SendOtp);
             FlowLayoutPanel_LoginOptions.Controls.Add(Panel_Credentials);
-            FlowLayoutPanel_LoginOptions.Location = new Point(8, 15);
+            FlowLayoutPanel_LoginOptions.Controls.Add(Panel_VerifyOtp);
+            FlowLayoutPanel_LoginOptions.Dock = DockStyle.Fill;
+            FlowLayoutPanel_LoginOptions.Location = new Point(12, 12);
             FlowLayoutPanel_LoginOptions.Name = "FlowLayoutPanel_LoginOptions";
-            FlowLayoutPanel_LoginOptions.Size = new Size(433, 54);
+            FlowLayoutPanel_LoginOptions.Size = new Size(425, 125);
             FlowLayoutPanel_LoginOptions.TabIndex = 15;
             // 
             // FrmLogin
@@ -228,12 +230,12 @@
             AcceptButton = BtnAccess;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
             BackColor = Color.FromArgb(255, 128, 0);
-            ClientSize = new Size(454, 210);
+            ClientSize = new Size(449, 149);
             ControlBox = false;
-            Controls.Add(FlowLayoutPanel_LoginOptions);
-            Controls.Add(Panel_VerifyOtp);
             Controls.Add(ChkLoginOption);
+            Controls.Add(FlowLayoutPanel_LoginOptions);
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
