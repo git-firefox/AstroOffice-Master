@@ -15,7 +15,7 @@
 
         <div class="card">
             <div class="card-body login-card-body">
-                <p class="login-box-msg">You forgot your password? Here you can easily retrieve a new password.</p>
+                <p class="login-box-msg">You forgot your password? Here you can easily login with Mobile no. and OTP pin.</p>
 
                 <EditForm Model="LoginModel" OnValidSubmit="OnValidSubmit_LoginWithMobile">
                     <DataAnnotationsValidator />
@@ -32,15 +32,26 @@
                         <div class="col-12 mt-2">
                             <button type="submit" class="btn btn-custom btn-block" >Send OTP</button>
                         </div>
-                            <div class="col-12 mt-2">
+                           @* <div class="col-12 mt-2">
                                 <button class="btn btn-custom btn-custom-outline btn-block">
                                     <NavLink href="/login">
                                         Login
                                     </NavLink>
                                 </button>
-                            </div>
+                            </div>*@
                     </div>
                 </EditForm>
+
+                    <div class="row down-form">
+                        <div class="col-12 mt-2">
+                            <button class="btn btn-custom btn-custom-outline btn-block">
+                                <NavLink href="/login">
+                                    Login
+                                </NavLink>
+                            </button>
+                        </div>
+
+                   </div>
 
                 <p class="mb-0 text-center mt-3">
                     <NavLink href="/register" class="text-center forgot-link">Register a new membership</NavLink>
