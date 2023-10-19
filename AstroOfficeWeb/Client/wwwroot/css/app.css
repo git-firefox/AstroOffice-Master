@@ -184,6 +184,7 @@ header {
 .btn-custom {
     background: #17384e !important;
     color: #fff !important;
+    border: 1px solid #17384e;
 }
     .btn-custom.btn-custom-outline {
         background: transparent !important;
@@ -386,8 +387,11 @@ header {
         background-image: url(../images/laptop-frame.png);
         height: 99%;
     }
-
-    .form-check {
+    .login-box.card-frame:before {
+        background-image: url(../images/frame.png);
+        width:96%;
+    }
+        .form-check {
         padding-left: 1rem;
     }
 
@@ -515,11 +519,36 @@ header {
     position: absolute;
     font-size: 12px;
     font-weight: 600;
-    bottom: -16px;
-    right: 0;
+    bottom: -18px;
+    left: 0;
 }
 .sign-up {
     color: #17384e;
     font-size: 15px;
     font-weight: 500;
+}
+.verify-otp .modal-content {
+    background: #ffe79d;
+    padding: 25px;
+    border: 5px solid #9d2d0b;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.modal.fade.verify-otp.show{
+    backdrop-filter: blur(8px);
+    
+}
+
+.verify-otp .modal-content h4 {
+    font-size:26px;
+    color: #9d2d0b;
+    font-weight:600;
+}
+
+.verify-otp .modal-content .otp-field input {
+    background: #fff !important;
+    border: 1px solid #9d2d0b;
+    font-size: 20px;
+    color: #9d2d0b;
+    font-weight:600;
 }

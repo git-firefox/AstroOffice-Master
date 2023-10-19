@@ -4,56 +4,39 @@
 @inject IJSRuntime JSRuntime
 @inject ISwaggerApiService Swagger
 
-<div @ref="ER_MobileOtpModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+<div @ref="ER_MobileOtpModal" class="modal fade verify-otp" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
-                <div class="container-fluid ">
-                    <div class="row justify-content-center">
-                        <div class="col-12 col-md-6 col-lg-4" style="min-width: 500px;">
-                            <div>
-                                <div class=" text-center">
 
-                                    <h4>Verify</h4>
+                <div class=" text-center">
 
-                                    <p>Your code was sent to you via mobile number OTP</p>
+                    <h4>Verify</h4>
+
+                    <p>Your code was sent to you via mobile number OTP</p>
 
 
-                                    <div class="otp-field mb-4">
-                                        <input type="text" data-inputmask='"mask": "9"' data-mask />
-                                        <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
-                                        <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
-                                        <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
-                                        <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
-                                        <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
-                                    </div>
-
-                                    <p> OTP valid till: @timeLeft seconds</p>
-
-                                    <button type="button" class="btn btn-primary mb-3" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">
-                                        Close
-                                    </button>
-                                    <button type="button" class="btn btn-primary mb-3" @onclick="() => OnConfirmationChange(true)">
-                                        Verify
-                                    </button>
-
-
-                                    <p class="resend text-muted mb-0">
-                                        Didn't receive code? <button @onclick="OnClick_BtnResendOtp" class="btn btn-link">Request again</button>
-                                    </p>
-
-                                    @if (!string.IsNullOrEmpty(ErrorMessage))
-                                    {
-                                        <p class="text-danger">@ErrorMessage</p>
-                                    }
-                                    @if (!string.IsNullOrEmpty(SuccessMessage))
-                                    {
-                                        <p class="text-success">@SuccessMessage</p>
-                                    }
-                                </div>
-                            </div>
-                        </div>
+                    <div class="otp-field mb-4">
+                        <input type="text" data-inputmask='"mask": "9"' data-mask />
+                        <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
+                        <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
+                        <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
+                        <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
+                        <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
                     </div>
+
+                    <p> OTP valid till: @timeLeft seconds</p>
+
+                    <button type="button" class="btn btn-custom btn-block mb-2" @onclick="() => OnConfirmationChange(true)">
+                        Verify
+                    </button>
+                    <button type="button" class="btn btn-custom btn-custom-outline btn-block mb-3" data-dismiss="modal" data-group="otp" @onclick="() => OnConfirmationChange(false)">
+                        Close
+                    </button>
+                    <p class="resend text-muted mb-0">
+                        Didn't receive code? <a href="javascript:;" @onclick="OnClick_BtnResendOtp" class="forgot-link" data-group="otp">Request again</a>
+                    </p>
+
                 </div>
             </div>
         </div>
@@ -184,11 +167,11 @@
             timer = new Timer(1000); // Interval in milliseconds (1 second)
             timer.Elapsed += TimerElapsed;
             timer.Start();
-            SuccessMessage = response.Message;
+            await JSRuntime.ShowToastAsync(response?.Message ?? "Otp sent");
         }
         else
         {
-            ErrorMessage = response.Message;
+            await JSRuntime.ShowToastAsync(response.Message ?? "Something is wrong", SwalIcon.Error);
         }
     }
 }

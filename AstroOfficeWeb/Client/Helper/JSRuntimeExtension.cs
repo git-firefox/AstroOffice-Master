@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using AstroOfficeWeb.Shared.Models;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 
@@ -59,9 +60,9 @@ namespace AstroOfficeWeb.Client.Helper
             return jsRuntime.InvokeAsync<object>("fnGetOtpValue", element);
         }
 
-        //public static ValueTask<DateTime> GetDateFromDateTimePickerAsync(this IJSRuntime jsRuntime, ElementReference? element)
-        //{
-        //    return jsRuntime.InvokeAsync<DateTime>("fnGetDateFromDateTimePicker", element);
-        //}
+        public static ValueTask ShowToastAsync(this IJSRuntime jsRuntime, string title, SwalIcon icon = SwalIcon.Success, SwalPosition position = SwalPosition.BottomEnd)
+        {
+            return jsRuntime.InvokeVoidAsync("fnShowToast", title, icon, position);
+        }
     }
 }

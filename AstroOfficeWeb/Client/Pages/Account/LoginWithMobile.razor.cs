@@ -75,6 +75,10 @@ namespace AstroOfficeWeb.Client.Pages.Account
             {
                 await MobileOtpModal!.ShowAsync();
             }
+            else
+            {
+                await JSRuntime.ShowToastAsync(response.Message ?? "Something is wrong", SwalIcon.Error);
+            }
         }
 
     }

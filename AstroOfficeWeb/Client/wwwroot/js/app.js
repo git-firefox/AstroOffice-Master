@@ -30,11 +30,11 @@ window.fnShowOtpModal = function (element) {
         $('[data-mask]', element).inputmask({ 'placeholder': '' });
         const inputs = $('.otp-field > input', element);
 
-        const button = $('.btn[data-dismiss!="modal"]', element);
+        const button = $('.btn[data-group!="otp"]', element);
 
         inputs.each(function (index) {
             if (index == 0) {
-                $(this).val('').prop('disabled', false).focus();
+                $(this).val('').prop('disabled', false)[0].focus();
             } else {
                 $(this).val('').prop('disabled', true);
             }
@@ -180,22 +180,33 @@ window.fnOpenDocumentInNewTab = function (fileName, base64Data) {
     //window.open(blobURL);
 }
 
-function fnBase64Blob(base64Data) {
-    var sliceSize = 512;
-    var byteCharacters = atob(base64Data);
-    var byteArrays = [];
-
-    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-        var slice = byteCharacters.slice(offset, offset + sliceSize);
-        var byteNumbers = new Array(slice.length);
-        for (var i = 0; i < slice.length; i++) {
-            byteNumbers[i] = slice.charCodeAt(i);
-            var byteArray = new Uint8Array(byteNumbers);
-            byteArrays.push(byteArray);
+window.fnShowToast = function (title, icon, position) {
+    Swal.mixin({
+        toast: true,
+        position: getPositionString(position),
+        showConfirmButton: false,
+        timer: 3000
+    }).fire({
+        icon: getIconString(icon),
+        html: '<br />' + title,
+        timerProgressBar: true,
+        allowEscapeKey: true,
+        allowOutsideClick: true,
+        showClass: {
+            popup: 'animate__animated animate__fadeInRight'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutRight'
         }
-        var blob = new Blob(byteArrays, { type: 'application/pdf' });
-        return blob;
-    }
+    });
 }
 
+function getIconString(icon) {
+    const icons = ['success', 'error', 'warning', 'info', 'question'];
+    return icons[icon];
+}
 
+function getPositionString(position) {
+    const positions = ['top', 'top-start', 'top-end', 'center', 'center-start', 'center-end', 'bottom', 'bottom-start', 'bottom-end'];
+    return positions[position];
+}
