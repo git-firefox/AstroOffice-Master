@@ -29,6 +29,7 @@
         public static string POST_SignIn = Base + "SignIn";
         public static string POST_SignUp = Base + "SignUp";
         public static string POST_SignInWithOtp = Base + "SignInWithOtp";
+        public static string PUT_UpdateUserPasswordByOtp = Base + "UpdateUserPasswordByOtp";
     }
 
     public static class PlanetBLLApiConst

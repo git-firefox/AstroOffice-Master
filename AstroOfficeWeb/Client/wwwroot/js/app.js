@@ -25,37 +25,21 @@ window.fnCloseModal = function (element) {
     console.log(element);
 }
 
-function togglePasswordVisibility(inputId, iconId) {
-    const inputField = document.getElementById(inputId);
-    const toggleIcon = document.getElementById(iconId);
-
-    if (inputField.type === "password") {
-        inputField.type = "text";
-        toggleIcon.classList.remove("fa-eye-slash");
-        toggleIcon.classList.add("fa-eye");
-    } else {
-        inputField.type = "password";
-        toggleIcon.classList.remove("fa-eye");
-        toggleIcon.classList.add("fa-eye-slash");
-    }
-
-    // Return the focus to the input field
-    inputField.focus();
-}
-
-
-
-
-
 window.fnShowOtpModal = function (element) {
     if (element instanceof HTMLDivElement) {
-
         $('[data-mask]', element).inputmask({ 'placeholder': '' });
         const inputs = $('.otp-field > input', element);
 
         const button = $('.btn[data-dismiss!="modal"]', element);
 
-        inputs[0].focus();
+        inputs.each(function (index) {
+            if (index == 0) {
+                $(this).val('').prop('disabled', false).focus();
+            } else {
+                $(this).val('').prop('disabled', true);
+            }
+        });
+
         button.prop('disabled', true);
 
         inputs.first().on('paste', function (event) {
@@ -140,7 +124,7 @@ window.fnGetOtpValue = function (element) {
     if (element instanceof HTMLDivElement) {
         var concatenatedValue = "";
         $('input[type="text"][data-inputmask]').each(function () {
-            concatenatedValue += $(this).val(); 
+            concatenatedValue += $(this).val();
         });
         return concatenatedValue;
     }
@@ -174,9 +158,6 @@ window.fnGetDateFromDateTimePicker = function (element) {
 }
 
 window.fnOpenDocumentInNewTab = function (fileName, base64Data) {
-    //var blob = fnBase64Blob(base64Data);
-    //var blobURL = URL.createObjectURL(blob);
-    // Create a Blob from the Base64 PDF data
     if (!base64Data) return;
 
     var byteCharacters = atob(base64Data);
@@ -187,17 +168,11 @@ window.fnOpenDocumentInNewTab = function (fileName, base64Data) {
     var byteArray = new Uint8Array(byteNumbers);
     var pdfBlob = new Blob([byteArray], { type: 'application/pdf' });
 
-    // Create a URL for the Blob
     var pdfUrl = URL.createObjectURL(pdfBlob);
 
-    // Open the PDF in a new tab
     window.open(pdfUrl, '_blank');
-
-    // Clean up resources
     URL.revokeObjectURL(pdfUrl);
 
-
-    //var newWindow = window.open(dataUrl, '_blank');
     console.log(pdfUrl);
     console.log(byteNumbers);
     console.log(base64Data);

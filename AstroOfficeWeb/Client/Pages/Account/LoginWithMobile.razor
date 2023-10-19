@@ -3,7 +3,7 @@
 @inject IJSRuntime JSRuntime
 @inject IAuthenticationService AuthService
 
-<MobileOtpModal @ref="MobileOtpModal" ConfirmationChanged="OnConfirmationChanged" ErrorMessage="@OtpErrorMessage" />
+<MobileOtpModal @ref="MobileOtpModal" ConfirmationChanged="OnConfirmationChanged" ErrorMessage="@OtpErrorMessage" MobileNumber="@LoginModel.MobileNumber" />
 
 <div class="login-page" style="min-height: 332.781px;">
     <div class="login-box card-frame">

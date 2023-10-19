@@ -44,7 +44,7 @@ namespace AstroOfficeWeb.Client.Helper
             return jsRuntime.InvokeVoidAsync("fnOpenDocumentInNewTab", fileName, base64Data);
         }
 
-        public static ValueTask ApplyInputMaskAsync(this IJSRuntime jsRuntime, ElementReference? element, string mask, string placeHolder = "")
+        public static ValueTask ApplyInputMaskAsync(this IJSRuntime jsRuntime, ElementReference? element, string mask, string placeHolder = "_")
         {
             return jsRuntime.InvokeVoidAsync("fnApplyInputMask", element, mask, placeHolder);
         }

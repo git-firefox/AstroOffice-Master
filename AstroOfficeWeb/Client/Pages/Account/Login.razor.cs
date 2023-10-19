@@ -15,7 +15,7 @@ using static System.Net.WebRequestMethods;
 namespace AstroOfficeWeb.Client.Pages.Account
 {
     public partial class Login
-    {    
+    {
 
         private string? Password { get; set; }
         private bool PasswordIsClicked { get; set; } = false;
@@ -36,28 +36,19 @@ namespace AstroOfficeWeb.Client.Pages.Account
         private async Task OnValidSubmitAsync()
         {
 
-            try
+            LoginErrorMessage = "";
+            var response = await AuthService!.LoginAsync(new SignInRequest
             {
-                var response = await AuthService!.LoginAsync(new SignInRequest
-                {
-                    UserName = LoginModel!.UserName,
-                    Password = LoginModel!.Password
-                });
-                if (response != null)
-                {
-                    if (response.IsAuthSuccessful)
-                    {
-                        NavigationManager!.NavigateTo("/");
-                    }
-                    else
-                    {
-                        LoginErrorMessage = response?.ErrorMessage ?? "Envalid login credentials";
-                    }
-                }
+                UserName = LoginModel!.UserName,
+                Password = LoginModel!.Password
+            });
+            if (response!.IsAuthSuccessful)
+            {
+                NavigationManager!.NavigateTo("/");
             }
-            catch
+            else
             {
-
+                LoginErrorMessage = response?.ErrorMessage ?? "Invalid login credentials";
             }
         }
 

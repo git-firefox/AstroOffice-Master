@@ -23,7 +23,7 @@
                     @if (!string.IsNullOrEmpty(LoginErrorMessage))
                     {
                         <ul>
-                            <li>@LoginErrorMessage</li>
+                            <li class="text-danger">@LoginErrorMessage</li>
                         </ul>
                     }
                     <EditForm Model="LoginModel" OnInvalidSubmit="OnInvalidSubmit" OnValidSubmit="OnValidSubmitAsync">

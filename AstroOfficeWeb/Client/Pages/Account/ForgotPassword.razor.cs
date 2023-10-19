@@ -2,6 +2,7 @@
 using AstroOfficeWeb.Client.Models;
 using AstroOfficeWeb.Client.Services.IService;
 using AstroOfficeWeb.Client.Shared;
+using AstroOfficeWeb.Shared;
 using AstroOfficeWeb.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -18,27 +19,12 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
         [Inject]
         private NavigationManager? NavigationManager { get; set; }
-        private string? MobileNumber { get; set; }
         private string? OtpErrorMessage { get; set; }
 
         [Inject]
         ISwaggerApiService? Swagger { get; set; }
         private MobileOtpModal MobileOtpModal = new();
 
-        private async Task OnClick_BtnMobileVerifyOTP(MouseEventArgs e)
-        {
-            OtpErrorMessage = string.Empty;
-            //var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(SMSApiConst.GET_SendOtp, MobileNumber));
-            //if (response == null)
-            //{
-            //    return;   
-            //}
-
-            //if (response.Success)
-            //{
-            MobileOtpModal?.ShowAsync();
-            //}
-        }
         private async void OnConfirmationChanged(bool isConfirm)
         {
             if (isConfirm)
@@ -46,12 +32,12 @@ namespace AstroOfficeWeb.Client.Pages.Account
                 var otpObj = await MobileOtpModal.GetOtpValue();
                 var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(SMSApiConst.GET_VerifyOtp, LoginModel.MobileNumber, otpObj.ToStringX()));
 
-                if(response == null) { return; }
+                if (response == null) { return; }
 
                 if (response.Success)
                 {
                     MobileOtpModal?.CloseAsync();
-                    NavigationManager!.NavigateTo("/changePassword");
+                    NavigationManager!.NavigateTo($"/changePassword/{LoginModel.MobileNumber}/{otpObj.ToStringX()}");
                 }
                 else
                 {
@@ -68,11 +54,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
             LoginModel.MobileNumber = mobileNumberObj.ToMobileNumber(" ");
         }
 
-
-        private ElementReference? ER_MobileNumber { get; set; }
-
-
-        protected override async Task OnAfterRenderAsync(bool firstRender) 
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
@@ -83,18 +65,20 @@ namespace AstroOfficeWeb.Client.Pages.Account
         private async Task OnValidSubmit_LoginWithMobile()
         {
             OtpErrorMessage = string.Empty;
-            //var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(SMSApiConst.GET_SendOtp, MobileNumber));
-            //if (response == null)
-            //{
-            //    return;   
-            //}
+            var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(SMSApiConst.GET_SendOtp, LoginModel.MobileNumber));
+            if (response == null)
+            {
+                return;
+            }
 
-            //if (response.Success)
-            //{
-            await MobileOtpModal!.ShowAsync();
-            //}
+            if (response.Success)
+            {
+                await MobileOtpModal!.ShowAsync();
+            }
+            else
+            {
+                OtpErrorMessage = response.Message ?? "Something is wrong please try again later.";
+            }
         }
-
     }
-
 }

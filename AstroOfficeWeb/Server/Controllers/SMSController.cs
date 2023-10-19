@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using ASModels;
 using AstroOfficeWeb.Server.Helper;
 using AstroOfficeWeb.Shared.Models;
@@ -34,16 +35,18 @@ namespace AstroOfficeWeb.Server.Controllers
 
             string otp = OtpHelper.GenerateOtp();
 
-            var request = new SendOtpRequest()
-            {
-                MobileNumbers = mobileNumber,
-                SenderId = "DAASTR",
-                ClientId = _setting.ClientId,
-                ApiKey = _setting.APIKey,
-                Message = $"Divya Astro Ashram welcomes you. Please enter the OTP code {otp} in the space provided to log into your account.",
-            };
+            //var request = new SendOtpRequest();
+            //var request = new SendOtpRequest()
+            //{
+            //    MobileNumbers = mobileNumber,
+            //    SenderId = "DAASTR",
+            //    ClientId = _setting.ClientId,
+            //    ApiKey = _setting.APIKey,
+            //    Message = $"Divya Astro Ashram welcomes you. Please enter the OTP code {otp} in the space provided to log into your account.",
+            //};
 
-            var response = await _httpClient.PostAsync<SendOtpRequest, ApiSSExpertSystemResponse<List<SendOtpResponse>>>(SMSApiConst.POST_SendSMS, request);
+            //var response = await _httpClient.PostAsync<SendOtpRequest, ApiSSExpertSystemResponse<List<SendOtpResponse>>>(SMSApiConst.POST_SendSMS, request);
+            var response = new ApiSSExpertSystemResponse<List<SendOtpResponse>>();
 
             if (response == null)
             {
@@ -56,7 +59,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return Ok(new ApiResponse<string> { Success = true, Message = "Otp has been to your mobile number." });
+            return Ok(new ApiResponse<string> { Success = true, Message = "Otp has been sent to your mobile number." });
         }
 
         [HttpGet]

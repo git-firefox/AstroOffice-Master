@@ -1,14 +1,13 @@
 ﻿@using System.Timers;
+@using AstroOfficeWeb.Shared.Models;
 @inherits BaseComponent
 @inject IJSRuntime JSRuntime
+@inject ISwaggerApiService Swagger
 
 <div @ref="ER_MobileOtpModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-
-                @*   @if (!IsForgotPassword) { *@
-
                 <div class="container-fluid ">
                     <div class="row justify-content-center">
                         <div class="col-12 col-md-6 col-lg-4" style="min-width: 500px;">
@@ -29,9 +28,6 @@
                                         <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
                                     </div>
 
-
-
-
                                     <p> OTP valid till: @timeLeft seconds</p>
 
                                     <button type="button" class="btn btn-primary mb-3" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">
@@ -43,39 +39,22 @@
 
 
                                     <p class="resend text-muted mb-0">
-                                        Didn't receive code? <a href="/login">Request again</a>
+                                        Didn't receive code? <button @onclick="OnClick_BtnResendOtp" class="btn btn-link">Request again</button>
                                     </p>
 
                                     @if (!string.IsNullOrEmpty(ErrorMessage))
                                     {
                                         <p class="text-danger">@ErrorMessage</p>
                                     }
+                                    @if (!string.IsNullOrEmpty(SuccessMessage))
+                                    {
+                                        <p class="text-success">@SuccessMessage</p>
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                @*    }
-                else
-                {
-                <form>
-                <div class="form-group">
-                <label for="userNameId">User Name</label>
-                <input type="email" class="form-control" id="userNameId" aria-describedby="emailHelp">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                </div>
-                <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
-                </div>
-                <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>
-                <button type="button" class="btn btn-primary" @onclick="() => OnConfirmationChange(true)">Confirm</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">Close</button>
-                </form>
-                } *@
             </div>
         </div>
     </div>
@@ -94,14 +73,20 @@
 
     [Parameter]
     public string? ErrorMessage { get; set; }
-    
+
+    [Parameter]
+    public string? SuccessMessage { get; set; }
+
+    [Parameter]
+    public string? MobileNumber { get; set; }
+
     private int totalTime = 120; // 2 minutes in seconds
     private int timeLeft;
 
     private int minutes => timeLeft / 60;
     private int seconds => timeLeft % 60;
 
-    private Timer timer;
+    private Timer? timer;
 
 
     public async Task ShowAsync()
@@ -114,14 +99,13 @@
             timer.Dispose();
         }
 
-        IsShow = true;
-        await JSRuntime.ShowOtpModalAsync(ER_MobileOtpModal);
-
         timeLeft = 120;
         timer = new Timer(1000); // Interval in milliseconds (1 second)
         timer.Elapsed += TimerElapsed;
         timer.Start();
 
+        IsShow = true;
+        await JSRuntime.ShowOtpModalAsync(ER_MobileOtpModal);
         StateHasChanged();
     }
 
@@ -156,7 +140,7 @@
     }
 
 
-    private void TimerElapsed(object sender, ElapsedEventArgs e)
+    private void TimerElapsed(object? sender, ElapsedEventArgs e)
     {
         if (timeLeft > 0)
         {
@@ -165,9 +149,12 @@
         }
         else
         {
-            timer.Stop();
-            IsShow = false; // Hide the modal when the countdown is complete
-            timer.Dispose(); // Dispose of the timer
+            if (timer != null)
+            {
+                timer.Stop();
+                timer.Dispose(); 
+                IsShow = false; 
+            }
         }
     }
     public void Dispose()
@@ -177,6 +164,31 @@
         {
             timer.Stop();
             timer.Dispose();
+        }
+    }
+
+    private async Task OnClick_BtnResendOtp(MouseEventArgs e)
+    {
+        ErrorMessage = string.Empty;
+        var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(SMSApiConst.GET_SendOtp, MobileNumber));
+        if (response!.Success)
+        {
+            if (timer != null)
+            {
+                // If a timer is already running, stop and dispose of it
+                timer.Stop();
+                timer.Dispose();
+            }
+
+            timeLeft = 120;
+            timer = new Timer(1000); // Interval in milliseconds (1 second)
+            timer.Elapsed += TimerElapsed;
+            timer.Start();
+            SuccessMessage = response.Message;
+        }
+        else
+        {
+            ErrorMessage = response.Message;
         }
     }
 }
