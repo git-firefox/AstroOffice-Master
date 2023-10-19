@@ -20,7 +20,6 @@ namespace AstroOfficeWeb.Client.Helper
             return jsRuntime.InvokeVoidAsync("fnShowModal", element);
         }
 
-
         public static ValueTask CloseModalAsync(this IJSRuntime jsRuntime, ElementReference? element)
         {
             return jsRuntime.InvokeVoidAsync("fnCloseModal", element);
@@ -58,10 +57,5 @@ namespace AstroOfficeWeb.Client.Helper
         {
             return jsRuntime.InvokeAsync<object>("fnGetOtpValue", element);
         }
-
-        //public static ValueTask<DateTime> GetDateFromDateTimePickerAsync(this IJSRuntime jsRuntime, ElementReference? element)
-        //{
-        //    return jsRuntime.InvokeAsync<DateTime>("fnGetDateFromDateTimePicker", element);
-        //}
     }
 }
