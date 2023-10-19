@@ -19,7 +19,6 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
         [Inject]
         private NavigationManager? NavigationManager { get; set; }
-        private string? OtpErrorMessage { get; set; }
 
         [Inject]
         ISwaggerApiService? Swagger { get; set; }
@@ -41,7 +40,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
                 }
                 else
                 {
-                    OtpErrorMessage = response.Message;
+                    await JSRuntime.ShowToastAsync(response.Message ?? "Something is wrong", SwalIcon.Error);
                 }
             }
         }
@@ -64,7 +63,6 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
         private async Task OnValidSubmit_LoginWithMobile()
         {
-            OtpErrorMessage = string.Empty;
             var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(SMSApiConst.GET_SendOtp, LoginModel.MobileNumber));
             if (response == null)
             {
@@ -77,7 +75,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
             }
             else
             {
-                OtpErrorMessage = response.Message ?? "Something is wrong please try again later.";
+                await JSRuntime.ShowToastAsync(response.Message ?? "Something is wrong please try again later.", SwalIcon.Error);
             }
         }
     }

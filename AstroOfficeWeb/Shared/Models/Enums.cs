@@ -25,4 +25,26 @@
         NakSwami,
         Both
     }
+
+    public enum SwalIcon
+    {
+        Success,
+        Error,
+        Warning,
+        Info,
+        Question
+    }
+
+    public enum SwalPosition
+    {
+        Top,
+        TopStart,
+        TopEnd,
+        Center,
+        CenterStart,
+        CenterEnd,
+        Bottom,
+        BottomStart,
+        BottomEnd
+    }
 }

@@ -3,10 +3,6 @@
 @inject IAuthenticationService AuthService
 @inject NavigationManager NavigationManager
 
-@* @layout AccountLayout *@
-
-@*<h3>Login</h3>*@
-@* <div class="d-flex justify-content-center align-items-center" style="height: 80vh;"> *@
 
 <MobileOtpModal @ref="MobileOtpModal" IsForgotPassword="false" ConfirmationChanged="OnConfirmationChanged_MobileOtpModal" />
 
@@ -15,7 +11,7 @@
     <div class="login-box card-frame">
         <div>
             <div class="login-logo">
-                <h3>Login Page</h3>
+                <h3>Login </h3>
             </div>
             <div class="card">
                 <div class="card-body login-card-body">
@@ -52,25 +48,11 @@
                             </div>
                             <div class="col-12 mt-3">
                                 <button type="submit" class="btn btn-custom btn-block">Sign In</button>
-                                <button class="btn btn-custom btn-custom-outline mt-2 btn-block">  <NavLink href="/login-with-mobile">Login with OTP</NavLink> </button>
+                                <NavLink class="btn btn-custom btn-custom-outline mt-2 btn-block" href="/login-with-mobile">Login with OTP</NavLink>
                             </div>
                         </div>
                     </EditForm>
-
-                    @* <div class="social-auth-links text-center mb-3">
-                    <p>- OR -</p>
-                    <a href="#" class="btn btn-block btn-primary">
-                    <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-                    </a>
-                    <a href="#" class="btn btn-block btn-danger">
-                    <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-                    </a>
-                    </div> *@
-
                     <div class="text-center">
-                        @* <p class="mb-1 mt-3"><button class="btn btn-link" @onclick="OnClick_BtnForgotPassword">I forgot my password</button></p> <a href="/forgot"> I forgot my password</a> *@
-
-                        @* <p><button class="btn btn-link" @onclick="OnClick_BtnMobileOTP">Login with OTP</button></p>                                      *@
                         <p class="mb-0 mt-3 sign-up "> Don't have an account?  <NavLink class="forgot-link" href="/register"><u>Sign Up</u></NavLink> </p>
                     </div>
                 </div>
