@@ -28,7 +28,7 @@ namespace ASDAL
             //if (aUser != null)
             //    throw new Exception("Username already exists");
 
-            au.Password = ENCEK.ENCEK.CellGell_ENC_RET(au.Password, "cellgell.com");
+            au.Password = ENCEK.ENCEK.CellGell_ENC(au.Password, "cellgell.com");
 
             _context.AUsers.Add(au);
             _ = _context.SaveChanges();
@@ -127,7 +127,7 @@ namespace ASDAL
             try
             {
                 var user = _context.AUsers.First<AUser>(aa => aa.MobileNumber == mobileNumber && aa.Active == true && aa.MobileOtp == otp);
-                user.Password = ENCEK.ENCEK.CellGell_ENC_RET(password, "cellgell.com");
+                user.Password = ENCEK.ENCEK.CellGell_ENC(password, "cellgell.com");
                 _context.AUsers.Update(user);
                 _context.SaveChanges();
                 return true;

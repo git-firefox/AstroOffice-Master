@@ -29,18 +29,19 @@ namespace AstroOfficeWeb.Client.Pages.Account
             if (isConfirm)
             {
                 var otpObj = await MobileOtpModal.GetOtpValue();
-                var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(SMSApiConst.GET_VerifyOtp, LoginModel.MobileNumber, otpObj.ToStringX()));
+
+                var response = await AuthService.LoginWithOtpAsync(new SignInWithOtpRequest { MobileNumber = LoginModel.MobileNumber, Otp = otpObj.ToStringX() });
 
                 if (response == null) { return; }
 
-                if (response.Success)
+                if (response.IsAuthSuccessful)
                 {
                     MobileOtpModal?.CloseAsync();
-                    NavigationManager!.NavigateTo("/login");
+                    NavigationManager!.NavigateTo("/");
                 }
                 else
                 {
-                    OtpErrorMessage = response.Message;
+                    OtpErrorMessage = response.ErrorMessage;
                 }
             }
         }

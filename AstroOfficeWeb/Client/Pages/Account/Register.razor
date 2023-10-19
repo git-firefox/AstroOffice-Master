@@ -1,6 +1,8 @@
 ﻿@page "/register"
-@inject IJSRuntime JSRuntime
 
+@inject NavigationManager NavigationManager 
+@inject IJSRuntime JSRuntime
+@inject IAuthenticationService AuthService
 
 <div class="login-page" style="min-height: 332.781px;">
     <div class="login-box card-frame">
@@ -12,34 +14,41 @@
                 <div class="card-body register-card-body">
                     <p class="login-box-msg">Register a new membership</p>
 
-                    <EditForm Model="registrationModel" OnValidSubmit="RegisterUser">
+                    @if (Errors != null && Errors.Any())
+                    {
+                        <ul>
+                            @foreach (string message in Errors)
+                            {
+                                <li class="text-danger">@message</li>
+                            }
+                        </ul>
+                    }
+                    <EditForm Model="RegistrationModel" OnValidSubmit="OnValidSubmit_RegisterUser">
                         <DataAnnotationsValidator />
                         <div class="input-group mb-4">
-                            <InputText @bind-Value="registrationModel.UserName" class="form-control" placeholder="User Name" />
+                            <InputText @bind-Value="RegistrationModel.UserName" class="form-control" placeholder="User Name" />
                             <i class="fas fa-user"></i>
-                            <ValidationMessage For="@(() => registrationModel.UserName)" />
+                            <ValidationMessage For="@(() => RegistrationModel.UserName)" />
                         </div>
                         <div class="input-group mb-4">
-                            @* <InputText @bind-Value="registrationModel.MobileNumber" class="form-control" placeholder="Mobile no." /> *@
-
-                            <InputText @ref="InputMobileNumber" @bind-Value="registrationModel.MobileNumber" class="form-control" placeholder="Mobile no." @onfocusout="OnFocusOut_MobileNumber" />
+                            <InputText @ref="InputMobileNumber" @bind-Value="RegistrationModel.MobileNumber" class="form-control" placeholder="Mobile no." @onfocusout="OnFocusOut_MobileNumber" />
                             <i class="fas fa-mobile"></i>
-                            <ValidationMessage For="@(() => registrationModel.MobileNumber)" />
+                            <ValidationMessage For="@(() => RegistrationModel.MobileNumber)" />
                         </div>
                         <div class="input-group mb-4">
-                            <InputText @bind-Value="registrationModel.Password" type="@(PasswordIsClicked ? "text" : "password")" class="form-control" placeholder="Password" />
+                            <InputText @bind-Value="RegistrationModel.Password" type="@(PasswordIsClicked ? "text" : "password")" class="form-control" placeholder="Password" />
                             <i class="fas @(PasswordIsClicked ? "fa-eye-slash" : "fa-eye")" @onclick="()=>{PasswordIsClicked = !PasswordIsClicked; }"></i>
-                            <ValidationMessage For="@(() => registrationModel.Password)" />
+                            <ValidationMessage For="@(() => RegistrationModel.Password)" />
                         </div>
                         <div class="input-group">
-                            <InputText @bind-Value="registrationModel.RetypePassword" type="@(ConfirmPasswordIsClicked ? "text" : "password")" class="form-control" placeholder="Retype password" />
+                            <InputText @bind-Value="RegistrationModel.RetypePassword" type="@(ConfirmPasswordIsClicked ? "text" : "password")" class="form-control" placeholder="Retype password" />
                             <i class="fas @(ConfirmPasswordIsClicked ? "fa-eye-slash" : "fa-eye")" @onclick="()=>{ConfirmPasswordIsClicked = !ConfirmPasswordIsClicked; }"></i>
-                            <ValidationMessage For="@(() => registrationModel.RetypePassword)" />
+                            <ValidationMessage For="@(() => RegistrationModel.RetypePassword)" />
                         </div>
                         <div class="row mt-3">
                             <div class="col-12">
                                 <div class="icheck-primary">
-                                    <InputCheckbox @bind-Value="registrationModel.AgreeTerms" id="agreeTerms" />
+                                    <InputCheckbox @bind-Value="RegistrationModel.AgreeTerms" id="agreeTerms" />
                                     <label for="agreeTerms">
                                         I agree to the <a href="javascript:;">terms</a>
                                     </label>
@@ -54,14 +63,14 @@
                         </div>
                     </EditForm>
 
-                    
+
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-@code{
+@code {
     private string? Password { get; set; }
     private bool PasswordIsClicked { get; set; } = false;
     private string? ConfirmPassword { get; set; }

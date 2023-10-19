@@ -54,7 +54,7 @@ namespace AstroOfficeWeb.Client.Services
 
         public async Task<SignInResponse> LoginWithOtpAsync(SignInWithOtpRequest signInRequest)
         {
-            var response = await _apiService.PostAsync<SignInWithOtpRequest, SignInResponse>(AccountApiConst.POST_SignIn, signInRequest);
+            var response = await _apiService.PostAsync<SignInWithOtpRequest, SignInResponse>(AccountApiConst.POST_SignInWithOtp, signInRequest);
 
             if (response!.IsAuthSuccessful)
             {

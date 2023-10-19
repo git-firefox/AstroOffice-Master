@@ -1,63 +1,49 @@
 ﻿@page "/login-with-mobile"
 @using System.ComponentModel.DataAnnotations
-
-
 @inject IJSRuntime JSRuntime
+@inject IAuthenticationService AuthService
 
 <MobileOtpModal @ref="MobileOtpModal" ConfirmationChanged="OnConfirmationChanged" ErrorMessage="@OtpErrorMessage" />
-<div class="login-page" style="min-height: 332.781px;">
 
+<div class="login-page" style="min-height: 332.781px;">
     <div class="login-box card-frame">
         <div>
-        <div class="login-logo">
-            <h3>Login with OTP</h3>
-        </div>
+            <div class="login-logo">
+                <h3>Login with OTP</h3>
+            </div>
 
-        <div class="card">
-            <div class="card-body login-card-body">
-                <p class="login-box-msg">You forgot your password? Here you can easily login with Mobile no. and OTP pin.</p>
+            <div class="card">
+                <div class="card-body login-card-body">
+                    <p class="login-box-msg">You forgot your password? Here you can easily login with Mobile no. and OTP pin.</p>
 
-                <EditForm Model="LoginModel" OnValidSubmit="OnValidSubmit_LoginWithMobile">
-                    <DataAnnotationsValidator />
-                    <div class="input-group mb-3">
-                        <InputText @ref="InputMobileNumber" @bind-Value="LoginModel.MobileNumber" class="form-control" placeholder="Mobile no." @onfocusout="OnFocusOut_MobileNumber" />
+                    <EditForm Model="LoginModel" OnValidSubmit="OnValidSubmit_LoginWithMobile">
+                        <DataAnnotationsValidator />
+                        <div class="input-group mb-3">
+                            <InputText @ref="InputMobileNumber" @bind-Value="LoginModel.MobileNumber" class="form-control" placeholder="Mobile no." @onfocusout="OnFocusOut_MobileNumber" />
 
-                                <i class="fas fa-mobile"></i>
-                    <ValidationMessage For="@(() => LoginModel.MobileNumber)" />
-                    </div>
-
-
-
-                    <div class="row down-form">
-                        <div class="col-12 mt-2">
-                            <button type="submit" class="btn btn-custom btn-block" >Send OTP</button>
+                            <i class="fas fa-mobile"></i>
+                            <ValidationMessage For="@(() => LoginModel.MobileNumber)" />
                         </div>
-                           @* <div class="col-12 mt-2">
-                                <button class="btn btn-custom btn-custom-outline btn-block">
-                                    <NavLink href="/login">
-                                        Login
-                                    </NavLink>
-                                </button>
-                            </div>*@
-                    </div>
-                </EditForm>
+                        <div class="row down-form">
+                            <div class="col-12 mt-2">
+                                <button type="submit" class="btn btn-custom btn-block">Send OTP</button>
+                            </div>
+                        </div>
+                    </EditForm>
 
                     <div class="row down-form">
                         <div class="col-12 mt-2">
                             <button class="btn btn-custom btn-custom-outline btn-block">
-                                <NavLink href="/login">
-                                    Login
-                                </NavLink>
+                                <NavLink href="/login">Login with User Name</NavLink>
                             </button>
                         </div>
+                    </div>
 
-                   </div>
-
-                <p class="mb-0 text-center mt-3">
-                    <NavLink href="/register" class="text-center forgot-link">Register a new membership</NavLink>
-                </p>
+                    <p class="mb-0 text-center mt-3">
+                        <NavLink href="/register" class="text-center forgot-link">Register a new membership</NavLink>
+                    </p>
+                </div>
             </div>
-        </div>
         </div>
     </div>
 </div>

@@ -208,19 +208,20 @@ namespace AstroOfficeWeb.Server.Controllers
         }
 
         [HttpPost]
-        public IActionResult SignUp([FromBody] SignUpRequest signUpRequest)
+        public IActionResult SignUp([FromBody] SignUpRequest request)
         {
-            var signUpResponse = new SignUpResponse();
+            var response = new SignUpResponse();
 
-            if (signUpRequest == null)
+            if (request == null)
             {
                 return BadRequest();
             }
 
-            if (_balUser.GetAllUsers().Any(a => a.Username == signUpRequest.Name))
+            if (_balUser.GetAllUsers().Any(a => a.Username == request.UserName && a.MobileNumber == request.PhoneNumber))
             {
-                signUpResponse.Errors = new List<string>() { "UserName already exists." };
-                return Ok(signUpResponse);
+                response.IsRegisterationSuccessful = false;
+                response.Errors = new List<string>() { "UserName or PhoneNumber already exists." };
+                return Ok(response);
             }
 
             if (ModelState.IsValid)
@@ -229,28 +230,31 @@ namespace AstroOfficeWeb.Server.Controllers
                 {
                     Active = true,
                     Adminuser = false,
-                    CanAdd = true,
-                    CanEdit = true,
-                    CanReport = true,
-                    Password = signUpRequest.Password,
-                    Username = signUpRequest.Name,
+                    CanAdd = false,
+                    CanEdit = false,
+                    CanReport = false,
+                    Password = request.Password,
+                    Username = request.UserName,
+                    MobileNumber = request.PhoneNumber
                 };
 
                 try
                 {
                     _balUser.AddUser(aUser);
+                    response.IsRegisterationSuccessful = true;
                 }
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("", ex.Message);
+                    response.IsRegisterationSuccessful = false;
                 }
             }
 
             var allErrors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
 
-            signUpResponse.Errors = allErrors;
+            response.Errors = allErrors;
 
-            return Ok(signUpResponse);
+            return Ok(response);
         }
 
         private SigningCredentials GetSigningCredentials()

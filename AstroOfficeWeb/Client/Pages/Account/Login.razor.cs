@@ -19,19 +19,9 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
         private MobileOtpModal MobileOtpModal = new();
         private MobileOtpModal ForgotPasswordModal = new();
-        private LoginModel? LoginModel { get; set; }
+        private LoginModel LoginModel { get; set; } = new();
 
-        [Inject]
-        private IAuthenticationService? AuthenticationService { get; set; }
-
-        [Inject]
-        private HttpClient? HttpClient { get; set; }
-
-        protected override void OnInitialized()
-        {
-
-            LoginModel = new LoginModel();
-        }
+        private string? LoginErrorMessage { get; set; }
 
         private void OnInvalidSubmit()
         {
@@ -41,43 +31,30 @@ namespace AstroOfficeWeb.Client.Pages.Account
         private async Task OnValidSubmitAsync()
         {
 
-            bool isPasswordValid = await CheckPassword(LoginModel.Password); // Replace with your validation logic
-           
-
-            if (!isPasswordValid)
+            try
             {
-                // Password is incorrect; show an error message
-                isPasswordValid = false;
-            }
-            else
-            {
-
-
-                try
+                var response = await AuthService!.LoginAsync(new SignInRequest
                 {
-                    var response = await AuthenticationService!.LoginAsync(new SignInRequest
+                    UserName = LoginModel!.UserName,
+                    Password = LoginModel!.Password
+                });
+                if (response != null)
+                {
+                    if (response.IsAuthSuccessful)
                     {
-                        UserName = LoginModel!.UserName,
-                        Password = LoginModel!.Password
-                    });
-                    if (response != null) { }
-                }
-                catch
-                {
-
+                        NavigationManager!.NavigateTo("/");
+                    }
+                    else
+                    {
+                        LoginErrorMessage = response?.ErrorMessage ?? "Envalid login credentials";
+                    }
                 }
             }
+            catch
+            {
+
+            }
         }
-
-        private Task<bool> CheckPassword(string password)
-        {
-            // Replace this with your actual password validation logic
-            // For this example, we're checking against a hard-coded password
-            string correctPassword = "astro";
-
-            return Task.FromResult(password == correctPassword);
-        }
-
 
         private void OnClick_BtnMobileOTP(MouseEventArgs e)
         {

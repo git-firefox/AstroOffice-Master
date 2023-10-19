@@ -8,21 +8,35 @@ namespace AstroOfficeWeb.Client.Pages.Account
 {
     public partial class Register
     {
-        [Inject]
-        private NavigationManager? NavigationManager { get; set; }    
         private InputText? InputMobileNumber { get; set; }
 
-        private RegistrationModel registrationModel = new RegistrationModel();
+        private RegistrationModel RegistrationModel = new RegistrationModel();
 
-        private void RegisterUser()
+        public IList<string>? Errors { get; set; }
+
+        private async Task OnValidSubmit_RegisterUser()
         {
-            NavigationManager!.NavigateTo("/login");
+            var response = await AuthService.RegisterUserAsync(new AstroOfficeWeb.Shared.Models.SignUpRequest()
+            {
+                Password = RegistrationModel.Password,
+                PhoneNumber = RegistrationModel.MobileNumber,
+                UserName = RegistrationModel.UserName
+            });
+
+            if (response.IsRegisterationSuccessful)
+            {
+                NavigationManager!.NavigateTo("/login");
+            }
+            else
+            {
+                Errors = response.Errors.ToList();
+            }
         }
         private async Task OnFocusOut_MobileNumber(FocusEventArgs e)
         {
 
             var mobileNumberObj = await JSRuntime.GetInputMaskValueAsync(InputMobileNumber?.Element);
-            registrationModel.MobileNumber = mobileNumberObj.ToMobileNumber(" ");
+            RegistrationModel.MobileNumber = mobileNumberObj.ToMobileNumber(" ");
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)

@@ -1,4 +1,8 @@
 ﻿@page "/login"
+
+@inject IAuthenticationService AuthService
+@inject NavigationManager NavigationManager
+
 @* @layout AccountLayout *@
 
 @*<h3>Login</h3>*@
@@ -16,20 +20,25 @@
             <div class="card">
                 <div class="card-body login-card-body">
                     <p class="login-box-msg">Sign in to start your session</p>
-
+                    @if (!string.IsNullOrEmpty(LoginErrorMessage))
+                    {
+                        <ul>
+                            <li>@LoginErrorMessage</li>
+                        </ul>
+                    }
                     <EditForm Model="LoginModel" OnInvalidSubmit="OnInvalidSubmit" OnValidSubmit="OnValidSubmitAsync">
                         <DataAnnotationsValidator />
 
                         <div class="input-group mb-4">
                             <InputText @bind-Value="LoginModel!.UserName" class="form-control" placeholder="User Name" />
                             <i class="fa fa-user"></i>
-                        <ValidationMessage For="() => LoginModel!.UserName" />
+                            <ValidationMessage For="() => LoginModel!.UserName" />
 
                         </div>
                         <div class="input-group mb-4">
                             <InputText @bind-Value="LoginModel!.Password" type="password" class="form-control" placeholder="Password" />
                             <i class="fa fa-eye"></i>
-                        <ValidationMessage For="() => LoginModel.Password" />
+                            <ValidationMessage For="() => LoginModel.Password" />
                         </div>
                         <div class="row down-form">
                             <div class="col-6">
