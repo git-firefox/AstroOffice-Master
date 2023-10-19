@@ -6,6 +6,7 @@ namespace AstroOfficeWeb.Client.Services.IService
     {
         Task<SignUpResponse> RegisterUserAsync(SignUpRequest signUpRequest);
         Task<SignInResponse> LoginAsync(SignInRequest signInRequest);
+        Task<SignInResponse> LoginWithOtpAsync(SignInWithOtpRequest signInRequest);
         Task LogoutAsync();
     }
 }

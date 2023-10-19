@@ -1,0 +1,177 @@
+﻿@using System.Timers;
+@using AstroOfficeWeb.Shared.Models;
+@inherits BaseComponent
+@inject IJSRuntime JSRuntime
+@inject ISwaggerApiService Swagger
+
+<div @ref="ER_MobileOtpModal" class="modal fade verify-otp" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+
+                <div class=" text-center">
+
+                    <h4>Verify</h4>
+
+                    <p>Your code was sent to you via mobile number OTP</p>
+
+
+                    <div class="otp-field mb-4">
+                        <input type="text" data-inputmask='"mask": "9"' data-mask />
+                        <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
+                        <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
+                        <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
+                        <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
+                        <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
+                    </div>
+
+                    <p> OTP valid till: @timeLeft seconds</p>
+
+                    <button type="button" class="btn btn-custom btn-block mb-2" @onclick="() => OnConfirmationChange(true)">
+                        Verify
+                    </button>
+                    <button type="button" class="btn btn-custom btn-custom-outline btn-block mb-3" data-dismiss="modal" data-group="otp" @onclick="() => OnConfirmationChange(false)">
+                        Close
+                    </button>
+                    <p class="resend text-muted mb-0">
+                        Didn't receive code? <a href="javascript:;" @onclick="OnClick_BtnResendOtp" class="forgot-link" data-group="otp">Request again</a>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    protected bool IsShow { get; set; } = true;
+    protected ElementReference ER_MobileOtpModal { get; set; }
+
+    [Parameter]
+    public string Title { get; set; } = "Verify OTP";
+
+    [Parameter]
+    public bool IsForgotPassword { get; set; } = false;
+
+    [Parameter]
+    public string? ErrorMessage { get; set; }
+
+    [Parameter]
+    public string? SuccessMessage { get; set; }
+
+    [Parameter]
+    public string? MobileNumber { get; set; }
+
+    private int totalTime = 120; // 2 minutes in seconds
+    private int timeLeft;
+
+    private int minutes => timeLeft / 60;
+    private int seconds => timeLeft % 60;
+
+    private Timer? timer;
+
+
+    public async Task ShowAsync()
+    {
+
+        if (timer != null)
+        {
+            // If a timer is already running, stop and dispose of it
+            timer.Stop();
+            timer.Dispose();
+        }
+
+        timeLeft = 120;
+        timer = new Timer(1000); // Interval in milliseconds (1 second)
+        timer.Elapsed += TimerElapsed;
+        timer.Start();
+
+        IsShow = true;
+        await JSRuntime.ShowOtpModalAsync(ER_MobileOtpModal);
+        StateHasChanged();
+    }
+
+
+    public async Task CloseAsync()
+    {
+        IsShow = false;
+        await JSRuntime.CloseModalAsync(ER_MobileOtpModal);
+        StateHasChanged();
+    }
+
+    public async Task<object> GetOtpValue()
+    {
+        object obj = await JSRuntime.GetOtpValueAsync(ER_MobileOtpModal);
+        return obj;
+    }
+
+    public async Task ShowForgotPasswordAsync()
+    {
+        IsShow = true;
+        await JSRuntime.ShowModalAsync(ER_MobileOtpModal);
+        StateHasChanged();
+    }
+
+    [Parameter]
+    public EventCallback<bool> ConfirmationChanged { get; set; }
+
+    protected async Task OnConfirmationChange(bool value)
+    {
+        IsShow = false;
+        await ConfirmationChanged.InvokeAsync(value);
+    }
+
+
+    private void TimerElapsed(object? sender, ElapsedEventArgs e)
+    {
+        if (timeLeft > 0)
+        {
+            timeLeft--;
+            StateHasChanged();
+        }
+        else
+        {
+            if (timer != null)
+            {
+                timer.Stop();
+                timer.Dispose(); 
+                IsShow = false; 
+            }
+        }
+    }
+    public void Dispose()
+    {
+        // Ensure the timer is disposed when the component is disposed
+        if (timer != null)
+        {
+            timer.Stop();
+            timer.Dispose();
+        }
+    }
+
+    private async Task OnClick_BtnResendOtp(MouseEventArgs e)
+    {
+        ErrorMessage = string.Empty;
+        var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(SMSApiConst.GET_SendOtp, MobileNumber));
+        if (response!.Success)
+        {
+            if (timer != null)
+            {
+                // If a timer is already running, stop and dispose of it
+                timer.Stop();
+                timer.Dispose();
+            }
+
+            timeLeft = 120;
+            timer = new Timer(1000); // Interval in milliseconds (1 second)
+            timer.Elapsed += TimerElapsed;
+            timer.Start();
+            await JSRuntime.ShowToastAsync(response?.Message ?? "Otp sent");
+        }
+        else
+        {
+            await JSRuntime.ShowToastAsync(response.Message ?? "Something is wrong", SwalIcon.Error);
+        }
+    }
+}

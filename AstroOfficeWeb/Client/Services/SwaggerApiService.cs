@@ -32,6 +32,21 @@ namespace AstroOfficeWeb.Client.Services
             return default;
         }
 
+        public async Task<TResponse?> PutAsync<TRequest, TResponse>(string url, TRequest request)
+        {
+
+            var content = JsonConvert.SerializeObject(request);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await _client.PutAsync(_client.BaseAddress + url, bodyContent);
+            if (response.IsSuccessStatusCode)
+            {
+                var contentTemp = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<TResponse>(contentTemp);
+                return result;
+            }
+            return default;
+        }
+
         public async Task<TResponse?> GetAsync<TResponse>(string url)
         {
             var response = await _client.GetAsync(_client.BaseAddress + url);

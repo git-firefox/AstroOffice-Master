@@ -41,5 +41,14 @@ namespace ASBAL
         {
             return _du.UserNameSearch(userName);
         }
+        public AUser GetUserByMobileNumber(string? mobileNumber)
+        {
+            return _du.UserByMobileNumber(mobileNumber);
+        }
+
+        public bool IsUserPassUpdatedByOtp(string? mobileNumber, string password, string otp)
+        {
+            return _du.IsUserPassUpdatedByOtp(mobileNumber, password, otp); ;
+        }
     }
 }

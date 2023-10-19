@@ -19,7 +19,11 @@ namespace AstroOfficeWeb.Shared.Models
         public int Tobhh { get; set; } = 13;
         public int Tobmm { get; set; } = 25;
         public int Tobss { get; set; } = 00;
+
+        //public DateTime DateOfBirth { get; set; } = new DateTime(2006, 06, 12, 13, 25, 00);
+
         public string TxtBirthPlace { get; set; } = "Delhi";
+        public string? BirthPlace { get; set; } = "Delhi";
         public string BirthCity { get; set; } = string.Empty;
         public bool IsMale { get; set; }
         public bool IsFemale { get; set; }
@@ -28,8 +32,8 @@ namespace AstroOfficeWeb.Shared.Models
         public string Brief { get; set; } = string.Empty;
         public short CmbRotate { get; set; } = 1;
         public bool ChkSahasaneLogic { get; set; }
-        public bool SalaChakkar { get; set; }
-        public bool Mfal { get; set; } = false;
+        public bool SalaChakkar { get; set; } = true;
+        public bool ChkMfal { get; set; } = false;
         public string Longtitude { get; set; } = string.Empty;
         public string Latitude { get; set; } = string.Empty;
         public string CmbLanguage { get; set; } = "Hindi";

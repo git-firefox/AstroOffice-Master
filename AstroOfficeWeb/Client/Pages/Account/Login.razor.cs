@@ -1,9 +1,12 @@
 ﻿//using AstroOfficeWeb.Client.Components;
 using AstroOfficeWeb.Client.Models;
 using AstroOfficeWeb.Client.Services.IService;
+using AstroOfficeWeb.Client.Shared;
 using AstroOfficeWeb.Shared;
 using AstroOfficeWeb.Shared.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Web;
 using System.Net;
 using System.Net.Http.Json;
 using System.Security.Claims;
@@ -14,19 +17,16 @@ namespace AstroOfficeWeb.Client.Pages.Account
     public partial class Login
     {
 
-        private LoginModel? LoginModel { get; set; }
+        private string? Password { get; set; }
+        private bool PasswordIsClicked { get; set; } = false;
+        private string? ConfirmPassword { get; set; }
+        private bool ConfirmPasswordIsClicked { get; set; } = false;
 
-        [Inject]
-        private IAuthenticationService? AuthenticationService { get; set; }
+        private MobileOtpModal MobileOtpModal = new();
+        private MobileOtpModal ForgotPasswordModal = new();
+        private LoginModel LoginModel { get; set; } = new();
 
-        [Inject]
-        private HttpClient? HttpClient { get; set; }
-
-        protected override void OnInitialized()
-        {
-
-            LoginModel = new LoginModel();
-        }
+        private string? LoginErrorMessage { get; set; }
 
         private void OnInvalidSubmit()
         {
@@ -35,19 +35,40 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
         private async Task OnValidSubmitAsync()
         {
-            try
-            {
-                var response = await AuthenticationService!.LoginAsync(new SignInRequest
-                {
-                    UserName = LoginModel!.UserName,
-                    Password = LoginModel!.Password
-                });
-                if (response != null) { }
-            }
-            catch
-            {
 
+            LoginErrorMessage = "";
+            var response = await AuthService!.LoginAsync(new SignInRequest
+            {
+                UserName = LoginModel!.UserName,
+                Password = LoginModel!.Password
+            });
+            if (response!.IsAuthSuccessful)
+            {
+                NavigationManager!.NavigateTo("/");
+            }
+            else
+            {
+                LoginErrorMessage = response?.ErrorMessage ?? "Invalid login credentials";
             }
         }
+
+        private void OnClick_BtnMobileOTP(MouseEventArgs e)
+        {
+            MobileOtpModal?.ShowAsync();
+        }
+        private void OnClick_BtnForgotPassword(MouseEventArgs e)
+        {
+            ForgotPasswordModal?.ShowForgotPasswordAsync();
+        }
+
+        private void OnConfirmationChanged_MobileOtpModal(bool isConfirm)
+        {
+
+        }
+        private void OnConfirmationChanged_ForgotPasswordModal(bool isConfirm)
+        {
+
+        }
+
     }
 }

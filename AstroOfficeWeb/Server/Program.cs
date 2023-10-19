@@ -8,6 +8,8 @@ using ASDLL.DataAccess.Core;
 using ASModels;
 using AstroOfficeWeb.Shared.Models;
 using AutoMapper;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +48,8 @@ builder.Services.AddTransient<PredictionBLL>();
 builder.Services.AddTransient<KundliBLL>();
 builder.Services.AddTransient<KPDAO>();
 builder.Services.AddTransient<BestBLL>();
+builder.Services.AddTransient<KPPredBLL>();
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -75,6 +79,7 @@ builder.Services.AddSwaggerGen(sg =>
 
 var sectionJWTSettings = builder.Configuration.GetSection("JWTSettings");
 builder.Services.Configure<JWTSettings>(sectionJWTSettings);
+builder.Services.Configure<SSExpertSystemSettings>(builder.Configuration.GetSection(SSExpertSystemSettings.SSExpertSystemSection));
 
 var jwtSettings = sectionJWTSettings.Get<JWTSettings>();
 var key = Encoding.ASCII.GetBytes(jwtSettings.SecretKey);

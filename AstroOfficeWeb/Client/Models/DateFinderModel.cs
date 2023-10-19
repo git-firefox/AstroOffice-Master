@@ -8,7 +8,7 @@ namespace AstroOfficeWeb.Client.Models
         public string Occassion { get; set; } = "Child Birth - 2,5,11 - 18~55";
         public bool Sahasane { get; set; }
         public bool FullMatch { get; set; }
-        public Period Period { get; set; }
+        public Period Period { get; set; } = Period.Pryan;
         public Dasha Dasha { get; set; }
         public string DateList { get; set; } = "";
         public IList<SelectListItem> OccassionList { get; set; } = new List<SelectListItem>

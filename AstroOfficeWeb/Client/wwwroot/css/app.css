@@ -17,8 +17,18 @@
     background-color: #1b6ec2;
     border-color: #1861ac;
 }*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
-.valid.modified:not([type=checkbox]) {
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.valid.modified:not([type="checkbox"]):not([type="radio"]) {
     outline: 1px solid #26b050;
 }
 
@@ -28,6 +38,10 @@
 
 .validation-message {
     color: red;
+}
+
+body {
+    background: #fdeec0;
 }
 
 #blazor-error-ui {
@@ -76,20 +90,465 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    background: #fff;
     background: radial-gradient(rgba(145, 13, 13, 1), rgba(145, 13, 13, 0.5));
 }
 
 /* Loader image styling */
 .loader-img {
-    animation: rotate-loader-img 4s linear infinite normal both;
-    width: 100px; /* Adjust the size as needed */
-    height: 100px;
+    /*animation: rotate-loader-img 4s linear infinite normal both;*/
+    width: 300px; /* Adjust the size as needed */
+    height: 300px;
     border-radius: 50%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add a subtle shadow for depth */
+    /*box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);*/
 }
 
 /* Additional Bootstrap styling for loader */
 .loader {
     background-color: #e74c3c; /* Red color similar to Bootstrap's 'danger' color */
     color: white; /* Text color for the loader */
+}
+
+.background-divya-astro-color-dark-red {
+    background-color: rgb(145, 13, 13) !important;
+}
+
+.background-divya-astro-color-yellow {
+    background-color: rgb(233, 175, 0) !important;
+}
+
+.background-divya-astro-color-dark-blue {
+    background-color: rgb(16, 50, 75) !important;
+}
+
+.background-divya-astro-color-light-gray {
+    background-color: rgb(235, 235, 235) !important;
+}
+
+.background-divya-astro-color-brown {
+    background-color: rgb(117, 42, 41) !important;
+}
+
+.background-divya-astro-color-orange {
+    background-color: rgb(255, 112, 16) !important;
+}
+
+.background-divya-astro-color-extra-dark-blue {
+    background-color: rgb(3, 26, 42) !important;
+}
+
+header {
+    background: #910d0d;
+}
+
+.card-frame {
+    position: relative;
+    border: none !important;
+    box-shadow: none !important;
+    height: 512px !important;
+    background: transparent;
+}
+
+    .card-frame .card-header {
+        background: transparent !important;
+        border: none !important;
+        margin-top: 40px;
+    }
+
+        .card-frame .card-header h2 {
+            color: #910d0d;
+            margin-bottom: 0;
+        }
+
+    .card-frame .card-body {
+        padding: 1.25rem 3.5rem;
+    }
+
+        .card-frame .card-body img {
+            mix-blend-mode: multiply;
+        }
+
+    .card-frame:before {
+        background-image: url('../images/frame.png');
+        width: 100%;
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 103%;
+    }
+
+.btn-custom {
+    background: #17384e !important;
+    color: #fff !important;
+    border: 1px solid #17384e;
+}
+    .btn-custom.btn-custom-outline {
+        background: transparent !important;
+        border: 1px solid #17384e;
+        color: #17384e !important;
+    }
+
+    .card-frame .card-body .table th {
+        font-size: 18px;
+        color: #ffffff;
+        background: #17384e;
+    }
+
+.card-frame .card-body .table td {
+    font-weight: 600 !important;
+    font-size: 15px;
+}
+
+.card-frame .card-body .table td, .card-frame .card-body .table th {
+    border-color: #17384e !important;
+    padding: 3px 15px !important;
+}
+
+.card-frame .card-body .table thead th {
+    border-width: 1px !important;
+}
+
+.occasion-selection {
+    position: relative;
+}
+
+    .occasion-selection input.form-control {
+        padding-left: 50px;
+    }
+
+    .occasion-selection .input-group-append {
+        position: absolute;
+        width: 40px;
+        overflow: hidden;
+        left: 0;
+        border: none;
+        z-index: 99999;
+        border-radius: 0.25rem;
+        border-right: 1px solid #c3c3c3;
+    }
+
+        .occasion-selection .input-group-append .custom-select {
+            background: #fff url('../images/down.png') right 0.75rem center/18px 18px no-repeat;
+        }
+
+.card-tabs {
+    margin-bottom: 0;
+    box-shadow: none;
+    background: #910d0d;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+    .card-tabs .nav-tabs {
+        border-bottom: none;
+    }
+
+    .card-tabs .card-header {
+        padding: 1.25rem;
+    }
+
+    .card-tabs .nav-tabs .nav-link {
+        border-radius: 3px;
+        border: 1px solid #fff !important;
+        color: #fff;
+        font-weight: 500;
+        padding: 5px 10px;
+        width: 200px;
+        text-align: center;
+        margin-right: 10px;
+    }
+
+        .card-tabs .nav-tabs .nav-link.active {
+            color: #910d0d;
+            font-weight: 600;
+        }
+
+.chart-table {
+    background: #fff5d9;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+    .chart-table table {
+        margin: 0;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+        .chart-table table td,
+        .chart-table table th {
+            padding: 0.25rem .5rem;
+        }
+
+        .chart-table table td {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+#birthdetails-tabs-mahadasha .mahadasha-name {
+    background: #ffe79d;
+    padding: 15px;
+    height: 142px;
+    border-radius: 5px;
+}
+
+    #birthdetails-tabs-mahadasha .mahadasha-name label {
+        margin: 0;
+    }
+
+.date-finder textarea.form-control,
+.date-finder {
+    background: #ffe79d;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+    .date-finder textarea.form-control {
+        padding: 0;
+    }
+
+.faladesh .modal-content {
+    background: #ffe79d;
+}
+
+    .faladesh .modal-content h4.modal-title {
+        color: #910d0d;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .faladesh .modal-content .close {
+        color: #910d0d;
+        opacity: 1;
+        font-size: 30px;
+    }
+
+    .faladesh .modal-content .modal-header {
+        border-bottom-color: #910d0d;
+    }
+
+    .faladesh .modal-content .modal-footer {
+        border-top: 1px solid #910d0d;
+    }
+
+.faladesh .card {
+    background: transparent;
+    box-shadow: none;
+}
+
+    .faladesh .card .card-header {
+        padding: 8px 15px;
+        text-align: center;
+        border-radius: 5px;
+        background: #910d0d;
+        color: #fff;
+    }
+
+        .faladesh .card .card-header h3 {
+            text-align: center;
+            float: unset;
+        }
+
+    .faladesh .card .card-body {
+        padding: 15px 0;
+        font-weight: 600;
+    }
+
+        .faladesh .card .card-body img {
+            width: 100%;
+            mix-blend-mode: multiply;
+        }
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    background-color: #910d0d;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #910d0d;
+}
+
+@media(min-width:1200px) and (max-width:1399px) {
+    .card-frame .card-body {
+        padding: .75rem 1.5rem;
+    }
+
+    .card-frame:before {
+        background-image: url(../images/laptop-frame.png);
+        height: 99%;
+    }
+    .login-box.card-frame:before {
+        background-image: url(../images/frame.png);
+        width:96%;
+    }
+        .form-check {
+        padding-left: 1rem;
+    }
+
+    .card-frame .card-header {
+        margin-bottom: 0 !important;
+        margin-top: 48px;
+    }
+
+    .card-frame .card-body .table th {
+        font-size: 16px;
+    }
+
+    .card-frame .card-body .table td {
+        font-size: 14px;
+    }
+
+    .col-xl-3:has(.chart-table) {
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        max-width: 50%;
+        margin-bottom: 15px;
+    }
+}
+
+#passwordToggleIcon {
+    cursor: pointer;
+    color: #999;
+}
+
+    #passwordToggleIcon.active {
+        color: #007bff; /* Change color to indicate active state */
+    }
+.data-loader {
+    position: relative;
+    backdrop-filter: blur(50px);
+}
+    .data-loader .overlay {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        background: #fdeec0;
+        opacity: 0.9;
+    }
+
+        .data-loader .overlay i {
+            color: #910d0d !important;
+            font-size: 40px;
+        }
+.login-page, .register-page {
+    background: #910d0d;
+}
+.login-box, .register-box {
+    width: 610px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+    .login-card-body, .register-card-body,
+    .login-box .card, .register-box .card {
+        background: transparent;
+        box-shadow: none;
+        padding: 0 3.5rem !important;
+    }
+.login-logo, .register-logo {
+    position: relative;
+    margin-bottom: 0rem;
+}
+    .login-logo h3, .register-logo h3 {
+        font-size: 30px;
+        font-weight: 600;
+        color: #910d0d;
+    }
+
+.login-box.card-frame .card-body .input-group {
+    position: relative;
+}
+    .login-box.card-frame .card-body .input-group i {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 15px;
+        color: #9d2d0b;
+        z-index: 999;
+    }
+.login-box.card-frame .card-body input {
+    background: transparent;
+    border: 1px solid #9d2d0b !important;
+    line-height: 1;
+    outline: none !important;
+    border-radius: 5px !important;
+    color: #9d2d0b;
+    font-size: 14px;
+    font-weight: 600;
+}
+    .login-box.card-frame .card-body input::placeholder {
+        color: #9d2d0b;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    .login-box.card-frame .card-body input:focus {
+        background: transparent;
+    }
+    .down-form label {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+        color: #9d2d0b;
+    }
+
+ a.forgot-link {
+    color: #9d2d0b;
+    font-size: 15px;
+    font-weight: 600;
+}
+.down-form .btn-custom a {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #17384e;
+}
+.validation-message {
+    color: red;
+    position: absolute;
+    font-size: 12px;
+    font-weight: 600;
+    bottom: -18px;
+    left: 0;
+}
+.sign-up {
+    color: #17384e;
+    font-size: 15px;
+    font-weight: 500;
+}
+.verify-otp .modal-content {
+    background: #ffe79d;
+    padding: 25px;
+    border: 5px solid #9d2d0b;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.modal.fade.verify-otp.show{
+    backdrop-filter: blur(8px);
+    
+}
+
+.verify-otp .modal-content h4 {
+    font-size:26px;
+    color: #9d2d0b;
+    font-weight:600;
+}
+
+.verify-otp .modal-content .otp-field input {
+    background: #fff !important;
+    border: 1px solid #9d2d0b;
+    font-size: 20px;
+    color: #9d2d0b;
+    font-weight:600;
 }
