@@ -41,8 +41,8 @@ function togglePasswordVisibility(inputId, iconId) {
 
     // Return the focus to the input field
     inputField.focus();
-} 
-   
+}
+
 
 
 
@@ -120,10 +120,32 @@ window.fnShowOtpModal = function (element) {
 
 
 
-function applyInputMask() {
-    $("#mobileInput").inputmask("999 999 9999", { "placeholder": "" });
+window.fnApplyInputMask = function (element, mask, placeHolder) {
+    if (element instanceof HTMLInputElement) {
+        $(element).inputmask(mask, { 'placeholder': placeHolder });
+    }
+    console.log(element);
 }
 
+window.fnGetInputMaskValue = function (element) {
+    if (element instanceof HTMLInputElement) {
+        var test = $(element).val();
+        console.log(test);
+        return $(element).val();
+    }
+    console.log(element);
+}
+
+window.fnGetOtpValue = function (element) {
+    if (element instanceof HTMLDivElement) {
+        var concatenatedValue = "";
+        $('input[type="text"][data-inputmask]').each(function () {
+            concatenatedValue += $(this).val(); 
+        });
+        return concatenatedValue;
+    }
+    console.log(element);
+}
 
 
 window.fnCloseModal = function (element) {
