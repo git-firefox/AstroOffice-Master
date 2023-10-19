@@ -21,7 +21,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
         [Inject]
         ISwaggerApiService? Swagger { get; set; }
-        
+
         private string? OtpErrorMessage { get; set; }
 
         private async void OnConfirmationChanged(bool isConfirm)
@@ -46,7 +46,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
             }
         }
 
-       
+
         private async Task OnFocusOut_MobileNumber(FocusEventArgs e)
         {
 
@@ -65,16 +65,16 @@ namespace AstroOfficeWeb.Client.Pages.Account
         private async Task OnValidSubmit_LoginWithMobile()
         {
             OtpErrorMessage = string.Empty;
-            //var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(SMSApiConst.GET_SendOtp, MobileNumber));
-            //if (response == null)
-            //{
-            //    return;   
-            //}
+            var response = await Swagger!.GetAsync<ApiResponse<string>>(string.Format(SMSApiConst.GET_SendOtp, LoginModel.MobileNumber));
+            if (response == null)
+            {
+                return;
+            }
 
-            //if (response.Success)
-            //{
-            await MobileOtpModal!.ShowAsync();
-            //}
+            if (response.Success)
+            {
+                await MobileOtpModal!.ShowAsync();
+            }
         }
 
     }
