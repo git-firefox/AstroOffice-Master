@@ -60,7 +60,7 @@ namespace AstroOfficeWeb.Client.Helper
             return jsRuntime.InvokeAsync<object>("fnGetOtpValue", element);
         }
 
-        public static ValueTask ShowToastAsync(this IJSRuntime jsRuntime, string title, SwalIcon icon = SwalIcon.Success, SwalPosition position = SwalPosition.BottomEnd)
+        public static ValueTask ShowToastAsync(this IJSRuntime jsRuntime, string title, string icon = SwalIcon.Success, string position = SwalPosition.BottomEnd)
         {
             return jsRuntime.InvokeVoidAsync("fnShowToast", title, icon, position);
         }
