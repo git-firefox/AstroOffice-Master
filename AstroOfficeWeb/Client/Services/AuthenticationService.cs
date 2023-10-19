@@ -39,17 +39,24 @@ namespace AstroOfficeWeb.Client.Services
         /// <returns>Task<SignInResponse></returns>
         public async Task<SignInResponse> LoginAsync(SignInRequest signInRequest)
         {
-            var response = await _apiService.PostAsync<SignInRequest, SignInResponse>(AccountApiConst.POST_SignIn, signInRequest);
-
-            if (response!.IsAuthSuccessful)
+            try
             {
-                await _localStorage.SetItemAsync(ApplicationConst.Local_Token, response.Token);
-                await _localStorage.SetItemAsync(ApplicationConst.Local_UserDetails, response.UserDTO);
-                ((AuthenticationStateService)_authStateProvider).NotifyUserLoggedIn(response.Token);
-                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", response.Token);
-            }
+                var response = await _apiService.PostAsync<SignInRequest, SignInResponse>(AccountApiConst.POST_SignIn, signInRequest);
 
-            return response;
+                if (response!.IsAuthSuccessful)
+                {
+                    await _localStorage.SetItemAsync(ApplicationConst.Local_Token, response.Token);
+                    await _localStorage.SetItemAsync(ApplicationConst.Local_UserDetails, response.UserDTO);
+                    ((AuthenticationStateService)_authStateProvider).NotifyUserLoggedIn(response.Token);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", response.Token);
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return new SignInResponse() { IsAuthSuccessful = false, ErrorMessage = "Authentication failed"};
+            }
         }
 
         public async Task<SignInResponse> LoginWithOtpAsync(SignInWithOtpRequest signInRequest)

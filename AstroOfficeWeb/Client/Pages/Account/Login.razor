@@ -36,8 +36,8 @@
 
                         </div>
                         <div class="input-group mb-4">
-                            <InputText @bind-Value="LoginModel!.Password" type="password" class="form-control" placeholder="Password" />
-                            <i class="fa fa-eye"></i>
+                            <InputText type="@(PasswordIsClicked ? "text" : "password")" @bind-Value="LoginModel!.Password"  class="form-control" placeholder="Password" />
+                            <i class="fas @(PasswordIsClicked ? "fa-eye-slash" : "fa-eye")" @onclick="()=>{PasswordIsClicked = !PasswordIsClicked; }"></i>                         
                             <ValidationMessage For="() => LoginModel.Password" />
                         </div>
                         <div class="row down-form">
