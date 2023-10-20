@@ -25,7 +25,14 @@
                         <input type="text" data-inputmask='"mask": "9"' data-mask disabled />
                     </div>
 
-                    <p> OTP valid till: @timeLeft seconds</p>
+                    @if (timeLeft != 0)
+                    {
+                        <p> OTP valid till: @timeLeft seconds</p>
+                    }
+                    else
+                    {
+                        <p> &nbsp; </p>
+                    }
 
                     <button type="button" class="btn btn-custom btn-block mb-2" @onclick="() => OnConfirmationChange(true)">
                         Verify
@@ -118,8 +125,15 @@
 
     protected async Task OnConfirmationChange(bool value)
     {
-        IsShow = false;
-        await ConfirmationChanged.InvokeAsync(value);
+        if (timeLeft != 0)
+        {
+            IsShow = false;
+            await ConfirmationChanged.InvokeAsync(value);
+        }
+        else
+        {
+            await JSRuntime.ShowToastAsync("Sorry, your OTP has timed out. Please request a fresh OTP.", SwalIcon.Error);
+        }
     }
 
 
@@ -135,8 +149,8 @@
             if (timer != null)
             {
                 timer.Stop();
-                timer.Dispose(); 
-                IsShow = false; 
+                timer.Dispose();
+                IsShow = false;
             }
         }
     }
