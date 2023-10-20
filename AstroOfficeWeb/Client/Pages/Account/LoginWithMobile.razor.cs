@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using System.ComponentModel.DataAnnotations;
+using SwalIcon = AstroOfficeWeb.Client.Helper.SwalIcon;
 
 namespace AstroOfficeWeb.Client.Pages.Account
 {

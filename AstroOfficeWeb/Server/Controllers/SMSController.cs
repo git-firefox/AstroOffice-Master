@@ -36,17 +36,17 @@ namespace AstroOfficeWeb.Server.Controllers
             string otp = OtpHelper.GenerateOtp();
 
             //var request = new SendOtpRequest();
-            //var request = new SendOtpRequest()
-            //{
-            //    MobileNumbers = mobileNumber,
-            //    SenderId = "DAASTR",
-            //    ClientId = _setting.ClientId,
-            //    ApiKey = _setting.APIKey,
-            //    Message = $"Divya Astro Ashram welcomes you. Please enter the OTP code {otp} in the space provided to log into your account.",
-            //};
+            var request = new SendOtpRequest()
+            {
+                MobileNumbers = mobileNumber,
+                SenderId = "DAASTR",
+                ClientId = _setting.ClientId,
+                ApiKey = _setting.APIKey,
+                Message = $"Divya Astro Ashram welcomes you. Please enter the OTP code {otp} in the space provided to log into your account.",
+            };
 
-            //var response = await _httpClient.PostAsync<SendOtpRequest, ApiSSExpertSystemResponse<List<SendOtpResponse>>>(SMSApiConst.POST_SendSMS, request);
-            var response = new ApiSSExpertSystemResponse<List<SendOtpResponse>>();
+            var response = await _httpClient.PostAsync<SendOtpRequest, ApiSSExpertSystemResponse<List<SendOtpResponse>>>(SMSApiConst.POST_SendSMS, request);
+            //var response = new ApiSSExpertSystemResponse<List<SendOtpResponse>>();
 
             if (response == null)
             {

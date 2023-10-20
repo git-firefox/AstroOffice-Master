@@ -50,7 +50,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
             {
                 LoginErrorMessage = response?.ErrorMessage ?? "Invalid login credentials";
             }
-        }
+        }  
 
         private void OnClick_BtnMobileOTP(MouseEventArgs e)
         {
