@@ -14,15 +14,7 @@
                 <div class="card-body register-card-body">
                     <p class="login-box-msg">Register a new membership</p>
 
-                    @if (Errors != null && Errors.Any())
-                    {
-                        <ul>
-                            @foreach (string message in Errors)
-                            {
-                                <li class="text-danger">@message</li>
-                            }
-                        </ul>
-                    }
+                   
                     <EditForm Model="RegistrationModel" OnValidSubmit="OnValidSubmit_RegisterUser">
                         <DataAnnotationsValidator />
                         <div class="input-group mb-4">

@@ -90,7 +90,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.IsAuthSuccessful = true;
                 response.Token = token;
                 response.UserDTO = userDTO;
-                response.Message = AccountMessageConst.LoginSuccessful;
+                response.Message = AccountMessageConst.SignUpSuccessful;
             }
             catch
             {
@@ -98,7 +98,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = AccountMessageConst.ServerError;
             }
 
-            returnResponse:
+        returnResponse:
             return Ok(response);
         }
 
@@ -158,7 +158,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.IsAuthSuccessful = true;
                 response.Token = token;
                 response.UserDTO = userDTO;
-                response.Message = AccountMessageConst.LoginSuccessful;
+                response.Message = AccountMessageConst.SignUpSuccessful;
             }
             catch
             {
@@ -166,7 +166,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = AccountMessageConst.ServerError;
             }
 
-            returnResponse:
+        returnResponse:
             return Ok(response);
         }
 
@@ -250,7 +250,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = AccountMessageConst.UserPassNotUpdated;
             }
 
-            returnResponse:
+        returnResponse:
             return Ok(response);
         }
 
@@ -267,16 +267,32 @@ namespace AstroOfficeWeb.Server.Controllers
         {
             var response = new SignUpResponse();
 
-            if (request == null)
+            try
             {
-                return BadRequest();
-            }
 
-            if (_balUser.GetAllUsers().Any(a => a.Username == request.UserName && a.MobileNumber == request.PhoneNumber))
+                var user = _balUser.UserNameSearch(request.UserName);
+
+                if (user != null)
+                {
+                    response.IsRegisterationSuccessful = false;
+                    response.Message = AccountMessageConst.UserExist;
+                    goto returnResponse;
+                }
+
+                var mobileUserName = _balUser.GetUserByMobileNumber(request.PhoneNumber);
+
+                if (mobileUserName != null)
+                {
+                    response.IsRegisterationSuccessful = false;
+                    response.Message = AccountMessageConst.MobileNumberExist;
+                    goto returnResponse;
+                }
+            }
+            catch
             {
                 response.IsRegisterationSuccessful = false;
-                response.Errors = new List<string>() { "UserName or PhoneNumber already exists." };
-                return Ok(response);
+                response.Message = AccountMessageConst.ServerError;
+                goto returnResponse;
             }
 
             if (ModelState.IsValid)
@@ -297,18 +313,23 @@ namespace AstroOfficeWeb.Server.Controllers
                 {
                     _balUser.AddUser(aUser);
                     response.IsRegisterationSuccessful = true;
+                    response.Message = AccountMessageConst.SignUpSuccessful;
+
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", ex.Message);
+                    _ = ex;
                     response.IsRegisterationSuccessful = false;
+                    response.Message = AccountMessageConst.ServerError;
                 }
             }
+            else
+            {
+                response.IsRegisterationSuccessful = false;
+                response.Message = AccountMessageConst.SignUpFailed;
+            }
 
-            var allErrors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-
-            response.Errors = allErrors;
-
+        returnResponse:
             return Ok(response);
         }
 
