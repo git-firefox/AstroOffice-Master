@@ -16,7 +16,7 @@ if (builder.HostEnvironment.IsDevelopment())
 }
 else
 {
-    builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:8080/") });
+    builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://3.110.160.108/") });
 }
 
 builder.Services.AddBlazoredLocalStorage();
