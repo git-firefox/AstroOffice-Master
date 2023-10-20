@@ -2,6 +2,7 @@
 
 @inject IAuthenticationService AuthService
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 
 
 <MobileOtpModal @ref="MobileOtpModal" IsForgotPassword="false" ConfirmationChanged="OnConfirmationChanged_MobileOtpModal" />
@@ -60,4 +61,3 @@
         </div>
     </div>
 </div>
-@* </div> *@ 

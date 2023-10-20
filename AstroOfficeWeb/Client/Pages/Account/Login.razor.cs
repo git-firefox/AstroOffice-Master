@@ -17,10 +17,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
     public partial class Login
     {
 
-        private string? Password { get; set; }
         private bool PasswordIsClicked { get; set; } = false;
-        private string? ConfirmPassword { get; set; }
-        private bool ConfirmPasswordIsClicked { get; set; } = false;
 
         private MobileOtpModal MobileOtpModal = new();
         private MobileOtpModal ForgotPasswordModal = new();

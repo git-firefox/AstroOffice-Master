@@ -8,10 +8,11 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Models;
-using AstroOfficeWeb.Shared;
 using AstroOfficeWeb.Server.Helper;
 using ASModels;
 using Microsoft.EntityFrameworkCore;
+using AstroOfficeWeb.Client.Helper;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -34,52 +35,70 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpPost]
         public IActionResult SignIn([FromBody] SignInRequest signInReques)
         {
-            var response = new SignInResponse
-            {
-                IsAuthSuccessful = false,
-                ErrorMessage = "Invalid Authentication"
-            };
+            var response = new SignInResponse();
 
-            if (signInReques == null || !ModelState.IsValid)
+            try
             {
-                return BadRequest();
+                var aUser = _balUser.UserNameSearch(signInReques.UserName);
+
+                if (aUser == null)
+                {
+                    response.IsAuthSuccessful = false;
+                    response.ErrorMessage = AccountMessageConst.AccountNotFound;
+                    goto returnResponse;
+                }
+
+                if (!aUser.Active.GetValueOrDefault())
+                {
+                    response.IsAuthSuccessful = false;
+                    response.ErrorMessage = AccountMessageConst.AccountLocked;
+                    goto returnResponse;
+                }
+
+                aUser = _balUser.UserLogin(signInReques!.UserName, signInReques!.Password);
+
+                if (aUser.Sno <= 0)
+                {
+                    response.IsAuthSuccessful = false;
+                    response.ErrorMessage = AccountMessageConst.InvalidCredentials;
+                    goto returnResponse;
+                }
+
+                var userDTO = new AUserDTO()
+                {
+                    UserName = aUser.Username ?? "",
+                    CanAddNew = aUser.CanAdd.GetValueOrDefault(),
+                    CanModify = aUser.CanEdit.GetValueOrDefault(),
+                    CanReport = aUser.CanReport.GetValueOrDefault(),
+                    ActiveUserId = aUser.Sno,
+                    IsAdmin = aUser.Adminuser.GetValueOrDefault()
+                };
+
+                var signinCredentials = GetSigningCredentials();
+                var claims = GetClaims(aUser);
+
+                var tokenOptions = new JwtSecurityToken(
+                    issuer: _jwtSettings.ValidIssuer,
+                    audience: _jwtSettings.ValidAudience,
+                    claims: claims,
+                    expires: DateTime.Now.AddDays(30),
+                    signingCredentials: signinCredentials
+                );
+
+                var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+                response.IsAuthSuccessful = true;
+                response.Token = token;
+                response.UserDTO = userDTO;
+                response.ErrorMessage = AccountMessageConst.LoginSuccessful;
+            }
+            catch
+            {
+                response.IsAuthSuccessful = false;
+                response.ErrorMessage = AccountMessageConst.ServerError;
             }
 
-            var aUser = _balUser.UserLogin(signInReques!.UserName, signInReques!.Password);
-
-            if (aUser.Sno <= 0)
-            {
-                return Unauthorized(response);
-            }
-
-            var userDTO = new AUserDTO()
-            {
-                UserName = aUser.Username ?? "",
-                CanAddNew = aUser.CanAdd.GetValueOrDefault(),
-                CanModify = aUser.CanEdit.GetValueOrDefault(),
-                CanReport = aUser.CanReport.GetValueOrDefault(),
-                ActiveUserId = aUser.Sno,
-                IsAdmin = aUser.Adminuser.GetValueOrDefault()
-            };
-
-            var signinCredentials = GetSigningCredentials();
-            var claims = GetClaims(aUser);
-
-            var tokenOptions = new JwtSecurityToken(
-                issuer: _jwtSettings.ValidIssuer,
-                audience: _jwtSettings.ValidAudience,
-                claims: claims,
-                expires: DateTime.Now.AddDays(30),
-                signingCredentials: signinCredentials
-            );
-
-            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-
-            response.IsAuthSuccessful = true;
-            response.Token = token;
-            response.UserDTO = userDTO;
-            response.ErrorMessage = "";
-
+            returnResponse:
             return Ok(response);
         }
 
@@ -87,62 +106,71 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpPost]
         public IActionResult SignInWithOtp([FromBody] SignInWithOtpRequest request)
         {
-            var response = new SignInResponse
-            {
-                IsAuthSuccessful = false,
-                ErrorMessage = "Invalid Authentication"
-            };
+            var response = new SignInResponse();
 
-            if (request == null || !ModelState.IsValid)
+            try
             {
-                return BadRequest();
+                var aUser = _balUser.GetUserByMobileNumber(request!.MobileNumber);
+
+                if (aUser == null)
+                {
+                    response.IsAuthSuccessful = false;
+                    response.ErrorMessage = AccountMessageConst.MobileNumberNotFound;
+                    goto returnResponse;
+                }
+
+                if (!aUser.Active.GetValueOrDefault())
+                {
+                    response.IsAuthSuccessful = false;
+                    response.ErrorMessage = AccountMessageConst.AccountLocked;
+                    goto returnResponse;
+                }
+
+                if (aUser.MobileOtp != request.Otp)
+                {
+                    response.IsAuthSuccessful = false;
+                    response.ErrorMessage = SMSMessageConst.InvalidOTP;
+                    goto returnResponse;
+                }
+
+                var userDTO = new AUserDTO()
+                {
+                    UserName = aUser.Username ?? "",
+                    CanAddNew = aUser.CanAdd.GetValueOrDefault(),
+                    CanModify = aUser.CanEdit.GetValueOrDefault(),
+                    CanReport = aUser.CanReport.GetValueOrDefault(),
+                    ActiveUserId = aUser.Sno,
+                    IsAdmin = aUser.Adminuser.GetValueOrDefault()
+                };
+
+                var signinCredentials = GetSigningCredentials();
+                var claims = GetClaims(aUser);
+                var tokenOptions = new JwtSecurityToken(
+                    issuer: _jwtSettings.ValidIssuer,
+                    audience: _jwtSettings.ValidAudience,
+                    claims: claims,
+                    expires: DateTime.Now.AddDays(30),
+                    signingCredentials: signinCredentials
+                );
+
+                var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+                response.IsAuthSuccessful = true;
+                response.Token = token;
+                response.UserDTO = userDTO;
+                response.ErrorMessage = AccountMessageConst.LoginSuccessful;
             }
-
-            var aUser = _balUser.GetUserByMobileNumber(request!.MobileNumber);
-
-            if (aUser.MobileOtp != request.Otp)
+            catch
             {
                 response.IsAuthSuccessful = false;
-                response.ErrorMessage = "Invalid OTP. Verification failed.";
-                return Ok(response);
+                response.ErrorMessage = AccountMessageConst.ServerError;
             }
 
-            if (aUser.Sno <= 0)
-            {
-                return Unauthorized(response);
-            }
-
-            var userDTO = new AUserDTO()
-            {
-                UserName = aUser.Username ?? "",
-                CanAddNew = aUser.CanAdd.GetValueOrDefault(),
-                CanModify = aUser.CanEdit.GetValueOrDefault(),
-                CanReport = aUser.CanReport.GetValueOrDefault(),
-                ActiveUserId = aUser.Sno,
-                IsAdmin = aUser.Adminuser.GetValueOrDefault()
-            };
-
-            var signinCredentials = GetSigningCredentials();
-            var claims = GetClaims(aUser);
-
-            var tokenOptions = new JwtSecurityToken(
-                issuer: _jwtSettings.ValidIssuer,
-                audience: _jwtSettings.ValidAudience,
-                claims: claims,
-                expires: DateTime.Now.AddDays(30),
-                signingCredentials: signinCredentials
-            );
-
-            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-
-            response.IsAuthSuccessful = true;
-            response.Token = token;
-            response.UserDTO = userDTO;
-            response.ErrorMessage = "";
-
+            returnResponse:
             return Ok(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult UserNameSearch(string userName)
         {
@@ -151,6 +179,7 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(aUser);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult GetSelectedUser(long sno)
         {
@@ -160,6 +189,7 @@ namespace AstroOfficeWeb.Server.Controllers
         }
 
         // POST api/<UserController>
+        [Authorize]
         [HttpPut]
         public IActionResult UpdateUser([FromForm] AUser au)
         {
@@ -171,35 +201,60 @@ namespace AstroOfficeWeb.Server.Controllers
         public IActionResult UpdateUserPasswordByOtp([FromBody] UpdateUserPasswordByOtpRequest request)
         {
             var response = new ApiResponse<string>();
-            var user = _balUser.GetUserByMobileNumber(request.MobileNumber);
+
+            var aUser = _balUser.GetUserByMobileNumber(request.MobileNumber);
+
+            if (aUser == null)
+            {
+                response.Success = false;
+                response.Message = AccountMessageConst.MobileNumberNotFound;
+                goto returnResponse;
+            }
+
+            if (!aUser.Active.GetValueOrDefault())
+            {
+                response.Success = false;
+                response.Message = AccountMessageConst.AccountLocked;
+                goto returnResponse;
+            }
+
+            if (aUser.MobileOtp != request.Otp)
+            {
+                response.Success = false;
+                response.Message = SMSMessageConst.InvalidOTP;
+                goto returnResponse;
+            }
 
             if (request.NewPassword == null || request.Otp == null)
             {
                 response.Success = false;
-                return Ok(response);
+                response.Message = AccountMessageConst.UserPassNotUpdated;
+                goto returnResponse;
             }
 
-            if (user.Sno == 0)
+            if (aUser.Sno == 0)
             {
                 response.Success = false;
-                response.Message = ApiMessageConst.UserNotFound;
+                response.Message = AccountMessageConst.UserNotFound;
+                goto returnResponse;
+            }
+
+            if (_balUser.IsUserPassUpdatedByOtp(request.MobileNumber, request.NewPassword, request.Otp))
+            {
+                response.Success = true;
+                response.Message = AccountMessageConst.UserPassUpdated;
             }
             else
             {
-                if (_balUser.IsUserPassUpdatedByOtp(request.MobileNumber, request.NewPassword, request.Otp))
-                {
-                    response.Success = true;
-                    response.Message = ApiMessageConst.UserPassUpdated;
-                }
-                else
-                {
-                    response.Success = false;
-                    response.Message = ApiMessageConst.UserPassNotUpdated;
-                }
+                response.Success = false;
+                response.Message = AccountMessageConst.UserPassNotUpdated;
             }
+
+            returnResponse:
             return Ok(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult GetAllUsers()
         {
