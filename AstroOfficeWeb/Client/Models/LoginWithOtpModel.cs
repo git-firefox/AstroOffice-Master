@@ -4,7 +4,8 @@ namespace AstroOfficeWeb.Client.Models
 {
     public class LoginWithOtpModel
     {
-        [Required(ErrorMessage = "Mobile number is required")]
+        [Display(Name = "Mobile Number")]
+        [Required(ErrorMessage = "{0} is required")]
         public string? MobileNumber { get; set; }
     }
 }

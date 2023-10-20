@@ -123,7 +123,7 @@ namespace AstroOfficeWeb.Client.Pages
         public List<AntardashaTableTRModel>? ListView_Antardasha { get; set; }
         public List<PrayantardashaTableTRModel>? ListView_Prayantardasha { get; set; }
         public List<SukhsmadashaTableTRModel>? ListView_Sukhsmadasha { get; set; }
-        public List<Years35TableTRModel>? ListView_Years35 { get; set; }
+        public List<Years35TableTRModel>? ListView_Years35 { get; set; } = new();
 
         #endregion
 
@@ -2289,14 +2289,7 @@ namespace AstroOfficeWeb.Client.Pages
                     return;
                 }
 
-                if (ListView_Years35 == null)
-                {
-                    ListView_Years35 = new();
-                }
-                else
-                {
-                    ListView_Years35.Clear();
-                }
+                ListView_Years35 = null;
 
                 isSelectedMahadashaTableTRTaskRunning = true;
 
@@ -2304,6 +2297,7 @@ namespace AstroOfficeWeb.Client.Pages
 
                 if (list35Sala != null)
                 {
+                    ListView_Years35 = new();
                     foreach (KPDashaVO kPDashaVO in list35Sala)
                     {
                         text = new string[5];
