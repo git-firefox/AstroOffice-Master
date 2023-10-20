@@ -183,11 +183,11 @@ window.fnOpenDocumentInNewTab = function (fileName, base64Data) {
 window.fnShowToast = function (title, icon, position) {
     Swal.mixin({
         toast: true,
-        position: getPositionString(position),
+        position: position,
         showConfirmButton: false,
         timer: 3000
     }).fire({
-        icon: getIconString(icon),
+        icon: icon,
         html: '<br />' + title,
         timerProgressBar: true,
         allowEscapeKey: true,
@@ -199,14 +199,4 @@ window.fnShowToast = function (title, icon, position) {
             popup: 'animate__animated animate__fadeOutRight'
         }
     });
-}
-
-function getIconString(icon) {
-    const icons = ['success', 'error', 'warning', 'info', 'question'];
-    return icons[icon];
-}
-
-function getPositionString(position) {
-    const positions = ['top', 'top-start', 'top-end', 'center', 'center-start', 'center-end', 'bottom', 'bottom-start', 'bottom-end'];
-    return positions[position];
 }
