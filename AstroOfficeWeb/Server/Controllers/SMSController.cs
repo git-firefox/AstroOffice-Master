@@ -17,36 +17,40 @@ namespace AstroOfficeWeb.Server.Controllers
         public readonly SSExpertSystemSettings _setting;
         public readonly HttpClientHelper _httpClient;
         public readonly AstrooffContext _context;
+        public readonly IWebHostEnvironment _environment;
 
-        public SMSController(IOptions<SSExpertSystemSettings> setting, AstrooffContext context)
+        public SMSController(IOptions<SSExpertSystemSettings> setting, AstrooffContext context, IWebHostEnvironment environment)
         {
             _setting = setting.Value;
             _httpClient = new HttpClientHelper(_setting.BaseUrl);
             _context = context;
+            _environment = environment;
         }
 
         [HttpGet]
         public async Task<IActionResult> SendOtp([FromQuery] string mobileNumber)
         {
             var user = await _context.AUsers.FirstOrDefaultAsync(a => a.MobileNumber == mobileNumber && a.Active == true);
+            var response = new ApiSSExpertSystemResponse<List<SendOtpResponse>>();
 
             if (user == null)
                 return Ok(new ApiResponse<string> { Success = false, Message = "This mobile number is not registered." });
 
             string otp = OtpHelper.GenerateOtp();
 
-            //var request = new SendOtpRequest();
-            //var request = new SendOtpRequest()
-            //{
-            //    MobileNumbers = mobileNumber,
-            //    SenderId = "DAASTR",
-            //    ClientId = _setting.ClientId,
-            //    ApiKey = _setting.APIKey,
-            //    Message = $"Divya Astro Ashram welcomes you. Please enter the OTP code {otp} in the space provided to log into your account.",
-            //};
+            if (!_environment.IsDevelopment())
+            {
+                var request = new SendOtpRequest()
+                {
+                    MobileNumbers = mobileNumber,
+                    SenderId = "DAASTR",
+                    ClientId = _setting.ClientId,
+                    ApiKey = _setting.APIKey,
+                    Message = $"Divya Astro Ashram welcomes you. Please enter the OTP code {otp} in the space provided to log into your account.",
+                };
 
-            //var response = await _httpClient.PostAsync<SendOtpRequest, ApiSSExpertSystemResponse<List<SendOtpResponse>>>(SMSApiConst.POST_SendSMS, request);
-            var response = new ApiSSExpertSystemResponse<List<SendOtpResponse>>();
+                response = await _httpClient.PostAsync<SendOtpRequest, ApiSSExpertSystemResponse<List<SendOtpResponse>>>(SMSApiConst.POST_SendSMS, request);
+            }
 
             if (response == null)
             {
