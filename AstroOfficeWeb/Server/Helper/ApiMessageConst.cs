@@ -22,5 +22,6 @@
     public static class SMSMessageConst
     {
         public static string InvalidOTP = "Verification failed. The one-time password (OTP) you provided is incorrect. Please ensure you entered the correct OTP.";
+        public static string ValidOTP = "OTP has been successfully verified.";
     }
 }

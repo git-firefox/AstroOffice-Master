@@ -105,6 +105,21 @@ builder.Services.AddAuthentication(opt =>
     };
 });
 
+
+string astroClientBaseUrl = builder.Configuration["AstroClientBase"].ToString();
+string astroClientBaseIpUrl = builder.Configuration["AstroClientBaseIp"].ToString();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DivyaAstroPolicy", builder =>
+    {
+        builder
+        .WithOrigins(astroClientBaseUrl, astroClientBaseIpUrl)
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -117,6 +132,7 @@ else
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+    app.UseCors("DivyaAstroPolicy");
 }
 
 app.UseSwagger();
