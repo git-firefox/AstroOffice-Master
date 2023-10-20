@@ -4,10 +4,6 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 
-
-<MobileOtpModal @ref="MobileOtpModal" IsForgotPassword="false" ConfirmationChanged="OnConfirmationChanged_MobileOtpModal" />
-
-
 <div class="login-page">
     <div class="login-box card-frame">
         <div>
@@ -17,12 +13,6 @@
             <div class="card">
                 <div class="card-body login-card-body">
                     <p class="login-box-msg">Sign in to start your session</p>
-                    @if (!string.IsNullOrEmpty(LoginErrorMessage))
-                    {
-                        <ul>
-                            <li class="text-danger">@LoginErrorMessage</li>
-                        </ul>
-                    }
                     <EditForm Model="LoginModel" OnInvalidSubmit="OnInvalidSubmit" OnValidSubmit="OnValidSubmitAsync">
                         <DataAnnotationsValidator />
 

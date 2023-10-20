@@ -55,7 +55,8 @@ namespace AstroOfficeWeb.Client.Services
             }
             catch (Exception ex)
             {
-                return new SignInResponse() { IsAuthSuccessful = false, ErrorMessage = "Authentication failed"};
+                _ = ex;
+                return new SignInResponse() { IsAuthSuccessful = false, Message = "Authentication failed" };
             }
         }
 

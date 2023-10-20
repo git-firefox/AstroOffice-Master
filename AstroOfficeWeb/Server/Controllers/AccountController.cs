@@ -44,14 +44,14 @@ namespace AstroOfficeWeb.Server.Controllers
                 if (aUser == null)
                 {
                     response.IsAuthSuccessful = false;
-                    response.ErrorMessage = AccountMessageConst.AccountNotFound;
+                    response.Message = AccountMessageConst.AccountNotFound;
                     goto returnResponse;
                 }
 
                 if (!aUser.Active.GetValueOrDefault())
                 {
                     response.IsAuthSuccessful = false;
-                    response.ErrorMessage = AccountMessageConst.AccountLocked;
+                    response.Message = AccountMessageConst.AccountLocked;
                     goto returnResponse;
                 }
 
@@ -60,7 +60,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 if (aUser.Sno <= 0)
                 {
                     response.IsAuthSuccessful = false;
-                    response.ErrorMessage = AccountMessageConst.InvalidCredentials;
+                    response.Message = AccountMessageConst.InvalidCredentials;
                     goto returnResponse;
                 }
 
@@ -90,12 +90,12 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.IsAuthSuccessful = true;
                 response.Token = token;
                 response.UserDTO = userDTO;
-                response.ErrorMessage = AccountMessageConst.LoginSuccessful;
+                response.Message = AccountMessageConst.LoginSuccessful;
             }
             catch
             {
                 response.IsAuthSuccessful = false;
-                response.ErrorMessage = AccountMessageConst.ServerError;
+                response.Message = AccountMessageConst.ServerError;
             }
 
             returnResponse:
@@ -115,21 +115,21 @@ namespace AstroOfficeWeb.Server.Controllers
                 if (aUser == null)
                 {
                     response.IsAuthSuccessful = false;
-                    response.ErrorMessage = AccountMessageConst.MobileNumberNotFound;
+                    response.Message = AccountMessageConst.MobileNumberNotFound;
                     goto returnResponse;
                 }
 
                 if (!aUser.Active.GetValueOrDefault())
                 {
                     response.IsAuthSuccessful = false;
-                    response.ErrorMessage = AccountMessageConst.AccountLocked;
+                    response.Message = AccountMessageConst.AccountLocked;
                     goto returnResponse;
                 }
 
                 if (aUser.MobileOtp != request.Otp)
                 {
                     response.IsAuthSuccessful = false;
-                    response.ErrorMessage = SMSMessageConst.InvalidOTP;
+                    response.Message = SMSMessageConst.InvalidOTP;
                     goto returnResponse;
                 }
 
@@ -158,12 +158,12 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.IsAuthSuccessful = true;
                 response.Token = token;
                 response.UserDTO = userDTO;
-                response.ErrorMessage = AccountMessageConst.LoginSuccessful;
+                response.Message = AccountMessageConst.LoginSuccessful;
             }
             catch
             {
                 response.IsAuthSuccessful = false;
-                response.ErrorMessage = AccountMessageConst.ServerError;
+                response.Message = AccountMessageConst.ServerError;
             }
 
             returnResponse:
