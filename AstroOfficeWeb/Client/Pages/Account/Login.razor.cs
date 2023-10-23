@@ -1,4 +1,5 @@
 ﻿//using AstroOfficeWeb.Client.Components;
+using AstroOfficeWeb.Client.Helper;
 using AstroOfficeWeb.Client.Models;
 using AstroOfficeWeb.Client.Services.IService;
 using AstroOfficeWeb.Client.Shared;
@@ -16,17 +17,8 @@ namespace AstroOfficeWeb.Client.Pages.Account
 {
     public partial class Login
     {
-
-        private string? Password { get; set; }
         private bool PasswordIsClicked { get; set; } = false;
-        private string? ConfirmPassword { get; set; }
-        private bool ConfirmPasswordIsClicked { get; set; } = false;
-
-        private MobileOtpModal MobileOtpModal = new();
-        private MobileOtpModal ForgotPasswordModal = new();
         private LoginModel LoginModel { get; set; } = new();
-
-        private string? LoginErrorMessage { get; set; }
 
         private void OnInvalidSubmit()
         {
@@ -35,8 +27,6 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
         private async Task OnValidSubmitAsync()
         {
-
-            LoginErrorMessage = "";
             var response = await AuthService!.LoginAsync(new SignInRequest
             {
                 UserName = LoginModel!.UserName,
@@ -44,31 +34,14 @@ namespace AstroOfficeWeb.Client.Pages.Account
             });
             if (response!.IsAuthSuccessful)
             {
+                await JSRuntime.ShowToastAsync(response?.Message ?? "Success!");
                 NavigationManager!.NavigateTo("/");
             }
             else
             {
-                LoginErrorMessage = response?.ErrorMessage ?? "Invalid login credentials";
+                await JSRuntime.ShowToastAsync(response?.Message ?? "Error!", SwalIcon.Error);
             }
         }  
-
-        private void OnClick_BtnMobileOTP(MouseEventArgs e)
-        {
-            MobileOtpModal?.ShowAsync();
-        }
-        private void OnClick_BtnForgotPassword(MouseEventArgs e)
-        {
-            ForgotPasswordModal?.ShowForgotPasswordAsync();
-        }
-
-        private void OnConfirmationChanged_MobileOtpModal(bool isConfirm)
-        {
-
-        }
-        private void OnConfirmationChanged_ForgotPasswordModal(bool isConfirm)
-        {
-
-        }
 
     }
 }

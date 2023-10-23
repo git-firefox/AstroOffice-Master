@@ -2,27 +2,27 @@
     if (element instanceof HTMLInputElement) {
         element.focus();
     }
-    console.log(element);
+    
 }
 
 window.fnSelectTextBlazorElement = function (element) {
     if (element instanceof HTMLInputElement) {
         element.select();
     }
-    console.log(element);
+    
 }
 
 window.fnShowModal = function (element) {
     if (element instanceof HTMLDivElement) {
         $(element).modal('show');
     }
-    console.log(element);
+    
 }
 window.fnCloseModal = function (element) {
     if (element instanceof HTMLDivElement) {
         $(element).modal('hide');
     }
-    console.log(element);
+    
 }
 
 window.fnShowOtpModal = function (element) {
@@ -99,7 +99,7 @@ window.fnShowOtpModal = function (element) {
 
         $(element).modal('show');
     }
-    console.log(element);
+    
 }
 
 
@@ -108,16 +108,15 @@ window.fnApplyInputMask = function (element, mask, placeHolder) {
     if (element instanceof HTMLInputElement) {
         $(element).inputmask(mask, { 'placeholder': placeHolder });
     }
-    console.log(element);
+    
 }
 
 window.fnGetInputMaskValue = function (element) {
     if (element instanceof HTMLInputElement) {
         var test = $(element).val();
-        console.log(test);
         return $(element).val();
     }
-    console.log(element);
+    
 }
 
 window.fnGetOtpValue = function (element) {
@@ -128,7 +127,7 @@ window.fnGetOtpValue = function (element) {
         });
         return concatenatedValue;
     }
-    console.log(element);
+    
 }
 
 
@@ -136,24 +135,21 @@ window.fnCloseModal = function (element) {
     if (element instanceof HTMLDivElement) {
         $(element).modal('hide');
     }
-    console.log(element);
+    
 }
 
 window.fnLoadDateTimePicker = function (element, format) {
     if (element instanceof HTMLDivElement) {
         $(element).datetimepicker({ icons: { time: 'far fa-clock' }, format: 'MM/DD/YYYY HH:mm:ss' });
     }
-    console.log(element);
-    console.log(format);
 }
 
 window.fnGetDateFromDateTimePicker = function (element) {
     if (element instanceof HTMLDivElement) {
-        console.log($(element).datetimepicker('date').format('MM,DD,YYYY,HH,mm,ss'));
         //return new Date($('input', element).val());
         return $(element).datetimepicker('date').format('MM,DD,YYYY,HH,mm,ss');
     }
-    console.log(element);
+    
     return null;
 }
 
@@ -172,26 +168,41 @@ window.fnOpenDocumentInNewTab = function (fileName, base64Data) {
 
     window.open(pdfUrl, '_blank');
     URL.revokeObjectURL(pdfUrl);
-
-    console.log(pdfUrl);
-    console.log(byteNumbers);
-    console.log(base64Data);
-
-    //window.open(blobURL);
 }
 
+//window.fnShowToast = function (title, icon, position) {
+//    Swal.mixin({
+//        toast: true,
+//        position: position,
+//        showConfirmButton: false,
+//        timer: 3000
+//    }).fire({
+//        icon: icon,
+//        allowOutsideClick: true, // Set this to true to allow closing by clicking outside
+//        backdrop: true, // Set this to true to display a backdrop (overlay) behind the modal
+//        html: '<br />' + title,
+//        timerProgressBar: true,
+//        allowEscapeKey: true,
+//        allowOutsideClick: true,
+//        showClass: {
+//            popup: 'animate__animated animate__fadeInRight'
+//        },
+//        hideClass: {
+//            popup: 'animate__animated animate__fadeOutRight'
+//        }
+//    });
+//}
+
+
 window.fnShowToast = function (title, icon, position) {
-    Swal.mixin({
-        toast: true,
-        position: position,
-        showConfirmButton: false,
-        timer: 3000
-    }).fire({
+    Swal.fire({
         icon: icon,
         html: '<br />' + title,
+        position: position,
+        showConfirmButton: false,
+        timer: 3000,
         timerProgressBar: true,
-        allowEscapeKey: true,
-        allowOutsideClick: true,
+        toast: true,
         showClass: {
             popup: 'animate__animated animate__fadeInRight'
         },

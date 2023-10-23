@@ -1,10 +1,21 @@
 ﻿@*@page "/dashboard"*@
 @page "/"
+
+@using AstroOfficeWeb.Client.Services;
 @using AstroOfficeWeb.Shared.Models;
+
 @attribute [Authorize]
+
 @inherits BaseComponent
+
 @inject HttpClient HttpClient
 @inject IJSRuntime JSRuntime
+
+@inject BestBLLService BestBLL
+@inject KPBLLService KPBLL
+@inject KPDAOService KPDAO
+@inject KundliBLLService KundliBLL
+@inject PredictionBLLService PredictionBLL
 
 <FaladeshModal @ref="FaladeshModal" Falla="@htmlStringFalla" ImgSrcLagan="@imgSrcLagan" ImgSrcBhavChalit="@imgSrcBhavChalit" ConfirmationChanged="ConfirmationChangedModel" />
 

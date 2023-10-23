@@ -17,12 +17,6 @@ namespace AstroOfficeWeb.Client.Pages.Account
         private LoginWithOtpModel LoginModel = new();
         private InputText? InputMobileNumber { get; set; }
 
-        [Inject]
-        private NavigationManager? NavigationManager { get; set; }
-
-        [Inject]
-        ISwaggerApiService? Swagger { get; set; }
-
         private string? OtpErrorMessage { get; set; }
 
         private async void OnConfirmationChanged(bool isConfirm)
@@ -37,12 +31,13 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
                 if (response.IsAuthSuccessful)
                 {
-                    MobileOtpModal?.CloseAsync();
+                    await MobileOtpModal.CloseAsync();
+                    await JSRuntime.ShowToastAsync(response?.Message ?? "Error!", SwalIcon.Success);
                     NavigationManager!.NavigateTo("/");
                 }
                 else
                 {
-                    OtpErrorMessage = response.ErrorMessage;
+                    await JSRuntime.ShowToastAsync(response?.Message ?? "Error!", SwalIcon.Error);
                 }
             }
         }
@@ -74,6 +69,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
             if (response.Success)
             {
+                await JSRuntime.ShowToastAsync(response?.Message ?? "Success!", SwalIcon.Success);
                 await MobileOtpModal!.ShowAsync();
             }
             else

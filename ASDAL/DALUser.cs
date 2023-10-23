@@ -91,32 +91,24 @@ namespace ASDAL
             return aUser;
         }
 
-        public AUser UserNameSearch(string userName)
+        public AUser? UserNameSearch(string userName)
         {
-            AUser aUser = null;
-            try
-            {
-                aUser = _context.AUsers.First<AUser>(aa => aa.Username == userName);
-            }
-            catch (Exception exception)
-            {
-                //_ = MessageBox.Show(exception.Message);
-            }
+            AUser? aUser = _context.AUsers.FirstOrDefault<AUser>(aa => aa.Username == userName);
             return aUser;
         }
 
-        public AUser UserByMobileNumber(string? mobileNumber)
+        public AUser? UserByMobileNumber(string mobileNumber)
         {
             try
             {
-                var user = _context.AUsers.First<AUser>(aa => aa.MobileNumber == mobileNumber && aa.Active == true);
+                var user = _context.AUsers.FirstOrDefault<AUser>(aa => aa.MobileNumber == mobileNumber);
                 return user;
             }
             catch (Exception exception)
             {
                 _ = exception;
                 //_ = MessageBox.Show(exception.Message);
-                return new AUser();
+                return null;
             }
         }
 

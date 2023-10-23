@@ -37,12 +37,15 @@ namespace ASBAL
             return _du.UserLogin(userName, password);
         }
 
-        public AUser UserNameSearch(string userName)
+        public AUser? UserNameSearch(string? userName)
         {
+            if (string.IsNullOrEmpty(userName))
+                return null;
             return _du.UserNameSearch(userName);
         }
-        public AUser GetUserByMobileNumber(string? mobileNumber)
+        public AUser? GetUserByMobileNumber(string? mobileNumber)
         {
+            if (string.IsNullOrEmpty(mobileNumber)) return null;
             return _du.UserByMobileNumber(mobileNumber);
         }
 

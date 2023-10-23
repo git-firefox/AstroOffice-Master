@@ -10,7 +10,6 @@ namespace AstroOfficeWeb.Shared.Models
     public class SignInRequest
     {
         [Required(ErrorMessage = "UserName is required")]
-        //[RegularExpression("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$", ErrorMessage = "Invalid email address")]
         public string? UserName { get; set; }
 
 

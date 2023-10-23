@@ -2,6 +2,8 @@
 @using System.ComponentModel.DataAnnotations
 @inject IJSRuntime JSRuntime
 @inject IAuthenticationService AuthService
+@inject NavigationManager NavigationManager 
+@inject ISwaggerApiService Swagger 
 
 <MobileOtpModal @ref="MobileOtpModal" ConfirmationChanged="OnConfirmationChanged" ErrorMessage="@OtpErrorMessage" MobileNumber="@LoginModel.MobileNumber" />
 
