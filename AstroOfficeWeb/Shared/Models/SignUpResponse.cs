@@ -9,6 +9,7 @@ namespace AstroOfficeWeb.Shared.Models
     public class SignUpResponse
     {
         public bool IsRegisterationSuccessful { get; set; }
-        public IEnumerable<string> Errors { get; set; } = Enumerable.Empty<string>();
+
+        public string? Message { get; set; }
     }
 }

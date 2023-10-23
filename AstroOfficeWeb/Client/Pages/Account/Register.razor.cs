@@ -12,8 +12,6 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
         private RegistrationModel RegistrationModel = new RegistrationModel();
 
-        public IList<string>? Errors { get; set; }
-
         private async Task OnValidSubmit_RegisterUser()
         {
             var response = await AuthService.RegisterUserAsync(new AstroOfficeWeb.Shared.Models.SignUpRequest()
@@ -25,11 +23,12 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
             if (response.IsRegisterationSuccessful)
             {
+                await JSRuntime.ShowToastAsync(response?.Message, SwalIcon.Success);
                 NavigationManager!.NavigateTo("/login");
             }
             else
             {
-                Errors = response.Errors.ToList();
+               await  JSRuntime.ShowToastAsync(response?.Message, SwalIcon.Error);
             }
         }
         private async Task OnFocusOut_MobileNumber(FocusEventArgs e)

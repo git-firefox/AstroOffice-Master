@@ -9,7 +9,7 @@
         public static string POST_ProcessPlanetLagan = Base + "ProcessPlanetLagan";
         public static string POST_ProcessKPChartGoodBad = Base + "ProcessKPChartGoodBad";
         public static string POST_GetNewProducts = Base + "GetNewProducts";
-        public static string GET_GetKPLang = Base + "GetKPLang?mixsno={0}&language={1}&dashafal={2}&upay={3}&mini={4}";
+        public static string GET_GetKPLang = Base + "GetKPLang";
         public static string POST_TenthKamkajPred = Base + "TenthKamkajPred";
         public static string POST_GetPlanetNakPlanetSublordFal = Base + "GetPlanetNakPlanetSublordFal";
         public static string POST_GetPlanetChainPred = Base + "GetPlanetChainPred";
@@ -46,6 +46,7 @@
         public static string GET_GetCountryByCode = Base + "GetCountryByCode?countryCode={0}";
         public static string GET_GetStateByCode = Base + "GetStateByCode?stateCode={0}";
     }
+
     public static class KundliBLLApiConst
     {
         public static string Base = "api/KundliBLL/";
@@ -53,6 +54,7 @@
         public static string POST_GenImage = Base + "GenImage";
         public static string POST_NEWGetVarshaphalKundliMapping = Base + "NEWGetVarshaphalKundliMapping";
     }
+
     public static class PredictionBLLApiConst
     {
         public static string Base = "api/PredictionBLL/";
@@ -62,6 +64,7 @@
         public static string POST_GetFalDoubleAntarHyphenWala = Base + "GetFalDoubleAntarHyphenWala";
         public static string GET_GetCodeLang = Base + "GetCodeLang?rulecode={0}&lang={1}&paid={2}&unicode={3}";
     }
+
     public static class KPDAOApiConst
     {
         public static string Base = "api/KPDAO/";
@@ -69,6 +72,7 @@
         public static string POST_GetMixDasha = Base + "GetMixDasha";
         public static string GET_GetKPCuspPred = Base + "GetKPCuspPred?showref={0}&house={1}";
     }
+
     public static class BestBLLApiConst
     {
         public static string Base = "api/BestBLL/";
@@ -82,6 +86,7 @@
         public static string Base = "api/KPPredBLL/";
         public static string POST_GetRedSigniPlanetWise = Base + "GetRedSigniPlanetWise";
     }
+
     public static class PdfApiConst
     {
         public static string Base = "api/Pdf/";
