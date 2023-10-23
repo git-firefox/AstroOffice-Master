@@ -27,5 +27,10 @@ builder.Services.AddScoped<IAuthenticationStateService, AuthenticationStateServi
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ISwaggerApiService, SwaggerApiService>();
 builder.Services.AddScoped<KaranService>();
+builder.Services.AddScoped<BestBLLService>();
+builder.Services.AddScoped<KPBLLService>();
+builder.Services.AddScoped<KPDAOService>();
+builder.Services.AddScoped<KundliBLLService>();
+builder.Services.AddScoped<PredictionBLLService>();
 
 await builder.Build().RunAsync();

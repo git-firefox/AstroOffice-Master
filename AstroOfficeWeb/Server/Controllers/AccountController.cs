@@ -98,7 +98,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = AccountMessageConst.ServerError;
             }
 
-        returnResponse:
+            returnResponse:
             return Ok(response);
         }
 
@@ -166,7 +166,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = AccountMessageConst.ServerError;
             }
 
-        returnResponse:
+            returnResponse:
             return Ok(response);
         }
 
@@ -250,7 +250,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = AccountMessageConst.UserPassNotUpdated;
             }
 
-        returnResponse:
+            returnResponse:
             return Ok(response);
         }
 
@@ -329,7 +329,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = AccountMessageConst.SignUpFailed;
             }
 
-        returnResponse:
+            returnResponse:
             return Ok(response);
         }
 

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace AstroOfficeWeb.Shared.Models
 {
-    public class ApiResponse<TType> : ApiResponseBase
+    public class ApiResponseBase
     {
-        public TType? Data { get; set; }
+        public bool Success { get; set; }
+        public string? Message { get; set; }
+        public int ErrorNo { get; set; }
     }
 }

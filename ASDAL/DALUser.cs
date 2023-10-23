@@ -93,15 +93,7 @@ namespace ASDAL
 
         public AUser? UserNameSearch(string userName)
         {
-            AUser? aUser = null;
-            try
-            {
-                aUser = _context.AUsers.FirstOrDefault<AUser>(aa => aa.Username == userName);
-            }
-            catch (Exception exception)
-            {
-                _ = exception;
-            }
+            AUser? aUser = _context.AUsers.FirstOrDefault<AUser>(aa => aa.Username == userName);
             return aUser;
         }
 
