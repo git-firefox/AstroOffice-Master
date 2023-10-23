@@ -251,7 +251,7 @@ namespace AstroOfficeWeb.Client.Pages
 
             await Gen_Image(this.persKV!.Lagna.ToString(), this.kp_chart, Online_Result, false, 1, this.persKV.Language);
 
-            await this.OnKeyDown_TxtBirthplace(new KeyboardEventArgs());
+            await this.OnKeyDown_TxtBirthplace(new KeyboardEventArgs() { Key = "" });
 
             await this.OnClick_BtnChart(new MouseEventArgs());
             //}
@@ -1601,21 +1601,29 @@ namespace AstroOfficeWeb.Client.Pages
 
         private async Task OnInput_TxtBirthplace(ChangeEventArgs e)
         {
+
             if (!this.no_countryload && this.BirthDetails.CmbCountry != null && BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
             {
                 this.ListBirthCities = await this.GetPlaceListLike(place: BirthDetails?.TxtBirthPlace?.Trim(), countrycode: this.BirthDetails?.CmbCountry);
                 this.no_countryload = false;
             }
+            else { return; }
 
             if (ListBirthCities != null && ListBirthCities.Any())
             {
                 selectedBirthCityIndex = 0;
                 await OnChange_ListBirthCities(new ChangeEventArgs { Value = selectedBirthCityIndex });
             }
+            else
+            {
+                return;
+            }
         }
 
         private async Task OnKeyDown_TxtBirthplace(KeyboardEventArgs e)
         {
+
+
             if (e.Key == "ArrowUp")
             {
                 if (selectedBirthCityIndex > 0)
@@ -1632,12 +1640,39 @@ namespace AstroOfficeWeb.Client.Pages
                     await OnChange_ListBirthCities(new ChangeEventArgs() { Value = selectedBirthCityIndex });
                 }
             }
+            else if (char.TryParse(e.Key, out char result))
+            {
+                if (!this.no_countryload && this.BirthDetails.CmbCountry != null && BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
+                {
+                    this.ListBirthCities = await this.GetPlaceListLike(place: BirthDetails?.TxtBirthPlace?.Trim(), countrycode: this.BirthDetails?.CmbCountry);
+                    this.no_countryload = false;
+
+                    if (ListBirthCities != null && ListBirthCities.Any())
+                    {
+                        selectedBirthCityIndex = 0;
+                        await OnChange_ListBirthCities(new ChangeEventArgs { Value = selectedBirthCityIndex });
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else
+            {
+                return;
+            }
         }
 
         private async Task OnChange_ListBirthCities(ChangeEventArgs e)
         {
             //await Task.Delay(1000);
             string value = e.Value.ToStringLower();
+            selectedBirthCityIndex = Convert.ToInt32(value);
             var selectedBirthCity = ListBirthCities![selectedBirthCityIndex];
 
             this.BirthDetails.BirthPlace = selectedBirthCity?.Place ?? "";
@@ -2019,6 +2054,9 @@ namespace AstroOfficeWeb.Client.Pages
         MahadashaTableTRModel? SelectedMahadashaTableTR { get; set; }
         private async Task OnClick_TR_ListView_Mahadasha(MahadashaTableTRModel selectedTR)
         {
+
+
+            ApplyTableConfiguration(selectedTR, ListView_Mahadasha);
             this.SelectedMahadashaTableTR = selectedTR;
 
             this.maha_dasha_click = true;
@@ -2135,8 +2173,13 @@ namespace AstroOfficeWeb.Client.Pages
 
         }
 
+        private void OnClick_TR_ListView_Years35(Years35TableTRModel selectedTR)
+        {
+            ApplyTableConfiguration(selectedTR, ListView_Years35);
+        }
         private async Task OnDblClick_TR_ListView_Years35(Years35TableTRModel selectedTR)
         {
+            
             string falAntar = "";
             if (SelectedMahadashaTableTR != null)
             {
@@ -2171,6 +2214,7 @@ namespace AstroOfficeWeb.Client.Pages
         AntardashaTableTRModel? SelectedAntardashaTableTR { get; set; }
         private void OnClick_TR_ListView_Antardasha(AntardashaTableTRModel selectedTR)
         {
+            ApplyTableConfiguration(selectedTR, ListView_Antardasha);
             SelectedAntardashaTableTR = selectedTR;
             this.antar_dasha_click = true;
             this.sukshma_dasha_click = false;
@@ -2331,6 +2375,7 @@ namespace AstroOfficeWeb.Client.Pages
         PrayantardashaTableTRModel? SelectedPrayantardashaTableTR { get; set; }
         private void OnClick_TR_ListView_Prayantardasha(PrayantardashaTableTRModel selectedTR)
         {
+            ApplyTableConfiguration(selectedTR, ListView_Prayantardasha);
             SelectedPrayantardashaTableTR = selectedTR;
 
             this.maha_dasha_click = false;
@@ -2501,9 +2546,20 @@ namespace AstroOfficeWeb.Client.Pages
             await this.Show_Falla(planetNakPlanetSublordFal);
         }
 
+        private void ApplyTableConfiguration<T1,T2>(T1 selectedTR, List<T2>? trs) 
+            where T1 : TableAttributeConfiguration
+            where T2 : TableAttributeConfiguration
+        {
+            var tr = trs?.FirstOrDefault(a => a.SelectedClass == "table-active");
+            if (tr != null) tr.SelectedClass = string.Empty;
+
+            selectedTR.SelectedClass = "table-active";
+        }
+
         private void OnClick_TR_ListView_Sukhsmadasha(SukhsmadashaTableTRModel selectedTR)
         {
 
+            ApplyTableConfiguration(selectedTR, ListView_Sukhsmadasha);
             this.sukshma_dasha_click = true;
             this.antar_dasha_click = false;
 
@@ -2563,6 +2619,14 @@ namespace AstroOfficeWeb.Client.Pages
             await this.Show_Falla(redSigniPlanetWise);
         }
 
+        private void OnClick_TR_ListView_House(ChartHouseTableTRModel selectedTR)
+        {
+            ApplyTableConfiguration(selectedTR, ListView_House);
+        }
+        private void OnClick_TR_ListView_Planet(ChartPlanetTableTRModel selectedTR)
+        {
+            ApplyTableConfiguration(selectedTR, ListView_Planet);
+        }
         private async Task OnDblClick_TR_ListView_House(ChartHouseTableTRModel selectedTR)
         {
             //       var d = Show_House_Wise_Pred(selectedTR);
