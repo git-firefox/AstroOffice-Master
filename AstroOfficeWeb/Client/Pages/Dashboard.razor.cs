@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using System.Reflection;
 using System.Collections.Generic;
 using Microsoft.JSInterop;
+using System.Net.WebSockets;
 
 namespace AstroOfficeWeb.Client.Pages
 {
@@ -2179,7 +2180,7 @@ namespace AstroOfficeWeb.Client.Pages
         }
         private async Task OnDblClick_TR_ListView_Years35(Years35TableTRModel selectedTR)
         {
-            
+
             string falAntar = "";
             if (SelectedMahadashaTableTR != null)
             {
@@ -2546,7 +2547,7 @@ namespace AstroOfficeWeb.Client.Pages
             await this.Show_Falla(planetNakPlanetSublordFal);
         }
 
-        private void ApplyTableConfiguration<T1,T2>(T1 selectedTR, List<T2>? trs) 
+        private void ApplyTableConfiguration<T1, T2>(T1 selectedTR, List<T2>? trs)
             where T1 : TableAttributeConfiguration
             where T2 : TableAttributeConfiguration
         {
@@ -3247,6 +3248,69 @@ namespace AstroOfficeWeb.Client.Pages
             OnClick_BtnPlus_IsComplated = true;
         }
 
+        int inputYear = 2006;
+        int inputMonth = 06;
+        int inputDay = 12;
+        int inputHour = 13;
+        int inputMinute = 25;
+        int inputSecond = 0;
+
+        public async Task OnFocusOut_InputBrithDate(FocusEventArgs e)
+        {
+            await CreateValidDateTime(inputYear, inputMonth, inputDay, inputHour, inputMinute, inputSecond);
+        }
+
+        private async Task CreateValidDateTime(int year = 2006, int month = 5, int day = 12, int hour = 13, int minute = 25, int second = 0)
+        {
+            if (day < 1 || day > DateTime.DaysInMonth(year, month))
+            {
+                await JSRuntime.ShowToastAsync($"Invalid day: {day}", SwalIcon.Error);
+                return;
+            }
+            if (month < 1 || month > 12)
+            {
+                await JSRuntime.ShowToastAsync($"Invalid month: {month}", SwalIcon.Error);
+                return;
+            }
+            if (year < 1 || year > 9999)
+            {
+                await JSRuntime.ShowToastAsync($"Invalid year: {year}", SwalIcon.Error);
+                return;
+            }
+
+
+            if (hour < 0 || hour > 23)
+            {
+                await JSRuntime.ShowToastAsync($"Invalid hour: {hour}", SwalIcon.Error);
+                return;
+            }
+            if (minute < 0 || minute > 59)
+            {
+                await JSRuntime.ShowToastAsync($"Invalid minute: {minute}", SwalIcon.Error);
+                return;
+            }
+            if (second < 0 || second > 59)
+            {
+                await JSRuntime.ShowToastAsync($"Invalid second: {second}", SwalIcon.Error);
+                return;
+            }
+            try
+            {
+                var dateTime = new DateTime(year, month, day, hour, minute, second);
+                BirthDetails.Dobdd = dateTime.Day;
+                BirthDetails.Dobmm = dateTime.Month;
+                BirthDetails.Dobyy = dateTime.Year;
+                BirthDetails.Tobhh = dateTime.Hour;
+                BirthDetails.Tobmm = dateTime.Minute;
+                BirthDetails.Tobss = dateTime.Second;
+                await Gen_Kundali_Chart();
+            }
+            catch (Exception e)
+            {
+                await JSRuntime.ShowToastAsync("Invalid DateTime", SwalIcon.Error);
+            }
+
+        }
         #endregion
     }
 }
