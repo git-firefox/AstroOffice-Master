@@ -1847,6 +1847,14 @@ namespace AstroOfficeWeb.Client.Pages
         {
             isNumVarshVisible = true;
             this.show_vfal = true;
+            if (BirthDetails.KundaliUdvYear < 1)
+            {
+                BirthDetails.KundaliUdvYear = 1;
+            }
+            if (BirthDetails.KundaliUdvYear > 120)
+            {
+                BirthDetails.KundaliUdvYear = 120;
+            }
             List<KPPlanetMappingVO> kPPlanetMappingVOs = new List<KPPlanetMappingVO>();
             KundliBLL kundliBLL = new KundliBLL();
             kPPlanetMappingVOs = await KundliBLL.NEW_GetVarshaphalKundliMapping(Convert.ToInt16(BirthDetails.KundaliUdvYear), this.persKV, this.kp_chart);
@@ -3279,6 +3287,7 @@ namespace AstroOfficeWeb.Client.Pages
         {
             if (year < 1 || year > 9999)
             {
+
                 await JSRuntime.ShowToastAsync($"Invalid year: {year}", SwalIcon.Error);
                 return;
             }
@@ -3290,7 +3299,8 @@ namespace AstroOfficeWeb.Client.Pages
 
             if (day < 1 || day > DateTime.DaysInMonth(year, month))
             {
-                await JSRuntime.ShowToastAsync($"Invalid day: {day}", SwalIcon.Error);
+                inputDay = BirthDetails.Dobdd;
+               await JSRuntime.ShowToastAsync($"Invalid day: {day}", SwalIcon.Error);
                 return;
             }
 

@@ -23,7 +23,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
             if (response.IsRegisterationSuccessful)
             {
-                await JSRuntime.ShowToastAsync(response?.Message, SwalIcon.Success);
+                await JSRuntime.ShowToastAsync(response?.Message, SwalIcon.Success);      
                 NavigationManager!.NavigateTo("/login");
             }
             else
@@ -38,6 +38,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
             RegistrationModel.MobileNumber = mobileNumberObj.ToMobileNumber(" ");
         }
 
+      
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
