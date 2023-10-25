@@ -5,24 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace AstroOfficeWeb.Shared.Models
+namespace AstroShared.Services.SSExpertSystem.Models
 {
     [XmlRoot("SingleSmsApiModel")]
     public class SendOtpRequest
     {
         [XmlElement("SenderId")]
-        public string SenderId { get; set; }
+        public string? SenderId { get; set; }
 
         [XmlElement("Message")]
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
         [XmlElement("MobileNumbers")]
-        public string MobileNumbers { get; set; }
+        public string? MobileNumbers { get; set; }
 
         [XmlElement("ApiKey")]
-        public string ApiKey { get; set; }
+        public string? ApiKey { get; set; }
 
         [XmlElement("ClientId")]
-        public string ClientId { get; set; }
+        public string? ClientId { get; set; }
     }
 }

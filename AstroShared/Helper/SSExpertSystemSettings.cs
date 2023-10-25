@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AstroOfficeWeb.Shared.Models
+namespace AstroShared.Helper
 {
     public class SSExpertSystemSettings
     {
-        public static string SSExpertSystemSection = "SSExpertSystemConfiguration";
         public string APIKey { get; set; } = string.Empty;
         public string ClientId { get; set; } = string.Empty;
         public string BaseUrl { get; set; } = string.Empty;

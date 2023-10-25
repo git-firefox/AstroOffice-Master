@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using AstroOfficeWeb.Server.Helper;
 using AstroOfficeWeb.Shared.Models;
+using AstroShared.Helper;
+using AstroShared.Services.SSExpertSystem;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -12,18 +14,18 @@ namespace AstroOfficeWeb.Server.Controllers
     public class CreditController : ControllerBase
     {
         public readonly SSExpertSystemSettings _setting;
-        public readonly HttpClientHelper _httpClient;
+        public readonly CreditSevice _creditSevice;
 
         public CreditController(IOptions<SSExpertSystemSettings> ssExpertSystemSetting)
         {
             _setting = ssExpertSystemSetting.Value;
-            _httpClient = new(_setting.BaseUrl);
+            _creditSevice = new(_setting);
         }
 
         [HttpGet]
         public async Task<IActionResult> Balance()
         {
-            var response = await _httpClient.GetAsync<BalanceListResponse>(string.Format(BalanceApiConst.Balance, _setting.APIKey.ToUrlEncode(), _setting.ClientId.ToUrlEncode()));
+            var response = await _creditSevice.GetBalance();
             return Ok(response);
         }
     }

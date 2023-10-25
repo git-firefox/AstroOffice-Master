@@ -7,6 +7,7 @@ using ASDLL.AstroScienceWeb.BLL;
 using ASDLL.DataAccess.Core;
 using ASModels;
 using AstroOfficeWeb.Shared.Models;
+using AstroShared.Helper;
 using AutoMapper;
 using DinkToPdf;
 using DinkToPdf.Contracts;
@@ -79,7 +80,7 @@ builder.Services.AddSwaggerGen(sg =>
 
 var sectionJWTSettings = builder.Configuration.GetSection("JWTSettings");
 builder.Services.Configure<JWTSettings>(sectionJWTSettings);
-builder.Services.Configure<SSExpertSystemSettings>(builder.Configuration.GetSection(SSExpertSystemSettings.SSExpertSystemSection));
+builder.Services.Configure<SSExpertSystemSettings>(builder.Configuration.GetSection("SSExpertSystemConfiguration"));
 
 var jwtSettings = sectionJWTSettings.Get<JWTSettings>();
 var key = Encoding.ASCII.GetBytes(jwtSettings.SecretKey);
