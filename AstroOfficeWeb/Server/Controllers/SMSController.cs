@@ -52,7 +52,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
                 string? message = (templates?.Data?.ToObject<List<TemplateResponse>>())?.FirstOrDefault(t => t.TemplateName == "Account Login")?.MessageTemplate;
 
-                if (_environment.IsDevelopment())
+                if (!_environment.IsDevelopment())
                 {
                     var request = new SendOtpRequest()
                     {
