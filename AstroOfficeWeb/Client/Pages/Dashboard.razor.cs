@@ -3087,6 +3087,13 @@ namespace AstroOfficeWeb.Client.Pages
             BirthDetails.Tobhh = tob.Hour;
             BirthDetails.Tobmm = tob.Minute;
 
+            inputYear = tob.Year;
+            inputMonth = tob.Month;
+            inputDay = tob.Day;
+            inputHour = tob.Hour;
+            inputMinute = tob.Minute;
+            inputSecond = 0;
+
 
             //string str = BirthDetails.Dobdd.ToString();
             //int day = tob.Day;
@@ -3199,6 +3206,14 @@ namespace AstroOfficeWeb.Client.Pages
             BirthDetails.Dobyy = tob.Year;
             BirthDetails.Tobhh = tob.Hour;
             BirthDetails.Tobmm = tob.Minute;
+
+            inputYear = tob.Year;
+            inputMonth = tob.Month;
+            inputDay = tob.Day;
+            inputHour = tob.Hour;
+            inputMinute = tob.Minute;
+            inputSecond = 0;
+            
             await this.OnClick_BtnChart(new MouseEventArgs());
 
             short num3 = 0;
@@ -3249,7 +3264,7 @@ namespace AstroOfficeWeb.Client.Pages
         }
 
         int inputYear = 2006;
-        int inputMonth = 06;
+        int inputMonth = 05;
         int inputDay = 12;
         int inputHour = 13;
         int inputMinute = 25;
@@ -3262,9 +3277,9 @@ namespace AstroOfficeWeb.Client.Pages
 
         private async Task CreateValidDateTime(int year = 2006, int month = 5, int day = 12, int hour = 13, int minute = 25, int second = 0)
         {
-            if (day < 1 || day > DateTime.DaysInMonth(year, month))
+            if (year < 1 || year > 9999)
             {
-                await JSRuntime.ShowToastAsync($"Invalid day: {day}", SwalIcon.Error);
+                await JSRuntime.ShowToastAsync($"Invalid year: {year}", SwalIcon.Error);
                 return;
             }
             if (month < 1 || month > 12)
@@ -3272,12 +3287,12 @@ namespace AstroOfficeWeb.Client.Pages
                 await JSRuntime.ShowToastAsync($"Invalid month: {month}", SwalIcon.Error);
                 return;
             }
-            if (year < 1 || year > 9999)
+
+            if (day < 1 || day > DateTime.DaysInMonth(year, month))
             {
-                await JSRuntime.ShowToastAsync($"Invalid year: {year}", SwalIcon.Error);
+                await JSRuntime.ShowToastAsync($"Invalid day: {day}", SwalIcon.Error);
                 return;
             }
-
 
             if (hour < 0 || hour > 23)
             {

@@ -72,6 +72,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
             if (response.Success)
             {
+                await JSRuntime.ShowToastAsync(response?.Message ?? "Success!", SwalIcon.Success);
                 await MobileOtpModal!.ShowAsync();
             }
             else
