@@ -30,6 +30,8 @@ namespace AstroOfficeWeb.Client.Pages.Account
             {
                await  JSRuntime.ShowToastAsync(response?.Message, SwalIcon.Error);
             }
+
+
         }
         private async Task OnFocusOut_MobileNumber(FocusEventArgs e)
         {

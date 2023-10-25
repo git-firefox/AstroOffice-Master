@@ -187,6 +187,7 @@ namespace AstroOfficeWeb.Client.Pages
             OnChange_CmbAyanansh(new ChangeEventArgs { Value = BirthDetailsLookups.CmbAyananshItems.First().Text });
             OnChange_CmbSkipBad(new ChangeEventArgs { Value = BirthDetailsLookups.SkipBadItems.First().Text });
             OnChange_CmbLanguage(new ChangeEventArgs { Value = BirthDetailsLookups.LanguageItems.First().Text });
+
         }
 
         protected override async Task OnInitializedAsync()
@@ -257,6 +258,7 @@ namespace AstroOfficeWeb.Client.Pages
             await this.OnClick_BtnChart(new MouseEventArgs());
             //}
             await base.OnInitializedAsync();
+
         }
 
         private async Task<List<DTOs.ACountryMaster>?> GetCountry()
@@ -1676,7 +1678,16 @@ namespace AstroOfficeWeb.Client.Pages
             selectedBirthCityIndex = Convert.ToInt32(value);
             var selectedBirthCity = ListBirthCities![selectedBirthCityIndex];
 
+
             this.BirthDetails.BirthPlace = selectedBirthCity?.Place ?? "";
+
+            //if( selectedBirthCityIndex != 0 )
+            //{
+            //    BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
+            //}
+            
+            //BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
+
 
             var task1 = Swagger!.GetAsync<DTOs.APlaceMaster>(string.Format(LocationBLLApiConst.GET_GetPlaceByID, selectedBirthCity?.Sno));
 
@@ -1729,6 +1740,8 @@ namespace AstroOfficeWeb.Client.Pages
                 BirthDetails.TxtTimezone = country!.ZoneStart.Replace(':', '.').Replace('E', ' ').Replace('W', ' ').Replace('S', ' ').Replace('N', ' ').Trim();
 
             await Gen_Kundali_Chart();
+            
+
         }
 
         private async Task OnClick_Lagan(MouseEventArgs e)
