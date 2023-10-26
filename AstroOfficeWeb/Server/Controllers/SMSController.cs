@@ -64,30 +64,35 @@ namespace AstroOfficeWeb.Server.Controllers
                     };
 
                     response = await _smsSevice.SendSMS(request);
-                }
-
-                if (1 < response?.ErrorCode)
-                {
-                    return Ok(new ApiResponse<string> { Success = false, Message = response.ErrorDescription + ": Please try again later or Contact support." });
-                }
-                else
-                {
-                    var messageID = (response?.Data?.ToObject<List<SendOtpResponse>>())?.FirstOrDefault()?.MessageId;
-
-                    var responseStatus = await _smsSevice.GetMessageStatus(messageID);
-
-                    var messageResponse = (response?.Data?.ToObject<List<MessageStatusResponse>>())?.FirstOrDefault();
-
-                    if (response?.ErrorCode == 0 && messageResponse?.Status == "DELIVRD")
+                    if (1 < response?.ErrorCode)
                     {
-                        user.MobileOtp = otp;
-                        await _context.SaveChangesAsync();
-                        return Ok(new ApiResponse<string> { Success = true, Message = "Otp has been sent to your mobile number." });
+                        return Ok(new ApiResponse<string> { Success = false, Message = response.ErrorDescription + ": Please try again later or Contact support." });
                     }
                     else
                     {
-                        return Ok(new ApiResponse<string> { Success = false, Message = "An unexpected error occurred. Please try again later." });
+                        var messageID = (response?.Data?.ToObject<List<SendOtpResponse>>())?.FirstOrDefault()?.MessageId;
+
+                        var responseStatus = await _smsSevice.GetMessageStatus(messageID);
+
+                        var messageResponse = (response?.Data?.ToObject<List<MessageStatusResponse>>())?.FirstOrDefault();
+
+                        if (response?.ErrorCode == 0 && messageResponse?.Status == "DELIVRD")
+                        {
+                            user.MobileOtp = otp;
+                            await _context.SaveChangesAsync();
+                            return Ok(new ApiResponse<string> { Success = true, Message = "Otp has been sent to your mobile number." });
+                        }
+                        else
+                        {
+                            return Ok(new ApiResponse<string> { Success = false, Message = "An unexpected error occurred. Please try again later." });
+                        }
                     }
+                }
+                else
+                {
+                    user.MobileOtp = otp;
+                    await _context.SaveChangesAsync();
+                    return Ok(new ApiResponse<string> { Success = true, Message = "Otp has been sent to your mobile number." });
                 }
             }
             catch

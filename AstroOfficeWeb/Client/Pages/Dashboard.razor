@@ -97,11 +97,17 @@
                                             }
                                             @if (ListBirthCities != null)
                                             {
+                                              
                                                 <select value="@selectedBirthCityIndex" class="form-control form-control-sm mb-2" aria-label="Selection of BirthCity" size="3" @onchange="OnChange_ListBirthCities">
+                                                    <option value="0">-- Select --</option>
+
+                                                @*     ListBirthCities.Insert(0, "Select"); *@
+
                                                     @for (int i = 0; i < ListBirthCities.Count; i++)
                                                     {
+
                                                         @* <option value="@i" @onclick="e => OnClick_ListBirthCity(e, i)">@ListBirthCities[i].Place</option> *@
-                                                        <option value="@i">@ListBirthCities[i].Place</option>
+                                                        <option value="@(i + 1)">@ListBirthCities[i].Place</option>
                                                     }
                                                 </select>
                                             }
@@ -321,7 +327,7 @@
             </div>
 
             @* Kundali Table *@
-            <div class="col-md-4">
+            <div class="col-md-4 my-3 my-md-0">
                 <div class="card card-success card-frame">
                     <div class="card-header p-0 text-center mb-2">
                         <h2 class="font-weight-bold">Kundali Table</h2>
@@ -468,7 +474,7 @@
                             @* Charts *@
                             <div class="tab-pane fade active show" id="birthdetails-tabs-charts" role="tabpanel" aria-labelledby="birthdetails-tabs-charts-tab">
                                 <div class="row">
-                                    <div class="col-sm-7">
+                                    <div class="col-sm-7 mb-3 mb-md-0">
                                         <div class="chart-table table-responsive">
                                             <table class="table">
 

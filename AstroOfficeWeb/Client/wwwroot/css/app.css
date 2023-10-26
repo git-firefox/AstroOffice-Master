@@ -557,3 +557,65 @@ header {
     width: 150px;
    
 }
+@media(max-width:1199px){
+    .card-frame:before {
+        display:none;
+    }
+    .card-frame {
+        background: rgba(255,239,176,1);
+        /*background: linear-gradient(156deg, rgba(255,239,176,1) 0%, rgba(225,139,54,1) 100%);*/
+        border: 5px solid #ff6003 !important;
+        max-width: 100%;
+    }
+  
+}
+
+@media(max-width:575px){
+    .login-page {
+        padding: 25px;
+    }
+
+    .card-frame {
+        padding:10px 0;
+    }
+
+
+        .card-frame .card-body {
+            padding: 0 1rem !important;
+        } 
+    .login-box .card {
+        padding: 0 !important;
+    }
+    .login-box-msg, .register-box-msg {
+        font-size:14px;
+    }
+    .card-frame .card-header{
+        margin-top:0;
+    }
+    .report-content .card-frame{
+        height:auto !important;
+    }
+    .card-tabs .nav-tabs{
+        justify-content:space-between;
+    }
+    .card-tabs .nav-tabs .nav-item{
+        width:48%;
+        margin-bottom:10px;
+    }
+    .card-tabs .nav-tabs .nav-link{
+        width:100%;
+        font-size:14px;
+    }
+    .card-body,
+    .card-tabs .card-header {
+        padding: .25rem;
+    }
+    .chart-table table td, .chart-table table th {
+        white-space: nowrap;
+    }
+    .table-responsive::-webkit-scrollbar {
+        width: 2px;
+        height:6px;
+    }
+  
+}

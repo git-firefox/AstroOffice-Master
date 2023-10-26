@@ -207,8 +207,10 @@ namespace AstroOfficeWeb.Client.Pages
 
             if (ListBirthCities != null && ListBirthCities.Any())
             {
-                selectedBirthCityIndex = 0;
-                await OnChange_ListBirthCities(new ChangeEventArgs { Value = selectedBirthCityIndex });
+                selectedBirthCityIndex = 1;
+
+                //await OnChange_ListBirthCities(new ChangeEventArgs { Value = selectedBirthCityIndex });
+                await SelectedIndex(selectedBirthCityIndex);
             }
 
             //if (task != null && task.IsCompleted)
@@ -1632,7 +1634,8 @@ namespace AstroOfficeWeb.Client.Pages
                 if (selectedBirthCityIndex > 0)
                 {
                     selectedBirthCityIndex--;
-                    await OnChange_ListBirthCities(new ChangeEventArgs() { Value = selectedBirthCityIndex });
+                    //await OnChange_ListBirthCities(new ChangeEventArgs() { Value = selectedBirthCityIndex });
+                    await SelectedIndex(selectedBirthCityIndex);
                 }
             }
             else if (e.Key == "ArrowDown")
@@ -1640,7 +1643,8 @@ namespace AstroOfficeWeb.Client.Pages
                 if (selectedBirthCityIndex < ListBirthCities?.Count - 1)
                 {
                     selectedBirthCityIndex++;
-                    await OnChange_ListBirthCities(new ChangeEventArgs() { Value = selectedBirthCityIndex });
+                    //await OnChange_ListBirthCities(new ChangeEventArgs() { Value = selectedBirthCityIndex });
+                    await SelectedIndex( selectedBirthCityIndex );
                 }
             }
             else if (char.TryParse(e.Key, out char result))
@@ -1653,7 +1657,8 @@ namespace AstroOfficeWeb.Client.Pages
                     if (ListBirthCities != null && ListBirthCities.Any())
                     {
                         selectedBirthCityIndex = 0;
-                        await OnChange_ListBirthCities(new ChangeEventArgs { Value = selectedBirthCityIndex });
+                        //await OnChange_ListBirthCities(new ChangeEventArgs { Value = selectedBirthCityIndex });
+                        await SelectedIndex(selectedBirthCityIndex);
                     }
                     else
                     {
@@ -1671,22 +1676,17 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-        private async Task OnChange_ListBirthCities(ChangeEventArgs e)
+
+        private async Task SelectedIndex(int selectedIndex)
         {
-            //await Task.Delay(1000);
-            string value = e.Value.ToStringLower();
-            selectedBirthCityIndex = Convert.ToInt32(value);
-            var selectedBirthCity = ListBirthCities![selectedBirthCityIndex];
+            selectedBirthCityIndex = selectedIndex;
+            if (selectedBirthCityIndex == 0) return;
 
+            var selectedBirthCity = ListBirthCities![selectedBirthCityIndex - 1];
 
-            this.BirthDetails.BirthPlace = selectedBirthCity?.Place ?? "";
+            // this.BirthDetails.BirthPlace = selectedBirthCity?.Place ?? "";
 
-            //if( selectedBirthCityIndex != 0 )
-            //{
-            //    BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
-            //}
-            
-            //BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
+            BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
 
 
             var task1 = Swagger!.GetAsync<DTOs.APlaceMaster>(string.Format(LocationBLLApiConst.GET_GetPlaceByID, selectedBirthCity?.Sno));
@@ -1739,8 +1739,30 @@ namespace AstroOfficeWeb.Client.Pages
             if (country!.ZoneStart != null)
                 BirthDetails.TxtTimezone = country!.ZoneStart.Replace(':', '.').Replace('E', ' ').Replace('W', ' ').Replace('S', ' ').Replace('N', ' ').Trim();
 
+            //await Gen_Kundali_Chart();
+
+        }
+
+        private async Task OnChange_ListBirthCities(ChangeEventArgs e)
+        {
+
+            //await Task.Delay(1000);
+            string value = e.Value.ToStringX();
+            selectedBirthCityIndex = Convert.ToInt32(value);
+            if (selectedBirthCityIndex == 0) return;
+
+            var selectedBirthCity = ListBirthCities![selectedBirthCityIndex - 1];
+
+            await SelectedIndex(selectedBirthCityIndex);
+           // this.BirthDetails.BirthPlace = selectedBirthCity?.Place ?? "";
+
+            BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
+
+            ListBirthCities.Clear();
+           
+
             await Gen_Kundali_Chart();
-            
+
 
         }
 
@@ -3234,7 +3256,7 @@ namespace AstroOfficeWeb.Client.Pages
             inputHour = tob.Hour;
             inputMinute = tob.Minute;
             inputSecond = 0;
-            
+
             await this.OnClick_BtnChart(new MouseEventArgs());
 
             short num3 = 0;
@@ -3313,7 +3335,7 @@ namespace AstroOfficeWeb.Client.Pages
             if (day < 1 || day > DateTime.DaysInMonth(year, month))
             {
                 inputDay = BirthDetails.Dobdd;
-               await JSRuntime.ShowToastAsync($"Invalid day: {day}", SwalIcon.Error);
+                await JSRuntime.ShowToastAsync($"Invalid day: {day}", SwalIcon.Error);
                 return;
             }
 
