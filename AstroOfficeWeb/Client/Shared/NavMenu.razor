@@ -132,10 +132,10 @@ z" />
 <header>
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand" href="/"><img src="/images/logo.png" alt="Divya Astro Ashram" style="width:100px" /></a>
-            <span class="brand-text font-weight-light h2 text-white font-weight-bold">Divya Astro Ashram </span>
+			<a class="navbar-brand" href="/"><img src="/images/logo.png" alt="Divya Astro Ashram" style="width:100px" /><span class="brand-text font-weight-light h2 ml-2 text-white font-weight-bold">Divya Astro Ashram </span></a>
+            
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+               <i class="fa fa-bars text-white"></i>
             </button>
 
 
@@ -145,30 +145,30 @@ z" />
                         <Authorized>
 
                             <li>
-                                <a href="/" class="nav-link text-white d-flex flex-column justify-content-center align-items-center">
+                                <a href="/" class="nav-link">
                                     @* <i class="fa fa-th"></i> *@
-                                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#speedometerSymbol"></use></svg>
+									<svg class="bi d-block mb-1 mr-2 mr-lg-0" width="24" height="24"><use xlink:href="#speedometerSymbol"></use></svg>
                                     Dashboard
                                 </a>
                             </li>
                             <li>
-                                <a href="/karan" class="nav-link text-white d-flex flex-column justify-content-center align-items-center">
+                                <a href="/karan" class="nav-link">
                                     @* <i class="fa fa-table"></i> *@
-                                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#tableSymbol"></use></svg>
+									<svg class="bi d-block mb-1 mr-2 mr-lg-0" width="24" height="24"><use xlink:href="#tableSymbol"></use></svg>
                                     Karan
                                 </a>
                             </li>
 							<li>
-								<a href="/token" class="nav-link text-white d-flex flex-column justify-content-center align-items-center">
+								<a href="javascript:;"  class="nav-link" @onclick="OnClick_BtnToken">
                                     @* <i class="fa fa-th"></i> *@
-									<svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#tokenSymbol"></use></svg>
+									<svg class="bi d-block mb-1 mr-2 mr-lg-0" width="24" height="24"><use xlink:href="#tokenSymbol"></use></svg>
                                     Token
                                 </a>
                             </li>
                             <li>
-                                <a href="/logout" class="nav-link text-white d-flex flex-column justify-content-center align-items-center">
+                                <a href="/logout" class="nav-link">
                                     @* <i class="fa fa-user"></i> *@
-                                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#userSymbol"></use></svg>
+                                    <svg class="bi d-block mr-2 mr-lg-0 mb-1" width="24" height="24"><use xlink:href="#userSymbol"></use></svg>
                                     Logout
                                 </a>
                             </li>
@@ -189,6 +189,14 @@ z" />
     </div>
 </header>
 
-@code{
-	private TokenRechargeModal TokenRechargeModal = new();
+
+<TokenRechargeModal @ref="TokenModal" />
+
+@code {
+	private TokenRechargeModal TokenModal = new();
+
+	private async Task OnClick_BtnToken(MouseEventArgs e)
+	{
+		await TokenModal.ShowAsync();
+	}
 }

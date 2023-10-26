@@ -143,16 +143,42 @@ header {
 
 .card-frame {
     position: relative;
-    border: none !important;
     box-shadow: none !important;
     height: 512px !important;
     background: transparent;
+    background-image: url(../images/main-frame.png);
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    padding: 15px;
 }
+    .card-frame:after {
+        height: 100%;
+        width: 100%;
+        border: 10px solid #de7f2b;
+        box-shadow: inset 0 0 10px 1px rgba(0,0,0,1);
+        position: absolute;
+        content: "";
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+    .card-frame:before {
+        height: 100%;
+        width: 100%;
+        z-index: 99;
+        border: 5px solid #de7f2b;
+        box-shadow: inset 0 0 5px 0px rgba(0,0,0,1);
+        position: absolute;
+        content: "";
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
 
     .card-frame .card-header {
         background: transparent !important;
         border: none !important;
-        margin-top: 40px;
     }
 
         .card-frame .card-header h2 {
@@ -160,26 +186,12 @@ header {
             margin-bottom: 0;
         }
 
-    .card-frame .card-body {
-        padding: 1.25rem 3.5rem;
-    }
-
+ 
         .card-frame .card-body img {
             mix-blend-mode: multiply;
         }
 
-    .card-frame:before {
-        background-image: url('../images/frame.png');
-        width: 100%;
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-        background-size: cover;
-        background-repeat: no-repeat;
-        height: 103%;
-    }
+
 
 .btn-custom {
     background: #17384e !important;
@@ -379,25 +391,14 @@ header {
 }
 
 @media(min-width:1200px) and (max-width:1399px) {
-    .card-frame .card-body {
-        padding: .75rem 1.5rem;
-    }
 
-    .card-frame:before {
-        background-image: url(../images/laptop-frame.png);
-        height: 99%;
-    }
-    .login-box.card-frame:before {
-        background-image: url(../images/frame.png);
-        width:96%;
-    }
+
         .form-check {
         padding-left: 1rem;
     }
 
     .card-frame .card-header {
         margin-bottom: 0 !important;
-        margin-top: 48px;
     }
 
     .card-frame .card-body .table th {
@@ -444,7 +445,7 @@ header {
             font-size: 40px;
         }
 .login-page, .register-page {
-    background: #910d0d;
+    background: #ffedc6;
 }
 .login-box, .register-box {
     width: 610px;
@@ -558,25 +559,44 @@ header {
    
 }
 @media(max-width:1199px){
-    .card-frame:before {
-        display:none;
-    }
-    .card-frame {
-        background: rgba(255,239,176,1);
-        /*background: linear-gradient(156deg, rgba(255,239,176,1) 0%, rgba(225,139,54,1) 100%);*/
-        border: 5px solid #ff6003 !important;
-        max-width: 100%;
+ 
+
+    .mahadasha-name label{
+        font-size:14px;
     }
   
 }
+@media(max-width:575px) {
+    .btn-sm {
+        padding: 0.25rem 0.3rem;
+        font-size: 0.775rem;
+    }
+    .brand-text{
+        display:none;
+    }
+    .login-box, .register-box{
+        width:100%;
+    }
+}
 
-@media(max-width:575px){
+.navbar-nav a{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+}
+
+@media(max-width:767px) {
     .login-page {
         padding: 25px;
     }
 
     .card-frame {
         padding:10px 0;
+    }
+    .navbar-toggler {
+        display: block !important;
     }
 
 
@@ -617,5 +637,40 @@ header {
         width: 2px;
         height:6px;
     }
+    .navbar-nav a {
+        flex-direction: row;
+        justify-content: flex-start;
+    }
   
+}
+@media(min-width:768px) and (max-width:991px){
+    .card-frame{
+        height:auto!important;
+    }
+    .login-box, .register-box {
+        height: 512px !important;
+    }
+    .card-frame .card-header {
+        margin-top: 20px;
+    }
+    .card-tabs .nav-tabs {
+        justify-content: space-between;
+    }
+
+        .card-tabs .nav-tabs .nav-item {
+            width: 24%;
+            margin-bottom: 10px;
+        }
+
+        .card-tabs .nav-tabs .nav-link {
+            width: 100%;
+            font-size: 14px;
+        }
+    .navbar-toggler {
+        display: block!important;
+    }
+    .navbar-nav a {
+        flex-direction: row;
+        justify-content: flex-start;
+    }
 }
