@@ -1,7 +1,8 @@
 ﻿@inherits BaseComponent
-<h3>TokenRechargeModal</h3>
 
-<div @ref="TokanRecharge" class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+@inject IJSRuntime JSRuntime
+
+<div @ref="ER_TokanRecharge" class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -22,7 +23,24 @@
 </div>
 
 @code {
-    protected ElementReference TokanRecharge { get; set; }
-    
+
+    protected ElementReference ER_TokanRecharge { get; set; }
+
+    private bool IsShow { get; set; }
+
+    public async Task ShowAsync()
+    {
+        IsShow = true;
+        await JSRuntime.ShowModalAsync(ER_TokanRecharge);
+        StateHasChanged();
+    }
+
+    [Parameter]
+    public EventCallback<bool> ConfirmationChanged { get; set; }
+
+    protected async Task OnConfirmationChange(bool value)
+    {
+        IsShow = false;
+        await ConfirmationChanged.InvokeAsync(value);
+    }
 }
-    

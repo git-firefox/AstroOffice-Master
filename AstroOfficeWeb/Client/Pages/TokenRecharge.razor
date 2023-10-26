@@ -1,9 +1,19 @@
 ﻿@page "/token"
 
-@* <TokenRechargeModal @ref="TokanRecharge" /> *@
+
+<TokenRechargeModal @ref="TokenModal" />
 
 <p>this is just fo checking</p>
 
 @code {
-    // private TokenRechargeModal TokenRecharge = new();
+    private TokenRechargeModal TokenModal = new();
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await TokenModal.ShowAsync();
+    }
 }
