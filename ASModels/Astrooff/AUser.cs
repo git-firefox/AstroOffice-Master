@@ -1,6 +1,4 @@
-﻿// Ignore Spelling: Astro Sno Username Adminuser Astrooff
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,6 +9,13 @@ namespace ASModels.Astrooff
     [Table("a_users")]
     public partial class AUser
     {
+        public AUser()
+        {
+            ACcavenueTransactions = new HashSet<ACcavenueTransaction>();
+            AKundalis = new HashSet<AKundali>();
+            ATokenTransactions = new HashSet<ATokenTransaction>();
+        }
+
         [Key]
         [Column("sno")]
         public long Sno { get; set; }
@@ -29,7 +34,18 @@ namespace ASModels.Astrooff
         public bool? CanReport { get; set; }
         [Column("active")]
         public bool? Active { get; set; }
+        [StringLength(50)]
         public string? MobileNumber { get; set; }
+        [StringLength(6)]
         public string? MobileOtp { get; set; }
+
+        [InverseProperty("AUserSnoNavigation")]
+        public virtual AUserTokenBalance? AUserTokenBalance { get; set; }
+        [InverseProperty("AUserSnoNavigation")]
+        public virtual ICollection<ACcavenueTransaction> ACcavenueTransactions { get; set; }
+        [InverseProperty("AUserSnoNavigation")]
+        public virtual ICollection<AKundali> AKundalis { get; set; }
+        [InverseProperty("AUserSnoNavigation")]
+        public virtual ICollection<ATokenTransaction> ATokenTransactions { get; set; }
     }
 }

@@ -1,18 +1,21 @@
 ﻿using System;
-using System.Configuration;
 using System.Collections.Generic;
+using ASModels.Astrooff;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using ASModels.Astrooff;
 
 namespace ASModels
 {
     public partial class AstrooffContext : DbContext
     {
+        public AstrooffContext()
+        {
+        }
 
-        public AstrooffContext() { }
-
-        public AstrooffContext(DbContextOptions<AstrooffContext> options) : base(options) { }
+        public AstrooffContext(DbContextOptions<AstrooffContext> options)
+            : base(options)
+        {
+        }
 
         public virtual DbSet<A35year> A35years { get; set; } = null!;
         public virtual DbSet<AAam> AAams { get; set; } = null!;
@@ -31,6 +34,7 @@ namespace ASModels
         public virtual DbSet<ABasicRule> ABasicRules { get; set; } = null!;
         public virtual DbSet<ABasicRulesOld> ABasicRulesOlds { get; set; } = null!;
         public virtual DbSet<ACallorder> ACallorders { get; set; } = null!;
+        public virtual DbSet<ACcavenueTransaction> ACcavenueTransactions { get; set; } = null!;
         public virtual DbSet<AChangelog> AChangelogs { get; set; } = null!;
         public virtual DbSet<ACity> ACities { get; set; } = null!;
         public virtual DbSet<ACodeLang> ACodeLangs { get; set; } = null!;
@@ -55,6 +59,7 @@ namespace ASModels
         public virtual DbSet<AHindi2> AHindi2s { get; set; } = null!;
         public virtual DbSet<AHindiMini> AHindiMinis { get; set; } = null!;
         public virtual DbSet<AHindiMobile> AHindiMobiles { get; set; } = null!;
+        public virtual DbSet<AHindiMobileTranslate> AHindiMobileTranslates { get; set; } = null!;
         public virtual DbSet<AHindiOld> AHindiOlds { get; set; } = null!;
         public virtual DbSet<AHindifeb282013> AHindifeb282013s { get; set; } = null!;
         public virtual DbSet<AHouseDetail> AHouseDetails { get; set; } = null!;
@@ -76,6 +81,7 @@ namespace ASModels
         public virtual DbSet<AKpRinnPitri> AKpRinnPitris { get; set; } = null!;
         public virtual DbSet<AKpSublordPred> AKpSublordPreds { get; set; } = null!;
         public virtual DbSet<AKpUpay> AKpUpays { get; set; } = null!;
+        public virtual DbSet<AKundali> AKundalis { get; set; } = null!;
         public virtual DbSet<AKundli> AKundlis { get; set; } = null!;
         public virtual DbSet<AKundliMapping> AKundliMappings { get; set; } = null!;
         public virtual DbSet<AKundlisOld> AKundlisOlds { get; set; } = null!;
@@ -119,11 +125,14 @@ namespace ASModels
         public virtual DbSet<ATempMap> ATempMaps { get; set; } = null!;
         public virtual DbSet<ATempMapping> ATempMappings { get; set; } = null!;
         public virtual DbSet<ATimeZone> ATimeZones { get; set; } = null!;
+        public virtual DbSet<ATokenTransaction> ATokenTransactions { get; set; } = null!;
+        public virtual DbSet<ATransactionStatus> ATransactionStatuses { get; set; } = null!;
         public virtual DbSet<AUpay> AUpays { get; set; } = null!;
         public virtual DbSet<AUpay1> AUpay1s { get; set; } = null!;
         public virtual DbSet<AUpayindex> AUpayindices { get; set; } = null!;
         public virtual DbSet<AUser> AUsers { get; set; } = null!;
         public virtual DbSet<AUserLog> AUserLogs { get; set; } = null!;
+        public virtual DbSet<AUserTokenBalance> AUserTokenBalances { get; set; } = null!;
         public virtual DbSet<AVarshphal> AVarshphals { get; set; } = null!;
         public virtual DbSet<AVdaan> AVdaans { get; set; } = null!;
         public virtual DbSet<AVfal> AVfals { get; set; } = null!;
@@ -143,14 +152,6 @@ namespace ASModels
         public virtual DbSet<VfalTamil> VfalTamils { get; set; } = null!;
         public virtual DbSet<VfalTelugu> VfalTelugus { get; set; } = null!;
         public virtual DbSet<VfalUpay> VfalUpays { get; set; } = null!;
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //    {
-        //        optionsBuilder.UseSqlServer();
-        //    }
-        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -317,6 +318,23 @@ namespace ASModels
                 entity.Property(e => e.State).UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
                 entity.Property(e => e.Tob).UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            });
+
+            modelBuilder.Entity<ACcavenueTransaction>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.TimestampCreated).HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.ATransactionStatuses)
+                    .WithMany(p => p.ACcavenueTransactions)
+                    .HasForeignKey(d => d.ATransactionStatusesId)
+                    .HasConstraintName("FK__A_CCAvenu__A_Tra__292D09F3");
+
+                entity.HasOne(d => d.AUserSnoNavigation)
+                    .WithMany(p => p.ACcavenueTransactions)
+                    .HasForeignKey(d => d.AUserSno)
+                    .HasConstraintName("FK__A_CCAvenu__A_Use__2838E5BA");
             });
 
             modelBuilder.Entity<AChangelog>(entity =>
@@ -600,6 +618,28 @@ namespace ASModels
                 entity.Property(e => e.Sno).ValueGeneratedOnAdd();
             });
 
+            modelBuilder.Entity<AKundali>(entity =>
+            {
+                entity.Property(e => e.CheckMfal).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.CheckSahasaneLogic).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.CheckSalaChakkar).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.CheckShowRef).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.IsPaid).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.IsSaved).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.ViewDate).HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.AUserSnoNavigation)
+                    .WithMany(p => p.AKundalis)
+                    .HasForeignKey(d => d.AUserSno)
+                    .HasConstraintName("FK__A_Kundali__A_Use__33AA9866");
+            });
+
             modelBuilder.Entity<AKundli>(entity =>
             {
                 entity.HasKey(e => e.Sno)
@@ -818,6 +858,28 @@ namespace ASModels
                     .HasConstraintName("FK_a_temp_mappings_a_temp_map");
             });
 
+            modelBuilder.Entity<ATokenTransaction>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.TimestampCreated).HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.ATransactionStatuses)
+                    .WithMany(p => p.ATokenTransactions)
+                    .HasForeignKey(d => d.ATransactionStatusesId)
+                    .HasConstraintName("FK__A_TokenTr__A_Tra__2DF1BF10");
+
+                entity.HasOne(d => d.AUserSnoNavigation)
+                    .WithMany(p => p.ATokenTransactions)
+                    .HasForeignKey(d => d.AUserSno)
+                    .HasConstraintName("FK__A_TokenTr__A_Use__2CFD9AD7");
+            });
+
+            modelBuilder.Entity<ATransactionStatus>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+            });
+
             modelBuilder.Entity<AUpay>(entity =>
             {
                 entity.HasIndex(e => e.Sno, "IX_A_upay_1")
@@ -848,6 +910,18 @@ namespace ASModels
                 entity.Property(e => e.Systemname).UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
                 entity.Property(e => e.Username).UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            });
+
+            modelBuilder.Entity<AUserTokenBalance>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.TokenBalance).HasDefaultValueSql("((0.00))");
+
+                entity.HasOne(d => d.AUserSnoNavigation)
+                    .WithOne(p => p.AUserTokenBalance)
+                    .HasForeignKey<AUserTokenBalance>(d => d.AUserSno)
+                    .HasConstraintName("FK__A_UserTok__A_Use__246854D6");
             });
 
             modelBuilder.Entity<AVfalUpay>(entity =>
@@ -914,4 +988,3 @@ namespace ASModels
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
-#pragma warning restore VSSpell001 // Spell Check

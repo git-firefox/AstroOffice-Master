@@ -1,0 +1,98 @@
+﻿@page "/transactions"
+
+<div class="container-fluid p-3">
+    <h1 class="pt-4 pb-2 font-weight-bold ">Transactions</h1>
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="chart-table table-responsive">
+                    <table class="table">
+                        <thead class="p-0 background-divya-astro-color-yellow">
+                            <tr>
+                                <th>ID</th>
+                                <th>User SNO</th>
+                                <th>Transaction Type</th>
+                                <th>Amount</th>
+                                <th>Description</th>
+                                <th>Transaction Status ID</th>
+                                <th>Timestamp Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (TransactionTableTRs != null)
+                            {
+                                foreach (var row in TransactionTableTRs)
+                                {
+                                    <tr>
+                                        <td>@row.ID</td>
+                                        <td>@row.UserSNO</td>
+                                        <td>@row.TransactionType</td>
+                                        <td>@row.Amount</td>
+                                        <td>@row.Description</td>
+                                        <td>@row.TransactionStatusID</td>
+                                        <td>@row.TimestampCreated</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@code {
+    private List<TransactionTableTRModel> TransactionTableTRs = new List<TransactionTableTRModel> {
+        new TransactionTableTRModel
+        {
+            ID = 1,
+            UserSNO = "A_UserSNO_1",
+            TransactionType = "Purchase",
+            Amount = 100.00m,
+            Description = "Product A",
+            TransactionStatusID = 1,
+            TimestampCreated = DateTime.Parse("2023-10-27 10:00:00")
+        },
+        new TransactionTableTRModel
+        {
+            ID = 2,
+            UserSNO = "A_UserSNO_2",
+            TransactionType = "Refund",
+            Amount = -50.00m,
+            Description = "Refund for Product B",
+            TransactionStatusID = 2,
+            TimestampCreated = DateTime.Parse("2023-10-28 14:30:00")
+        },
+        new TransactionTableTRModel
+        {
+            ID = 3,
+            UserSNO = "A_UserSNO_3",
+            TransactionType = "Purchase",
+            Amount = 75.00m,
+            Description = "Product C",
+            TransactionStatusID = 1,
+            TimestampCreated = DateTime.Parse("2023-10-29 09:15:00")
+        },
+        new TransactionTableTRModel
+        {
+            ID = 4,
+            UserSNO = "A_UserSNO_4",
+            TransactionType = "Purchase",
+            Amount = 200.00m,
+            Description = "Product D",
+            TransactionStatusID = 1,
+            TimestampCreated = DateTime.Parse("2023-10-30 16:45:00")
+        },
+        new TransactionTableTRModel
+        {
+            ID = 5,
+            UserSNO = "A_UserSNO_5",
+            TransactionType = "Refund",
+            Amount = -30.00m,
+            Description = "Refund for Product E",
+            TransactionStatusID = 2,
+            TimestampCreated = DateTime.Parse("2023-10-31 12:20:00")
+        }
+    };
+}
