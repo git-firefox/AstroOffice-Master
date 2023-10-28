@@ -51,6 +51,7 @@ namespace AstroOfficeWeb.Server.Controllers
             if (kundali == null)
                 return BadRequest();
             kundali.AUserSno = aUserSno;
+            kundali.ViewDate = DateTime.Now;
             await _context.AKundalis.AddAsync(kundali);
             await _context.SaveChangesAsync();
             return Ok(new ApiResponse<string>() { Data = "Kundali Saved!", ErrorNo = 0, Success = true });

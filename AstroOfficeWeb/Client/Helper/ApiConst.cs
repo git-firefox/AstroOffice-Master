@@ -98,4 +98,11 @@
         public static string GET_VerifyOtp = Base + "VerifyOtp?mobileNumber={0}&otp={1}";
         public static string GET_SendOtp = Base + "SendOtp?mobileNumber={0}";
     }
+
+    public static class KundaliHistoryApiConst
+    {
+        public static string Base = "api/KundaliHistory/";
+        public static string POST_SaveKundali = Base + "SaveKundali";
+        public static string GET_GetAllUserKundalies = Base + "GetAllUserKundalies";
+    }
 }

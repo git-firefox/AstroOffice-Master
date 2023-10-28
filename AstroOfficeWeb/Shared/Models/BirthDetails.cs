@@ -41,5 +41,6 @@ namespace AstroOfficeWeb.Shared.Models
         public bool ChkShowRef { get; set; }
         public Gender Gender { get; set; }
         public int KundaliUdvYear { get; set; } = 18;
+        public int PlaceOfBirthID { get; set; }
     }
 }
