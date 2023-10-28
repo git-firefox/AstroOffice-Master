@@ -43,6 +43,7 @@ namespace AstroOfficeWeb.Client.Services
             };
 
             var response = await _swagger!.PostAsync<SaveKundaliRequest, ApiResponse<string>>(KundaliHistoryApiConst.POST_SaveKundali, request);
+            await _jsRuntime.ShowToastAsync(response?.Message);
         }
 
         public async Task<List<PersonKundaliTableTRModel>> GetUserViewedKundalies()

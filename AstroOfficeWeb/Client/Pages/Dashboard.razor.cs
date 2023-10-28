@@ -3029,6 +3029,8 @@ namespace AstroOfficeWeb.Client.Pages
                 if (htmlString != null)
                     await Show_Falla(htmlString);
                 //Loader.Close();
+
+                await KundaliHistroy.SaveKundali(BirthDetails);
             }
             else
             {

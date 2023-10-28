@@ -32,5 +32,6 @@ builder.Services.AddScoped<KPBLLService>();
 builder.Services.AddScoped<KPDAOService>();
 builder.Services.AddScoped<KundliBLLService>();
 builder.Services.AddScoped<PredictionBLLService>();
+builder.Services.AddScoped<KundaliHistroyService>();
 
 await builder.Build().RunAsync();
