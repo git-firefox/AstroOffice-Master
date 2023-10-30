@@ -1,8 +1,8 @@
-﻿@*@page "/dashboard"*@
-@page "/"
+﻿@page "/"
 
-@using AstroOfficeWeb.Client.Services;
-@using AstroOfficeWeb.Shared.Models;
+@using AstroOfficeWeb.Client.Services
+@using AstroOfficeWeb.Shared.Models
+@using AstroOfficeWeb.Shared.DTOs
 
 @attribute [Authorize]
 
@@ -17,6 +17,8 @@
 @inject KundliBLLService KundliBLL
 @inject PredictionBLLService PredictionBLL
 @inject KundaliHistroyService KundaliHistroy
+@inject ISwaggerApiService Swagger
+@inject KaranService KaranService
 
 <FaladeshModal @ref="FaladeshModal" Falla="@htmlStringFalla" ImgSrcLagan="@imgSrcLagan" ImgSrcBhavChalit="@imgSrcBhavChalit" ConfirmationChanged="ConfirmationChangedModel" />
 
@@ -307,8 +309,6 @@
                                             </div>
                                         </div>
                                         <div class="row justify-content-end mt-2">
-
-
                                             <div class="col-auto">
                                                 <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnFaladesh"> Faladesh </button>
                                             </div>
@@ -317,12 +317,24 @@
                                                 <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnChart"> Chart </button>
                                             </div>
 
+                                            <div class="col-auto">
+                                                @if (OnInitialized_IsComplatedSuccessfully)
+                                                {
+                                                    <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnSaveKundali"> Save Kundali </button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="btn btn-block btn-custom btn-sm" type="button" disabled>
+                                                        <span class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></span>
+                                                        <span class="sr-only">Loading...</span>
+                                                    </button>
+                                                }
+
+                                            </div>
                                         </div>
                                     </div>
 
                                 </div>
-
-
                             </div>
                         </EditForm>
                     </div>
@@ -487,7 +499,7 @@
                                         <div class="chart-table table-responsive">
                                             <table class="table">
 
-                                                <thead class="p-0 background-divya-astro-color-yellow">
+                                                <thead class="p-0 bg-da-yellow">
                                                     <tr>
                                                         <th>House</th>
                                                         <th>RL-NL-SL-SSL</th>
@@ -537,7 +549,7 @@
 
                                         <div class="chart-table table-responsive">
                                             <table class="table">
-                                                <thead class="p-0 background-divya-astro-color-yellow">
+                                                <thead class="p-0 bg-da-yellow">
                                                     <tr>
                                                         <th>Planet</th>
                                                         <th>RL-NL-SL-SSL</th>
@@ -597,7 +609,7 @@
                                                 <div style="height: 310px; overflow-y: auto;">
                                                     <table class="table">
 
-                                                        <thead class="p-0 background-divya-astro-color-yellow">
+                                                        <thead class="p-0 bg-da-yellow">
                                                             <tr>
                                                                 <th>Planet</th>
                                                                 <th>Period</th>
@@ -661,7 +673,7 @@
                                                     <table class="table">
                                                         @if (!BirthDetails.SalaChakkar)
                                                         {
-                                                            <thead class="p-0 background-divya-astro-color-yellow">
+                                                            <thead class="p-0 bg-da-yellow">
                                                                 <tr>
                                                                     <th>Planet</th>
                                                                     <th>Period</th>
@@ -681,7 +693,7 @@
                                                         }
                                                         else
                                                         {
-                                                            <thead class="p-0 background-divya-astro-color-yellow">
+                                                            <thead class="p-0 bg-da-yellow">
                                                                 <tr>
                                                                     <th>Planet</th>
                                                                     <th>Antar</th>
@@ -746,7 +758,7 @@
                                                     <h4 class="text-center font-weight-bold">प्र्यंतरदशा</h4>
                                                     <div style="height: 310px; overflow-y: auto;">
                                                         <table class="table">
-                                                            <thead class="p-0 background-divya-astro-color-yellow">
+                                                            <thead class="p-0 bg-da-yellow">
                                                                 <tr>
                                                                     <th>Planet</th>
                                                                     <th>Period</th>
@@ -780,7 +792,7 @@
                                                     <h4 class="text-center font-weight-bold">सुक्ष्मदशा</h4>
                                                     <div style="height: 310px; overflow-y: auto;">
                                                         <table class="table">
-                                                            <thead class="p-0 background-divya-astro-color-yellow">
+                                                            <thead class="p-0 bg-da-yellow">
                                                                 <tr>
                                                                     <th>Planet</th>
                                                                     <th>Period</th>

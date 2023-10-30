@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AstroOfficeWeb.Shared.DTOs
 {
-    public class APlaceMaster
+    public class PlaceDTO
     {
         public long Sno { get; set; }
         public string? PlaceHindi { get; set; }

@@ -1,5 +1,5 @@
 ﻿using ASModels.Astrooff;
-using DTOs = AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Shared.DTOs;
 using VO = ASDLL.ASDLL.ValueObjects;
 using AutoMapper;
 using AstroOfficeWeb.Shared.Models;
@@ -13,11 +13,12 @@ namespace AstroOfficeWeb.Server
         /// </summary>
         public MapperProfile()
         {
-            CreateMap<ACountryMaster, DTOs.ACountryMaster>();
-            CreateMap<VO.ACountryMaster, DTOs.ACountryMaster>();
-            CreateMap<VO.APlaceMaster, DTOs.APlaceMaster>();
-            CreateMap<VO.AStateMaster, DTOs.AStateMaster>();
+            CreateMap<ACountryMaster, CountryDTO>();
+            CreateMap<VO.ACountryMaster, CountryDTO>();
+            CreateMap<VO.APlaceMaster, PlaceDTO>();
+            CreateMap<VO.AStateMaster, StateDTO>();
             CreateMap<SaveKundaliRequest, AKundali>();
+            CreateMap<AKundali, KundaliDTO>();
 
         }
     }

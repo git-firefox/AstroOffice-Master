@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AstroOfficeWeb.Shared.DTOs
 {
-    public class AStateMaster
+    public class StateDTO
     {
         public long Sno { get; set; }
         public string? CountryCode { get; set; }

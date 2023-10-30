@@ -22,7 +22,7 @@ namespace AstroOfficeWeb.Server.Controllers
         public IActionResult GetCountry()
         {
             var aCountry = _dalCountry.GetCountry();
-            var countryDTOs = _mapper.Map<IEnumerable<ACountryMaster>>(aCountry);
+            var countryDTOs = _mapper.Map<IEnumerable<CountryDTO>>(aCountry);
             return Ok(countryDTOs);
         }
     }

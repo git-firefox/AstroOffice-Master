@@ -48,7 +48,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 country.TimeCorrectionCode = places.TimeCorrectionCode;
                 lstBCity.Add(country);
             }
-            var aPlaceMasters = _mapper.Map<List<DTOs.APlaceMaster>>(lstBCity);
+            var aPlaceMasters = _mapper.Map<List<DTOs.PlaceDTO>>(lstBCity);
             return Ok(aPlaceMasters);
         }
 
@@ -56,7 +56,7 @@ namespace AstroOfficeWeb.Server.Controllers
         public IActionResult GetPlaceByID(long sno)
         {
             var aPlaceMaster = _locationBLL.GetPlaceByID(sno);
-            var aPlace = _mapper.Map<DTOs.APlaceMaster>(aPlaceMaster);
+            var aPlace = _mapper.Map<DTOs.PlaceDTO>(aPlaceMaster);
             return Ok(aPlace);
         }
 

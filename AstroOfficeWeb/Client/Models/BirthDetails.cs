@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AstroOfficeWeb.Shared.Models;
 
-namespace AstroOfficeWeb.Shared.Models
+namespace AstroOfficeWeb.Client.Models
 {
     public class BirthDetails
     {
@@ -41,6 +42,6 @@ namespace AstroOfficeWeb.Shared.Models
         public bool ChkShowRef { get; set; }
         public Gender Gender { get; set; }
         public int KundaliUdvYear { get; set; } = 18;
-        public int PlaceOfBirthID { get; set; }
+        public long? PlaceOfBirthID { get; set; }
     }
 }

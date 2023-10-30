@@ -4,7 +4,7 @@ namespace AstroOfficeWeb.Client.Models
 {
     public class LoginModel
     {
-        [Required(ErrorMessage = "User Name is required.")]        
+        [Required(ErrorMessage = "User Name is required.")]
         public string UserName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Password is required.")]

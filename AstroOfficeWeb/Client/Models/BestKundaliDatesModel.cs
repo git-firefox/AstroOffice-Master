@@ -1,5 +1,4 @@
-﻿using AstroOfficeWeb.Client.Helper;
-using AstroOfficeWeb.Shared.Models;
+﻿using AstroOfficeWeb.Shared.Models;
 
 namespace AstroOfficeWeb.Client.Models
 {

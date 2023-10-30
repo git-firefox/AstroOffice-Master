@@ -1,4 +1,6 @@
-﻿namespace AstroOfficeWeb.Shared.Models
+﻿using AstroOfficeWeb.Shared.Models;
+
+namespace AstroOfficeWeb.Client.Models
 {
     public class BirthDetailsLookups
     {

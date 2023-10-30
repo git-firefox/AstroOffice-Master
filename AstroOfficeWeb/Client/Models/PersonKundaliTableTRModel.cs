@@ -2,6 +2,7 @@
 {
     public class PersonKundaliTableTRModel
     {
+        public int SrNo { get; set; }
         public int ID { get; set; }
         public string? Name { get; set; }
         public string? ProductName { get; set; }
@@ -9,6 +10,7 @@
         public DateTime DateOfBirth { get; set; }
         public TimeSpan TimeOfBirth { get; set; }
         public int PlaceOfBirthID { get; set; }
+        public string? PlaceOfBirth { get; set; }
         public string? Language { get; set; }
         public bool IsPaid { get; set; }
         public bool IsSaved { get; set; }

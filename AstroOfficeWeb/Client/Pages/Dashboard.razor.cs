@@ -1,35 +1,18 @@
 ﻿using AstroOfficeWeb.Client.Helper;
 using AstroOfficeWeb.Client.Models;
-using AstroOfficeWeb.Client.Services.IService;
-using DTOs = AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Client.Shared;
 using AstroOfficeWeb.Shared.Models;
+using AstroShared.Methods;
+using AstroShared.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
-using AstroShared.Models;
-using AstroShared.Methods;
-using AstroOfficeWeb.Client.Services;
-using AstroOfficeWeb.Client.Shared;
-using Microsoft.Extensions.Logging;
-using System.Reflection;
-using System.Collections.Generic;
-using Microsoft.JSInterop;
-using System.Net.WebSockets;
+using DTOs = AstroOfficeWeb.Shared.DTOs;
 
 namespace AstroOfficeWeb.Client.Pages
 {
     public partial class Dashboard
     {
-        #region Inject Services
-
-        [Inject]
-        ISwaggerApiService? Swagger { get; set; }
-
-        [Inject]
-        KaranService? KaranService { get; set; }
-
-        #endregion
-
         #region Define Variables
 
         private IList<Task> TaskList { get; set; } = new List<Task>();
@@ -102,7 +85,7 @@ namespace AstroOfficeWeb.Client.Pages
         private string? imgSrcBhavChalit;
         private string? htmlStringFalla;
 
-        private List<DTOs.APlaceMaster>? ListBirthCities = new();
+        private List<DTOs.PlaceDTO>? ListBirthCities = new();
         private SavedStateModel SavedStateModel = new();
 
         #region View Models Data
@@ -190,6 +173,7 @@ namespace AstroOfficeWeb.Client.Pages
 
         }
 
+        bool OnInitialized_IsComplatedSuccessfully = false;
         protected override async Task OnInitializedAsync()
         {
             var countryMasters = await GetCountry();
@@ -261,11 +245,12 @@ namespace AstroOfficeWeb.Client.Pages
             //}
             await base.OnInitializedAsync();
 
+            OnInitialized_IsComplatedSuccessfully = true;
         }
 
-        private async Task<List<DTOs.ACountryMaster>?> GetCountry()
+        private async Task<List<DTOs.CountryDTO>?> GetCountry()
         {
-            var countryMasters = await Swagger!.GetAsync<List<DTOs.ACountryMaster>>(CountryApiConst.GET_GetCountry);
+            var countryMasters = await Swagger!.GetAsync<List<DTOs.CountryDTO>>(CountryApiConst.GET_GetCountry);
             return countryMasters;
         }
 
@@ -867,9 +852,9 @@ namespace AstroOfficeWeb.Client.Pages
         //    }
         //}
 
-        private async Task<List<DTOs.APlaceMaster>?> GetPlaceListLike(string? place, string? countrycode)
+        private async Task<List<DTOs.PlaceDTO>?> GetPlaceListLike(string? place, string? countrycode)
         {
-            var response = await Swagger!.GetAsync<List<DTOs.APlaceMaster>>(string.Format(LocationBLLApiConst.GET_GetPlaceListLike, place, countrycode));
+            var response = await Swagger!.GetAsync<List<DTOs.PlaceDTO>>(string.Format(LocationBLLApiConst.GET_GetPlaceListLike, place, countrycode));
             return response;
         }
 
@@ -1459,6 +1444,17 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
+        bool OnClick_BtnSaveKundali_IsComplated = true;
+        private async Task OnClick_BtnSaveKundali(MouseEventArgs e)
+        {
+            if (!OnClick_BtnSaveKundali_IsComplated) return;
+
+            OnClick_BtnSaveKundali_IsComplated = false;
+
+            BirthDetails.PlaceOfBirthID = SelectedBirthCity?.Sno;
+            await KundaliHistroy.SaveKundali(BirthDetails);
+        }
+
         bool OnClick_BtnChart_IsComplated = true;
         private async Task OnClick_BtnChart(MouseEventArgs e)
         {
@@ -1644,7 +1640,7 @@ namespace AstroOfficeWeb.Client.Pages
                 {
                     selectedBirthCityIndex++;
                     //await OnChange_ListBirthCities(new ChangeEventArgs() { Value = selectedBirthCityIndex });
-                    await SelectedIndex( selectedBirthCityIndex );
+                    await SelectedIndex(selectedBirthCityIndex);
                 }
             }
             else if (char.TryParse(e.Key, out char result))
@@ -1689,9 +1685,9 @@ namespace AstroOfficeWeb.Client.Pages
             BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
 
 
-            var task1 = Swagger!.GetAsync<DTOs.APlaceMaster>(string.Format(LocationBLLApiConst.GET_GetPlaceByID, selectedBirthCity?.Sno));
+            var task1 = Swagger!.GetAsync<DTOs.PlaceDTO>(string.Format(LocationBLLApiConst.GET_GetPlaceByID, selectedBirthCity?.Sno));
 
-            var task2 = Swagger!.GetAsync<DTOs.ACountryMaster>(string.Format(LocationBLLApiConst.GET_GetCountryByCode, selectedBirthCity?.CountryCode));
+            var task2 = Swagger!.GetAsync<DTOs.CountryDTO>(string.Format(LocationBLLApiConst.GET_GetCountryByCode, selectedBirthCity?.CountryCode));
 
             await Task.WhenAll(task1, task2);
 
@@ -1699,7 +1695,7 @@ namespace AstroOfficeWeb.Client.Pages
 
             var country = task2.Result;
 
-            var task3 = Swagger!.GetAsync<DTOs.AStateMaster>(string.Format(LocationBLLApiConst.GET_GetStateByCode, place?.CountryCode));
+            var task3 = Swagger!.GetAsync<DTOs.StateDTO>(string.Format(LocationBLLApiConst.GET_GetStateByCode, place?.CountryCode));
 
             await Task.WhenAll(task3);
 
@@ -1754,12 +1750,12 @@ namespace AstroOfficeWeb.Client.Pages
             var selectedBirthCity = ListBirthCities![selectedBirthCityIndex - 1];
 
             await SelectedIndex(selectedBirthCityIndex);
-           // this.BirthDetails.BirthPlace = selectedBirthCity?.Place ?? "";
+            // this.BirthDetails.BirthPlace = selectedBirthCity?.Place ?? "";
 
             BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
 
             ListBirthCities.Clear();
-           
+
 
             await Gen_Kundali_Chart();
 
@@ -3030,7 +3026,8 @@ namespace AstroOfficeWeb.Client.Pages
                     await Show_Falla(htmlString);
                 //Loader.Close();
 
-                await KundaliHistroy.SaveKundali(BirthDetails);
+                BirthDetails.PlaceOfBirthID = SelectedBirthCity?.Sno;
+                await KundaliHistroy.SaveKundaliLog(BirthDetails);
             }
             else
             {
@@ -3039,6 +3036,8 @@ namespace AstroOfficeWeb.Client.Pages
                 //this.TxtBirthplace.Focus();
             }
         }
+
+        private DTOs.PlaceDTO? SelectedBirthCity { get => ListBirthCities?[selectedBirthCityIndex]; }
 
         [Inject]
         private NavigationManager? NavigationManager { get; set; }
@@ -3369,6 +3368,7 @@ namespace AstroOfficeWeb.Client.Pages
             }
             catch (Exception e)
             {
+                _ = e;
                 await JSRuntime.ShowToastAsync("Invalid DateTime", SwalIcon.Error);
             }
 

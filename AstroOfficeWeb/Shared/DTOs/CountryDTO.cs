@@ -7,7 +7,7 @@ using AstroOfficeWeb.Shared.Models;
 
 namespace AstroOfficeWeb.Shared.DTOs
 {
-    public class ACountryMaster
+    public class CountryDTO
     {
         public long Sno { get; set; }
         public string CountryCode { get; set; } = string.Empty;

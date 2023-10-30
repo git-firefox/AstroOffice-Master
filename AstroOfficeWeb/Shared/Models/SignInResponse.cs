@@ -12,7 +12,7 @@ namespace AstroOfficeWeb.Shared.Models
         public bool IsAuthSuccessful { get; set; }
         public string? Message { get; set; }
         public string? Token { get; set; }
-        public AUserDTO? UserDTO { get; set; }
+        public UserDTO? UserDTO { get; set; }
 
     }
 }

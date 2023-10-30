@@ -64,7 +64,7 @@ namespace AstroOfficeWeb.Server.Controllers
                     goto returnResponse;
                 }
 
-                var userDTO = new AUserDTO()
+                var userDTO = new UserDTO()
                 {
                     UserName = aUser.Username ?? "",
                     CanAddNew = aUser.CanAdd.GetValueOrDefault(),
@@ -133,7 +133,7 @@ namespace AstroOfficeWeb.Server.Controllers
                     goto returnResponse;
                 }
 
-                var userDTO = new AUserDTO()
+                var userDTO = new UserDTO()
                 {
                     UserName = aUser.Username ?? "",
                     CanAddNew = aUser.CanAdd.GetValueOrDefault(),

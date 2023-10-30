@@ -37,7 +37,7 @@ namespace AstroOfficeWeb.Client.Models
         public bool IsShowRef { get; set; }
         public Gender Gender { get; set; }
         public int? KundaliUdvYear { get; set; }
-        public List<ACountryMaster>? BirthCountries { get; set; }
+        public List<CountryDTO>? BirthCountries { get; set; }
 
         public List<string> BirthCategories { get; set; } = new List<string> {
             "Kamkaj",

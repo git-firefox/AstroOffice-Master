@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AstroOfficeWeb.Shared.DTOs
 {
-    public class AUserDTO
+    public class UserDTO
     {
         public string? UserName { get; set; }
         public bool CanAddNew { get; set; }

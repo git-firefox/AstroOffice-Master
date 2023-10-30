@@ -1,4 +1,7 @@
 ﻿@page "/saved-kundalis"
+@using AstroOfficeWeb.Client.Services;
+
+@inject KundaliHistroyService KundaliHistroy
 
 <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold ">Saved Kundalis</h1>
@@ -7,44 +10,78 @@
             <div class="col-sm-12 col-md-12">
                 <div class="chart-table table-responsive">
                     <table class="table">
-                        <thead class="p-0 background-divya-astro-color-yellow">
+                        <thead class="p-0 bg-da-yellow">
                             <tr>
-                                <th>ID</th>
+                                <th>Sr No</th>
                                 <th>Name</th>
                                 <th>Product Name</th>
                                 <th>Gender</th>
                                 <th>Date of Birth</th>
                                 <th>Time of Birth</th>
-                                <th>Place of Birth ID</th>
+                                <th>Place of Birth</th>
                                 <th>Language</th>
-                                <th>Is Paid</th>
-                                <th>Is Saved</th>
                                 <th>View Date</th>
-                                <th>A User SNO</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @if (PersonKundaliTableTRs != null)
-                            {
-                                foreach (var row in PersonKundaliTableTRs)
+
+                        @if (personKundaliTableTRs == null)
+                        {
+                            <tbody class="overlay-wrapper data-loader">
+                                @if (personKundaliTableTRs == null)
                                 {
                                     <tr>
-                                        <td>@row.ID</td>
-                                        <td>@row.Name</td>
-                                        <td>@row.ProductName</td>
-                                        <td>@row.Gender</td>
-                                        <td>@row.DateOfBirth.ToString(format: "dd - MM - yyyy")</td>
-                                        <td>@row.TimeOfBirth</td>
-                                        <td>@row.PlaceOfBirthID</td>
-                                        <td>@row.Language</td>
-                                        <td>@row.IsPaid</td>
-                                        <td>@row.IsSaved</td>
-                                        <td>@row.ViewDate</td>
-                                        <td>@row.A_User_SNO</td>
+                                        <td colspan="10"><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
+                                    </tr>
+                                    @for (int i = 0; i < 9; i++)
+                                    {
+                                        <tr>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        }
+                        else
+                        {
+                            <tbody>
+                                @if (personKundaliTableTRs.Any())
+                                {
+                                    foreach (var row in personKundaliTableTRs)
+                                    {
+                                        <tr>
+                                            <td>@row.SrNo</td>
+                                            <td>@row.Name</td>
+                                            <td>@row.ProductName</td>
+                                            <td>@row.Gender</td>
+                                            <td>@row.DateOfBirth.ToString(format: "dd - MM - yyyy")</td>
+                                            <td>@row.TimeOfBirth.ToString(format: "c")</td>
+                                            <td>@row.PlaceOfBirth</td>
+                                            <td>@row.Language</td>
+                                            <td>@row.ViewDate</td>
+                                            <td>
+                                                <button type="button" title="View Kundali" class="btn btn-custom" @onclick="()=>OnClick_BtnShow(row)"><i class="fa fa-eye"></i></button>
+                                                <button type="button" class="btn btn-custom" title="Delete Saved Kundali" @onclick="()=>OnClick_BtnDelete(row)"><i class="fa fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="12" class="text-center">No records found.</td>
                                     </tr>
                                 }
-                            }
-                        </tbody>
+                            </tbody>
+                        }
                     </table>
                 </div>
             </div>
@@ -53,81 +90,20 @@
 </div>
 
 @code {
-    private List<PersonKundaliTableTRModel> PersonKundaliTableTRs = new List<PersonKundaliTableTRModel> {
-        new PersonKundaliTableTRModel
-        {
-            ID = 1,
-            Name = "Alice Johnson",
-            ProductName = "Product A",
-            Gender = "Female",
-            DateOfBirth = new DateTime(1995, 3, 12),
-            TimeOfBirth = new TimeSpan(10, 15, 0),
-            PlaceOfBirthID = 1003,
-            Language = "English",
-            IsPaid = true,
-            IsSaved = true,
-            ViewDate = DateTime.Now.AddDays(-5),
-            A_User_SNO = "A_UserSNO_3"
-        },
-        new PersonKundaliTableTRModel
-        {
-            ID = 2,
-            Name = "Bob Smith",
-            ProductName = "Product B",
-            Gender = "Male",
-            DateOfBirth = new DateTime(1992, 7, 18),
-            TimeOfBirth = new TimeSpan(16, 30, 0),
-            PlaceOfBirthID = 1004,
-            Language = "French",
-            IsPaid = false,
-            IsSaved = false,
-            ViewDate = DateTime.Now.AddDays(-5),
-            A_User_SNO = "A_UserSNO_4"
-        },
-        new PersonKundaliTableTRModel
-        {
-            ID = 3,
-            Name = "Eva Martinez",
-            ProductName = "Product C",
-            Gender = "Female",
-            DateOfBirth = new DateTime(1988, 5, 5),
-            TimeOfBirth = new TimeSpan(9, 45, 0),
-            PlaceOfBirthID = 1001,
-            Language = "Spanish",
-            IsPaid = true,
-            IsSaved = true,
-            ViewDate = DateTime.Now.AddDays(-3),
-            A_User_SNO = "A_UserSNO_5"
-        },
-        new PersonKundaliTableTRModel
-        {
-            ID = 4,
-            Name = "David Wilson",
-            ProductName = "Product D",
-            Gender = "Male",
-            DateOfBirth = new DateTime(1990, 9, 30),
-            TimeOfBirth = new TimeSpan(14, 0, 0),
-            PlaceOfBirthID = 1002,
-            Language = "German",
-            IsPaid = true,
-            IsSaved = true,
-            ViewDate = DateTime.Now.AddDays(-2),
-            A_User_SNO = "A_UserSNO_6"
-        },
-        new PersonKundaliTableTRModel
-        {
-            ID = 5,
-            Name = "Sophia Lee",
-            ProductName = "Product E",
-            Gender = "Female",
-            DateOfBirth = new DateTime(1997, 2, 25),
-            TimeOfBirth = new TimeSpan(11, 45, 0),
-            PlaceOfBirthID = 1003,
-            Language = "Chinese",
-            IsPaid = true,
-            IsSaved = true,
-            ViewDate = DateTime.Now.AddDays(-1),
-            A_User_SNO = "A_UserSNO_7"
-        }
-    };
+    private List<PersonKundaliTableTRModel>? personKundaliTableTRs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        personKundaliTableTRs = await KundaliHistroy.GetUserSavedKundalies();
+    }
+
+    private void OnClick_BtnShow(PersonKundaliTableTRModel selectedRow)
+    {
+
+    }
+
+    private void OnClick_BtnDelete(PersonKundaliTableTRModel selectedRow)
+    {
+
+    }
 }
