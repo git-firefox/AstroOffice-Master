@@ -29,7 +29,7 @@ namespace AstroOfficeWeb.Client.Services
                 CheckMFal = bd.ChkMfal,
                 CountryCode = bd.CmbCountry,
                 Name = bd.TxtName,
-                ProductName = null,
+                ProductName = bd.CmbCategory,
                 CheckSahasaneLogic = bd.ChkSahasaneLogic,
                 CheckSalaChakkar = bd.SalaChakkar,
                 DateOfBirth = new DateTime(bd.Dobyy, bd.Dobmm, bd.Dobdd),
@@ -44,7 +44,8 @@ namespace AstroOfficeWeb.Client.Services
                 Rotate = bd.CmbRotate,
                 SkipBadType = bd.CmbSkipBad,
                 TimeType = bd.CmbTime,
-                TimeValue = bd.TimeValue
+                TimeValue = bd.TimeValue,
+                PlaceOfBrithSearch = bd.TxtBirthPlace[..3].ToString()
             };
 
             var response = await _swagger!.PostAsync<SaveKundaliRequest, ApiResponse<string>>(KundaliHistoryApiConst.POST_SaveKundali, request);
@@ -60,7 +61,7 @@ namespace AstroOfficeWeb.Client.Services
                 CheckMFal = bd.ChkMfal,
                 CountryCode = bd.CmbCountry,
                 Name = bd.TxtName,
-                ProductName = null,
+                ProductName = bd.CmbCategory,
                 CheckSahasaneLogic = bd.ChkSahasaneLogic,
                 CheckSalaChakkar = bd.SalaChakkar,
                 DateOfBirth = new DateTime(bd.Dobyy, bd.Dobmm, bd.Dobdd),
@@ -75,7 +76,8 @@ namespace AstroOfficeWeb.Client.Services
                 Rotate = bd.CmbRotate,
                 SkipBadType = bd.CmbSkipBad,
                 TimeType = bd.CmbTime,
-                TimeValue = bd.TimeValue
+                TimeValue = bd.TimeValue,
+                PlaceOfBrithSearch = bd.TxtBirthPlace[..3].ToString()
             };
 
             var response = await _swagger!.PostAsync<SaveKundaliRequest, ApiResponse<string>>(KundaliHistoryApiConst.POST_SaveKundali, request);
@@ -156,7 +158,7 @@ namespace AstroOfficeWeb.Client.Services
                 Tobhh = kundali.TimeOfBirth.Hours,
                 Tobmm = kundali.TimeOfBirth.Minutes,
                 Tobss = kundali.TimeOfBirth.Seconds,
-                //TxtBirthPlace = "Delhi",
+                TxtBirthPlace = kundali.PlaceOfBrithSearch?.ToLower() ?? "Delhi",
                 //BirthPlace = "Delhi",
                 //BirthCity = string.Empty,
                 //IsMale = false,

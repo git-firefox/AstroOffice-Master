@@ -28,5 +28,7 @@ namespace AstroOfficeWeb.Shared.DTOs
         public int TimeValue { get; set; }
         public string? TimeType { get; set; }
         public string? SkipBadType { get; set; }
+        public string? PlaceOfBrithSearch { get; set; }
+
     }
 }
