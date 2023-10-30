@@ -92,10 +92,11 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.UserDTO = userDTO;
                 response.Message = AccountMessageConst.SignUpSuccessful;
             }
-            catch
+            catch(Exception ex)
             {
                 response.IsAuthSuccessful = false;
                 response.Message = AccountMessageConst.ServerError;
+                throw ex;
             }
 
             returnResponse:
