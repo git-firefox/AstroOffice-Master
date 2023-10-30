@@ -52,5 +52,7 @@ namespace ASModels.Astrooff
         [ForeignKey("AUserSno")]
         [InverseProperty("AKundalis")]
         public virtual AUser? AUserSnoNavigation { get; set; }
+
+        public int? TimeValue { get; set; }
     }
 }

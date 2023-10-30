@@ -104,5 +104,6 @@
         public static string Base = "api/KundaliHistory/";
         public static string POST_SaveKundali = Base + "SaveKundali";
         public static string GET_GetAllUserKundalies = Base + "GetAllUserKundalies";
+        public static string DELETE_DeleteSavedKundali = Base + "DeleteSavedKundali";
     }
 }

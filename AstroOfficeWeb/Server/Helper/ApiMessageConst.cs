@@ -27,4 +27,10 @@
         public static string InvalidOTP = "Verification failed. The one-time password (OTP) you provided is incorrect. Please ensure you entered the correct OTP.";
         public static string ValidOTP = "OTP has been successfully verified.";
     }
+
+    public static class KundaliHistoryMessageConst
+    {
+        public static string KundaliDeleted = "Kundali Deleted Successfully!";
+        public static string KundaliDeletedFailed = "Unable to delete kundali Deleted";
+    }
 }

@@ -1,4 +1,5 @@
-﻿using AstroOfficeWeb.Client.Helper;
+﻿using System.Globalization;
+using AstroOfficeWeb.Client.Helper;
 using AstroOfficeWeb.Client.Models;
 using AstroOfficeWeb.Client.Services.IService;
 using AstroOfficeWeb.Shared.DTOs;
@@ -11,6 +12,7 @@ namespace AstroOfficeWeb.Client.Services
     {
         private readonly ISwaggerApiService _swagger;
         private readonly IJSRuntime _jsRuntime;
+        public BirthDetails? SelectedSavedKundali;
 
         public KundaliHistroyService(ISwaggerApiService swagger, IJSRuntime jsRuntime)
         {
@@ -31,7 +33,7 @@ namespace AstroOfficeWeb.Client.Services
                 CheckSahasaneLogic = bd.ChkSahasaneLogic,
                 CheckSalaChakkar = bd.SalaChakkar,
                 DateOfBirth = new DateTime(bd.Dobyy, bd.Dobmm, bd.Dobdd),
-                TimeOfBirth = new TimeSpan(bd.Tobhh, bd.Tobhh, bd.Tobss),
+                TimeOfBirth = new TimeSpan(bd.Tobhh, bd.Tobmm, bd.Tobss),
                 CheckShowRef = bd.ChkShowRef,
                 Gender = bd.Gender.ToString(),
                 IsPaid = false,
@@ -42,6 +44,7 @@ namespace AstroOfficeWeb.Client.Services
                 Rotate = bd.CmbRotate,
                 SkipBadType = bd.CmbSkipBad,
                 TimeType = bd.CmbTime,
+                TimeValue = bd.TimeValue
             };
 
             var response = await _swagger!.PostAsync<SaveKundaliRequest, ApiResponse<string>>(KundaliHistoryApiConst.POST_SaveKundali, request);
@@ -61,7 +64,7 @@ namespace AstroOfficeWeb.Client.Services
                 CheckSahasaneLogic = bd.ChkSahasaneLogic,
                 CheckSalaChakkar = bd.SalaChakkar,
                 DateOfBirth = new DateTime(bd.Dobyy, bd.Dobmm, bd.Dobdd),
-                TimeOfBirth = new TimeSpan(bd.Tobhh, bd.Tobhh, bd.Tobss),
+                TimeOfBirth = new TimeSpan(bd.Tobhh, bd.Tobmm, bd.Tobss),
                 CheckShowRef = bd.ChkShowRef,
                 Gender = bd.Gender.ToString(),
                 IsPaid = false,
@@ -72,16 +75,17 @@ namespace AstroOfficeWeb.Client.Services
                 Rotate = bd.CmbRotate,
                 SkipBadType = bd.CmbSkipBad,
                 TimeType = bd.CmbTime,
+                TimeValue = bd.TimeValue
             };
 
             var response = await _swagger!.PostAsync<SaveKundaliRequest, ApiResponse<string>>(KundaliHistoryApiConst.POST_SaveKundali, request);
-            await _jsRuntime.ShowToastAsync(response?.Message);
+            await _jsRuntime.ShowToastAsync("Kundali Saved!");
         }
 
         public async Task<List<PersonKundaliTableTRModel>?> GetUserViewedKundalies()
         {
             var response = await _swagger!.GetAsync<List<KundaliDTO>>(KundaliHistoryApiConst.GET_GetAllUserKundalies);
-            var temp = response?.Select((r, index) => new PersonKundaliTableTRModel
+            var temp = response?.Where(r => !r.IsSaved).Select((r, index) => new PersonKundaliTableTRModel
             {
                 SrNo = index + 1,
                 ID = r.ID,
@@ -97,11 +101,16 @@ namespace AstroOfficeWeb.Client.Services
             return temp;
         }
 
+        public static List<KundaliDTO>? SavedKundalies;
         public async Task<List<PersonKundaliTableTRModel>?> GetUserSavedKundalies()
         {
+            SelectedSavedKundali = null;
+
             var response = await _swagger!.GetAsync<List<KundaliDTO>>(KundaliHistoryApiConst.GET_GetAllUserKundalies);
 
-            var temp = response?.Where(r => r.IsSaved).Select((r, index) => new PersonKundaliTableTRModel
+            SavedKundalies = response?.Where(r => r.IsSaved).ToList();
+
+            var temp = SavedKundalies?.Select((r, index) => new PersonKundaliTableTRModel
             {
                 SrNo = index + 1,
                 ID = r.ID,
@@ -115,6 +124,77 @@ namespace AstroOfficeWeb.Client.Services
                 Language = r.Language
             }).ToList();
             return temp;
+        }
+        public void SetSelectedSavedKundali(int selectedIndex)
+        {
+            SelectedSavedKundali = null;
+
+            if (SavedKundalies?.Count == 0)
+            {
+                SelectedSavedKundali = null;
+                return;
+            }
+
+            var kundali = SavedKundalies?[selectedIndex];
+
+            if (kundali == null)
+            {
+                SelectedSavedKundali = null;
+                return;
+            }
+
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+            SelectedSavedKundali = new BirthDetails
+            {
+                CmbCountry = kundali.CountryCode ?? "Ind.",
+                TxtName = kundali.Name ?? "SIVA",
+                CmbTime = textInfo.ToTitleCase(kundali.TimeType ?? "minute"),
+                TimeValue = kundali.TimeValue,
+                Dobdd = kundali.DateOfBirth.Day,
+                Dobmm = kundali.DateOfBirth.Month,
+                Dobyy = kundali.DateOfBirth.Year,
+                Tobhh = kundali.TimeOfBirth.Hours,
+                Tobmm = kundali.TimeOfBirth.Minutes,
+                Tobss = kundali.TimeOfBirth.Seconds,
+                //TxtBirthPlace = "Delhi",
+                //BirthPlace = "Delhi",
+                //BirthCity = string.Empty,
+                //IsMale = false,
+                //IsFemale = false,
+                CmbCategory = kundali.Category ?? "Kamkaj",
+                CmbAyanansh = kundali.Ayanansh ?? "KP",
+                //Brief = string.Empty,
+                CmbRotate = kundali.Rotate,
+                ChkSahasaneLogic = kundali.CheckSahasaneLogic, // Set to true or false as needed
+                SalaChakkar = kundali.CheckSalaChakkar,
+                ChkMfal = kundali.CheckMFal,
+                CmbLanguage = kundali.Language ?? "Hindi",
+                ChkShowRef = kundali.CheckShowRef,
+                Gender = Enum.Parse<Gender>(kundali.Gender ?? "Male"),
+                KundaliUdvYear = kundali.KundaliUdvYear,
+                PlaceOfBirthID = kundali.PlaceOfBirthID,
+                CmbSkipBad = kundali.SkipBadType
+            };
+
+        }
+
+        public async Task<bool> IsDeletedSavedKundali(int? id)
+        {
+            var response = await _swagger!.DeleteAsync<ApiResponse<string>>(KundaliHistoryApiConst.DELETE_DeleteSavedKundali, queryParams: new Dictionary<string, string>
+            {
+                { "id", id.ToString() ?? "" }
+            });
+
+            if (response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.Message);
+                return true;
+            }
+            else
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                return false;
+            }
         }
     }
 }

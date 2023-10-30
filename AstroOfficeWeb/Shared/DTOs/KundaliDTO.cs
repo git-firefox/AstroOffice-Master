@@ -25,6 +25,7 @@ namespace AstroOfficeWeb.Shared.DTOs
         public bool CheckMFal { get; set; }
         public bool CheckShowRef { get; set; }
         public int KundaliUdvYear { get; set; }
+        public int TimeValue { get; set; }
         public string? TimeType { get; set; }
         public string? SkipBadType { get; set; }
     }

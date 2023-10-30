@@ -144,6 +144,23 @@ namespace AstroOfficeWeb.Client.Pages
 
         #endregion
 
+        private DTOs.PlaceDTO? selectedBirthCity;
+
+        private DTOs.PlaceDTO? SelectedBirthCity
+        {
+            get { return selectedBirthCity; }
+
+            set { selectedBirthCity = value; }
+        }
+
+
+        int inputYear = 2006;
+        int inputMonth = 05;
+        int inputDay = 12;
+        int inputHour = 13;
+        int inputMinute = 25;
+        int inputSecond = 0;
+
         #endregion
 
         protected override void OnInitialized()
@@ -158,18 +175,32 @@ namespace AstroOfficeWeb.Client.Pages
             this.nak_list = this.kpbl.Fill_Nak();
             this.rashi_list = this.kpbl.Fill_Rashi();
 
-            this.BirthDetails.TxtBirthPlace = "Delhi";
+            if (KundaliHistroy.SelectedSavedKundali != null)
+            {
+                this.BirthDetails = KundaliHistroy.SelectedSavedKundali;
 
-            this.BirthDetails.Dobdd = 12;
-            this.BirthDetails.Dobmm = 05;
-            this.BirthDetails.Dobyy = 2006;
-            this.BirthDetails.Tobhh = 13;
-            this.BirthDetails.Tobmm = 25;
+                OnChange_CmbTime(new ChangeEventArgs { Value = BirthDetailsLookups.CmbTimeItems.First(f => f.Text.Equals(BirthDetails.CmbTime, StringComparison.CurrentCultureIgnoreCase)).Text });
+                OnChange_CmbAyanansh(new ChangeEventArgs { Value = BirthDetailsLookups.CmbAyananshItems.First(f => f.Text.Equals(BirthDetails.CmbAyanansh, StringComparison.CurrentCultureIgnoreCase)).Text });
+                OnChange_CmbSkipBad(new ChangeEventArgs { Value = BirthDetailsLookups.SkipBadItems.First(f => f.Text.Equals(BirthDetails.CmbSkipBad, StringComparison.CurrentCultureIgnoreCase)).Text });
+                OnChange_CmbLanguage(new ChangeEventArgs { Value = BirthDetailsLookups.LanguageItems.First(f => f.Text.Equals(BirthDetails.CmbLanguage, StringComparison.CurrentCultureIgnoreCase)).Text });
 
-            OnChange_CmbTime(new ChangeEventArgs { Value = BirthDetailsLookups.CmbTimeItems.First().Text });
-            OnChange_CmbAyanansh(new ChangeEventArgs { Value = BirthDetailsLookups.CmbAyananshItems.First().Text });
-            OnChange_CmbSkipBad(new ChangeEventArgs { Value = BirthDetailsLookups.SkipBadItems.First().Text });
-            OnChange_CmbLanguage(new ChangeEventArgs { Value = BirthDetailsLookups.LanguageItems.First().Text });
+            }
+            else
+            {
+                this.BirthDetails.TxtBirthPlace = "Delhi";
+
+                OnChange_CmbTime(new ChangeEventArgs { Value = BirthDetailsLookups.CmbTimeItems.First().Text });
+                OnChange_CmbAyanansh(new ChangeEventArgs { Value = BirthDetailsLookups.CmbAyananshItems.First().Text });
+                OnChange_CmbSkipBad(new ChangeEventArgs { Value = BirthDetailsLookups.SkipBadItems.First().Text });
+                OnChange_CmbLanguage(new ChangeEventArgs { Value = BirthDetailsLookups.LanguageItems.First().Text });
+            }
+
+            inputDay = this.BirthDetails.Dobdd;
+            inputMonth = this.BirthDetails.Dobmm;
+            inputYear = this.BirthDetails.Dobyy;
+            inputHour = this.BirthDetails.Tobhh;
+            inputMinute = this.BirthDetails.Tobmm;
+            inputSecond = this.BirthDetails.Tobss;
 
         }
 
@@ -1623,8 +1654,7 @@ namespace AstroOfficeWeb.Client.Pages
 
         private async Task OnKeyDown_TxtBirthplace(KeyboardEventArgs e)
         {
-
-
+            BirthDetails.PlaceOfBirthID = null;
             if (e.Key == "ArrowUp")
             {
                 if (selectedBirthCityIndex > 0)
@@ -1678,7 +1708,14 @@ namespace AstroOfficeWeb.Client.Pages
             selectedBirthCityIndex = selectedIndex;
             if (selectedBirthCityIndex == 0) return;
 
-            var selectedBirthCity = ListBirthCities![selectedBirthCityIndex - 1];
+            if (BirthDetails.PlaceOfBirthID != null)
+            {
+                var index = ListBirthCities!.FindIndex(a => a.Sno == BirthDetails.PlaceOfBirthID);
+                selectedBirthCityIndex = index + 1;
+                //selectedBirthCity = ListBirthCities![index];
+            }
+
+            selectedBirthCity = ListBirthCities![selectedBirthCityIndex - 1];
 
             // this.BirthDetails.BirthPlace = selectedBirthCity?.Place ?? "";
 
@@ -1741,7 +1778,7 @@ namespace AstroOfficeWeb.Client.Pages
 
         private async Task OnChange_ListBirthCities(ChangeEventArgs e)
         {
-
+            BirthDetails.PlaceOfBirthID = null;
             //await Task.Delay(1000);
             string value = e.Value.ToStringX();
             selectedBirthCityIndex = Convert.ToInt32(value);
@@ -1756,10 +1793,7 @@ namespace AstroOfficeWeb.Client.Pages
 
             ListBirthCities.Clear();
 
-
             await Gen_Kundali_Chart();
-
-
         }
 
         private async Task OnClick_Lagan(MouseEventArgs e)
@@ -3037,8 +3071,6 @@ namespace AstroOfficeWeb.Client.Pages
             }
         }
 
-        private DTOs.PlaceDTO? SelectedBirthCity { get => ListBirthCities?[selectedBirthCityIndex]; }
-
         [Inject]
         private NavigationManager? NavigationManager { get; set; }
         private async Task ConfirmationChangedModel(bool isConfirm)
@@ -3306,13 +3338,6 @@ namespace AstroOfficeWeb.Client.Pages
             }
             OnClick_BtnPlus_IsComplated = true;
         }
-
-        int inputYear = 2006;
-        int inputMonth = 05;
-        int inputDay = 12;
-        int inputHour = 13;
-        int inputMinute = 25;
-        int inputSecond = 0;
 
         public async Task OnFocusOut_InputBrithDate(FocusEventArgs e)
         {

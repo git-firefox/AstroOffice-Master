@@ -2,12 +2,14 @@
 using System.Security.Claims;
 using ASModels;
 using ASModels.Astrooff;
+using AstroOfficeWeb.Server.Helper;
 using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -39,7 +41,7 @@ namespace AstroOfficeWeb.Server.Controllers
         {
             var userIDValue = User.Claims.FirstOrDefault(a => a.Type == ClaimTypes.NameIdentifier)?.Value;
             var aUserSno = Convert.ToInt64(userIDValue);
-            var kundalis = await _context.AKundalis.Where(a => a.AUserSno == aUserSno).ToListAsync();
+            var kundalis = await _context.AKundalis.Where(a => a.AUserSno == aUserSno).OrderByDescending(a => a.ViewDate).ToListAsync();
             var temp = _mapper.Map<List<KundaliDTO>>(kundalis);
 
             temp?.ForEach(k =>
@@ -75,6 +77,40 @@ namespace AstroOfficeWeb.Server.Controllers
             await _context.AKundalis.AddAsync(kundali);
             await _context.SaveChangesAsync();
             return Ok(new ApiResponse<string>() { Data = "Kundali Saved!", ErrorNo = 0, Success = true });
+        }
+
+        [Authorize]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteSavedKundali(int id)
+        {
+            var response = new ApiResponse<string>();
+            var userIDValue = User.Claims.FirstOrDefault(a => a.Type == ClaimTypes.NameIdentifier)?.Value;
+            var aUserSno = Convert.ToInt64(userIDValue);
+            try
+            {
+                var savedKundali = await _context.AKundalis.FirstAsync(a => a.Id == id && a.AUserSno == aUserSno);
+
+                _context.AKundalis.Remove(savedKundali);
+                var affectedRecords = await _context.SaveChangesAsync();
+                if (affectedRecords > 0)
+                {
+                    response.Success = true;
+                    response.Message = KundaliHistoryMessageConst.KundaliDeleted;
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = KundaliHistoryMessageConst.KundaliDeletedFailed;
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _ = ex;
+                response.Success = false;
+                response.Message = KundaliHistoryMessageConst.KundaliDeletedFailed;
+                return Ok(response);
+            }
         }
     }
 }

@@ -152,6 +152,7 @@ header {
     background-size: cover;
     padding: 15px;
 }
+
     .card-frame:after {
         height: 100%;
         width: 100%;
@@ -163,6 +164,7 @@ header {
         left: 50%;
         transform: translate(-50%,-50%);
     }
+
     .card-frame:before {
         height: 100%;
         width: 100%;
@@ -186,10 +188,10 @@ header {
             margin-bottom: 0;
         }
 
- 
-        .card-frame .card-body img {
-            mix-blend-mode: multiply;
-        }
+
+    .card-frame .card-body img {
+        mix-blend-mode: multiply;
+    }
 
 
 
@@ -220,11 +222,11 @@ header {
         box-shadow: 0 0 0 0 rgba(0,123,255,.5);
     }
 
-    .card-frame .card-body .table th {
-        font-size: 18px;
-        color: #ffffff;
-        background: #17384e;
-    }
+.card-frame .card-body .table th {
+    font-size: 18px;
+    color: #ffffff;
+    background: #17384e;
+}
 
 .card-frame .card-body .table td {
     font-weight: 600 !important;
@@ -409,7 +411,7 @@ header {
 @media(min-width:1200px) and (max-width:1399px) {
 
 
-        .form-check {
+    .form-check {
         padding-left: 1rem;
     }
 
@@ -441,10 +443,12 @@ header {
     #passwordToggleIcon.active {
         color: #007bff; /* Change color to indicate active state */
     }
+
 .data-loader {
     position: relative;
     backdrop-filter: blur(50px);
 }
+
     .data-loader .overlay {
         position: absolute;
         height: 100%;
@@ -460,25 +464,30 @@ header {
             color: #910d0d !important;
             font-size: 40px;
         }
+
 .login-page, .register-page {
     background: #ffedc6;
 }
+
 .login-box, .register-box {
     width: 610px;
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
+
     .login-card-body, .register-card-body,
     .login-box .card, .register-box .card {
         background: transparent;
         box-shadow: none;
         padding: 0 3.5rem !important;
     }
+
 .login-logo, .register-logo {
     position: relative;
     margin-bottom: 0rem;
 }
+
     .login-logo h3, .register-logo h3 {
         font-size: 30px;
         font-weight: 600;
@@ -488,6 +497,7 @@ header {
 .login-box.card-frame .card-body .input-group {
     position: relative;
 }
+
     .login-box.card-frame .card-body .input-group i {
         position: absolute;
         top: 50%;
@@ -496,6 +506,7 @@ header {
         color: #9d2d0b;
         z-index: 999;
     }
+
 .login-box.card-frame .card-body input {
     background: transparent;
     border: 1px solid #9d2d0b !important;
@@ -506,31 +517,36 @@ header {
     font-size: 14px;
     font-weight: 600;
 }
+
     .login-box.card-frame .card-body input::placeholder {
         color: #9d2d0b;
         font-size: 14px;
         font-weight: 600;
     }
+
     .login-box.card-frame .card-body input:focus {
         background: transparent;
     }
-    .down-form label {
-        margin: 0;
-        font-size: 15px;
-        font-weight: 600;
-        color: #9d2d0b;
-    }
 
- a.forgot-link {
+.down-form label {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #9d2d0b;
+}
+
+a.forgot-link {
     color: #9d2d0b;
     font-size: 15px;
     font-weight: 600;
 }
+
 .down-form .btn-custom a {
     font-size: 1rem;
     font-weight: 500;
     color: #17384e;
 }
+
 .validation-message {
     color: red;
     position: absolute;
@@ -539,11 +555,13 @@ header {
     bottom: -18px;
     left: 0;
 }
+
 .sign-up {
     color: #17384e;
     font-size: 15px;
     font-weight: 500;
 }
+
 .verify-otp .modal-content {
     background: #ffe79d;
     padding: 25px;
@@ -551,15 +569,15 @@ header {
     border-radius: 10px;
     overflow: hidden;
 }
-.modal.fade.verify-otp.show{
+
+.modal.fade.verify-otp.show {
     backdrop-filter: blur(8px);
-    
 }
 
 .verify-otp .modal-content h4 {
-    font-size:26px;
+    font-size: 26px;
     color: #9d2d0b;
-    font-weight:600;
+    font-weight: 600;
 }
 
 .verify-otp .modal-content .otp-field input {
@@ -567,40 +585,42 @@ header {
     border: 1px solid #9d2d0b;
     font-size: 20px;
     color: #9d2d0b;
-    font-weight:600;
+    font-weight: 600;
 }
 
 .astroOffice-logo-image {
     width: 150px;
-   
 }
-@media(max-width:1199px){
- 
 
-    .mahadasha-name label{
-        font-size:14px;
+@media(max-width:1199px) {
+
+
+    .mahadasha-name label {
+        font-size: 14px;
     }
-  
 }
+
 @media(max-width:575px) {
     .btn-sm {
         padding: 0.25rem 0.3rem;
         font-size: 0.775rem;
     }
-    .brand-text{
-        display:none;
+
+    .brand-text {
+        display: none;
     }
-    .login-box, .register-box{
-        width:100%;
+
+    .login-box, .register-box {
+        width: 100%;
     }
 }
 
-.navbar-nav a{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    color:#fff;
+.navbar-nav a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
 }
 
 @media(max-width:767px) {
@@ -609,66 +629,81 @@ header {
     }
 
     .card-frame {
-        padding:10px 0;
+        padding: 10px 0;
     }
+
     .navbar-toggler {
         display: block !important;
     }
 
 
-        .card-frame .card-body {
-            padding: 0 1rem !important;
-        } 
+    .card-frame .card-body {
+        padding: 0 1rem !important;
+    }
+
     .login-box .card {
         padding: 0 !important;
     }
+
     .login-box-msg, .register-box-msg {
-        font-size:14px;
+        font-size: 14px;
     }
-    .card-frame .card-header{
-        margin-top:0;
+
+    .card-frame .card-header {
+        margin-top: 0;
     }
-    .report-content .card-frame{
-        height:auto !important;
+
+    .report-content .card-frame {
+        height: auto !important;
     }
-    .card-tabs .nav-tabs{
-        justify-content:space-between;
+
+    .card-tabs .nav-tabs {
+        justify-content: space-between;
     }
-    .card-tabs .nav-tabs .nav-item{
-        width:48%;
-        margin-bottom:10px;
-    }
-    .card-tabs .nav-tabs .nav-link{
-        width:100%;
-        font-size:14px;
-    }
+
+        .card-tabs .nav-tabs .nav-item {
+            width: 48%;
+            margin-bottom: 10px;
+        }
+
+        .card-tabs .nav-tabs .nav-link {
+            width: 100%;
+            font-size: 14px;
+        }
+
     .card-body,
     .card-tabs .card-header {
         padding: .25rem;
     }
+
     .chart-table table td, .chart-table table th {
         white-space: nowrap;
     }
+
     .table-responsive::-webkit-scrollbar {
         width: 2px;
-        height:6px;
+        height: 6px;
     }
+
     .navbar-nav a {
         flex-direction: row;
         justify-content: flex-start;
     }
-  
 }
-@media(min-width:768px) and (max-width:991px){
-    .card-frame{
-        height:auto!important;
+
+@media(min-width:768px) and (max-width:991px) {
+    .card-frame {
+        height: auto !important;
     }
+
     .login-box, .register-box {
         height: 512px !important;
     }
+
     .card-frame .card-header {
         margin-top: 20px;
     }
+
     .card-tabs .nav-tabs {
         justify-content: space-between;
     }
@@ -682,9 +717,11 @@ header {
             width: 100%;
             font-size: 14px;
         }
+
     .navbar-toggler {
-        display: block!important;
+        display: block !important;
     }
+
     .navbar-nav a {
         flex-direction: row;
         justify-content: flex-start;
@@ -714,3 +751,15 @@ section .section-overlay {
 .overlay-wrapper {
     position: relative;
 }
+
+.confirmation-modal .modal-content {
+    background: #ffe79d;
+}
+
+    .confirmation-modal .modal-content .modal-header {
+        border-bottom-color: #910d0d;
+    }
+
+    .confirmation-modal .modal-content .modal-footer {
+        border-top: 1px solid #910d0d;
+    }

@@ -2,6 +2,9 @@
 @using AstroOfficeWeb.Client.Services;
 
 @inject KundaliHistroyService KundaliHistroy
+@inject NavigationManager NavigationManager
+
+<ConfirmationModal @ref="Confirmation" OnConfirmationChanged="OnConfirmationChanged" Message="Are you sure you want to delete this Kundali?"></ConfirmationModal>
 
 <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold ">Saved Kundalis</h1>
@@ -91,7 +94,8 @@
 
 @code {
     private List<PersonKundaliTableTRModel>? personKundaliTableTRs;
-
+    private PersonKundaliTableTRModel? selectedPersonKundaliTableTR;
+    private ConfirmationModal Confirmation = new();
     protected override async Task OnInitializedAsync()
     {
         personKundaliTableTRs = await KundaliHistroy.GetUserSavedKundalies();
@@ -99,11 +103,25 @@
 
     private void OnClick_BtnShow(PersonKundaliTableTRModel selectedRow)
     {
-
+        KundaliHistroy.SetSelectedSavedKundali(selectedRow.SrNo - 1);
+        NavigationManager.NavigateTo("/");
     }
 
-    private void OnClick_BtnDelete(PersonKundaliTableTRModel selectedRow)
+    private async Task OnClick_BtnDelete(PersonKundaliTableTRModel selectedRow)
     {
+        selectedPersonKundaliTableTR = selectedRow;
+        await Confirmation.ShowAsync();
+    }
 
+    private async Task OnConfirmationChanged(bool isConfirm)
+    {
+        if (isConfirm)
+        {
+            if (await KundaliHistroy.IsDeletedSavedKundali(selectedPersonKundaliTableTR!.ID))
+            {
+                personKundaliTableTRs?.Remove(selectedPersonKundaliTableTR);
+            }
+        }
+        await Confirmation.CloseAsync();
     }
 }

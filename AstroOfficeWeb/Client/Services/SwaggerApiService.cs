@@ -71,5 +71,25 @@ namespace AstroOfficeWeb.Client.Services
             }
             return default;
         }
+
+        public async Task<TResponse?> DeleteAsync<TResponse>(string url, Dictionary<string, string>? queryParams = null)
+        {
+            var uriBuilder = new UriBuilder(_client.BaseAddress + url);
+
+            if (queryParams != null && queryParams.Count > 0)
+            {
+                string query = string.Join("&", queryParams.Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"));
+                uriBuilder.Query = query;
+            }
+
+            HttpResponseMessage response = await _client.DeleteAsync(uriBuilder.Uri);
+            if (response.IsSuccessStatusCode)
+            {
+                var contentTemp = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<TResponse>(contentTemp);
+                return result;
+            }
+            return default;
+        }
     }
 }

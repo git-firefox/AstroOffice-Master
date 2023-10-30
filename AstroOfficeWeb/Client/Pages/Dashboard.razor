@@ -47,10 +47,10 @@
                                         </select>
                                     </div>
                                     <div class="col">
-                                        <select @onchange="OnChange_CmbTime" class="form-control form-control-sm" aria-label="Selection of Time">
+                                        <select @onchange="OnChange_CmbTime" value="@BirthDetails!.CmbTime" class="form-control form-control-sm" aria-label="Selection of Time">
                                             @foreach (var item in BirthDetailsLookups.CmbTimeItems)
                                             {
-                                                <option value="@item.Text">@item.Text</option>
+                                                <option value="@item.Text.ToLower()">@item.Text</option>
                                             }
                                         </select>
                                     </div>
@@ -121,11 +121,10 @@
                                                         <div class="form-group row align-items-center mb-2">
                                                             <label for="IdLongtitude" class="col-12">Long</label>
                                                             <div class="col-12">
-
-                                                                <InputText @bind-Value="BirthDetails!.Longtitude" id="IdLongtitude" class="form-control form-control-sm" />
+                                                                <InputText @bind-Value="BirthDetails!.Longtitude" id="IdLongtitude" class="form-control form-control-sm" title="Longtitude" />
                                                             </div>
                                                         </div>
-                                                        <select value="@BirthDetails!.CmbLanguage" class="form-control form-control-sm mb-2" aria-label="Selection of language" @onchange="OnChange_CmbLanguage">
+                                                        <select value="@BirthDetails!.CmbLanguage" class="form-control form-control-sm mb-2" aria-label="Selection of language" @onchange="OnChange_CmbLanguage" title="Language">
                                                             @foreach (var item in BirthDetailsLookups.LanguageItems)
                                                             {
                                                                 <option value="@item.Text">@item.Text</option>
@@ -137,16 +136,16 @@
                                                             <label for="IdLatitude" class="col-12">Lat</label>
                                                             <div class="col-12">
 
-                                                                <InputText @bind-Value="BirthDetails!.Latitude" id="IdLatitude" class="form-control form-control-sm" />
+                                                                <InputText @bind-Value="BirthDetails!.Latitude" id="IdLatitude" class="form-control form-control-sm" title="Latitude" />
                                                             </div>
                                                         </div>
                                                         @if (IsAdmin || UserCanEdit)
                                                         {
-                                                            <InputText @bind-Value="BirthDetails!.TxtTimezone" class="form-control form-control-sm mb-2" />
+                                                            <InputText @bind-Value="BirthDetails!.TxtTimezone" class="form-control form-control-sm mb-2" title="Timezone" />
                                                         }
                                                         else
                                                         {
-                                                            <input value="@BirthDetails!.TxtTimezone" class="form-control form-control-sm mb-2" readonly />
+                                                            <input value="@BirthDetails!.TxtTimezone" class="form-control form-control-sm mb-2" title="Timezone"  readonly />
                                                         }
                                                     </div>
                                                 </div>
@@ -163,61 +162,61 @@
                                             <div class="col-4 mb-2">
                                                 @if (dobddEnabled)
                                                 {
-                                                    <input class="form-control form-control-sm" min="1" max="31" @bind="inputDay" @onfocusout="OnFocusOut_InputBrithDate" />
+                                                    <input class="form-control form-control-sm" min="1" max="31" @bind="inputDay" @onfocusout="OnFocusOut_InputBrithDate" title="Day" />
                                                 }
                                                 else
                                                 {
-                                                    <input value="@BirthDetails!.Dobdd" class="form-control form-control-sm" readonly />
+                                                    <input value="@BirthDetails!.Dobdd" class="form-control form-control-sm" title="Day" readonly />
                                                 }
                                             </div>
                                             <div class="col-4 mb-2">
                                                 @if (dobmmEnabled)
                                                 {
-                                                    <input @bind="inputMonth" class="form-control form-control-sm" min="1" max="12" @onfocusout="OnFocusOut_InputBrithDate" />
+                                                    <input @bind="inputMonth" class="form-control form-control-sm" min="1" max="12" title="Month" @onfocusout="OnFocusOut_InputBrithDate" />
                                                 }
                                                 else
                                                 {
-                                                    <input value="@BirthDetails!.Dobmm" class="form-control form-control-sm" readonly />
+                                                    <input value="@BirthDetails!.Dobmm" class="form-control form-control-sm" title="Month" readonly />
                                                 }
                                             </div>
                                             <div class="col-4 mb-2">
                                                 @if (dobyyEnabled)
                                                 {
-                                                    <input @bind="inputYear" class="form-control form-control-sm" @onfocusout="OnFocusOut_InputBrithDate" />
+                                                    <input @bind="inputYear" class="form-control form-control-sm" @onfocusout="OnFocusOut_InputBrithDate" title="Year" />
                                                 }
                                                 else
                                                 {
-                                                    <input value="@BirthDetails!.Dobyy" class="form-control form-control-sm" readonly />
+                                                    <input value="@BirthDetails!.Dobyy" class="form-control form-control-sm" title="Year" readonly />
                                                 }
                                             </div>
                                             <div class="col-4 mb-2">
                                                 @if (tobhhEnabled)
                                                 {
-                                                    <input @bind="inputHour" class="form-control form-control-sm" min="1" max="24" @onfocusout="OnFocusOut_InputBrithDate" />
+                                                    <input @bind="inputHour" class="form-control form-control-sm" min="1" max="24" @onfocusout="OnFocusOut_InputBrithDate" title="Hour" />
                                                 }
                                                 else
                                                 {
-                                                    <input value="@BirthDetails!.Tobhh" class="form-control form-control-sm" readonly />
+                                                    <input value="@BirthDetails!.Tobhh" class="form-control form-control-sm" title="Hour" readonly />
                                                 }
                                             </div>
                                             <div class="col-4 mb-2">
                                                 @if (tobmmEnabled)
                                                 {
-                                                    <input @bind="inputMinute" class="form-control form-control-sm" min="1" max="60" @onfocusout="OnFocusOut_InputBrithDate" />
+                                                    <input @bind="inputMinute" class="form-control form-control-sm" min="1" max="60" @onfocusout="OnFocusOut_InputBrithDate" title="Minute" />
                                                 }
                                                 else
                                                 {
-                                                    <input value="@BirthDetails!.Tobmm" class="form-control form-control-sm" readonly />
+                                                    <input value="@BirthDetails!.Tobmm" class="form-control form-control-sm" readonly title="Minute" />
                                                 }
                                             </div>
                                             <div class="col-4 mb-2">
                                                 @if (tobssEnabled)
                                                 {
-                                                    <input @bind="inputSecond" class="form-control form-control-sm" min="0" max="60" @onfocusout="OnFocusOut_InputBrithDate" />
+                                                    <input @bind="inputSecond" class="form-control form-control-sm" min="0" max="60" @onfocusout="OnFocusOut_InputBrithDate" title="Second" />
                                                 }
                                                 else
                                                 {
-                                                    <input value="@BirthDetails!.Tobss" class="form-control form-control-sm" readonly />
+                                                    <input value="@BirthDetails!.Tobss" class="form-control form-control-sm" title="Second readonly" />
                                                 }
                                             </div>
                                             <div class="col-12">
