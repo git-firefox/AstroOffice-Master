@@ -5,13 +5,6 @@
         <AuthorizeView>
             <NavMenu />
         </AuthorizeView>
-        <ErrorBoundary>
-            <ChildContent>
-                @Body
-            </ChildContent>
-            <ErrorContent>
-                <p>Uh oh! An error has occurred, sorry!</p>
-            </ErrorContent>
-        </ErrorBoundary>
+        @Body
     </main>
 </div>

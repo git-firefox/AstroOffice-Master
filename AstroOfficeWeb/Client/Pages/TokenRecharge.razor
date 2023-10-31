@@ -10,13 +10,14 @@
 
 
 <div class="container-fluid p-3">
-    <h1 class="pt-4 pb-2 font-weight-bold ">
-        Recharge Token
+
+    <div class="d-flex justify-content-between">
+        <h1 class="pt-4 pb-2 font-weight-bold">Recharge Token</h1>
         @if (UserToken != null)
         {
-            <span class="badge badge-primary">@UserToken</span>
+            <h1 class="pt-4 pb-2 font-weight-bold"><span class="badge badge-primary bg-da-dark-red">@UserToken</span></h1>
         }
-    </h1>
+    </div>
     <section class="content">
         <div class="card card-primary">
             <div class="card-header bg-da-dark-red">

@@ -59,7 +59,7 @@
                                         <button type="button" class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnMinus">  <i class="fa fa-minus"></i> </button>
                                     </div>
                                     <div class="col-2">
-                                        <InputNumber @bind-Value="BirthDetails.TimeValue" class="form-control form-control-sm" />
+                                        <InputNumber @bind-Value="BirthDetails.TimeValue" class="form-control form-control-sm" title="Number to modifying date" />
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnPlus"> <i class="fa fa-plus"></i> </button>
@@ -190,36 +190,62 @@
                                                     <input value="@BirthDetails!.Dobyy" class="form-control form-control-sm" title="Year" readonly />
                                                 }
                                             </div>
-                                            <div class="col-4 mb-2">
+
+                                            <div class="col-4 mb-2 d-flex">
                                                 @if (tobhhEnabled)
                                                 {
-                                                    <input @bind="inputHour" class="form-control form-control-sm" min="1" max="24" @onfocusout="OnFocusOut_InputBrithDate" title="Hour" />
+                                                    @* <input @bind="inputHour" class="form-control form-control-sm" min="1" max="24" @onfocusout="OnFocusOut_InputBrithDate" title="Hour" /> *@
+
+                                                    <select @bind="inputHour" class="form-control form-control-sm mb-2" title="Hour">
+                                                        @for (int hour = 0; hour <= 23; hour++)
+                                                        {
+                                                            <option value="@hour">@hour.ToString("D2")</option>
+                                                        }
+                                                    </select>
+                                                    <span> : </span>
                                                 }
                                                 else
                                                 {
                                                     <input value="@BirthDetails!.Tobhh" class="form-control form-control-sm" title="Hour" readonly />
                                                 }
                                             </div>
-                                            <div class="col-4 mb-2">
+                                            <div class="col-4 mb-2 d-flex">
                                                 @if (tobmmEnabled)
                                                 {
-                                                    <input @bind="inputMinute" class="form-control form-control-sm" min="1" max="60" @onfocusout="OnFocusOut_InputBrithDate" title="Minute" />
+                                                    @* <input @bind="inputMinute" class="form-control form-control-sm" min="1" max="60" @onfocusout="OnFocusOut_InputBrithDate" title="Minute" /> *@
+
+                                                    <select @bind="inputMinute" class="form-control form-control-sm mb-2" title="Minute">
+                                                        @for (int minute = 0; minute <= 59; minute++)
+                                                        {
+                                                            <option value="@minute">@minute.ToString("D2")</option>
+                                                        }
+                                                    </select>
+                                                    <span> : </span>
                                                 }
                                                 else
                                                 {
-                                                    <input value="@BirthDetails!.Tobmm" class="form-control form-control-sm" readonly title="Minute" />
+                                                    <input value="@BirthDetails!.Tobmm" class="form-control form-control-sm" title="Minute" readonly />
                                                 }
                                             </div>
-                                            <div class="col-4 mb-2">
+                                            <div class="col-4 mb-2 ">
                                                 @if (tobssEnabled)
                                                 {
-                                                    <input @bind="inputSecond" class="form-control form-control-sm" min="0" max="60" @onfocusout="OnFocusOut_InputBrithDate" title="Second" />
+                                                    @* <input @bind="inputSecond" class="form-control form-control-sm" min="0" max="60" @onfocusout="OnFocusOut_InputBrithDate" title="Second" /> *@
+
+                                                    <select @bind="inputSecond" class="form-control form-control-sm mb-2" title="Second">
+                                                        @for (int second = 0; second <= 59; second++)
+                                                        {
+                                                            <option value="@second">@second.ToString("D2")</option>
+                                                        }
+                                                    </select>
+
                                                 }
                                                 else
                                                 {
-                                                    <input value="@BirthDetails!.Tobss" class="form-control form-control-sm" title="Second readonly" />
+                                                    <input value="@BirthDetails!.Tobss" class="form-control form-control-sm" title="Second" readonly />
                                                 }
                                             </div>
+                                            
                                             <div class="col-12">
 
                                                 <fieldset>
@@ -257,7 +283,7 @@
                                                     <div class="row">
                                                         <div class="col-6 mb-2">
 
-                                                            <select @onchange="OnChange_CmbCategory" value="@BirthDetails!.CmbCategory" class="form-control form-control-sm">
+                                                            <select value="@BirthDetails!.CmbCategory" @onchange="OnChange_CmbCategory" class="form-control form-control-sm" title="Category">
                                                                 @foreach (var item in BirthDetailsLookups.BirthCategoryItems)
                                                                 {
                                                                     <option value="@item.Text">@item.Text</option>
@@ -267,7 +293,7 @@
                                                         </div>
                                                         <div class="col-6 mb-2">
                                                             @* <InputSelect @bind-Value="BirthDetails!.CmbAyanansh" class="form-control form-control-sm" aria-label="Default select example"> *@
-                                                            <select @onchange="OnChange_CmbAyanansh" class="form-control form-control-sm" aria-label="Selection of ayanansh">
+                                                            <select value="@BirthDetails.CmbAyanansh" @onchange="OnChange_CmbAyanansh" class="form-control form-control-sm" aria-label="Selection of ayanansh" title="Ayanansh">
                                                                 @foreach (var item in BirthDetailsLookups.CmbAyananshItems)
                                                                 {
                                                                     <option value="@item.Text">@item.Text</option>
@@ -275,7 +301,7 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-12 mb-2">
-                                                            <select @oninput="OnChange_CmbRotate" class="form-control form-control-sm">
+                                                            <select value="@BirthDetails.CmbRotate" @onchange="OnChange_CmbRotate" class="form-control form-control-sm" title="Rotate">
                                                                 @foreach (var item in BirthDetailsLookups.CmbRotateItems)
                                                                 {
                                                                     <option value="@item.Text">@item.Text</option>

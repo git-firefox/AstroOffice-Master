@@ -269,14 +269,17 @@ namespace AstroOfficeWeb.Client.Pages
             }
 
             await Gen_Image(this.persKV!.Lagna.ToString(), this.kp_chart, Online_Result, false, 1, this.persKV.Language);
-
-            await this.OnKeyDown_TxtBirthplace(new KeyboardEventArgs() { Key = "" });
-
             await this.OnClick_BtnChart(new MouseEventArgs());
-            //}
             await base.OnInitializedAsync();
 
+            if (KundaliHistroy.SelectedSavedKundali != null)
+            {
+                await OnChange_CmbRotate(new ChangeEventArgs { Value = BirthDetails.CmbRotate });
+            }
+
             OnInitialized_IsComplatedSuccessfully = true;
+
+            //await this.OnKeyDown_TxtBirthplace(new KeyboardEventArgs() { Key = "" });
         }
 
         private async Task<List<DTOs.CountryDTO>?> GetCountry()
