@@ -88,6 +88,16 @@ namespace ASDAL
             if (aUser is null || !ENCEK.ENCEK.CellGell_MilaKya(password, aUser.Password, "cellgell.com"))
                 return new AUser();
 
+            var aUserToken = _context.AUserTokenBalances.FirstOrDefault(a => a.AUserSno == aUser.Sno);
+            if (aUserToken is null)
+            {
+                _context.AUserTokenBalances.Add(new AUserTokenBalance
+                {
+                    TokenBalance = 0
+                });
+                _context.SaveChanges();
+            }
+
             return aUser;
         }
 

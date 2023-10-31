@@ -97,7 +97,7 @@ namespace AstroOfficeWeb.Server.Controllers
             }
             catch
             {
-                return Ok(new ApiResponse<string> { Success = false, Message = AccountMessageConst.ServerError });
+                return Ok(new ApiResponse<string> { Success = false, Message = ApiMessageConst.ServerError });
             }
         }
 

@@ -39,9 +39,7 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUserKundalies()
         {
-            var userIDValue = User.Claims.FirstOrDefault(a => a.Type == ClaimTypes.NameIdentifier)?.Value;
-            var aUserSno = Convert.ToInt64(userIDValue);
-            var kundalis = await _context.AKundalis.Where(a => a.AUserSno == aUserSno).OrderByDescending(a => a.ViewDate).ToListAsync();
+            var kundalis = await _context.AKundalis.Where(a => a.AUserSno == User.GetUserSno()).OrderByDescending(a => a.ViewDate).ToListAsync();
             var temp = _mapper.Map<List<KundaliDTO>>(kundalis);
 
             temp?.ForEach(k =>
@@ -67,12 +65,10 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveKundali([FromBody] SaveKundaliRequest request)
         {
-            var userIDValue = User.Claims.FirstOrDefault(a => a.Type == ClaimTypes.NameIdentifier)?.Value;
-            var aUserSno = Convert.ToInt64(userIDValue);
             var kundali = _mapper.Map<AKundali>(request);
             if (kundali == null)
                 return BadRequest();
-            kundali.AUserSno = aUserSno;
+            kundali.AUserSno = User.GetUserSno();
             kundali.ViewDate = DateTime.Now;
             await _context.AKundalis.AddAsync(kundali);
             await _context.SaveChangesAsync();

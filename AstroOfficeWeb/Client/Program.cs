@@ -33,5 +33,6 @@ builder.Services.AddScoped<KPDAOService>();
 builder.Services.AddScoped<KundliBLLService>();
 builder.Services.AddScoped<PredictionBLLService>();
 builder.Services.AddScoped<KundaliHistroyService>();
+builder.Services.AddScoped<TokenWalletService>();
 
 await builder.Build().RunAsync();

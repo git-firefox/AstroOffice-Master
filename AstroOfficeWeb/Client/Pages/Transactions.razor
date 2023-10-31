@@ -1,5 +1,9 @@
 ﻿@page "/transactions"
 
+@using AstroOfficeWeb.Client.Services;
+
+@inject TokenWalletService TokenWallet
+
 <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold ">Transactions</h1>
     <section class="content">
@@ -95,4 +99,9 @@
             TimestampCreated = DateTime.Parse("2023-10-31 12:20:00")
         }
     };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await TokenWallet.GetTokenRechargeTransactionHistory();
+    }
 }

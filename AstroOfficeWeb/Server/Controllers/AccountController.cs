@@ -92,10 +92,10 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.UserDTO = userDTO;
                 response.Message = AccountMessageConst.SignUpSuccessful;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.IsAuthSuccessful = false;
-                response.Message = AccountMessageConst.ServerError;
+                response.Message = ApiMessageConst.ServerError;
                 throw ex;
             }
 
@@ -164,7 +164,7 @@ namespace AstroOfficeWeb.Server.Controllers
             catch
             {
                 response.IsAuthSuccessful = false;
-                response.Message = AccountMessageConst.ServerError;
+                response.Message = ApiMessageConst.ServerError;
             }
 
             returnResponse:
@@ -292,7 +292,7 @@ namespace AstroOfficeWeb.Server.Controllers
             catch
             {
                 response.IsRegisterationSuccessful = false;
-                response.Message = AccountMessageConst.ServerError;
+                response.Message = ApiMessageConst.ServerError;
                 goto returnResponse;
             }
 
@@ -321,7 +321,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 {
                     _ = ex;
                     response.IsRegisterationSuccessful = false;
-                    response.Message = AccountMessageConst.ServerError;
+                    response.Message = ApiMessageConst.ServerError;
                 }
             }
             else

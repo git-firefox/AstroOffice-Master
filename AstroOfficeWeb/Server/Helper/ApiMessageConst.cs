@@ -14,12 +14,15 @@
         public static string AccessDenied = "Access denied. You may not have the necessary permissions to access this resource.";
         public static string AuthenticationFailed = "Authentication failed. Please ensure you provided the correct information.";
         public static string AccessTokenExpiredExpired = "Your session has expired. Please log in again to continue.";
-        public static string ServerError = "Oops! Something went wrong on our end. Please try again later or contact support.";
         public static string AccountSuspended = "Your account has been suspended. Please contact support for more information.";
         public static string MobileNumberNotFound = "No user was found associated with this mobile number. Please check the number and try again.";
         public static string UserExist = "Account with this username already exists. Please use a different username.";
         public static string MobileNumberExist = "This mobile number is already registered. Please use a different number.";
+    }
 
+    public static class ApiMessageConst
+    {
+        public static string ServerError = "Oops! Something went wrong on our end. Please try again later or contact support.";
     }
 
     public static class SMSMessageConst
@@ -32,5 +35,14 @@
     {
         public static string KundaliDeleted = "Kundali Deleted Successfully!";
         public static string KundaliDeletedFailed = "Unable to delete kundali Deleted";
+    }
+
+    public static class TokenWalletMessageConst
+    {
+        public const string BalanceZeroMessage = "Your balance is currently 0.00 Please recharge token.";
+        public const string ErrorBalanceZeroMessage = "Balance 0.00 Please add amount.";
+        public const string InsufficientBalance = "Insufficient token balance. Your token balance is not sufficient to complete this transaction.";
+        public const string TokenRecharge = "Your token balance has been updated.";
+        public const string TokenBalanceUpdated = "Your token balance has been updated.";
     }
 }
