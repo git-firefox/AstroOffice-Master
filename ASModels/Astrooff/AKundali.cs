@@ -16,10 +16,6 @@ namespace ASModels.Astrooff
         public string? Name { get; set; }
         [StringLength(255)]
         public string? ProductName { get; set; }
-
-        [StringLength(255)]
-        public string? PlaceOfBrithSearch { get; set; }
-
         [StringLength(10)]
         public string? Gender { get; set; }
         [Column(TypeName = "date")]
@@ -52,11 +48,12 @@ namespace ASModels.Astrooff
         public string? TimeType { get; set; }
         [StringLength(255)]
         public string? SkipBadType { get; set; }
+        public int? TimeValue { get; set; }
+        [StringLength(255)]
+        public string? PlaceOfBrithSearch { get; set; }
 
         [ForeignKey("AUserSno")]
         [InverseProperty("AKundalis")]
         public virtual AUser? AUserSnoNavigation { get; set; }
-
-        public int? TimeValue { get; set; }
     }
 }

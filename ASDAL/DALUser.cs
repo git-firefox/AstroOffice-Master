@@ -93,7 +93,8 @@ namespace ASDAL
             {
                 _context.AUserTokenBalances.Add(new AUserTokenBalance
                 {
-                    TokenBalance = 0
+                    TokenBalance = 0,
+                    AUserSno = aUser.Sno
                 });
                 _context.SaveChanges();
             }

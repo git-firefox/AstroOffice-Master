@@ -26,6 +26,9 @@ namespace ASModels.Astrooff
         [Column(TypeName = "datetime")]
         public DateTime? TimestampCreated { get; set; }
 
+        [StringLength(50)]
+        public string? Action { get; set; }
+
         [ForeignKey("ATransactionStatusesId")]
         [InverseProperty("ATokenTransactions")]
         public virtual ATransactionStatus? ATransactionStatuses { get; set; }

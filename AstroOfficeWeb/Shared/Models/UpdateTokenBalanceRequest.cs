@@ -12,6 +12,7 @@ namespace AstroOfficeWeb.Shared.Models
         public decimal Amount { get; set; }
         public string? Description { get; set; }
         public DateTime PaymentDate { get; set; }
+        public string? Action { get; set; }
     }
 
     public enum TransactionType

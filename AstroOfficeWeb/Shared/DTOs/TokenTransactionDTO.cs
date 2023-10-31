@@ -12,5 +12,6 @@ namespace AstroOfficeWeb.Shared.DTOs
         public decimal Amount { get; set; }
         public string? Description { get; set; }
         public string? StatusType { get; set; }
+        public string? Action { get; set; }
     }
 }

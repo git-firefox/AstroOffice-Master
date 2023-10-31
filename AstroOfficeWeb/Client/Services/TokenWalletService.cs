@@ -30,7 +30,7 @@ namespace AstroOfficeWeb.Client.Services
             var temp = response?.Select((a, index) => new TokenRechargeTableTRModel
             {
                 SrNo = index + 1,
-                CCAvenueResponse = a.CcavenueResponse,
+                Status = a.StatusName,
                 PaymentAmount = a.Amount,
                 PaymentDate = a.PaymentDate,
                 TimestampCreated = a.TimestampCreated,
@@ -48,17 +48,19 @@ namespace AstroOfficeWeb.Client.Services
                 SrNo = index + 1,
                 TimestampCreated = a.TimestampCreated,
                 TransactionType = a.StatusType,
+                Action = a.Action
             }).ToList();
             return temp;
         }
 
-        public async Task<decimal> UpdateTokenBalance(TransactionType type, decimal amount, string description)
+        public async Task<decimal> UpdateTokenBalance(TransactionType type, decimal amount, string description, string action, string actionDescription)
         {
             var request = new UpdateTokenBalanceRequest()
             {
                 TransactionType = type,
                 Amount = amount,
-                Description = description,
+                Description = actionDescription,
+                Action = action,
                 PaymentDate = DateTime.Now
             };
             var response = await _swagger!.PostAsync<UpdateTokenBalanceRequest, ApiResponse<decimal>>(TokenWalletApiConst.POST_UpdateTokenBalance, request);

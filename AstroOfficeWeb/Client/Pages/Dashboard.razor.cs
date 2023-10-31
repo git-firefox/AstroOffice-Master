@@ -3062,6 +3062,8 @@ namespace AstroOfficeWeb.Client.Pages
 
                 BirthDetails.PlaceOfBirthID = SelectedBirthCity?.Sno;
                 await KundaliHistroy.SaveKundaliLog(BirthDetails);
+
+                await TokenWallet.UpdateTokenBalance(TransactionType.Purchase, 1M, "1 rupee has been deducted from your token balance.", "FALADESH [VIEW]", "Charged 1 rupee for viewing \"FALADESH.\"");
             }
             else
             {

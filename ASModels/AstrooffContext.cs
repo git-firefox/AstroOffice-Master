@@ -322,8 +322,6 @@ namespace ASModels
 
             modelBuilder.Entity<ACcavenueTransaction>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.TimestampCreated).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.ATransactionStatuses)
@@ -860,8 +858,6 @@ namespace ASModels
 
             modelBuilder.Entity<ATokenTransaction>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.TimestampCreated).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.ATransactionStatuses)
@@ -914,8 +910,6 @@ namespace ASModels
 
             modelBuilder.Entity<AUserTokenBalance>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.TokenBalance).HasDefaultValueSql("((0.00))");
 
                 entity.HasOne(d => d.AUserSnoNavigation)

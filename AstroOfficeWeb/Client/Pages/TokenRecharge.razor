@@ -1,22 +1,33 @@
 ﻿@page "/token-recharge"
 @using AstroOfficeWeb.Client.Services;
 
+@attribute [Authorize]
+
+@inherits BaseComponent
+
 @inject TokenWalletService TokenWallet
 
+
+
 <div class="container-fluid p-3">
-    <h1 class="pt-4 pb-2 font-weight-bold ">Recharge Token</h1>
+    <h1 class="pt-4 pb-2 font-weight-bold ">
+        Recharge Token
+        @if (UserToken != null)
+        {
+            <span class="badge badge-primary">@UserToken</span>
+        }
+    </h1>
     <section class="content">
         <div class="card card-primary">
             <div class="card-header bg-da-dark-red">
                 <h3 class="card-title">Add Token</h3>
-                @* <div class="badge badge-primary">@UserToken</div> *@
             </div>
 
-            <form>
+            <EditForm Model="Token" OnInvalidSubmit="OnInvalidSubmit" OnValidSubmit="OnValidSubmit">
                 <div class="card-body">
                     <div class="form-group">
                         <label for="inputEmail">Email address Or User Name</label>
-                        <input type="text" class="form-control" id="inputEmail" disabled />
+                        <input type="text" class="form-control" id="inputEmail" @bind="Token.UserName" disabled />
                     </div>
 
                     <div class="form-group">
@@ -27,7 +38,7 @@
                                     <i class="fa fa-circle" aria-hidden="true"></i>
                                 </span>
                             </div>
-                            <input type="text" class="form-control" id="inputToken" @bind="TokenAmount" @bind:event="oninput" />
+                            <input type="text" class="form-control" id="inputToken" @bind="Token.TokenAmount" @bind:event="oninput" />
                         </div>
                     </div>
 
@@ -39,7 +50,7 @@
                                     <i class="fas fa-rupee-sign"></i>
                                 </span>
                             </div>
-                            <input type="text" class="form-control" id="inputAmount" disabled @bind="TokenAmount" />
+                            <input type="text" class="form-control" id="inputAmount" disabled @bind="Token.TokenAmount" />
                             <div class="input-group-append">
                                 <span class="input-group-text">.00</span>
                             </div>
@@ -48,16 +59,16 @@
 
                     <div class="form-row">
                         <div class="col">
-                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> TokenAmount += 100">100</button>
+                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> Token.TokenAmount += 100">100</button>
                         </div>
                         <div class="col">
-                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> TokenAmount += 200">200</button>
+                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> Token.TokenAmount += 200">200</button>
                         </div>
                         <div class="col">
-                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> TokenAmount += 500">500</button>
+                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> Token.TokenAmount += 500">500</button>
                         </div>
                         <div class="col">
-                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> TokenAmount += 1000">1000</button>
+                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> Token.TokenAmount += 1000">1000</button>
                         </div>
                     </div>
 
@@ -65,7 +76,7 @@
                         <button type="submit" class="btn btn-custom">Recharge</button>
                     </div>
                 </div>
-            </form>
+            </EditForm>
 
             <div class="card-header bg-da-dark-red">
                 <h3 class="card-title">
@@ -79,12 +90,10 @@
                             <table class="table">
                                 <thead class="p-0 bg-da-yellow">
                                     <tr>
-                                        <th>ID</th>
-                                        <th>UserSNO</th>
+                                        <th>Sr No</th>
+                                        <th>Transaction Status</th>
                                         <th>Payment Amount</th>
-                                        <th>Transaction Status ID</th>
                                         <th>Payment Date</th>
-                                        <th>CC Avenue Response</th>
                                         <th>Timestamp Created</th>
                                     </tr>
                                 </thead>
@@ -94,12 +103,10 @@
                                         foreach (var row in TokenRechargeTableTRs)
                                         {
                                             <tr>
-                                                <td>@row.ID</td>
-                                                <td>@row.UserSNO</td>
+                                                <td>@row.SrNo</td>
+                                                <td>@row.Status</td>
                                                 <td>@row.PaymentAmount</td>
-                                                <td>@row.TransactionStatusID</td>
                                                 <td>@row.PaymentDate</td>
-                                                <td>@row.CCAvenueResponse</td>
                                                 <td>@row.TimestampCreated</td>
                                             </tr>
                                         }
@@ -115,45 +122,35 @@
 </div>
 
 @code {
-    private int TokenAmount = 10;
-    private decimal UserToken = 100;
-    private List<TokenRechargeTableTRModel>? TokenRechargeTableTRs = new List<TokenRechargeTableTRModel>        {
-        new TokenRechargeTableTRModel
-        {
-            ID = 1,
-            UserSNO = "A_UserSNO_1",
-            PaymentAmount = 100.00m,
-            TransactionStatusID = 1,
-            PaymentDate = DateTime.Parse("2023-10-27"),
-            CCAvenueResponse = "Success",
-            TimestampCreated = DateTime.Parse("2023-10-27 10:00:00")
-        },
-        new TokenRechargeTableTRModel
-        {
-            ID = 2,
-            UserSNO = "A_UserSNO_2",
-            PaymentAmount = 50.00m,
-            TransactionStatusID = 2,
-            PaymentDate = DateTime.Parse("2023-10-28"),
-            CCAvenueResponse = "Pending",
-            TimestampCreated = DateTime.Parse("2023-10-28 14:30:00")
-        },
-        new TokenRechargeTableTRModel
-        {
-            ID = 3,
-            UserSNO = "A_UserSNO_3",
-            PaymentAmount = 75.00m,
-            TransactionStatusID = 1,
-            PaymentDate = DateTime.Parse("2023-10-29"),
-            CCAvenueResponse = "Failure",
-            TimestampCreated = DateTime.Parse("2023-10-29 09:15:00")
-        }
-    };
+    public class TokenModel
+    {
+        public decimal TokenAmount { get; set; }
+        public string? UserName { get; set; }
+    }
+
+    private TokenModel Token = new TokenModel();
+    private decimal? UserToken;
+    private List<TokenRechargeTableTRModel>? TokenRechargeTableTRs;
 
     protected override async Task OnInitializedAsync()
     {
         UserToken = await TokenWallet.GetBalance();
         TokenRechargeTableTRs = await TokenWallet.GetTokenRechargeTransactionHistory();
+        await base.OnInitializedAsync();
+
+        Token.UserName = UserName;
+    }
+
+    private void OnInvalidSubmit()
+    {
+
+    }
+    private async void OnValidSubmit()
+    {
+        var balance = await TokenWallet.UpdateRechargeTokenBalance(AstroOfficeWeb.Shared.Models.TransactionType.Deposit, Token.TokenAmount, $"Recharge of {Token.TokenAmount} successfully completed.");
+        TokenRechargeTableTRs = await TokenWallet.GetTokenRechargeTransactionHistory();
+        UserToken = balance;
+        StateHasChanged();
     }
 }
 

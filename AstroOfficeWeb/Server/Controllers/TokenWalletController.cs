@@ -47,7 +47,7 @@ namespace AstroOfficeWeb.Server.Controllers
                     TimestampCreated = t.TimestampCreated,
                     StatusName = s.StatusName,
                     Amount = t.PaymentAmount
-                });
+                }).OrderByDescending(o => o.TimestampCreated);
             return Ok(temp);
         }
 
@@ -64,9 +64,10 @@ namespace AstroOfficeWeb.Server.Controllers
                 {
                     TimestampCreated = t.TimestampCreated,
                     Amount = t.Amount,
+                    Action = t.Action,
                     Description = t.Description,
                     StatusType = s.StatusName
-                });
+                }).OrderByDescending(o => o.TimestampCreated); ;
             return Ok(temp);
         }
 
@@ -105,6 +106,7 @@ namespace AstroOfficeWeb.Server.Controllers
                     Description = request.Description,
                     Amount = request.Amount,
                     TimestampCreated = request.PaymentDate,
+                    Action = request.Action,
                     AUserSno = User.GetUserSno(),
                     ATransactionStatusesId = Convert.ToInt32(TransactionStatus.Success),
                 };
@@ -151,6 +153,7 @@ namespace AstroOfficeWeb.Server.Controllers
                     TimestampCreated = DateTime.Now,
                     AUserSno = User.GetUserSno(),
                     ATransactionStatusesId = Convert.ToInt32(TransactionStatus.Success),
+                    CcavenueResponse = request.Description,
                 };
 
                 await _context.ACcavenueTransactions.AddAsync(entity);

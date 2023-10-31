@@ -8,7 +8,7 @@
         public decimal? PaymentAmount { get; set; }
         public int TransactionStatusID { get; set; }
         public DateTime? PaymentDate { get; set; }
-        public string? CCAvenueResponse { get; set; }
+        public string? Status { get; set; }
         public DateTime? TimestampCreated { get; set; }
     }
 }
