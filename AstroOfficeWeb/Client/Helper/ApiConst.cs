@@ -106,4 +106,14 @@
         public static string GET_GetAllUserKundalies = Base + "GetAllUserKundalies";
         public static string DELETE_DeleteSavedKundali = Base + "DeleteSavedKundali";
     }
+
+    public static class TokenWalletApiConst
+    {
+        public static string Base = "api/TokenWallet/";
+        public static string GET_Balance = Base + "GetBalance";
+        public static string GET_TokenRechargeTransactionHistory = Base + "GetTokenRechargeTransactionHistory";
+        public static string GET_TokenTransactionHistory = Base + "GetTokenTransactionHistory";
+        public static string POST_UpdateTokenBalance = Base + "UpdateTokenBalance";
+        public static string POST_UpdateRechargeTokenBalance = Base + "UpdateRechargeTokenBalance";
+    }
 }

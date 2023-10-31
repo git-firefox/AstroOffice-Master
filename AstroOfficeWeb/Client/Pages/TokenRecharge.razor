@@ -1,4 +1,7 @@
 ﻿@page "/token-recharge"
+@using AstroOfficeWeb.Client.Services;
+
+@inject TokenWalletService TokenWallet
 
 <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold ">Recharge Token</h1>
@@ -6,6 +9,7 @@
         <div class="card card-primary">
             <div class="card-header bg-da-dark-red">
                 <h3 class="card-title">Add Token</h3>
+                @* <div class="badge badge-primary">@UserToken</div> *@
             </div>
 
             <form>
@@ -112,8 +116,8 @@
 
 @code {
     private int TokenAmount = 10;
-
-    private List<TokenRechargeTableTRModel> TokenRechargeTableTRs = new List<TokenRechargeTableTRModel>        {
+    private decimal UserToken = 100;
+    private List<TokenRechargeTableTRModel>? TokenRechargeTableTRs = new List<TokenRechargeTableTRModel>        {
         new TokenRechargeTableTRModel
         {
             ID = 1,
@@ -145,6 +149,12 @@
             TimestampCreated = DateTime.Parse("2023-10-29 09:15:00")
         }
     };
+
+    protected override async Task OnInitializedAsync()
+    {
+        UserToken = await TokenWallet.GetBalance();
+        TokenRechargeTableTRs = await TokenWallet.GetTokenRechargeTransactionHistory();
+    }
 }
 
 

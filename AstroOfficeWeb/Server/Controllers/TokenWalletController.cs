@@ -1,5 +1,6 @@
 ﻿using ASModels;
 using AstroOfficeWeb.Server.Helper;
+using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -39,24 +40,130 @@ namespace AstroOfficeWeb.Server.Controllers
             var temp = transactions.Join(statuses,
                 t => t.ATransactionStatusesId,
                 s => s.Id,
-                (t, s) => new
+                (t, s) => new PaymentInfoDto
                 {
-
+                    CcavenueResponse = t.CcavenueResponse,
+                    PaymentDate = t.PaymentDate,
+                    TimestampCreated = t.TimestampCreated,
+                    StatusName = s.StatusName,
+                    Amount = t.PaymentAmount
                 });
-            return Ok();
+            return Ok(temp);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetTokenTransactionHistory()
         {
             var transactions = await _context.ATokenTransactions.Where(a => a.AUserSno == User.GetUserSno()).ToListAsync();
-            return Ok();
+            var statuses = await _context.ATransactionStatuses.ToListAsync();
+
+            var temp = transactions.Join(statuses,
+                t => t.ATransactionStatusesId,
+                s => s.Id,
+                (t, s) => new TokenTransactionDTO
+                {
+                    TimestampCreated = t.TimestampCreated,
+                    Amount = t.Amount,
+                    Description = t.Description,
+                    StatusType = s.StatusName
+                });
+            return Ok(temp);
         }
 
-        [HttpGet]
-        public IActionResult UpdateTokenBalance(int token)
+        [HttpPost]
+        public async Task<IActionResult> UpdateTokenBalance(UpdateTokenBalanceRequest request)
         {
-            return Ok();
+            var aUserToken = await _context.AUserTokenBalances.FirstAsync(a => a.AUserSno == User.GetUserSno());
+
+            var response = new ApiResponse<decimal?>();
+            response.Success = false;
+            response.Message = ApiMessageConst.ServerError;
+            response.Data = aUserToken.TokenBalance;
+
+
+            if (aUserToken.TokenBalance == 0)
+            {
+                response.Success = false;
+                response.Message = TokenWalletMessageConst.BalanceZeroMessage;
+                goto returnResponse;
+            }
+
+            if (request.TransactionType == TransactionType.Purchase)
+            {
+                if (request.Amount > aUserToken.TokenBalance)
+                {
+                    response.Success = false;
+                    response.Message = TokenWalletMessageConst.InsufficientBalance;
+                    goto returnResponse;
+                }
+
+                aUserToken.TokenBalance -= request.Amount;
+
+                var entity = new ASModels.Astrooff.ATokenTransaction
+                {
+                    TransactionType = TransactionType.Purchase.ToString(),
+                    Description = request.Description,
+                    Amount = request.Amount,
+                    TimestampCreated = request.PaymentDate,
+                    AUserSno = User.GetUserSno(),
+                    ATransactionStatusesId = Convert.ToInt32(TransactionStatus.Success),
+                };
+
+                await _context.ATokenTransactions.AddAsync(entity);
+
+                await _context.SaveChangesAsync();
+
+                response.Data = aUserToken.TokenBalance;
+                response.Success = true;
+                response.Message = TokenWalletMessageConst.TokenBalanceUpdated;
+            }
+
+            returnResponse:
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateRechargeTokenBalance(UpdateTokenBalanceRequest request)
+        {
+            var aUserToken = await _context.AUserTokenBalances.FirstAsync(a => a.AUserSno == User.GetUserSno());
+
+            var response = new ApiResponse<decimal?>();
+            response.Success = false;
+            response.Message = ApiMessageConst.ServerError;
+            response.Data = aUserToken.TokenBalance;
+
+
+            if (request.Amount == 0)
+            {
+                response.Success = false;
+                response.Message = TokenWalletMessageConst.ErrorBalanceZeroMessage;
+                goto returnResponse;
+            }
+
+            if (request.TransactionType == TransactionType.Deposit)
+            {
+                aUserToken.TokenBalance += request.Amount;
+
+                var entity = new ASModels.Astrooff.ACcavenueTransaction
+                {
+                    PaymentAmount = request.Amount,
+                    PaymentDate = request.PaymentDate,
+                    TimestampCreated = DateTime.Now,
+                    AUserSno = User.GetUserSno(),
+                    ATransactionStatusesId = Convert.ToInt32(TransactionStatus.Success),
+                };
+
+                await _context.ACcavenueTransactions.AddAsync(entity);
+
+                await _context.SaveChangesAsync();
+
+                response.Data = aUserToken.TokenBalance;
+                response.Success = true;
+                response.Message = TokenWalletMessageConst.TokenRecharge;
+            }
+
+            returnResponse:
+            return Ok(response);
         }
     }
 }
