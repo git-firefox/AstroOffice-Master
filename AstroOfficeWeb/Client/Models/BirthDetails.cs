@@ -46,7 +46,7 @@ namespace AstroOfficeWeb.Client.Models
 
         public BirthDetails()
         {
-            this.DateOfBirth = new DateTime(2006, 06, 12, 13, 25, 00);
+            this.DateOfBirth = new DateTime(this.Dobyy, this.Dobmm, this.Dobdd, this.Tobhh, this.Tobmm, this.Tobss);
         }
     }
 }
