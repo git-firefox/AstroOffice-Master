@@ -1324,6 +1324,20 @@ namespace AstroOfficeWeb.Client.Pages
 
         #region Handle events
 
+        private void OnInput_Hour(ChangeEventArgs e)
+        {
+            BirthDetails!.Tobhh = Convert.ToInt32(e.Value);
+        }
+
+        private void OnInput_Minute(ChangeEventArgs e)
+        {
+            BirthDetails!.Tobmm = Convert.ToInt32(e.Value);
+        }
+
+        private void OnInput_Second(ChangeEventArgs e)
+        {
+            BirthDetails!.Tobss = Convert.ToInt32(e.Value);
+        }
         private void OnChange_CmbAyanansh(ChangeEventArgs e)
         {
             string value = e.Value?.ToString() ?? "";
