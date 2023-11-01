@@ -177,6 +177,8 @@ namespace AstroOfficeWeb.Client.Services
                 CmbSkipBad = kundali.SkipBadType
             };
 
+            var dateOfBirth = new DateTime(kundali.DateOfBirth.Year, kundali.DateOfBirth.Month, kundali.DateOfBirth.Day, kundali.TimeOfBirth.Hours, kundali.TimeOfBirth.Minutes, kundali.TimeOfBirth.Seconds);
+            SelectedSavedKundali.DateOfBirth = dateOfBirth;
         }
 
         public async Task<bool> IsDeletedSavedKundali(int? id)

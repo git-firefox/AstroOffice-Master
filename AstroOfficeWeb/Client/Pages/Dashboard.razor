@@ -91,7 +91,7 @@
                                                         }
                                                     </select>
                                                 }
-                                                @if ((IsAdmin || UserCanEdit) && txtBirthPlaceEnabled)
+                                                @if ((IsAdmin || UserCanEdit) && inputBirthPlaceEnabled)
                                                 {
                                                     @* <InputText @ref="inputTextBirthPlace" @bind-Value="BirthDetails!.TxtBirthPlace" class="form-control form-control-sm mb-2" @onkeydown="OnKeyDown_TxtBirthplace" @oninput="OnInput_TxtBirthplace" @onfocus="OnFocus_TxtBirthplace" /> *@
                                                     <input class="form-control form-control-sm mb-2" @bind="BirthDetails!.TxtBirthPlace" @bind:event="oninput" @onkeyup="OnKeyDown_TxtBirthplace" />
@@ -160,34 +160,15 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="row">
-                                            <div class="col-4 mb-2">
-                                                @if (dobddEnabled)
+                                            <div class="col-12 mb-2">
+                                                @if (inputBirthDateEnabled)
                                                 {
-                                                    <input class="form-control form-control-sm" min="1" max="31" @bind="inputDay" @onfocusout="OnFocusOut_InputBrithDate" title="Day" />
+                                                    @* <input type="date" class="form-control form-control-sm" @onchange="OnChange_BrithDate" value="1999-09-20" title="Date of Birth" max="9999-12-31" /> *@
+                                                    <input type="date" class="form-control form-control-sm" @onchange="OnChange_BrithDate" value="@BirthDetails.DateOfBirth.ToString(format: "yyyy-MM-dd")" title="Date of Birth" max="9999-12-31" />
                                                 }
                                                 else
                                                 {
-                                                    <input value="@BirthDetails!.Dobdd" class="form-control form-control-sm" title="Day" readonly />
-                                                }
-                                            </div>
-                                            <div class="col-4 mb-2">
-                                                @if (dobmmEnabled)
-                                                {
-                                                    <input @bind="inputMonth" class="form-control form-control-sm" min="1" max="12" title="Month" @onfocusout="OnFocusOut_InputBrithDate" />
-                                                }
-                                                else
-                                                {
-                                                    <input value="@BirthDetails!.Dobmm" class="form-control form-control-sm" title="Month" readonly />
-                                                }
-                                            </div>
-                                            <div class="col-4 mb-2">
-                                                @if (dobyyEnabled)
-                                                {
-                                                    <input @bind="inputYear" class="form-control form-control-sm" @onfocusout="OnFocusOut_InputBrithDate" title="Year" />
-                                                }
-                                                else
-                                                {
-                                                    <input value="@BirthDetails!.Dobyy" class="form-control form-control-sm" title="Year" readonly />
+                                                    <input type="date" class="form-control form-control-sm" value="@BirthDetails.DateOfBirth.ToString(format: "yyyy-MM-dd")" title="Date of Birth" max="9999-12-31" disabled />
                                                 }
                                             </div>
 
@@ -196,7 +177,7 @@
                                                 {
                                                     @* <input @bind="inputHour" class="form-control form-control-sm" min="1" max="24" @onfocusout="OnFocusOut_InputBrithDate" title="Hour" /> *@
 
-                                                    <select @bind="inputHour" class="form-control form-control-sm mb-2" title="Hour">
+                                                    <select value="@BirthDetails!.Tobhh" class="form-control form-control-sm mb-2" title="Hour" @onchange="OnChange_Hour">
                                                         @for (int hour = 0; hour <= 23; hour++)
                                                         {
                                                             <option value="@hour">@hour.ToString("D2")</option>
@@ -206,7 +187,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <input value="@BirthDetails!.Tobhh" class="form-control form-control-sm" title="Hour" readonly />
+                                                    <input value="@BirthDetails!.Tobhh.ToString("D2")" class="form-control form-control-sm" title="Hour" readonly />
                                                 }
                                             </div>
                                             <div class="col-4 mb-2 d-flex">
@@ -214,7 +195,7 @@
                                                 {
                                                     @* <input @bind="inputMinute" class="form-control form-control-sm" min="1" max="60" @onfocusout="OnFocusOut_InputBrithDate" title="Minute" /> *@
 
-                                                    <select value="@BirthDetails!.Tobmm" class="form-control form-control-sm mb-2" title="Minute" @onchange="OnInput_Minute">
+                                                    <select value="@BirthDetails!.Tobmm" class="form-control form-control-sm mb-2" title="Minute" @onchange="OnChange_Minute">
                                                         @for (int minute = 0; minute <= 59; minute++)
                                                         {
                                                             <option value="@minute">@minute.ToString("D2")</option>
@@ -224,7 +205,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <input value="@BirthDetails!.Tobmm" class="form-control form-control-sm" title="Minute" readonly />
+                                                    <input value="@BirthDetails!.Tobmm.ToString("D2")" class="form-control form-control-sm" title="Minute" readonly />
                                                 }
                                             </div>
                                             <div class="col-4 mb-2 ">
@@ -232,7 +213,7 @@
                                                 {
                                                     @* <input @bind="inputSecond" class="form-control form-control-sm" min="0" max="60" @onfocusout="OnFocusOut_InputBrithDate" title="Second" /> *@
 
-                                                    <select @bind="inputSecond" class="form-control form-control-sm mb-2" title="Second">
+                                                    <select value="@BirthDetails!.Tobss" class="form-control form-control-sm mb-2" title="Second" @onchange="OnChange_Second">
                                                         @for (int second = 0; second <= 59; second++)
                                                         {
                                                             <option value="@second">@second.ToString("D2")</option>
@@ -242,10 +223,10 @@
                                                 }
                                                 else
                                                 {
-                                                    <input value="@BirthDetails!.Tobss" class="form-control form-control-sm" title="Second" readonly />
+                                                    <input value="@BirthDetails!.Tobss.ToString("D2")" class="form-control form-control-sm" title="Second" readonly />
                                                 }
                                             </div>
-                                            
+
                                             <div class="col-12">
 
                                                 <fieldset>

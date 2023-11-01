@@ -63,13 +63,14 @@ namespace AstroOfficeWeb.Client.Pages
         private List<KPDashaVO> main_sukhsmadasha = new List<KPDashaVO>();
 
         private bool isNumVarshVisible = false;
-        private bool dobddEnabled = true;
-        private bool dobmmEnabled = true;
-        private bool dobyyEnabled = true;
+        //private bool dobddEnabled = true;
+        //private bool dobmmEnabled = true;
+        //private bool dobyyEnabled = true;
         private bool tobhhEnabled = true;
         private bool tobmmEnabled = true;
         private bool tobssEnabled = true;
-        private bool txtBirthPlaceEnabled = true;
+        private bool inputBirthDateEnabled = true;
+        private bool inputBirthPlaceEnabled = true;
 
         private int selectedBirthCityIndex = 0;
 
@@ -154,12 +155,12 @@ namespace AstroOfficeWeb.Client.Pages
         }
 
 
-        int inputYear = 2006;
-        int inputMonth = 05;
-        int inputDay = 12;
-        int inputHour = 13;
-        int inputMinute = 25;
-        int inputSecond = 0;
+        //int inputYear = 2006;
+        //int inputMonth = 05;
+        //int inputDay = 12;
+        //int inputHour = 13;
+        //int inputMinute = 25;
+        //int inputSecond = 0;
 
         #endregion
 
@@ -195,12 +196,12 @@ namespace AstroOfficeWeb.Client.Pages
                 OnChange_CmbLanguage(new ChangeEventArgs { Value = BirthDetailsLookups.LanguageItems.First().Text });
             }
 
-            inputDay = this.BirthDetails.Dobdd;
-            inputMonth = this.BirthDetails.Dobmm;
-            inputYear = this.BirthDetails.Dobyy;
-            inputHour = this.BirthDetails.Tobhh;
-            inputMinute = this.BirthDetails.Tobmm;
-            inputSecond = this.BirthDetails.Tobss;
+            //inputDay = this.BirthDetails.Dobdd;
+            //inputMonth = this.BirthDetails.Dobmm;
+            //inputYear = this.BirthDetails.Dobyy;
+            //inputHour = this.BirthDetails.Tobhh;
+            //inputMinute = this.BirthDetails.Tobmm;
+            //inputSecond = this.BirthDetails.Tobss;
 
         }
 
@@ -311,7 +312,6 @@ namespace AstroOfficeWeb.Client.Pages
             {
                 await JSRuntime.FocusAsync(inputTextName?.Element);
                 await JSRuntime.LoadDateTimePickerAsync(divDateOfBirth);
-
             }
         }
 
@@ -1324,20 +1324,51 @@ namespace AstroOfficeWeb.Client.Pages
 
         #region Handle events
 
-        private void OnInput_Hour(ChangeEventArgs e)
+        private async Task OnChange_BrithDate(ChangeEventArgs e)
+        {
+            if (DateTime.TryParse(e.Value?.ToString(), out DateTime result))
+            {
+                BirthDetails.DateOfBirth = result;
+
+                BirthDetails!.Dobdd = BirthDetails.DateOfBirth.Day;
+                BirthDetails!.Dobmm = BirthDetails.DateOfBirth.Month;
+                BirthDetails!.Dobyy = BirthDetails.DateOfBirth.Year;
+
+                ListView_Planet?.Clear();
+                ListView_Ruling_Planet?.Clear();
+                ListView_House?.Clear();
+                await Gen_Kundali_Chart();
+            }
+
+        }
+
+        private async Task OnChange_Hour(ChangeEventArgs e)
         {
             BirthDetails!.Tobhh = Convert.ToInt32(e.Value);
+            ListView_Planet?.Clear();
+            ListView_Ruling_Planet?.Clear();
+            ListView_House?.Clear();
+            await Gen_Kundali_Chart();
         }
 
-        private void OnInput_Minute(ChangeEventArgs e)
+        private async Task OnChange_Minute(ChangeEventArgs e)
         {
             BirthDetails!.Tobmm = Convert.ToInt32(e.Value);
+            ListView_Planet?.Clear();
+            ListView_Ruling_Planet?.Clear();
+            ListView_House?.Clear();
+            await Gen_Kundali_Chart();
         }
 
-        private void OnInput_Second(ChangeEventArgs e)
+        private async Task OnChange_Second(ChangeEventArgs e)
         {
             BirthDetails!.Tobss = Convert.ToInt32(e.Value);
+            ListView_Planet?.Clear();
+            ListView_Ruling_Planet?.Clear();
+            ListView_House?.Clear();
+            await Gen_Kundali_Chart();
         }
+
         private void OnChange_CmbAyanansh(ChangeEventArgs e)
         {
             string value = e.Value?.ToString() ?? "";
@@ -1437,25 +1468,27 @@ namespace AstroOfficeWeb.Client.Pages
             {
                 if (value == 1)
                 {
-                    this.dobddEnabled = true;
-                    this.dobmmEnabled = true;
-                    this.dobyyEnabled = true;
+                    //this.dobddEnabled = true;
+                    //this.dobmmEnabled = true;
+                    //this.dobyyEnabled = true;
                     this.tobhhEnabled = true;
                     this.tobmmEnabled = true;
                     this.tobssEnabled = true;
-                    this.txtBirthPlaceEnabled = true;
+                    this.inputBirthDateEnabled = true;
+                    this.inputBirthPlaceEnabled = true;
                     await this.OnClick_BtnChart(new MouseEventArgs());
                 }
             }
             if (value > 1)
             {
-                this.dobddEnabled = false;
-                this.dobmmEnabled = false;
-                this.dobyyEnabled = false;
+                //this.dobddEnabled = false;
+                //this.dobmmEnabled = false;
+                //this.dobyyEnabled = false;
                 this.tobhhEnabled = false;
                 this.tobmmEnabled = false;
                 this.tobssEnabled = false;
-                this.txtBirthPlaceEnabled = false;
+                this.inputBirthDateEnabled = false;
+                this.inputBirthPlaceEnabled = false;
                 //string str = "";
                 //KundliBLL kundliBLL = new KundliBLL();
                 this.kp_chart = new List<KPPlanetMappingVO>();
@@ -3116,23 +3149,23 @@ namespace AstroOfficeWeb.Client.Pages
             return response.Data ?? "";
         }
 
-        private async Task OnFocusOut_DateOfBirthSelect(FocusEventArgs e)
-        {
-            var selectedDate = await JSRuntime.GetDateFromDateTimePickerAsync(divDateOfBirth);
+        //private async Task OnFocusOut_DateOfBirthSelect(FocusEventArgs e)
+        //{
+        //    var selectedDate = await JSRuntime.GetDateFromDateTimePickerAsync(divDateOfBirth);
 
-            string[] dateArray = selectedDate.Split(',');
+        //    string[] dateArray = selectedDate.Split(',');
 
-            BirthDetails.Dobmm = Convert.ToInt32(dateArray[0]);
-            BirthDetails.Dobdd = Convert.ToInt32(dateArray[1]);
-            BirthDetails.Dobyy = Convert.ToInt32(dateArray[2]);
-            BirthDetails.Tobhh = Convert.ToInt32(dateArray[3]);
-            BirthDetails.Tobmm = Convert.ToInt32(dateArray[4]);
-            BirthDetails.Tobss = Convert.ToInt32(dateArray[5]);
-            ListView_Planet?.Clear();
-            ListView_Ruling_Planet?.Clear();
-            ListView_House?.Clear();
-            await this.Gen_Kundali_Chart();
-        }
+        //    BirthDetails.Dobmm = Convert.ToInt32(dateArray[0]);
+        //    BirthDetails.Dobdd = Convert.ToInt32(dateArray[1]);
+        //    BirthDetails.Dobyy = Convert.ToInt32(dateArray[2]);
+        //    BirthDetails.Tobhh = Convert.ToInt32(dateArray[3]);
+        //    BirthDetails.Tobmm = Convert.ToInt32(dateArray[4]);
+        //    BirthDetails.Tobss = Convert.ToInt32(dateArray[5]);
+        //    ListView_Planet?.Clear();
+        //    ListView_Ruling_Planet?.Clear();
+        //    ListView_House?.Clear();
+        //    await this.Gen_Kundali_Chart();
+        //}
 
         public DateTime DateOfBirth
         {
@@ -3179,15 +3212,11 @@ namespace AstroOfficeWeb.Client.Pages
             BirthDetails!.Dobmm = tob.Month;
             BirthDetails.Dobdd = tob.Day;
             BirthDetails.Dobyy = tob.Year;
+
             BirthDetails.Tobhh = tob.Hour;
             BirthDetails.Tobmm = tob.Minute;
 
-            inputYear = tob.Year;
-            inputMonth = tob.Month;
-            inputDay = tob.Day;
-            inputHour = tob.Hour;
-            inputMinute = tob.Minute;
-            inputSecond = 0;
+            BirthDetails.DateOfBirth = new DateTime(year: tob.Year, month: tob.Month, day: tob.Day, hour: tob.Hour, minute: tob.Minute, second: tob.Second);
 
 
             //string str = BirthDetails.Dobdd.ToString();
@@ -3302,12 +3331,10 @@ namespace AstroOfficeWeb.Client.Pages
             BirthDetails.Tobhh = tob.Hour;
             BirthDetails.Tobmm = tob.Minute;
 
-            inputYear = tob.Year;
-            inputMonth = tob.Month;
-            inputDay = tob.Day;
-            inputHour = tob.Hour;
-            inputMinute = tob.Minute;
-            inputSecond = 0;
+            BirthDetails.DateOfBirth = new DateTime(year: tob.Year, month: tob.Month, day: tob.Day, hour: tob.Hour, minute: tob.Minute, second: tob.Second);
+            //inputYear = tob.Year;
+            //inputMonth = tob.Month;
+            //inputDay = tob.Day;
 
             await this.OnClick_BtnChart(new MouseEventArgs());
 
@@ -3358,65 +3385,6 @@ namespace AstroOfficeWeb.Client.Pages
             OnClick_BtnPlus_IsComplated = true;
         }
 
-        public async Task OnFocusOut_InputBrithDate(FocusEventArgs e)
-        {
-            await CreateValidDateTime(inputYear, inputMonth, inputDay, inputHour, inputMinute, inputSecond);
-        }
-
-        private async Task CreateValidDateTime(int year = 2006, int month = 5, int day = 12, int hour = 13, int minute = 25, int second = 0)
-        {
-            if (year < 1 || year > 9999)
-            {
-
-                await JSRuntime.ShowToastAsync($"Invalid year: {year}", SwalIcon.Error);
-                return;
-            }
-            if (month < 1 || month > 12)
-            {
-                await JSRuntime.ShowToastAsync($"Invalid month: {month}", SwalIcon.Error);
-                return;
-            }
-
-            if (day < 1 || day > DateTime.DaysInMonth(year, month))
-            {
-                inputDay = BirthDetails.Dobdd;
-                await JSRuntime.ShowToastAsync($"Invalid day: {day}", SwalIcon.Error);
-                return;
-            }
-
-            if (hour < 0 || hour > 23)
-            {
-                await JSRuntime.ShowToastAsync($"Invalid hour: {hour}", SwalIcon.Error);
-                return;
-            }
-            if (minute < 0 || minute > 59)
-            {
-                await JSRuntime.ShowToastAsync($"Invalid minute: {minute}", SwalIcon.Error);
-                return;
-            }
-            if (second < 0 || second > 59)
-            {
-                await JSRuntime.ShowToastAsync($"Invalid second: {second}", SwalIcon.Error);
-                return;
-            }
-            try
-            {
-                var dateTime = new DateTime(year, month, day, hour, minute, second);
-                BirthDetails.Dobdd = dateTime.Day;
-                BirthDetails.Dobmm = dateTime.Month;
-                BirthDetails.Dobyy = dateTime.Year;
-                BirthDetails.Tobhh = dateTime.Hour;
-                BirthDetails.Tobmm = dateTime.Minute;
-                BirthDetails.Tobss = dateTime.Second;
-                await Gen_Kundali_Chart();
-            }
-            catch (Exception e)
-            {
-                _ = e;
-                await JSRuntime.ShowToastAsync("Invalid DateTime", SwalIcon.Error);
-            }
-
-        }
         #endregion
     }
 }

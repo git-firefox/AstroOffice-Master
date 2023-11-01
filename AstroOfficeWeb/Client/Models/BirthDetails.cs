@@ -21,7 +21,7 @@ namespace AstroOfficeWeb.Client.Models
         public int Tobmm { get; set; } = 25;
         public int Tobss { get; set; } = 00;
 
-        //public DateTime DateOfBirth { get; set; } = new DateTime(2006, 06, 12, 13, 25, 00);
+        public DateTime DateOfBirth { get; set; }
 
         public string TxtBirthPlace { get; set; } = "Delhi";
         public string? BirthPlace { get; set; } = "Delhi";
@@ -43,5 +43,10 @@ namespace AstroOfficeWeb.Client.Models
         public Gender Gender { get; set; }
         public int KundaliUdvYear { get; set; } = 18;
         public long? PlaceOfBirthID { get; set; }
+
+        public BirthDetails()
+        {
+            this.DateOfBirth = new DateTime(2006, 06, 12, 13, 25, 00);
+        }
     }
 }
