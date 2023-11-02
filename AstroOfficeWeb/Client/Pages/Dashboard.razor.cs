@@ -1,13 +1,14 @@
 ﻿using AstroOfficeWeb.Client.Helper;
-using AstroOfficeWeb.Client.Models;
 using AstroOfficeWeb.Client.Shared;
 using AstroOfficeWeb.Shared.Models;
+using AstroShared;
+using AstroShared.DTOs;
 using AstroShared.Methods;
 using AstroShared.Models;
+using AstroShared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
-using DTOs = AstroOfficeWeb.Shared.DTOs;
 
 namespace AstroOfficeWeb.Client.Pages
 {
@@ -86,7 +87,7 @@ namespace AstroOfficeWeb.Client.Pages
         private string? imgSrcBhavChalit;
         private string? htmlStringFalla;
 
-        private List<DTOs.PlaceDTO>? ListBirthCities = new();
+        private List<PlaceDTO>? ListBirthCities = new();
         private SavedStateModel SavedStateModel = new();
 
         #region View Models Data
@@ -145,9 +146,9 @@ namespace AstroOfficeWeb.Client.Pages
 
         #endregion
 
-        private DTOs.PlaceDTO? selectedBirthCity;
+        private PlaceDTO? selectedBirthCity;
 
-        private DTOs.PlaceDTO? SelectedBirthCity
+        private PlaceDTO? SelectedBirthCity
         {
             get { return selectedBirthCity; }
 
@@ -283,9 +284,9 @@ namespace AstroOfficeWeb.Client.Pages
             //await this.OnKeyDown_TxtBirthplace(new KeyboardEventArgs() { Key = "" });
         }
 
-        private async Task<List<DTOs.CountryDTO>?> GetCountry()
+        private async Task<List<CountryDTO>?> GetCountry()
         {
-            var countryMasters = await Swagger!.GetAsync<List<DTOs.CountryDTO>>(CountryApiConst.GET_GetCountry);
+            var countryMasters = await Swagger!.GetAsync<List<CountryDTO>>(CountryApiConst.GET_GetCountry);
             return countryMasters;
         }
 
@@ -886,9 +887,9 @@ namespace AstroOfficeWeb.Client.Pages
         //    }
         //}
 
-        private async Task<List<DTOs.PlaceDTO>?> GetPlaceListLike(string? place, string? countrycode)
+        private async Task<List<PlaceDTO>?> GetPlaceListLike(string? place, string? countrycode)
         {
-            var response = await Swagger!.GetAsync<List<DTOs.PlaceDTO>>(string.Format(LocationBLLApiConst.GET_GetPlaceListLike, place, countrycode));
+            var response = await Swagger!.GetAsync<List<PlaceDTO>>(string.Format(LocationBLLApiConst.GET_GetPlaceListLike, place, countrycode));
             return response;
         }
 
@@ -1772,9 +1773,9 @@ namespace AstroOfficeWeb.Client.Pages
             BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
 
 
-            var task1 = Swagger!.GetAsync<DTOs.PlaceDTO>(string.Format(LocationBLLApiConst.GET_GetPlaceByID, selectedBirthCity?.Sno));
+            var task1 = Swagger!.GetAsync<PlaceDTO>(string.Format(LocationBLLApiConst.GET_GetPlaceByID, selectedBirthCity?.Sno));
 
-            var task2 = Swagger!.GetAsync<DTOs.CountryDTO>(string.Format(LocationBLLApiConst.GET_GetCountryByCode, selectedBirthCity?.CountryCode));
+            var task2 = Swagger!.GetAsync<CountryDTO>(string.Format(LocationBLLApiConst.GET_GetCountryByCode, selectedBirthCity?.CountryCode));
 
             await Task.WhenAll(task1, task2);
 
@@ -1782,7 +1783,7 @@ namespace AstroOfficeWeb.Client.Pages
 
             var country = task2.Result;
 
-            var task3 = Swagger!.GetAsync<DTOs.StateDTO>(string.Format(LocationBLLApiConst.GET_GetStateByCode, place?.CountryCode));
+            var task3 = Swagger!.GetAsync<StateDTO>(string.Format(LocationBLLApiConst.GET_GetStateByCode, place?.CountryCode));
 
             await Task.WhenAll(task3);
 

@@ -1,7 +1,8 @@
 ﻿using ASModels;
 using AstroOfficeWeb.Server.Helper;
-using AstroOfficeWeb.Shared.DTOs;
+
 using AstroOfficeWeb.Shared.Models;
+using AstroShared.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

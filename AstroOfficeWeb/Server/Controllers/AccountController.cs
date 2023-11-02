@@ -6,13 +6,14 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using AstroOfficeWeb.Shared.DTOs;
+
 using AstroOfficeWeb.Shared.Models;
 using AstroOfficeWeb.Server.Helper;
 using ASModels;
 using Microsoft.EntityFrameworkCore;
 using AstroOfficeWeb.Client.Helper;
 using Microsoft.AspNetCore.Authorization;
+using AstroShared.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

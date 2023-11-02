@@ -1,8 +1,8 @@
 ﻿using ASModels.Astrooff;
-using AstroOfficeWeb.Shared.DTOs;
 using VO = ASDLL.ASDLL.ValueObjects;
 using AutoMapper;
 using AstroOfficeWeb.Shared.Models;
+using AstroShared.DTOs;
 
 namespace AstroOfficeWeb.Server
 {

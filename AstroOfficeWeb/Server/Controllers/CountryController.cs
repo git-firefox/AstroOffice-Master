@@ -1,5 +1,5 @@
 ﻿using ASBAL;
-using AstroOfficeWeb.Shared.DTOs;
+using AstroShared.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 

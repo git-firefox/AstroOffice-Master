@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using AstroOfficeWeb.Client.Models;
+using AstroShared.ViewModels;
 
 namespace AstroOfficeWeb.Client.Pages.Account
 {

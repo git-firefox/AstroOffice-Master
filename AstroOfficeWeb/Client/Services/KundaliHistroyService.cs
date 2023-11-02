@@ -1,9 +1,10 @@
 ﻿using System.Globalization;
 using AstroOfficeWeb.Client.Helper;
-using AstroOfficeWeb.Client.Models;
 using AstroOfficeWeb.Client.Services.IService;
-using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Models;
+using AstroShared;
+using AstroShared.DTOs;
+using AstroShared.ViewModels;
 using Microsoft.JSInterop;
 
 namespace AstroOfficeWeb.Client.Services
@@ -177,8 +178,6 @@ namespace AstroOfficeWeb.Client.Services
                 CmbSkipBad = kundali.SkipBadType
             };
 
-            var dateOfBirth = new DateTime(kundali.DateOfBirth.Year, kundali.DateOfBirth.Month, kundali.DateOfBirth.Day, kundali.TimeOfBirth.Hours, kundali.TimeOfBirth.Minutes, kundali.TimeOfBirth.Seconds);
-            SelectedSavedKundali.DateOfBirth = dateOfBirth;
         }
 
         public async Task<bool> IsDeletedSavedKundali(int? id)
