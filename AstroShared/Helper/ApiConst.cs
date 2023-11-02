@@ -1,4 +1,4 @@
-﻿namespace AstroOfficeWeb.Client.Helper
+﻿namespace AstroShared.Helper
 {
     public static class KPBLLApiConst
     {

@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
-using AstroOfficeWeb.Client.Helper;
 using AstroOfficeWeb.Client.Services.IService;
 using AstroOfficeWeb.Shared.Models;
 using AstroShared;
 using AstroShared.DTOs;
+using AstroShared.Helper;
 using AstroShared.ViewModels;
 using Microsoft.JSInterop;
 

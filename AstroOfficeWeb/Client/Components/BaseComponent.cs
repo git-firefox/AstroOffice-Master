@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
-using AstroOfficeWeb.Client.Helper;
 using AstroOfficeWeb.Client.Services.IService;
+using AstroShared.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 

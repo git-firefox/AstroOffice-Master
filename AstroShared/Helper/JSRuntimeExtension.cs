@@ -1,9 +1,8 @@
-﻿using AstroOfficeWeb.Shared.Models;
+﻿
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 
-namespace AstroOfficeWeb.Client.Helper
+namespace AstroShared.Helper
 {
     public static class JSRuntimeExtension
     {
@@ -53,8 +52,8 @@ namespace AstroOfficeWeb.Client.Helper
         public static ValueTask<object> GetInputMaskValueAsync(this IJSRuntime jsRuntime, ElementReference? element)
         {
             return jsRuntime.InvokeAsync<object>("fnGetInputMaskValue", element);
-        } 
-        
+        }
+
         public static ValueTask<object> GetOtpValueAsync(this IJSRuntime jsRuntime, ElementReference? element)
         {
             return jsRuntime.InvokeAsync<object>("fnGetOtpValue", element);
@@ -62,8 +61,8 @@ namespace AstroOfficeWeb.Client.Helper
 
         public static ValueTask ShowToastAsync(this IJSRuntime jsRuntime, string? title, string icon = SwalIcon.Success, string position = SwalPosition.BottomEnd)
         {
-            if(string.IsNullOrEmpty(title))
-                title = icon;   
+            if (string.IsNullOrEmpty(title))
+                title = icon;
 
             return jsRuntime.InvokeVoidAsync("fnShowToast", title, icon, position);
         }

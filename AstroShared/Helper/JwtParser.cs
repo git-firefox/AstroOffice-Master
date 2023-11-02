@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Text.Json;
 
-namespace AstroOfficeWeb.Client.Helper
+namespace AstroShared.Helper
 {
     public static class JwtParser
     {

@@ -7,8 +7,8 @@ using Blazored.LocalStorage;
 using Newtonsoft.Json;
 using System.Text;
 using System.Net.Http.Headers;
-using AstroOfficeWeb.Client.Helper;
 using AstroOfficeWeb.Shared.Models;
+using AstroShared.Helper;
 
 namespace AstroOfficeWeb.Client.Services
 {

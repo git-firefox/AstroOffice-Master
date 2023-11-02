@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AstroOfficeWeb.Shared", "As
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AstroShared", "AstroShared\AstroShared.csproj", "{AB1087B0-F090-49A0-AF0B-EF697A4ACA23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AstroOfficeMobile", "AstroOfficeMobile\AstroOfficeMobile.csproj", "{13F9B32F-7B4A-4149-96F4-C4733AA38FCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AstroOfficeMobile", "AstroOfficeMobile\AstroOfficeMobile.csproj", "{13F9B32F-7B4A-4149-96F4-C4733AA38FCB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,8 +1,8 @@
-﻿using AstroOfficeWeb.Client.Helper;
-using AstroOfficeWeb.Client.Shared;
+﻿using AstroOfficeWeb.Client.Shared;
 using AstroOfficeWeb.Shared.Models;
 using AstroShared;
 using AstroShared.DTOs;
+using AstroShared.Helper;
 using AstroShared.Methods;
 using AstroShared.Models;
 using AstroShared.ViewModels;

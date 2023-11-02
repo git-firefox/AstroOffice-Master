@@ -1,14 +1,14 @@
-﻿using AstroOfficeWeb.Client.Helper;
-using AstroOfficeWeb.Client.Services.IService;
+﻿using AstroOfficeWeb.Client.Services.IService;
 using AstroOfficeWeb.Client.Shared;
 using AstroOfficeWeb.Shared;
 using AstroOfficeWeb.Shared.Models;
+using AstroShared.Helper;
 using AstroShared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
-using SwalIcon = AstroOfficeWeb.Client.Helper.SwalIcon;
+using SwalIcon = AstroShared.Helper.SwalIcon;
 
 namespace AstroOfficeWeb.Client.Pages.Account
 {
