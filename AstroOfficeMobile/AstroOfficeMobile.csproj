@@ -51,8 +51,20 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.22" />
+      <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.22" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\AstroOfficeWeb\Shared\AstroOfficeWeb.Shared.csproj" />
       <ProjectReference Include="..\AstroShared\AstroShared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="MauiLib1">
+        <HintPath>C:\Users\admin\Downloads\MauiLib1.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

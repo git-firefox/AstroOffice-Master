@@ -1,4 +1,6 @@
 ﻿
+using AstroOfficeWeb.Shared.Models;
+using AstroShared.Helper;
 using AstroShared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -16,7 +18,20 @@ namespace AstroOfficeMobile.Pages.Account
 
         private async Task OnValidSubmitAsync()
         {
-            
+             var response = await AuthService!.LoginAsync(new SignInRequest
+            {
+                UserName = LoginModel!.UserName,
+                Password = LoginModel!.Password
+            });
+            if (response!.IsAuthSuccessful)
+            {
+                await JSRuntime.ShowToastAsync(response?.Message ?? "Success!");
+                NavigationManager!.NavigateTo("/");
+            }
+            else
+            {
+                await JSRuntime.ShowToastAsync(response?.Message ?? "Error!", SwalIcon.Error);
+            }
         }
     }
 }
