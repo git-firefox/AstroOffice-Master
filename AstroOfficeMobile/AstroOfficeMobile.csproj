@@ -61,10 +61,4 @@
       <ProjectReference Include="..\AstroShared\AstroShared.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Reference Include="MauiLib1">
-        <HintPath>C:\Users\admin\Downloads\MauiLib1.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
 </Project>
