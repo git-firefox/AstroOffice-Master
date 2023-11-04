@@ -1,10 +1,23 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
+@* <div class="page">
     <main>
         <AuthorizeView>
             <NavMenu />
         </AuthorizeView>
         @Body
     </main>
+</div> *@
+
+
+
+<!-- Content Wrapper. Contains page content -->
+
+
+<AuthorizeView>
+    <NavMenu />
+    <AsideSidebar />
+</AuthorizeView>
+<div class="content-wrapper">
+    @Body
 </div>
