@@ -28,62 +28,15 @@ namespace AstroOfficeMobile.Services
             _client = client;
         }
 
-        /// <summary>
-        /// var formData = new MultipartFormDataContent();
-        /// Add the UserName and Password as form data fields
-        /// formData.Add(new StringContent(signInRequest.UserName), "UserName");
-        /// formData.Add(new StringContent(signInRequest.Password), "Password"); 
-        /// var response = await _client.PostAsync(_client.BaseAddress + "api/Account/SignIn", formData);
-        /// </summary>
-        /// <param name="signInRequest"></param>
-        /// <returns>Task<SignInResponse></returns>
-        //public async Task<SignInResponse> LoginAsync(SignInRequest signInRequest)
-        //{
-        //    try
-        //    {
-        //        var response = await _apiService.PostAsync<SignInRequest, SignInResponse>(AccountApiConst.POST_SignIn, signInRequest);
-
-        //        if (response!.IsAuthSuccessful)
-        //        {
-        //            await _localStorage.SetItemAsync(ApplicationConst.Local_Token, response.Token);
-        //            await _localStorage.SetItemAsync(ApplicationConst.Local_UserDetails, response.UserDTO);
-        //            var token = await _localStorage.GetItemAsync<object>(ApplicationConst.Local_UserDetails);
-        //            var userDio = await _localStorage.GetItemAsync<object>(ApplicationConst.Local_Token);
-        //            ((AuthenticationStateService)_authStateProvider).NotifyUserLoggedIn(response.Token);
-        //            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", response.Token);
-        //        }
-
-        //        return response;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _ = ex;
-        //        return new SignInResponse() { IsAuthSuccessful = false, Message = "Oops! Something went wrong on our end. Please try again later or contact support." };
-        //    }
-        //}
-
         public async Task<SignInResponse> LoginAsync(SignInRequest signInRequest)
         {
             try
             {
                 var response = await _apiService.PostAsync<SignInRequest, SignInResponse>(AccountApiConst.POST_SignIn, signInRequest);
 
-
                 if (response!.IsAuthSuccessful)
                 {
-                    //await _localStorage.SetItemAsync(ApplicationConst.Local_Token, response.Token);
-                    //await _localStorage.SetItemAsync(ApplicationConst.Local_UserDetails, response.UserDTO);
-
                     await SecureStorage.SetAsync(ApplicationConst.Local_Token, response.Token);
-                    await SecureStorage.SetAsync(ApplicationConst.Local_UserDetails, JsonConvert.SerializeObject(response.UserDTO));
-
-
-
-                    //var token = await _localStorage.GetItemAsync<object>(ApplicationConst.Local_UserDetails);
-                    //var userDio = await _localStorage.GetItemAsync<object>(ApplicationConst.Local_Token);
-
-                    var token = await SecureStorage.GetAsync(ApplicationConst.Local_UserDetails);
-                    var userDio = await SecureStorage.GetAsync(ApplicationConst.Local_Token);
 
                     ((AuthenticationStateService)_authStateProvider).NotifyUserLoggedIn(response.Token);
                     _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", response.Token);
@@ -103,8 +56,7 @@ namespace AstroOfficeMobile.Services
 
             if (response!.IsAuthSuccessful)
             {
-                await _localStorage.SetItemAsync(ApplicationConst.Local_Token, response.Token);
-                await _localStorage.SetItemAsync(ApplicationConst.Local_UserDetails, response.UserDTO);
+                await SecureStorage.SetAsync(ApplicationConst.Local_Token, response.Token);
                 ((AuthenticationStateService)_authStateProvider).NotifyUserLoggedIn(response.Token);
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", response.Token);
             }
@@ -118,10 +70,10 @@ namespace AstroOfficeMobile.Services
             return response ?? new SignUpResponse { IsRegisterationSuccessful = false };
         }
 
-        public async Task LogoutAsync()
+        public void Logout()
         {
-            await _localStorage.RemoveItemAsync(ApplicationConst.Local_Token);
-            await _localStorage.RemoveItemAsync(ApplicationConst.Local_UserDetails);
+            SecureStorage.Remove(ApplicationConst.Local_Token);
+
             ((AuthenticationStateService)_authStateProvider).NotifyUserLogout();
             _client.DefaultRequestHeaders.Authorization = null;
         }

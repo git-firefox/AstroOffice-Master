@@ -7,6 +7,6 @@ namespace AstroOfficeMobile.Services.IService
         Task<SignUpResponse> RegisterUserAsync(SignUpRequest signUpRequest);
         Task<SignInResponse> LoginAsync(SignInRequest signInRequest);
         Task<SignInResponse> LoginWithOtpAsync(SignInWithOtpRequest signInRequest);
-        Task LogoutAsync();
+        void Logout();
     }
 }

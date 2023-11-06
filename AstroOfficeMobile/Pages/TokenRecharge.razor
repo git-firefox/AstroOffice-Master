@@ -1,4 +1,11 @@
 ﻿@page "/token-recharge"
+@using AstroShared.ViewModels;
+@using Microsoft.AspNetCore.Authorization
+@using AstroOfficeMobile.Services
+
+@attribute [Authorize]
+@inject IJSRuntime JSRuntime
+@inject TokenWalletService TokenWallet
 
 <!-- Content Header (Page header) -->
 <div class="content-header">
@@ -12,3 +19,253 @@
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-bordered table-hover text-nowrap table-head-fixed">
+                            <thead>
+                                <tr>
+                                    <th>Sr No</th>
+                                    <th>Transaction Status</th>
+                                    <th>Payment Amount</th>
+                                    <th>Payment Date</th>
+                                    <th>Timestamp Created</th>
+                                </tr>
+                            </thead>
+                            @if (TokenRechargeTableTRs == null)
+                            {
+                                <tbody class="overlay-wrapper data-loader">
+
+                                    <tr>
+                                        <td colspan="5"><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
+                                    </tr>
+                                    @for (int i = 0; i < 9; i++)
+                                    {
+                                        <tr>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            }
+                            else
+                            {
+                                <tbody>
+                                    @if (TokenRechargeTableTRs.Any())
+                                    {
+                                        foreach (var row in TokenRechargeTableTRs)
+                                        {
+                                            <tr>
+                                                <td>@row.SrNo</td>
+                                                <td>@row.Status</td>
+                                                <td>@row.PaymentAmount</td>
+                                                <td>@row.PaymentDate</td>
+                                                <td>@row.TimestampCreated</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="5" class="text-center">No records found.</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+
+
+<div class="container-fluid p-3">
+
+    <div class="d-flex justify-content-between">
+        <h1 class="pt-4 pb-2 font-weight-bold">Recharge Token</h1>
+        @if (UserToken != null)
+        {
+            <h1 class="pt-4 pb-2 font-weight-bold"><span class="badge badge-primary bg-da-dark-red">@UserToken</span></h1>
+        }
+    </div>
+    <section class="content">
+        <div class="card card-primary">
+            <div class="card-header bg-da-dark-red">
+                <h3 class="card-title">Add Token</h3>
+            </div>
+
+            <EditForm Model="Token" OnValidSubmit="OnValidSubmit">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="inputEmail">Email address Or User Name</label>
+                        <AuthorizeView>
+                            <Authorized Context="AuthorizedContext">
+                                <input type="text" class="form-control" value="@AuthorizedContext.User.Identity.Name" disabled />
+                            </Authorized>
+                        </AuthorizeView>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputToken">Token(s)</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-circle" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control" id="inputToken" @bind="Token.TokenAmount" @bind:event="oninput" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputAmount">Amount(s)</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-rupee-sign"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control" id="inputAmount" disabled @bind="Token.TokenAmount" />
+                            <div class="input-group-append">
+                                <span class="input-group-text">.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col">
+                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> Token.TokenAmount += 100">100</button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> Token.TokenAmount += 200">200</button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> Token.TokenAmount += 500">500</button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> Token.TokenAmount += 1000">1000</button>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-custom">Recharge</button>
+                    </div>
+                </div>
+            </EditForm>
+
+            <div class="card-header bg-da-dark-red">
+                <h3 class="card-title">
+                    Recharge Token Transactions
+                </h3>
+            </div>
+            <div class="card-body table-responsive p-0">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <div class="chart-table table-responsive">
+                            <table class="table">
+                                <thead class="p-0 bg-da-yellow">
+                                    <tr>
+                                        <th>Sr No</th>
+                                        <th>Transaction Status</th>
+                                        <th>Payment Amount</th>
+                                        <th>Payment Date</th>
+                                        <th>Timestamp Created</th>
+                                    </tr>
+                                </thead>
+                                @if (TokenRechargeTableTRs == null)
+                                {
+                                    <tbody class="overlay-wrapper data-loader">
+
+                                        <tr>
+                                            <td colspan="5"><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
+                                        </tr>
+                                        @for (int i = 0; i < 9; i++)
+                                        {
+                                            <tr>
+                                                <td> - </td>
+                                                <td> - </td>
+                                                <td> - </td>
+                                                <td> - </td>
+                                                <td> - </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                }
+                                else
+                                {
+                                    <tbody>
+                                        @if (TokenRechargeTableTRs.Any())
+                                        {
+                                            foreach (var row in TokenRechargeTableTRs)
+                                            {
+                                                <tr>
+                                                    <td>@row.SrNo</td>
+                                                    <td>@row.Status</td>
+                                                    <td>@row.PaymentAmount</td>
+                                                    <td>@row.PaymentDate</td>
+                                                    <td>@row.TimestampCreated</td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="5" class="text-center">No records found.</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@code {
+    public class TokenModel
+    {
+        public decimal TokenAmount { get; set; }
+    }
+
+    private TokenModel Token = new TokenModel();
+    private decimal? UserToken;
+    private List<TokenRechargeTableTRModel> TokenRechargeTableTRs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        UserToken = await TokenWallet.GetBalance();
+        TokenRechargeTableTRs = await TokenWallet.GetTokenRechargeTransactionHistory();
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.AddSidebarCollapse();
+        }
+    }
+
+    private async void OnValidSubmit()
+    {
+        var balance = await TokenWallet.UpdateRechargeTokenBalance(AstroOfficeWeb.Shared.Models.TransactionType.Deposit, Token.TokenAmount, $"Recharge of {Token.TokenAmount} successfully completed.");
+        TokenRechargeTableTRs = await TokenWallet.GetTokenRechargeTransactionHistory();
+        UserToken = balance;
+        StateHasChanged();
+    }
+}

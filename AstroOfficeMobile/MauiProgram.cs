@@ -31,6 +31,8 @@ namespace AstroOfficeMobile
             builder.Services.AddScoped<IAuthenticationStateService, AuthenticationStateService>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<ISwaggerApiService, SwaggerApiService>();
+            builder.Services.AddScoped<TokenWalletService>();
+            builder.Services.AddScoped<KundaliHistroyService>();
             builder.Services.AddSingleton<WeatherForecastService>();
 
             return builder.Build();

@@ -6,7 +6,7 @@
     protected async override Task OnInitializedAsync()
     {
         await JSRuntime.AddSidebarCollapse();
-        await AuthSerivce.LogoutAsync();
+        AuthSerivce.Logout();
         NavigationManager.NavigateTo("/");
     }
 }
