@@ -2815,8 +2815,14 @@ namespace AstroOfficeWeb.Client.Pages
                     house = kPSublordPred.Sublord;
                     predHindi[3] = house.ToString();
                     predHindi[4] = "  ";
-                    //predHindi[5] = kPSublordPred.Pred_Hindi;
-                    predHindi[5] = kPSublordPred.Pred_English;
+                    if (string.IsNullOrEmpty(kPSublordPred.Pred_English))
+                    {
+                        predHindi[5] = kPSublordPred.Pred_Hindi;
+                    }
+                    else
+                    {
+                        predHindi[5] = kPSublordPred.Pred_English;
+                    }
                     predHindi[6] = "&nbsp;<br />&nbsp;<br />";
                     str1 = string.Concat(predHindi);
                 }
@@ -3118,7 +3124,7 @@ namespace AstroOfficeWeb.Client.Pages
 
                 var balance = await TokenWallet.GetBalance();
 
-                if(balance == 0)
+                if (balance == 0)
                 {
                     await JSRuntime.ShowToastAsync("Your balance is currently 0.00 Please recharge token.", SwalIcon.Error);
                     return;
