@@ -50,7 +50,7 @@ namespace AstroOfficeWeb.Client.Services
                 TransactionType = a.StatusType,
                 Action = a.Action
             }).ToList();
-            return temp;
+            return temp ?? new List<TransactionTableTRModel>();
         }
 
         public async Task<decimal> UpdateTokenBalance(TransactionType type, decimal amount, string description, string action, string actionDescription)

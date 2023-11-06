@@ -1351,7 +1351,8 @@ namespace AstroOffice
                     house = kPSublordPred.Sublord;
                     predHindi[3] = house.ToString();
                     predHindi[4] = "  ";
-                    predHindi[5] = kPSublordPred.Pred_Hindi;
+                    //predHindi[5] = kPSublordPred.Pred_Hindi;
+                    predHindi[5] = kPSublordPred.Pred_English;
                     predHindi[6] = "\r\n\r\n";
                     str1 = string.Concat(predHindi);
                 }

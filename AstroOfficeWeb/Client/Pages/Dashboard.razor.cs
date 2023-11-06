@@ -1529,6 +1529,14 @@ namespace AstroOfficeWeb.Client.Pages
         bool OnClick_BtnSaveKundali_IsComplated = true;
         private async Task OnClick_BtnSaveKundali(MouseEventArgs e)
         {
+            var balance = await TokenWallet.GetBalance();
+
+            if (balance == 0)
+            {
+                await JSRuntime.ShowToastAsync("Your balance is currently 0.00 Please recharge token.", SwalIcon.Error);
+                return;
+            }
+
             if (!OnClick_BtnSaveKundali_IsComplated) return;
 
             OnClick_BtnSaveKundali_IsComplated = false;
@@ -2807,7 +2815,8 @@ namespace AstroOfficeWeb.Client.Pages
                     house = kPSublordPred.Sublord;
                     predHindi[3] = house.ToString();
                     predHindi[4] = "  ";
-                    predHindi[5] = kPSublordPred.Pred_Hindi;
+                    //predHindi[5] = kPSublordPred.Pred_Hindi;
+                    predHindi[5] = kPSublordPred.Pred_English;
                     predHindi[6] = "&nbsp;<br />&nbsp;<br />";
                     str1 = string.Concat(predHindi);
                 }
@@ -3106,15 +3115,26 @@ namespace AstroOfficeWeb.Client.Pages
                     lower.Product_Name = "firstpage";
                     lower.Product = "firstpage";
                 }
+
+                var balance = await TokenWallet.GetBalance();
+
+                if(balance == 0)
+                {
+                    await JSRuntime.ShowToastAsync("Your balance is currently 0.00 Please recharge token.", SwalIcon.Error);
+                    return;
+                }
                 var htmlString = await KPBLL.Get_New_Products(lower);
                 if (htmlString != null)
+                {
                     await Show_Falla(htmlString);
+                    BirthDetails.PlaceOfBirthID = SelectedBirthCity?.Sno;
+                    await KundaliHistroy.SaveKundaliLog(BirthDetails);
+                    await TokenWallet.UpdateTokenBalance(TransactionType.Purchase, 1M, "1 rupee has been deducted from your token balance.", "FALADESH [VIEW]", "Charged 1 rupee for viewing \"FALADESH.\"");
+
+                }
                 //Loader.Close();
 
-                BirthDetails.PlaceOfBirthID = SelectedBirthCity?.Sno;
-                await KundaliHistroy.SaveKundaliLog(BirthDetails);
 
-                await TokenWallet.UpdateTokenBalance(TransactionType.Purchase, 1M, "1 rupee has been deducted from your token balance.", "FALADESH [VIEW]", "Charged 1 rupee for viewing \"FALADESH.\"");
             }
             else
             {

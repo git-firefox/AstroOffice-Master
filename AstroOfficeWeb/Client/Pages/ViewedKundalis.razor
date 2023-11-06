@@ -28,24 +28,21 @@
                         @if (personKundaliTableTRs == null)
                         {
                             <tbody class="overlay-wrapper data-loader">
-                                @if (personKundaliTableTRs == null)
+                                <tr>
+                                    <td colspan="9"><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
+                                </tr>
+                                @for (int i = 0; i < 9; i++)
                                 {
                                     <tr>
-                                        <td colspan="9"><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
                                     </tr>
-                                    @for (int i = 0; i < 9; i++)
-                                    {
-                                        <tr>
-                                            <td> - </td>
-                                            <td> - </td>
-                                            <td> - </td>
-                                            <td> - </td>
-                                            <td> - </td>
-                                            <td> - </td>
-                                            <td> - </td>
-                                            <td> - </td>
-                                        </tr>
-                                    }
                                 }
                             </tbody>
                         }

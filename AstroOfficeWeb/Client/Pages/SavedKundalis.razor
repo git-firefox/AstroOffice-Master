@@ -32,26 +32,24 @@
                         @if (personKundaliTableTRs == null)
                         {
                             <tbody class="overlay-wrapper data-loader">
-                                @if (personKundaliTableTRs == null)
+                                <tr>
+                                    <td colspan="10"><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
+                                </tr>
+                                @for (int i = 0; i < 9; i++)
                                 {
                                     <tr>
-                                        <td colspan="10"><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
                                     </tr>
-                                    @for (int i = 0; i < 9; i++)
-                                    {
-                                        <tr>
-                                            <td> - </td>
-                                            <td> - </td>
-                                            <td> - </td>
-                                            <td> - </td>
-                                            <td> - </td>
-                                            <td> - </td>
-                                            <td> - </td>
-                                            <td> - </td>
-                                            <td> - </td>
-                                        </tr>
-                                    }
                                 }
+
                             </tbody>
                         }
                         else
@@ -81,7 +79,7 @@
                                 else
                                 {
                                     <tr>
-                                        <td colspan="12" class="text-center">No records found.</td>
+                                        <td colspan="10" class="text-center">No records found.</td>
                                     </tr>
                                 }
                             </tbody>
