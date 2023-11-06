@@ -82,3 +82,12 @@ a, .btn-link {
         padding-left: env(safe-area-inset-left);
     }
 }
+.tabbable .nav-tabs {
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+}
+
+    .tabbable .nav-tabs .nav-link {
+        white-space: nowrap;
+    }
