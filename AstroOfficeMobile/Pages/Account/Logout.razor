@@ -1,9 +1,11 @@
 ﻿@page "/logout"
 @inject IAuthenticationService AuthSerivce
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 @code {
     protected async override Task OnInitializedAsync()
     {
+        await JSRuntime.AddSidebarCollapse();
         await AuthSerivce.LogoutAsync();
         NavigationManager.NavigateTo("/");
     }

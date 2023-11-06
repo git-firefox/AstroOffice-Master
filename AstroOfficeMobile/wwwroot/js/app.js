@@ -2,27 +2,27 @@
     if (element instanceof HTMLInputElement) {
         element.focus();
     }
-    
+
 }
 
 window.fnSelectTextBlazorElement = function (element) {
     if (element instanceof HTMLInputElement) {
         element.select();
     }
-    
+
 }
 
 window.fnShowModal = function (element) {
     if (element instanceof HTMLDivElement) {
         $(element).modal('show');
     }
-    
+
 }
 window.fnCloseModal = function (element) {
     if (element instanceof HTMLDivElement) {
         $(element).modal('hide');
     }
-    
+
 }
 
 window.fnShowOtpModal = function (element) {
@@ -99,7 +99,7 @@ window.fnShowOtpModal = function (element) {
 
         $(element).modal('show');
     }
-    
+
 }
 
 
@@ -108,7 +108,7 @@ window.fnApplyInputMask = function (element, mask, placeHolder) {
     if (element instanceof HTMLInputElement) {
         $(element).inputmask(mask, { 'placeholder': placeHolder });
     }
-    
+
 }
 
 window.fnGetInputMaskValue = function (element) {
@@ -116,7 +116,7 @@ window.fnGetInputMaskValue = function (element) {
         var test = $(element).val();
         return $(element).val();
     }
-    
+
 }
 
 window.fnGetOtpValue = function (element) {
@@ -127,7 +127,7 @@ window.fnGetOtpValue = function (element) {
         });
         return concatenatedValue;
     }
-    
+
 }
 
 
@@ -135,7 +135,7 @@ window.fnCloseModal = function (element) {
     if (element instanceof HTMLDivElement) {
         $(element).modal('hide');
     }
-    
+
 }
 
 window.fnLoadDateTimePicker = function (element, format) {
@@ -149,7 +149,7 @@ window.fnGetDateFromDateTimePicker = function (element) {
         //return new Date($('input', element).val());
         return $(element).datetimepicker('date').format('MM,DD,YYYY,HH,mm,ss');
     }
-    
+
     return null;
 }
 
@@ -210,4 +210,8 @@ window.fnShowToast = function (title, icon, position) {
             popup: 'animate__animated animate__fadeOutRight'
         }
     });
+}
+
+window.fnAddSidebarCollapse = function () {
+    $('body').addClass('sidebar-collapse');
 }
