@@ -40,7 +40,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <select @onchange="OnChange_CmbSkipBad" value="@BirthDetails!.CmbSkipBad" class="form-control form-control-sm" aria-label="Selection of SkipBad">
+                                        <select @onchange="OnChange_CmbSkipBad" value="@BirthDetails!.CmbSkipBad" class="form-control form-control-sm" aria-label="Selection of SkipBad" title="Skip Bad">
                                             @foreach (var item in BirthDetailsLookups.SkipBadItems)
                                             {
                                                 <option value="@item.Text">@item.Text</option>
@@ -48,7 +48,7 @@
                                         </select>
                                     </div>
                                     <div class="col">
-                                        <select @onchange="OnChange_CmbTime" value="@BirthDetails!.CmbTime" class="form-control form-control-sm" aria-label="Selection of Time">
+                                        <select @onchange="OnChange_CmbTime" value="@BirthDetails!.CmbTime" class="form-control form-control-sm" aria-label="Selection of Time" title="Time">
                                             @foreach (var item in BirthDetailsLookups.CmbTimeItems)
                                             {
                                                 <option value="@item.Text.ToLower()">@item.Text</option>
