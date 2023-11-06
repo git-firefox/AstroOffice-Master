@@ -6650,6 +6650,7 @@ namespace ASDLL.DataAccess.Core
             return str;
         }
 
+        //1111-1111-11
         public string Get_KP_Lang(short mixsno, string language, bool dashafal, bool upay, bool mini)
         {
             string predHindi = "";
@@ -6658,7 +6659,15 @@ namespace ASDLL.DataAccess.Core
             kPLangVO = kPDAO.Get_KP_Lang(mixsno, dashafal, upay, language, mini);
             if (language.Trim().ToLower() == "hindi")
             {
-                predHindi = kPLangVO.pred_hindi;
+                string? temp = kPLangVO.pred_english?.ToString();
+                if (string.IsNullOrEmpty(temp))
+                {
+                    predHindi = kPLangVO.pred_hindi;
+                }
+                else
+                {
+                    predHindi = kPLangVO.pred_english;
+                }
             }
             if (language.Trim().ToLower() == "punjabi")
             {
@@ -7339,9 +7348,9 @@ namespace ASDLL.DataAccess.Core
                             }
                         }
                     }
-                    Label1:
+                Label1:
                     flag = true;
-                    Label0:
+                Label0:
                     if (!flag)
                     {
                         if (this.isAllConditionMet(kPMixDashaVO, kp_chart, str2, prod.Product.ToLower()))
@@ -9873,7 +9882,7 @@ namespace ASDLL.DataAccess.Core
                 redSigni = dashaWiseTalakShadiYog;
             }
             return redSigni;
-            Label2:
+        Label2:
             budhShukra = "";
             budhShukra = string.Concat(this.Get_Full_Yog(kPPlanetMappingVOs1, kPHouseMappingVOs1, kundliVO, prod, 1, kundliVO.Dob, kundliVO.Dob), "\r\n\r\n");
             dashaWiseTalakShadiYog = string.Concat(dashaWiseTalakShadiYog, budhShukra);
@@ -14876,14 +14885,14 @@ namespace ASDLL.DataAccess.Core
                             select Map).Count<KPSigniVO>() < 1;
                         goto Label0;
                     }
-                    Label3:
+                Label3:
                     flag = false;
                     goto Label0;
                 }
             }
-            Label1:
+        Label1:
             flag = false;
-            Label0:
+        Label0:
             if (!flag)
             {
                 flag4 = true;
@@ -14923,14 +14932,14 @@ namespace ASDLL.DataAccess.Core
                             select Map).Count<KPSigniVO>() < 1;
                         goto Label4;
                     }
-                    Label7:
+                Label7:
                     flag1 = false;
                     goto Label4;
                 }
             }
-            Label5:
+        Label5:
             flag1 = false;
-            Label4:
+        Label4:
             if (!flag1)
             {
                 flag3 = true;
@@ -14970,14 +14979,14 @@ namespace ASDLL.DataAccess.Core
                             select Map).Count<KPSigniVO>() < 1;
                         goto Label8;
                     }
-                    Label11:
+                Label11:
                     flag2 = false;
                     goto Label8;
                 }
             }
-            Label9:
+        Label9:
             flag2 = false;
-            Label8:
+        Label8:
             if (!flag2)
             {
                 flag5 = true;

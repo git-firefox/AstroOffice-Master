@@ -167,29 +167,29 @@ namespace AstroOffice
             string str = "";
             short num = Convert.ToInt16(this.LstVHouses.SelectedItems[0].SubItems[0].Text);
             string str1 = "";
-            PredictionBLL predictionBLL = new PredictionBLL();
-            ProductSettingsVO productSettingsVO = new ProductSettingsVO()
-            {
-                Online_Result = this.Online_Result,
-                Include = this.ChkSahasaneLogic.Checked,
-                Lang = this.CmbLanguage.Text,
-                Male = this.male,
-                PredFor = 0,
-                ShowRef = this.ChkShowRef.Checked,
-                ShowUpay = false,
-                ShowUpayCode = true,
-                Sno = (long)555,
-                Category = "",
-                Product = "all",
-                Karyesh = true,
-                Rotate = Convert.ToInt16(this.CmbRotate.Text)
-            };
+            //PredictionBLL predictionBLL = new PredictionBLL();
+            //ProductSettingsVO productSettingsVO = new ProductSettingsVO()
+            //{
+            //    Online_Result = this.Online_Result,
+            //    Include = this.ChkSahasaneLogic.Checked,
+            //    Lang = this.CmbLanguage.Text,
+            //    Male = this.male,
+            //    PredFor = 0,
+            //    ShowRef = this.ChkShowRef.Checked,
+            //    ShowUpay = false,
+            //    ShowUpayCode = true,
+            //    Sno = (long)555,
+            //    Category = "",
+            //    Product = "all",
+            //    Karyesh = true,
+            //    Rotate = Convert.ToInt16(this.CmbRotate.Text)
+            //};
             KPDAO kPDAO = new KPDAO();
             List<short> nums = new List<short>();
             List<short> nums1 = new List<short>();
-            List<KP_Sublord_Pred> kPSublordPreds = new List<KP_Sublord_Pred>();
-            List<KP_Sublord_Pred> kPSublordPreds1 = new List<KP_Sublord_Pred>();
-            kPSublordPreds = kPDAO.Get_KP_Cusp_Pred(this.persKV.ShowRef, num);
+            //List<KP_Sublord_Pred> kPSublordPreds = new List<KP_Sublord_Pred>();
+            //List<KP_Sublord_Pred> kPSublordPreds1 = new List<KP_Sublord_Pred>();
+            //kPSublordPreds = kPDAO.Get_KP_Cusp_Pred(this.persKV.ShowRef, num);
             short subLord = (
                 from Map in this.cusp_house
                 where Map.House == num
@@ -1351,7 +1351,8 @@ namespace AstroOffice
                     house = kPSublordPred.Sublord;
                     predHindi[3] = house.ToString();
                     predHindi[4] = "  ";
-                    predHindi[5] = kPSublordPred.Pred_Hindi;
+                    //predHindi[5] = kPSublordPred.Pred_Hindi;
+                    predHindi[5] = kPSublordPred.Pred_English;
                     predHindi[6] = "\r\n\r\n";
                     str1 = string.Concat(predHindi);
                 }
