@@ -1,7 +1,7 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
-
+@inject IJSRuntime JSRuntime
 
 <div>
 
@@ -158,10 +158,20 @@
 @code {
     [CascadingParameter]
     private MainLayout MainLayout { get; set; }
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         MainLayout.NavTitle = "Home";
+    }
+    protected override async Task OnInitializedAsync()
+    {
         await MainLayout.NotifyChangeAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.CloseSidebar();
+        }
     }
 }
