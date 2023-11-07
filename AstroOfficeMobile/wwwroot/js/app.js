@@ -214,4 +214,9 @@ window.fnShowToast = function (title, icon, position) {
 
 window.fnAddSidebarCollapse = function () {
     $('body').addClass('sidebar-collapse');
+
+}
+
+window.fnAddSidebarClose = function () {
+    $('body').addClass('sidebar-close');
 }

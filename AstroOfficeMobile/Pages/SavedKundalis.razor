@@ -120,8 +120,10 @@
         if (firstRender)
         {
             await JSRuntime.AddSidebarCollapse();
+            await JSRuntime.AddSidebarClose();
         }
     }
+   
 
     private void OnClick_BtnShow(PersonKundaliTableTRModel selectedRow)
     {

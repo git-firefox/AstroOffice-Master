@@ -24,6 +24,10 @@ namespace AstroShared.Helper
         {
             return jsRuntime.InvokeVoidAsync("fnAddSidebarCollapse");
         }
+        public static ValueTask AddSidebarClose(this IJSRuntime jsRuntime)
+        {
+            return jsRuntime.InvokeVoidAsync("fnAddSidebarClose");
+        }
 
         public static ValueTask CloseModalAsync(this IJSRuntime jsRuntime, ElementReference? element)
         {
