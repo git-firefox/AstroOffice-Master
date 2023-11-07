@@ -220,3 +220,12 @@ window.fnAddSidebarCollapse = function () {
 window.fnAddSidebarClose = function () {
     $('body').addClass('sidebar-close');
 }
+
+
+window.fnCloseSidebar = function () {
+
+    if ($('body').hasClass('sidebar-open')) {
+        $('body').removeClass('sidebar-open');
+    }
+    $('body').addClass('sidebar-closed sidebar-collapse');
+}
