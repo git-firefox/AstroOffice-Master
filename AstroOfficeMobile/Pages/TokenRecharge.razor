@@ -189,10 +189,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await MainLayout.NotifyChangeAsync();
+
         UserToken = await TokenWallet.GetBalance();
         TokenRechargeTableTRs = await TokenWallet.GetTokenRechargeTransactionHistory();
 
-        await MainLayout.NotifyChangeAsync();
         await base.OnInitializedAsync();
     }
 

@@ -115,8 +115,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        personKundaliTableTRs = await KundaliHistroy.GetUserViewedKundalies();
         await MainLayout.NotifyChangeAsync();
+        personKundaliTableTRs = await KundaliHistroy.GetUserViewedKundalies();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

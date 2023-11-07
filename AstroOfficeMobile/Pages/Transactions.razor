@@ -107,8 +107,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        TransactionTableTRs = await TokenWallet.GetTokenTransactionHistory();
         await MainLayout.NotifyChangeAsync();
+        TransactionTableTRs = await TokenWallet.GetTokenTransactionHistory();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
