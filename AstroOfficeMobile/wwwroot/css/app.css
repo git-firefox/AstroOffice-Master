@@ -82,6 +82,7 @@ a, .btn-link {
         padding-left: env(safe-area-inset-left);
     }
 }
+
 .tabbable .nav-tabs {
     overflow-x: auto;
     overflow-y: hidden;
@@ -91,3 +92,13 @@ a, .btn-link {
     .tabbable .nav-tabs .nav-link {
         white-space: nowrap;
     }
+
+.table-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 100%;
+}
+
+table {
+    width: auto;
+}
