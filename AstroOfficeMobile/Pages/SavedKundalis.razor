@@ -7,20 +7,19 @@
 @inject NavigationManager NavigationManager
 
 <!-- Content Header (Page header) -->
-<section class="content-header">
+@* <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
                 <h1 class="m-0">Saved Kundalis</h1>
-            </div><!-- /.col -->
-
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-</section>
+            </div>
+        </div>
+    </div>
+</section> *@
 <!-- /.content-header -->
 
 <!-- Main content -->
-<section class="content">
+<section class="content mt-3">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
@@ -110,12 +109,21 @@
 
 @code
 {
+    [CascadingParameter]
+    private MainLayout MainLayout { get; set; }
+
     private List<PersonKundaliTableTRModel> personKundaliTableTRs;
     private PersonKundaliTableTRModel selectedPersonKundaliTableTR;
+
+    protected override void OnInitialized()
+    {
+        MainLayout.NavTitle = "Saved Kundalis";
+    }
 
     protected override async Task OnInitializedAsync()
     {
         personKundaliTableTRs = await KundaliHistroy.GetUserSavedKundalies();
+        await MainLayout.NotifyChangeAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

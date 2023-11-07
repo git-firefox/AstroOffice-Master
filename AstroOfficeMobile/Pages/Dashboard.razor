@@ -151,6 +151,17 @@
 
       
 
-   
+
     </div>
 </div>
+
+@code {
+    [CascadingParameter]
+    private MainLayout MainLayout { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MainLayout.NavTitle = "Home";
+        await MainLayout.NotifyChangeAsync();
+    }
+}

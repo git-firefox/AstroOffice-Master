@@ -2,20 +2,19 @@
 @inject IJSRuntime JSRuntime
 
 <!-- Content Header (Page header) -->
-<div class="content-header">
+@* <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
                 <h1 class="m-0">Karan</h1>
-            </div><!-- /.col -->
-
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-</div>
+            </div>
+        </div>
+    </div>
+</div> *@
 <!-- /.content-header -->
 
 <!-- Main content -->
-<section class="content">
+<section class="content mt-3">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
@@ -29,6 +28,19 @@
 
 @code
 {
+    [CascadingParameter]
+    private MainLayout MainLayout { get; set; }
+
+    protected override void OnInitialized()
+    {
+        MainLayout.NavTitle = "Karan";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await MainLayout.NotifyChangeAsync();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
