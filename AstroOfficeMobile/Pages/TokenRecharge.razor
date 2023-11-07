@@ -8,7 +8,7 @@
 @inject TokenWalletService TokenWallet
 
 <!-- Content Header (Page header) -->
-<div class="content-header">
+@* <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col">
@@ -19,23 +19,27 @@
                         <h1 class="m-0"><span class="badge badge-primary bg-da-dark-red">@UserToken</span></h1>
                     }
                 </div>
-            </div><!-- /.col -->
-
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-</div>
+            </div>
+        </div>
+    </div>
+</div> *@
 
 <!-- /.content-header -->
 <!-- Main content -->
-<section class="content">
+<section class="content mt-3">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="card card-primary">
-                    <div class="card-header bg-da-dark-red">
-                        <h3 class="card-title">Add Token</h3>
+                    <div class="card-header ">
+                        <div class="bg-da-dark-red d-flex justify-content-between">
+                            <h3 class="m-0">Add Token</h3>
+                            @if (UserToken != null)
+                            {
+                                <h3 class="m-0"><span class="badge badge-primary bg-da-dark-red">0.00</span></h3>
+                            }
+                        </div>
                     </div>
-
                     <EditForm Model="Token" OnValidSubmit="OnValidSubmit">
                         <div class="card-body">
                             <div class="form-group">
@@ -164,7 +168,6 @@
     </div>
 </section>
 <!-- /.content -->
-
 @code {
 
     [CascadingParameter]
