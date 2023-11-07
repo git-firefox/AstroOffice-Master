@@ -89,7 +89,7 @@
                                 </div>
                             </div>
 
-                            <div class="card-footer">
+                            <div class="card-footer bg-transparent mt-3 p-0 d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary">Recharge</button>
                             </div>
                         </div>
@@ -100,7 +100,13 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body table-responsive p-0">
+                    <div class="card-body table-responsive p-0 overlay-wrapper">
+                        @if (TokenRechargeTableTRs == null)
+                        {
+                            <div class="overlay dark">
+                                <i class="fas fa-2x fa-sync fa-spin"></i>
+                            </div>
+                        }
                         <table class="table table-sm table-bordered table-hover text-nowrap table-head-fixed">
                             <thead>
                                 <tr>
@@ -113,11 +119,7 @@
                             </thead>
                             @if (TokenRechargeTableTRs == null)
                             {
-                                <tbody class="overlay-wrapper data-loader">
-
-                                    <tr>
-                                        <td colspan="5"><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
-                                    </tr>
+                                <tbody>
                                     @for (int i = 0; i < 9; i++)
                                     {
                                         <tr>
@@ -128,7 +130,6 @@
                                             <td> - </td>
                                         </tr>
                                     }
-
                                 </tbody>
                             }
                             else
