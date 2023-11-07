@@ -1,5 +1,11 @@
 ﻿@page "/transactions"
+@using AstroShared.ViewModels;
+@using Microsoft.AspNetCore.Authorization;
+@using AstroOfficeMobile.Services
 
+@attribute [Authorize]
+
+@inject TokenWalletService TokenWallet
 @inject IJSRuntime JSRuntime
 
 <!-- Content Header (Page header) -->
@@ -14,14 +20,89 @@
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-sm table-bordered table-hover text-nowrap table-head-fixed">
+                            <thead>
+                                <tr>
+                                    <th>SrNo</th>
+                                    <th>Action</th>
+                                    <th>Transaction Type</th>
+                                    <th>Amount</th>
+                                    <th>Description</th>
+                                    <th>Timestamp Created</th>
+                                </tr>
+                            </thead>
+                            @if (TransactionTableTRs == null)
+                            {
+                                <tbody class="overlay-wrapper data-loader">
+                                    <tr>
+                                        <td colspan="6"><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
+                                    </tr>
+                                    @for (int i = 0; i < 9; i++)
+                                    {
+                                        <tr>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                        </tr>
+                                    }
 
+                                </tbody>
+                            }
+                            else
+                            {
+                                <tbody>
+                                    @if (TransactionTableTRs.Any())
+                                    {
+                                        foreach (var row in TransactionTableTRs)
+                                        {
+                                            <tr>
+                                                <td>@row.SrNo</td>
+                                                <td>@row.Action</td>
+                                                <td>@row.TransactionType</td>
+                                                <td>@row.Amount</td>
+                                                <td>@row.Description</td>
+                                                <td>@row.TimestampCreated</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="6" class="text-center">No records found.</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- content -->
 @code
 {
+    private List<TransactionTableTRModel> TransactionTableTRs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        TransactionTableTRs = await TokenWallet.GetTokenTransactionHistory();
+    }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await JSRuntime.AddSidebarCollapse();
+            await JSRuntime.CloseSidebar();
         }
     }
 }
