@@ -30,61 +30,133 @@
                 <div class="card-body p-0">
                     <div class="table-container">
                         <table class="table table-sm table table-bordered">
-                            @*  <thead class="p-0 bg-da-yellow">
-                            <tr>
-                            <th>Planet</th>
-                            <th>Period</th>
-                            <th>Signi(Self/Nak)</th>
-                            </tr>
-                            </thead> *@
                             <tbody class="data-loader">
-
-
                                 <tr>
                                     <td>Name</td>
                                     <td>Shiva</td>
-
                                 </tr>
                                 <tr>
                                     <td>DOB</td>
                                     <td>01-Jan-1990</td>
-
                                 </tr>
                                 <tr>
                                     <td>Time Of Birth</td>
                                     <td>10:12 pm</td>
-
                                 </tr>
                                 <tr>
                                     <td>Country</td>
                                     <td>India</td>
-
                                 </tr>
                                 <tr>
                                     <td>Birth Place</td>
                                     <td>Delhi</td>
-
                                 </tr>
                                 <tr>
                                     <td>Longtitude</td>
                                     <td>77.22</td>
-
                                 </tr>
                                 <tr>
                                     <td>Time Zone</td>
                                     <td>83.75</td>
-
                                 </tr>
                                 <tr>
                                     <td>Gender</td>
                                     <td>Male</td>
-
                                 </tr>
 
                             </tbody>
                         </table>
                     </div>
-                </div>              
+                </div>
+                <div class="row">
+
+                    <div class="col">
+
+                        <div class="form-group">
+                            <label class="mb-0">Skip Bad:</label>
+                            <select class="form-control form-control form-control-border">
+                                <option>Show All</option>
+                                <option>Skip Average</option>
+                                <option>Skip Bad</option>
+                                <option>Skip Worst</option>
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col">
+
+                        <div class="form-group">
+                            <label class="mb-0">Select Time:</label>
+                            <select class="form-control form-control form-control-border">
+                                <option>Minute</option>
+                                <option>Hour</option>
+                                <option>Day</option>
+                                <option>Lagan</option>
+
+                            </select>
+                        </div>
+                    </div>
+                   
+                </div>
+
+                <div class="row">
+                    <div class="col-2"><button type="button" class="btn btn-block btn-secondary btn-custom btn-sm"><i class="fa fa-minus"></i></button></div>
+
+                    <div class="col-2"></div><div class="col-4"><input type="number" class="form-control form-control-sm"></div>
+
+                    <div class="col-2"></div><div class="col-2"><button type="button" class="btn btn-block btn-secondary btn-custom btn-sm"><i class="fa fa-plus"></i></button></div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col mb-2">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select class="form-control form-control form-control-border">
+                                <option>Kamkaj</option>
+                                <option>Tool</option>
+                                <option>Ratna</option>
+                                <option>Disease</option>
+                                <option>Married life</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col mb-2">
+                        <label>Ayansh</label>
+                        <select class="form-control form-control form-control-border">
+                            <option>KP</option>
+                            <option>Lahiri</option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-12 mb-2">
+                        <div class="form-check">
+                            <input type="checkbox" id="ChkSahasane" class="form-check-input" onclick="OnSahasaneChange(this)" />
+                            <label class="form-check-label" for="ChkSahasane">Sahasane Logic</label>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-2">
+                        <div class="form-check">
+                            <input type="checkbox" id="ChkSalachakkar" class="form-check-input" onclick="OnSalachakkarChange(this)" />
+                            <label class="form-check-label" for="ChkSalachakkar">35 Sala Chakkar</label>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-2">
+                        <div class="form-check">
+                            <input type="checkbox" id="ChkMfal" class="form-check-input" onclick="OnMfalChange(this)" />
+                            <label class="form-check-label" for="ChkMfal">Mfal</label>
+                        </div>
+                    </div>
+
+                </div>
+
+
 
             </div>
             <div class="tab-pane fade" id="custom-tabs-chart" role="tabpanel" aria-labelledby="custom-tabs-chart-tab">
