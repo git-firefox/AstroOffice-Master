@@ -26,7 +26,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body table-responsive p-0">
-                        <table class="table table-bordered table-hover text-nowrap table-head-fixed">
+                        <table class="table table-sm table-bordered table-hover text-nowrap table-head-fixed">
                             <thead>
                                 <tr>
                                     <th>Sr No</th>
@@ -82,8 +82,8 @@
                                                 <td>@row.Language</td>
                                                 <td>@row.ViewDate</td>
                                                 <td>
-                                                    <button type="button" title="View Kundali" class="btn btn-custom" @onclick="()=>OnClick_BtnShow(row)"><i class="fa fa-eye"></i></button>
-                                                    <button type="button" class="btn btn-custom" title="Delete Saved Kundali" @onclick="()=>OnClick_BtnDelete(row)"><i class="fa fa-trash"></i></button>
+                                                    <button type="button" title="View Kundali" class="btn btn-primary" @onclick="()=>OnClick_BtnShow(row)"><i class="fa fa-eye"></i></button>
+                                                    <button type="button" class="btn btn-danger" title="Delete Saved Kundali" @onclick="()=>OnClick_BtnDelete(row)"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         }
@@ -109,7 +109,7 @@
 {
     private List<PersonKundaliTableTRModel> personKundaliTableTRs;
     private PersonKundaliTableTRModel selectedPersonKundaliTableTR;
-    
+
     protected override async Task OnInitializedAsync()
     {
         personKundaliTableTRs = await KundaliHistroy.GetUserSavedKundalies();
@@ -119,12 +119,10 @@
     {
         if (firstRender)
         {
-            await JSRuntime.AddSidebarCollapse();
-            await JSRuntime.AddSidebarClose();
+            await JSRuntime.CloseSidebar();
         }
     }
    
-
     private void OnClick_BtnShow(PersonKundaliTableTRModel selectedRow)
     {
         KundaliHistroy.SetSelectedSavedKundali(selectedRow.SrNo - 1);
