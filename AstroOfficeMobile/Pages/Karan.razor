@@ -29,6 +29,19 @@
 
 @code
 {
+    [CascadingParameter]
+    private MainLayout MainLayout { get; set; }
+
+    protected override void OnInitialized()
+    {
+        MainLayout.NavTitle = "Karan";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await MainLayout.NotifyChangeAsync();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

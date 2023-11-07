@@ -167,6 +167,9 @@
 
 @code {
 
+    [CascadingParameter]
+    private MainLayout MainLayout { get; set; }
+
     public class TokenModel
     {
         public decimal TokenAmount { get; set; }
@@ -176,10 +179,17 @@
     private decimal? UserToken;
     private List<TokenRechargeTableTRModel> TokenRechargeTableTRs;
 
+    protected override void OnInitialized()
+    {
+        MainLayout.NavTitle = "Recharge Token";
+    }
+
     protected override async Task OnInitializedAsync()
     {
         UserToken = await TokenWallet.GetBalance();
         TokenRechargeTableTRs = await TokenWallet.GetTokenRechargeTransactionHistory();
+
+        await MainLayout.NotifyChangeAsync();
         await base.OnInitializedAsync();
     }
 

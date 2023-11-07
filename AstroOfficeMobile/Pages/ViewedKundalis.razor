@@ -9,16 +9,15 @@
 @inject KundaliHistroyService KundaliHistroy
 
 <!-- Content Header (Page header) -->
-<div class="content-header">
+@* <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
                 <h1 class="m-0">Viewed Kundalis</h1>
-            </div><!-- /.col -->
-
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-</div>
+            </div>
+        </div>
+    </div>
+</div> *@
 <!-- /.content-header -->
 <!-- Main content -->
 <section class="content">
@@ -104,11 +103,20 @@
 <!-- content -->
 @code
 {
+    [CascadingParameter]
+    private MainLayout MainLayout { get; set; }
+
     private List<PersonKundaliTableTRModel> personKundaliTableTRs;
+
+    protected override void OnInitialized()
+    {
+        MainLayout.NavTitle = "Viewed Kundalis";
+    }
 
     protected override async Task OnInitializedAsync()
     {
         personKundaliTableTRs = await KundaliHistroy.GetUserViewedKundalies();
+        await MainLayout.NotifyChangeAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

@@ -2,16 +2,26 @@
 
 <AuthorizeView>
     <Authorized>
-        <div class="wrapper">
-            <NavMenu />
-            <AsideSidebar />
-            <div class="content-wrapper" style="background-color: white;">
-                @Body
+        <CascadingValue Value="this">
+            <div class="wrapper">
+                <NavMenu NavTitle="@NavTitle" />
+                <AsideSidebar />
+                <div class="content-wrapper" style="background-color: white;">
+                    @Body
+                </div>
+                <MainFooter />
             </div>
-            <MainFooter />
-        </div>
+        </CascadingValue>
     </Authorized>
     <NotAuthorized>
         @Body
     </NotAuthorized>
-</AuthorizeView>    
+</AuthorizeView>
+
+@code {
+    public string NavTitle { get; set; } = "Home";
+    public async Task NotifyChangeAsync()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+}
