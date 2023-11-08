@@ -6,6 +6,7 @@
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
 
+
 <!-- Content Header (Page header) -->
 @* <section class="content-header">
     <div class="container-fluid">
@@ -17,9 +18,8 @@
     </div>
 </section> *@
 <!-- /.content-header -->
-
 <!-- Main content -->
-<section class="content mt-3">
+@* <section class="content mt-3">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
@@ -104,9 +104,87 @@
             </div>
         </div>
     </div>
-</section>
-<!-- /.content -->
+</section> *@
 
+<section class="content mt-3">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="overlay-wrapper">
+                    @if (personKundaliTableTRs == null)
+                    {
+                        <div class="overlay dark">
+                            <i class="fas fa-2x fa-sync fa-spin"></i>
+                        </div>
+                    }
+                    else
+                    {
+                        @if (personKundaliTableTRs.Any())
+                        {
+                            foreach (var row in personKundaliTableTRs)
+                            {
+                                <div class="card ">
+
+                                    <div class="row ">
+
+
+                                        <div class="col-2 d-flex align-items-center position-relative">
+                                            <div class="image">
+                                                <img src="@AstroShared.Helper.AvatarGenerator.GenerateUserAvatar(row.Name)" class="img-circle" alt="User Image" height="45" width="45">
+
+                                            </div>
+                                            <a class="stretched-link" @onclick="()=>OnClick_BtnShow(row)"> </a>
+                                        </div>
+
+
+
+                                        <div class="col-8 position-relative ">
+                                            <div class="row">
+                                                <div class="info">
+                                                    <a class="d-block active">@row.Name</a>
+                                                </div>
+
+                                            </div>
+                                            @* 01 Jan 1996, 10:12 AM *@
+                                            <div class="row"><h6 style="color: #888; font-size: 14px;"> @row.DateOfBirth.ToString(format:"dd MMM yyyy"), @row.TimeOfBirth.ToString(format:"c") <br>@row.PlaceOfBirth </h6></div>
+                                            <a class="stretched-link" @onclick="()=>OnClick_BtnShow(row)"> </a>
+                                        </div>
+
+
+
+                                        <div class="col-2 ">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <button @onclick="()=>OnClick_EditBtnShow(row)" class="btn btn-sm btn-block">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                </div>
+
+                                                <div class="col">
+                                                    <button @onclick="()=>OnClick_BtnDelete(row)" class="btn btn-sm btn-block">
+                                                        <i class="fas fa-trash-alt"> </i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- /.content -->
 @code
 {
     [CascadingParameter]
@@ -133,20 +211,36 @@
             await JSRuntime.CloseSidebar();
         }
     }
-   
+
     private void OnClick_BtnShow(PersonKundaliTableTRModel selectedRow)
     {
         KundaliHistroy.SetSelectedSavedKundali(selectedRow.SrNo - 1);
-        NavigationManager.NavigateTo("/");
+       
+        NavigationManager.NavigateTo("/kundali");
+    }
+
+    private void OnClick_EditBtnShow(PersonKundaliTableTRModel selectedRow)
+    {
+        KundaliHistroy.SetSelectedSavedKundali(selectedRow.SrNo - 1);
+        NavigationManager.NavigateTo("/edit-kundali");
     }
 
     private async Task OnClick_BtnDelete(PersonKundaliTableTRModel selectedRow)
     {
-        selectedPersonKundaliTableTR = selectedRow;
-
-        if (await KundaliHistroy.IsDeletedSavedKundali(selectedPersonKundaliTableTR!.ID))
+        bool confirm = await Application.Current.MainPage.DisplayAlert("Confirmation ?", "Are you sure you want to delete this Kundali?", "Yes", "No");
+        if (confirm)
         {
-            personKundaliTableTRs?.Remove(selectedPersonKundaliTableTR);
+            selectedPersonKundaliTableTR = selectedRow;
+
+            if (await KundaliHistroy.IsDeletedSavedKundali(selectedPersonKundaliTableTR!.ID))
+            {
+                personKundaliTableTRs?.Remove(selectedPersonKundaliTableTR);
+            }
         }
+        else
+        {
+            return;
+        }
+
     }
 }

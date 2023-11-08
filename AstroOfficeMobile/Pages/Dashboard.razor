@@ -1,16 +1,21 @@
-﻿@page "/"
+﻿@page "/edit-kundali"
+@using AstroShared.ViewModels;
+@using AstroShared;
 @using Microsoft.AspNetCore.Authorization
+@using AstroOfficeMobile.Services
 @attribute [Authorize]
 @inject IJSRuntime JSRuntime
+@inject KundaliHistroyService KundaliHistroy
+
+@inject ISwaggerApiService Swagger
+
 
 <div>
-
-
     <div class="card-body">
 
         <div class="form-group">
             <label for="exampleInputBorder" class="mb-0"> Name </label>
-            <input type="text" class="form-control form-control-border" id="exampleInputBorder" placeholder="Enter name">
+            <input type="text" @bind="BirthDetails.TxtName" class="form-control form-control-border" id="exampleInputBorder" placeholder="Enter name">
         </div>
 
         <div class="row">
@@ -19,7 +24,7 @@
 
                 <div class="form-group">
                     <label for="birthdate" class="mb-0">Date of Birth:</label>
-                    <input type="date" class="form-control form-control-border" id="birthdate" name="birthdate">
+                    <input type="date" @bind="BirthDetails.DateOfBirth" class="form-control form-control-border" id="birthdate" name="birthdate">
                 </div>
             </div>
 
@@ -27,15 +32,11 @@
 
                 <div class="form-group">
                     <label for="birthtime" class="mb-0">Time of Birth:</label>
-                    <input type="time" class="form-control form-control-border" id="birthtime" name="birthtime">
+                    <input type="time" @bind="BirthDetails.DateOfBirth" class="form-control form-control-border" id="birthtime" name="birthtime">
 
                 </div>
             </div>
         </div>
-
-
-
-
         <div class="form-group row">
             <div class="col-3">
 
@@ -43,13 +44,12 @@
             </div>
             <div class="col">
                 <div class="form-check form-check-inline">
-                    <input type="radio" id="RbMale" class="form-check-input" name="gender" value="male">
+                    <input type="radio" checked="@(BirthDetails.Gender == Gender.Male)" id="RbMale" class="form-check-input" name="gender" @onchange="@(() => BirthDetails.Gender = Gender.Male)">
                     <label class="form-check-label" for="RbMale">Male</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input type="radio" id="RbFemale" class="form-check-input" name="gender" value="female">
+                    <input type="radio" checked="@(BirthDetails.Gender == Gender.Female)" id="RbFemale" class="form-check-input" name="gender" @onchange="@(() => BirthDetails.Gender = Gender.Female)">
                     <label class="form-check-label" for="RbFemale">Female</label>
-
                 </div>
             </div>
         </div>
@@ -57,11 +57,17 @@
         <div class="form-group">
             <label>Select Country</label>
             <select class="form-control form-control form-control-border">
-                <option>India</option>
+               @*  <option>India</option>
                 <option>Bangladesh</option>
                 <option>America</option>
                 <option>Russia</option>
-                <option>UK</option>
+                <option>UK</option> *@
+
+                @foreach(var item in CmbCountry)
+                {
+                    <option>@item.Text</option>
+                }
+
             </select>
         </div>
 
@@ -149,29 +155,5 @@
             </div>
         </div>
 
-      
-
-
     </div>
 </div>
-
-@code {
-    [CascadingParameter]
-    private MainLayout MainLayout { get; set; }
-    protected override void OnInitialized()
-    {
-        MainLayout.NavTitle = "Home";
-    }
-    protected override async Task OnInitializedAsync()
-    {
-        await MainLayout.NotifyChangeAsync();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await JSRuntime.CloseSidebar();
-        }
-    }
-}

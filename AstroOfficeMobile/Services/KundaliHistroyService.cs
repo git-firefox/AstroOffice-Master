@@ -175,9 +175,9 @@ namespace AstroOfficeMobile.Services
                 Gender = Enum.Parse<Gender>(kundali.Gender ?? "Male"),
                 KundaliUdvYear = kundali.KundaliUdvYear,
                 PlaceOfBirthID = kundali.PlaceOfBirthID,
-                CmbSkipBad = kundali.SkipBadType
+                CmbSkipBad = kundali.SkipBadType,
             };
-
+            SelectedSavedKundali.DateOfBirth = new DateTime(kundali.DateOfBirth.Year, kundali.DateOfBirth.Month, kundali.DateOfBirth.Day, kundali.TimeOfBirth.Hours, kundali.TimeOfBirth.Minutes, kundali.TimeOfBirth.Seconds);
         }
 
         public async Task<bool> IsDeletedSavedKundali(int? id)

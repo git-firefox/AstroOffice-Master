@@ -15,13 +15,20 @@ namespace AstroOfficeMobile.Pages
 {
     public partial class Kundali
     {
+
         private bool isNumVarshVisible = true;
+        private BirthDetails BirthDetails  { get; set; }
 
         [CascadingParameter]
         private MainLayout MainLayout { get; set; }
 
         protected override void OnInitialized()
         {
+
+            if (KundaliHistroy.SelectedSavedKundali != null)
+            {
+                BirthDetails = KundaliHistroy.SelectedSavedKundali;
+            }
             MainLayout.NavTitle = "Kundali";
         }
 
