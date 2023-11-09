@@ -33,8 +33,11 @@ namespace AstroOfficeMobile
             builder.Services.AddScoped<ISwaggerApiService, SwaggerApiService>();
             builder.Services.AddScoped<TokenWalletService>();
             builder.Services.AddScoped<KundaliHistroyService>();
+            builder.Services.AddScoped<PredictionBLLService>();
             builder.Services.AddScoped<WeatherForecastService>();
-
+            builder.Services.AddScoped<KPBLLService>();
+            builder.Services.AddScoped<KPDAOService>();
+            builder.Services.AddScoped<KundliBLLService>();
             return builder.Build();
         }
     }

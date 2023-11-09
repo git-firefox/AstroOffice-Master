@@ -19,7 +19,7 @@ namespace AstroOfficeMobile.Services
             _localStorage = localStorage;
         }
 
-        public async Task<TResponse?> PostAsync<TRequest, TResponse>(string url, TRequest request)
+        public async Task<TResponse> PostAsync<TRequest, TResponse>(string url, TRequest request)
         {
 
             var content = JsonConvert.SerializeObject(request);
@@ -37,7 +37,7 @@ namespace AstroOfficeMobile.Services
             return default;
         }
 
-        public async Task<TResponse?> PutAsync<TRequest, TResponse>(string url, TRequest request)
+        public async Task<TResponse> PutAsync<TRequest, TResponse>(string url, TRequest request)
         {
 
             var content = JsonConvert.SerializeObject(request);
@@ -52,7 +52,7 @@ namespace AstroOfficeMobile.Services
             return default;
         }
 
-        public async Task<TResponse?> GetAsync<TResponse>(string url, Dictionary<string, string>? queryParams = null)
+        public async Task<TResponse> GetAsync<TResponse>(string url, Dictionary<string, string> queryParams = null)
         {
             var uriBuilder = new UriBuilder(_client.BaseAddress + url);
 
@@ -72,7 +72,7 @@ namespace AstroOfficeMobile.Services
             return default;
         }
 
-        public async Task<TResponse?> DeleteAsync<TResponse>(string url, Dictionary<string, string>? queryParams = null)
+        public async Task<TResponse> DeleteAsync<TResponse>(string url, Dictionary<string, string> queryParams = null)
         {
             var uriBuilder = new UriBuilder(_client.BaseAddress + url);
 

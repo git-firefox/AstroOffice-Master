@@ -42,7 +42,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\astrologo.svg" />
+		<MauiIcon Include="Resources\AppIcon\astrologo.svg" ForegroundScale="0.72"/>
 		<!--<MauiIcon Include="Resources\AppIcon\astrologo.svg" ForegroundFile="Resources\AppIcon\astrologo.svg" Color="#512BD4" />-->
 		<!--<MauiIcon Include="Resources\AppIcon\astrologo.svg" Color="#512BD4" />-->
 
