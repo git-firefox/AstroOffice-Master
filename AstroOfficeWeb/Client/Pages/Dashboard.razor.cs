@@ -308,7 +308,7 @@ namespace AstroOfficeWeb.Client.Pages
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            await base.OnAfterRenderAsync(firstRender);
+            //await base.OnAfterRenderAsync(firstRender);
             if (firstRender)
             {
                 await JSRuntime.FocusAsync(inputTextName?.Element);
