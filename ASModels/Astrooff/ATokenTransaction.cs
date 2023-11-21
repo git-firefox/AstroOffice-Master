@@ -25,7 +25,6 @@ namespace ASModels.Astrooff
         public int? ATransactionStatusesId { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? TimestampCreated { get; set; }
-
         [StringLength(50)]
         public string? Action { get; set; }
 

@@ -116,4 +116,15 @@
         public static string POST_UpdateTokenBalance = Base + "UpdateTokenBalance";
         public static string POST_UpdateRechargeTokenBalance = Base + "UpdateRechargeTokenBalance";
     }
+
+    public static class ProductApiConst
+    {
+        public static string Base = "api/Product/";
+        public static string GET_Products = Base + "GetProducts";
+        public static string GET_UserAddedProducts = Base + "GetUserAddedProducts";
+        public static string GET_ProductBySno = Base + "GetProductBySno";
+        public static string POST_AddProduct = Base + "AddProduct";
+        public static string PUT_UpdateProduct = Base + "UpdateProduct";
+        public static string DELETE_Product = Base + "DeleteProduct";
+    }
 }

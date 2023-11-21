@@ -45,4 +45,12 @@
         public const string TokenRecharge = "Your token balance has been updated.";
         public const string TokenBalanceUpdated = "Your token balance has been updated.";
     }
+
+    public static class ProductMessageConst
+    {
+        public const string AddProduct = "Product Added Successfully";
+        public const string UpdateProduct = "Product Updated Successfully";
+        public const string DeleteProduct = "Product Deleted Successfully";
+        public const string NotFoundProduct = "Product not found";
+    }
 }

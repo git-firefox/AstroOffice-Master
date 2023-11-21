@@ -19,7 +19,9 @@ namespace AstroOfficeWeb.Server
             CreateMap<VO.AStateMaster, StateDTO>();
             CreateMap<SaveKundaliRequest, AKundali>();
             CreateMap<AKundali, KundaliDTO>();
-
+            CreateMap<AProduct, ViewProductDTO>();
+            CreateMap<ViewProductDTO, AProduct>();
+            CreateMap<SaveProductDTO, AProduct>();
         }
     }
 }

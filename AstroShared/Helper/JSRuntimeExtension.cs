@@ -72,12 +72,12 @@ namespace AstroShared.Helper
             return jsRuntime.InvokeAsync<object>("fnGetOtpValue", element);
         }
 
-        public static ValueTask ShowToastAsync(this IJSRuntime jsRuntime, string? title, string icon = SwalIcon.Success, string position = SwalPosition.BottomEnd)
+        public static ValueTask ShowToastAsync(this IJSRuntime jsRuntime, string? title, string swalIcon = SwalIcon.Success, string swalPosition = SwalPosition.BottomEnd)
         {
             if (string.IsNullOrEmpty(title))
-                title = icon;
+                title = swalIcon;
 
-            return jsRuntime.InvokeVoidAsync("fnShowToast", title, icon, position);
+            return jsRuntime.InvokeVoidAsync("fnShowToast", title, swalIcon, swalPosition);
         }
     }
 }

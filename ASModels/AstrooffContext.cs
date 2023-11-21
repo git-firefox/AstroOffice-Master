@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using ASModels.Astrooff;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using ASModels.Astrooff;
 
 namespace ASModels
 {
@@ -105,6 +105,7 @@ namespace ASModels
         public virtual DbSet<APlanetRelation> APlanetRelations { get; set; } = null!;
         public virtual DbSet<APlanetShreshtghar> APlanetShreshtghars { get; set; } = null!;
         public virtual DbSet<APlanetUchghar> APlanetUchghars { get; set; } = null!;
+        public virtual DbSet<AProduct> AProducts { get; set; } = null!;
         public virtual DbSet<AProductPred> AProductPreds { get; set; } = null!;
         public virtual DbSet<APunjabi> APunjabis { get; set; } = null!;
         public virtual DbSet<APunjabiMini> APunjabiMinis { get; set; } = null!;
@@ -758,6 +759,14 @@ namespace ASModels
                     .WithMany(p => p.APlanetUchghars)
                     .HasForeignKey(d => d.Planet)
                     .HasConstraintName("FK_a_planet_uchghar_a_planet");
+            });
+
+            modelBuilder.Entity<AProduct>(entity =>
+            {
+                entity.HasKey(e => e.Sno)
+                    .HasName("PK__A_Produc__CA1FE4644F9E97C5");
+
+                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
             });
 
             modelBuilder.Entity<APunjabi>(entity =>
