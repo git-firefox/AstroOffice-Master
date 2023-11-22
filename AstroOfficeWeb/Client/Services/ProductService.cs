@@ -29,9 +29,15 @@ namespace AstroOfficeWeb.Client.Services
             return productDTOs;
         }
 
-        public async Task<ViewProductDTO?> GetProductBySno()
+        public async Task<ViewProductDTO?> GetProductBySno(long sno)
         {
-            var response = await _swagger.GetAsync<ApiResponse<ViewProductDTO>>(ProductApiConst.GET_ProductBySno);
+            var queryParams = new Dictionary<string, string>()
+            {
+                { "Sno", sno.ToString()}
+            };
+
+            var response = await _swagger.GetAsync<ApiResponse<ViewProductDTO>>(ProductApiConst.GET_ProductBySno, queryParams);
+            
             return response?.Data;
         }
         public async Task AddProduct()
@@ -58,20 +64,23 @@ namespace AstroOfficeWeb.Client.Services
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
             }
         }
-        public async Task DeleteProduct(long sno)
+        public async Task<bool> IsDeletedSelectdProduct(long sno)
         {
             var queryParams = new Dictionary<string, string>()
             {
                 { "Sno", sno.ToString()}
             };
+
             var response = await _swagger.DeleteAsync<ApiResponse<ViewProductDTO>>(ProductApiConst.DELETE_Product, queryParams);
             if (response!.Success)
             {
                 await _jsRuntime.ShowToastAsync(response.Message);
+                return true;
             }
             else
             {
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                return false;
             }
         }
     }

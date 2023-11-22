@@ -15,6 +15,7 @@ namespace AstroShared.DTOs
         public string? ImageUrl { get; set; }
         public DateTime AddedDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
+        public bool IsActive { get; set; }
     }
     public class ViewProductDTO : ProductDTOBase
     {

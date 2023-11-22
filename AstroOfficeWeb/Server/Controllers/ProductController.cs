@@ -1,4 +1,5 @@
-﻿using ASModels;
+﻿using System.Linq.Expressions;
+using ASModels;
 using ASModels.Astrooff;
 using AstroOfficeWeb.Server.Helper;
 using AstroOfficeWeb.Shared.Models;
@@ -48,19 +49,24 @@ namespace AstroOfficeWeb.Server.Controllers
         public IActionResult GetProductBySno(long sno)
         {
             var apiResponse = new ApiResponse<ViewProductDTO> { Data = null };
-            var aProduct = _context.AProducts.FirstOrDefault(p => p.Sno == sno && p.IsActive == true);
-
-            if (aProduct == null)
+            try
             {
-                apiResponse.ErrorNo = 1;
-                apiResponse.Success = false;
-                apiResponse.Message = ProductMessageConst.NotFoundProduct;
-                return Ok(apiResponse);
-            }
 
-            apiResponse.Success = true;
-            var productDTO = _mapper.Map<ViewProductDTO>(aProduct);
-            apiResponse.Data = productDTO;
+                var aProduct = _context.AProducts.FirstOrDefault(p => p.Sno == sno && p.IsActive == true);
+
+                if (aProduct == null)
+                {
+                    apiResponse.ErrorNo = 1;
+                    apiResponse.Success = false;
+                    apiResponse.Message = ProductMessageConst.NotFoundProduct;
+                    return Ok(apiResponse);
+                }
+
+                apiResponse.Success = true;
+                var productDTO = _mapper.Map<ViewProductDTO>(aProduct);
+                apiResponse.Data = productDTO;
+            }
+            catch (Exception ex) { }
 
             return Ok(apiResponse);
         }
@@ -108,7 +114,7 @@ namespace AstroOfficeWeb.Server.Controllers
                     aProduct.Sno = sno;
                     aProduct.AddedByAUsersSno = existedProduct.AddedByAUsersSno;
                     aProduct.ModifiedByAUsersSno = User.GetUserSno();
-                    aProduct.IsActive = true;
+                    //aProduct.IsActive = true;
 
                     _context.AProducts.Update(aProduct);
                     _context.SaveChanges();
@@ -156,7 +162,7 @@ namespace AstroOfficeWeb.Server.Controllers
                     return Ok(apiResponse);
                 }
 
-                existedProduct.IsActive = false;
+                //existedProduct.IsActive = false;
                 existedProduct.ModifiedByAUsersSno = User.GetUserSno();
 
                 _context.AProducts.Update(existedProduct);

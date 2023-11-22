@@ -1,7 +1,93 @@
 ﻿@page "/save-product"
+@page "/save-product/{Sno:long}"
+@using AstroOfficeWeb.Client.Services
 
-<h3>SaveProduct</h3>
+@inject ProductService ProductService
+@inject NavigationManager NavigationManager
+@inject StateContainerService StateContainerService
+@inject IJSRuntime JSRuntime
 
-@code {
 
-}
+<div class="container-fluid p-3">
+
+    <h1 class="pt-4 pb-2 font-weight-bold "> @(Sno == 0 ? "Add Product" : "Edit Product") </h1>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">General Information</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="form-group">
+                            <label for="inputName">Name</label>
+                            <input type="text" id="inputName" class="form-control" @bind="SaveProductDTO!.Name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputPrice">Price</label>
+                            <input type="text" id="inputPrice" class="form-control" @bind="SaveProductDTO!.Price">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputStockQuantity">Stock Quantity</label>
+                            <input type="text" id="inputStockQuantity" class="form-control" @bind="SaveProductDTO!.StockQuantity">
+                        </div>
+
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="chkIsActive" checked="@SaveProductDTO.IsActive" @onchange="() => { SaveProductDTO.IsActive = !SaveProductDTO.IsActive; }">
+                            <label class="form-check-label" for="chkIsActive">Is Active</label>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">Product Images</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputFile" @onchange="OnChange_InputFile" />
+                            <label class="custom-file-label" for="inputFile">Choose file...</label>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div @ref="ER_TextEditor">
+                    @(new MarkupString(SaveProductDTO!.Description ?? ""))
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <a href="/manage-products" class="btn btn-secondary">Cancel</a>
+                <input type="button" value="Save Chnages" class="btn btn-success float-right" />
+            </div>
+        </div>
+    </section>
+</div>

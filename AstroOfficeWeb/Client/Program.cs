@@ -34,5 +34,7 @@ builder.Services.AddScoped<KundliBLLService>();
 builder.Services.AddScoped<PredictionBLLService>();
 builder.Services.AddScoped<KundaliHistroyService>();
 builder.Services.AddScoped<TokenWalletService>();
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<StateContainerService>();
 
 await builder.Build().RunAsync();

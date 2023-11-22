@@ -211,3 +211,9 @@ window.fnShowToast = function (title, icon, position) {
         }
     });
 }
+
+window.fnLoadEditor = function (element) {
+    if (element instanceof HTMLDivElement) {
+        $(element).summernote();
+    }
+}
