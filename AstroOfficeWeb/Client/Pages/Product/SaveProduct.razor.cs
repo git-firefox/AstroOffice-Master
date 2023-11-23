@@ -2,17 +2,32 @@
 using AstroShared.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace AstroOfficeWeb.Client.Pages.Product
 {
+    public class ImgData
+    {
+        public string Src { get; set; } = null!;
+        public string Alt { get; set; } = null!;
+    }
     public partial class SaveProduct
     {
         [Parameter]
         public long Sno { get; set; }
 
-        public ElementReference ER_TextEditor { get; set; }
-        public SaveProductDTO? SaveProductDTO { get; set; }
+        public InputTextArea? ER_TextEditor { get; set; }
+
+        public List<ImgData> BrowserFiles { get; set; } = new();
+
+        public SaveProductDTO? SaveProductModel { get; set; }
+
         public ViewProductDTO? ViewProductDTO { get; set; }
+
+        public List<string>? FileNames { get; set; }
+
+        public bool IsImageLoaded { get; set; }
+        public ImgData? SelectedImage { get; set; }
 
         protected override void OnInitialized()
         {
@@ -22,7 +37,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
             if (ViewProductDTO != null)
             {
-                SaveProductDTO = new SaveProductDTO()
+                SaveProductModel = new SaveProductDTO()
                 {
                     Price = ViewProductDTO.Price,
                     Name = ViewProductDTO.Name,
@@ -33,20 +48,23 @@ namespace AstroOfficeWeb.Client.Pages.Product
                     LastModifiedDate = ViewProductDTO.LastModifiedDate,
                     IsActive = ViewProductDTO.IsActive
                 };
+
+                SelectedImage = new ImgData { Alt = SaveProductModel.Name, Src = SaveProductModel.ImageUrl ?? "" };
             }
             else
             {
-                SaveProductDTO = new SaveProductDTO();
+                SaveProductModel = new SaveProductDTO();
             }
         }
 
         protected override async Task OnInitializedAsync()
         {
+
             //if (Sno != 0)
             //{
             //    var viewProductDTO = await ProductService.GetProductBySno(Sno);
 
-            //    SaveProductDTO = new SaveProductDTO()
+            //    SaveProductModel = new SaveProductDTO()
             //    {
             //        Price = viewProductDTO!.Price,
             //        Name = viewProductDTO.Name,
@@ -62,23 +80,82 @@ namespace AstroOfficeWeb.Client.Pages.Product
             await base.OnInitializedAsync();
         }
 
-        protected override async void OnAfterRender(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                await JSRuntime.LoadEditorAsync(ER_TextEditor);
+                await JSRuntime.LoadEditorAsync(ER_TextEditor?.Element);
+                StateHasChanged();
             }
         }
 
-        private void OnChange_InputFile(ChangeEventArgs e)
+        private async Task OnChange_InputFile(InputFileChangeEventArgs e)
         {
-            var fileList = e.Value as IEnumerable<IBrowserFile>;
+            if (FileNames == null)
+            {
+                FileNames = new List<string>();
+            }
+            else
+            {
+                FileNames.Clear();
+            }
 
-            if (fileList == null || !fileList.Any()) return;
+            IsImageLoaded = false;
+            foreach (IBrowserFile file in e.GetMultipleFiles(10))
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await file.OpenReadStream(file.Size).CopyToAsync(memoryStream);
 
-            var imageFile = fileList.First();
+                    var buffer = memoryStream.ToArray();
 
+                    var base64String = Convert.ToBase64String(buffer);
+
+                    BrowserFiles.Add(new ImgData { Src = $"data:{file.ContentType};base64," + base64String, Alt = file.Name });
+                    FileNames.Add(file.Name);
+                }
+            }
+            IsImageLoaded = true;
+        }
+
+        private async Task OnSubmit_EditForm(EditContext context)
+        {
+            if (context.Validate())
+            {
+                SaveProductModel!.Description = await JSRuntime.GetEditorValue(ER_TextEditor?.Element);
+                if (Sno == 0)
+                {
+                    await ProductService.AddProduct(SaveProductModel);
+                }
+                else
+                {
+                    await ProductService.UpdateProduct(SaveProductModel, Sno);
+                }
+            }
+        }
+
+        private void OnClick_ImageItems(ImgData value)
+        {
+            SelectedImage = value;
+        }
+
+        private async Task OnClick_BtnSetAsMain(MouseEventArgs e)
+        {
+            if (SelectedImage == null)
+            {
+                if (BrowserFiles.Count == 0)
+                {
+                    await JSRuntime.ShowToastAsync("Please add image(s)", SwalIcon.Error);
+                    return;
+                }
+
+                await JSRuntime.ShowToastAsync("Please select image from list", SwalIcon.Error);
+            }
+            else
+            {
+                SaveProductModel!.ImageUrl = SelectedImage.Src;
+                await JSRuntime.ShowToastAsync("The current selected image has been set as the main image successfully", SwalIcon.Success);
+            }
         }
     }
-
 }

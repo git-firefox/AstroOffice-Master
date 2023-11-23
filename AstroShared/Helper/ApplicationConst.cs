@@ -15,5 +15,6 @@
         public const string Local_KPHouseMappingVOs = "KPHouseMappingVOs";
         public const string Local_KPPlanetMappingVOs = "KPPlanetMappingVOs";
         public const string Local_SavedStateModel = "SavedStateModel";
+        public const string Local_SelectedProduct = "SelectedProduct";
     }
 }

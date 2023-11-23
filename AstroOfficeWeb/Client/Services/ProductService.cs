@@ -2,6 +2,7 @@
 using AstroOfficeWeb.Shared.Models;
 using AstroShared.DTOs;
 using AstroShared.Helper;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace AstroOfficeWeb.Client.Services
@@ -10,11 +11,13 @@ namespace AstroOfficeWeb.Client.Services
     {
         private readonly ISwaggerApiService _swagger;
         private readonly IJSRuntime _jsRuntime;
+        private readonly NavigationManager _navigation;
 
-        public ProductService(ISwaggerApiService swagger, IJSRuntime jsRuntime)
+        public ProductService(ISwaggerApiService swagger, IJSRuntime jsRuntime, NavigationManager navigation)
         {
             _swagger = swagger;
             _jsRuntime = jsRuntime;
+            _navigation = navigation;
         }
 
         public async Task<List<ViewProductDTO>?> GetProducts()
@@ -37,24 +40,25 @@ namespace AstroOfficeWeb.Client.Services
             };
 
             var response = await _swagger.GetAsync<ApiResponse<ViewProductDTO>>(ProductApiConst.GET_ProductBySno, queryParams);
-            
+
             return response?.Data;
         }
-        public async Task AddProduct()
+        public async Task AddProduct(SaveProductDTO saveProduct)
         {
-            var response = await _swagger.GetAsync<ApiResponse<ViewProductDTO>>(ProductApiConst.POST_AddProduct);
+            var response = await _swagger.PostAsync<SaveProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.POST_AddProduct, saveProduct);
             if (response!.Success)
             {
                 await _jsRuntime.ShowToastAsync(response.Message);
+                _navigation.NavigateTo("/manage-products", true, true);
             }
             else
             {
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
             }
         }
-        public async Task UpdateProduct()
+        public async Task UpdateProduct(SaveProductDTO saveProduct, long sno)
         {
-            var response = await _swagger.GetAsync<ApiResponse<ViewProductDTO>>(ProductApiConst.PUT_UpdateProduct);
+            var response = await _swagger.PutAsync<SaveProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.PUT_UpdateProduct + "?sno=" + sno, saveProduct);
             if (response!.Success)
             {
                 await _jsRuntime.ShowToastAsync(response.Message);

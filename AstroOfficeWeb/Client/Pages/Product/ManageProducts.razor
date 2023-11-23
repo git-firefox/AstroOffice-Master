@@ -6,6 +6,7 @@
 @inject ProductService ProductService
 @inject NavigationManager NavigationManager
 @inject StateContainerService StateContainerService
+@inject ILocalStorageService LocalStorage
 
 <ConfirmationModal @ref="Confirmation" OnConfirmationChanged="OnConfirmationChanged" Message="Are you sure you want to delete this Product?"></ConfirmationModal>
 
@@ -68,15 +69,15 @@
                                             <tr>
                                                 <td>@row.Sno</td>
                                                 <td>@row.Name</td>
-                                                <td>@row.ImageUrl</td>
+                                                <td><img alt="@row.Name" class="img-thumbnail" src="@row.ImageUrl" height="100" width="100" title="@row.Name" /></td>
                                                 <td>@row.Price</td>
                                                 <td>@row.StockQuantity</td>
                                                 <td>@row.AddedDate.ToString(format: "dd - MM - yyyy")</td>
-                                                <td>@row.LastModifiedDate.ToString(format: "dd - MM - yyyy")</td>
+                                                <td>@row.LastModifiedDate?.ToString(format: "dd - MM - yyyy")</td>
                                                 <td>
-                                                    <button type="button" title="View Kundali" class="btn btn-custom" @onclick="()=>OnClick_BtnShow(row)"><i class="fa fa-eye"></i></button>
-                                                    <button type="button" class="btn btn-custom" title="Delete Saved Kundali" @onclick="()=>OnClick_BtnEdit(row)"><i class="fa fa-edit"></i></button>
-                                                    <button type="button" class="btn btn-danger" title="Delete Saved Kundali" @onclick="()=>OnClick_BtnDelete(row)"><i class="fa fa-trash"></i></button>
+                                                    <button type="button" class="btn btn-custom" title="View Product" @onclick="()=>OnClick_BtnShow(row)"><i class="fa fa-eye"></i></button>
+                                                    <button type="button" class="btn btn-custom" title="Edit Product" @onclick="()=>OnClick_BtnEdit(row)"><i class="fa fa-edit"></i></button>
+                                                    <button type="button" class="btn btn-danger" title="Delete Product" @onclick="()=>OnClick_BtnDelete(row)"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         }

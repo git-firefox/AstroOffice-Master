@@ -30,7 +30,7 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpGet]
         public IActionResult GetProducts()
         {
-            var aProducts = _context.AProducts.Where(p => p.IsActive == true).ToList();
+            var aProducts = _context.AProducts.Where(p => p.IsActive == true).OrderByDescending(p => p.Sno).ToList();
             var productDTOs = _mapper.Map<List<ViewProductDTO>>(aProducts);
             return Ok(productDTOs);
         }
@@ -49,24 +49,20 @@ namespace AstroOfficeWeb.Server.Controllers
         public IActionResult GetProductBySno(long sno)
         {
             var apiResponse = new ApiResponse<ViewProductDTO> { Data = null };
-            try
+
+            var aProduct = _context.AProducts.FirstOrDefault(p => p.Sno == sno && p.IsActive == true);
+
+            if (aProduct == null)
             {
-
-                var aProduct = _context.AProducts.FirstOrDefault(p => p.Sno == sno && p.IsActive == true);
-
-                if (aProduct == null)
-                {
-                    apiResponse.ErrorNo = 1;
-                    apiResponse.Success = false;
-                    apiResponse.Message = ProductMessageConst.NotFoundProduct;
-                    return Ok(apiResponse);
-                }
-
-                apiResponse.Success = true;
-                var productDTO = _mapper.Map<ViewProductDTO>(aProduct);
-                apiResponse.Data = productDTO;
+                apiResponse.ErrorNo = 1;
+                apiResponse.Success = false;
+                apiResponse.Message = ProductMessageConst.NotFoundProduct;
+                return Ok(apiResponse);
             }
-            catch (Exception ex) { }
+
+            apiResponse.Success = true;
+            var productDTO = _mapper.Map<ViewProductDTO>(aProduct);
+            apiResponse.Data = productDTO;
 
             return Ok(apiResponse);
         }
@@ -81,6 +77,7 @@ namespace AstroOfficeWeb.Server.Controllers
             {
                 AProduct aProduct = _mapper.Map<AProduct>(productDTO);
                 aProduct.AddedByAUsersSno = User.GetUserSno();
+                aProduct.AddedDate = DateTime.Now;
                 _context.AProducts.Add(aProduct);
 
                 _context.SaveChanges();
@@ -113,7 +110,9 @@ namespace AstroOfficeWeb.Server.Controllers
                     AProduct aProduct = _mapper.Map<AProduct>(productDTO);
                     aProduct.Sno = sno;
                     aProduct.AddedByAUsersSno = existedProduct.AddedByAUsersSno;
+                    aProduct.AddedDate = existedProduct.AddedDate;
                     aProduct.ModifiedByAUsersSno = User.GetUserSno();
+                    aProduct.LastModifiedDate = DateTime.Now;
                     //aProduct.IsActive = true;
 
                     _context.AProducts.Update(aProduct);
@@ -162,7 +161,7 @@ namespace AstroOfficeWeb.Server.Controllers
                     return Ok(apiResponse);
                 }
 
-                //existedProduct.IsActive = false;
+                existedProduct.IsActive = false;
                 existedProduct.ModifiedByAUsersSno = User.GetUserSno();
 
                 _context.AProducts.Update(existedProduct);

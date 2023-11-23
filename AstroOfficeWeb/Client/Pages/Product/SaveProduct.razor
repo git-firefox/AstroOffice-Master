@@ -13,81 +13,111 @@
     <h1 class="pt-4 pb-2 font-weight-bold "> @(Sno == 0 ? "Add Product" : "Edit Product") </h1>
 
     <section class="content">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card card-secondary">
-                    <div class="card-header">
-                        <h3 class="card-title">General Information</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
+
+        <EditForm Model="SaveProductModel" OnSubmit="OnSubmit_EditForm">
+            <DataAnnotationsValidator />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card card-secondary h-100">
+                        <div class="card-header">
+                            <h3 class="card-title">General Information</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-body">
+                        <div class="card-body">
 
-                        <div class="form-group">
-                            <label for="inputName">Name</label>
-                            <input type="text" id="inputName" class="form-control" @bind="SaveProductDTO!.Name">
-                        </div>
+                            <div class="form-group">
+                                <label for="inputName">Name</label>
+                                <InputText id="inputName" class="form-control" @bind-Value="SaveProductModel!.Name" />
+                            </div>
 
-                        <div class="form-group">
-                            <label for="inputPrice">Price</label>
-                            <input type="text" id="inputPrice" class="form-control" @bind="SaveProductDTO!.Price">
-                        </div>
+                            <div class="form-group">
+                                <label for="inputPrice">Price</label>
+                                <InputNumber id="inputPrice" class="form-control" @bind-Value="SaveProductModel!.Price" />
+                            </div>
 
-                        <div class="form-group">
-                            <label for="inputStockQuantity">Stock Quantity</label>
-                            <input type="text" id="inputStockQuantity" class="form-control" @bind="SaveProductDTO!.StockQuantity">
-                        </div>
+                            <div class="form-group">
+                                <label for="inputStockQuantity">Stock Quantity</label>
+                                <InputNumber id="inputStockQuantity" class="form-control" @bind-Value="SaveProductModel!.StockQuantity" />
+                            </div>
 
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="chkIsActive" checked="@SaveProductDTO.IsActive" @onchange="() => { SaveProductDTO.IsActive = !SaveProductDTO.IsActive; }">
-                            <label class="form-check-label" for="chkIsActive">Is Active</label>
-                        </div>
+                            <div class="form-check">
+                                <InputCheckbox class="form-check-input" id="chkIsActive" @bind-Value="SaveProductModel.IsActive" />
+                                <label class="form-check-label" for="chkIsActive">Is Active</label>
+                            </div>
 
-                    </div>
-
-                </div>
-
-            </div>
-            <div class="col-md-6">
-                <div class="card card-secondary">
-                    <div class="card-header">
-                        <h3 class="card-title">Product Images</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputFile" @onchange="OnChange_InputFile" />
-                            <label class="custom-file-label" for="inputFile">Choose file...</label>
                         </div>
 
                     </div>
 
                 </div>
+                <div class="col-md-6">
+                    <div class="card card-secondary h-100">
+                        <div class="card-header">
+                            <h3 class="card-title">Product Images</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
 
-            </div>
-        </div>
+                                    <div class="custom-file">
+                                        <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png" OnChange="OnChange_InputFile" multiple />
+                                        <label class="custom-file-label" for="inputFile"> @((FileNames != null && FileNames.Any()) ? string.Join(",", FileNames) : "Choose file...") </label>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div @ref="ER_TextEditor">
-                    @(new MarkupString(SaveProductDTO!.Description ?? ""))
+                            <div class="row mt-3">
+                                <div class="col-6">
+                                    <ul class="list-inline">
+                                        @foreach (var image in BrowserFiles)
+                                        {
+                                            <li class="list-inline-item" @onclick="() => OnClick_ImageItems(image)" role="button">
+                                                <img alt="@image.Alt" class="img-thumbnail" src="@image.Src" height="100" width="100" title="@image.Alt" />
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+
+                                <div class="col-6">
+                                    @if (SelectedImage != null)
+                                    {
+                                        <img alt="@SelectedImage.Alt" class="img-fluid img-thumbnail" src="@SelectedImage.Src" title="@SelectedImage.Alt" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <span>Set current selected as main image</span>
+                            <input type="button" value="Set As Main Image" class="btn btn-success float-right" @onclick="OnClick_BtnSetAsMain" />
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-12">
-                <a href="/manage-products" class="btn btn-secondary">Cancel</a>
-                <input type="button" value="Save Chnages" class="btn btn-success float-right" />
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <InputTextArea @ref="ER_TextEditor" @bind-Value="SaveProductModel!.Description"></InputTextArea>
+                </div>
             </div>
-        </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <a href="/manage-products" class="btn btn-secondary">Cancel</a>
+                    <input type="submit" value="Save Chnages" class="btn btn-success float-right" />
+                </div>
+            </div>
+
+        </EditForm>
     </section>
 </div>

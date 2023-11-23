@@ -84,5 +84,9 @@ namespace AstroShared.Helper
         {
             return jsRuntime.InvokeVoidAsync("fnLoadEditor", element);
         }
+        public static ValueTask<string> GetEditorValue(this IJSRuntime jsRuntime, ElementReference? element)
+        {
+            return jsRuntime.InvokeAsync<string>("fnGetEditorValue", element);
+        }
     }
 }

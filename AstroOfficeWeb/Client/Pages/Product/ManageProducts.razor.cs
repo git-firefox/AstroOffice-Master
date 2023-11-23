@@ -1,6 +1,7 @@
 ﻿
 using AstroOfficeWeb.Client.Shared;
 using AstroShared.DTOs;
+using AstroShared.Helper;
 
 namespace AstroOfficeWeb.Client.Pages.Product
 {
@@ -25,14 +26,15 @@ namespace AstroOfficeWeb.Client.Pages.Product
             NavigationManager.NavigateTo("/save-product");
         }
 
-        private void OnClick_BtnShow(ViewProductDTO productDTO) 
+        private async Task OnClick_BtnShow(ViewProductDTO productDTO)
         {
             SelectedProduct = productDTO;
             StateContainerService.SetSelectedProduct(productDTO);
+            await LocalStorage.SetItemAsync<ViewProductDTO>(ApplicationConst.Local_SelectedProduct, productDTO);
             NavigationManager.NavigateTo($"/view-product/{productDTO.Sno}");
         }
 
-        private async Task OnClick_BtnDelete(ViewProductDTO productDTO) 
+        private async Task OnClick_BtnDelete(ViewProductDTO productDTO)
         {
             SelectedProduct = productDTO;
             await Confirmation.ShowAsync();
@@ -52,10 +54,11 @@ namespace AstroOfficeWeb.Client.Pages.Product
             await Confirmation.CloseAsync();
         }
 
-        private void OnClick_BtnEdit(ViewProductDTO productDTO) 
+        private async void OnClick_BtnEdit(ViewProductDTO productDTO)
         {
             SelectedProduct = productDTO;
             StateContainerService.SetSelectedProduct(productDTO);
+            await LocalStorage.SetItemAsync<ViewProductDTO>(ApplicationConst.Local_SelectedProduct, productDTO);
             NavigationManager.NavigateTo($"/save-product/{productDTO.Sno}");
         }
     }

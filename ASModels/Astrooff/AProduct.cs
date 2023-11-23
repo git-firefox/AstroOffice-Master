@@ -21,11 +21,11 @@ namespace ASModels.Astrooff
         [Column(TypeName = "datetime")]
         public DateTime AddedDate { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime LastModifiedDate { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
         [Column("AddedBy_A_Users_Sno")]
         public long AddedByAUsersSno { get; set; }
         [Column("ModifiedBy_A_Users_Sno")]
-        public long ModifiedByAUsersSno { get; set; }
+        public long? ModifiedByAUsersSno { get; set; }
         [Required]
         public bool? IsActive { get; set; }
     }

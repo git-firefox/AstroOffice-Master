@@ -213,7 +213,16 @@ window.fnShowToast = function (title, icon, position) {
 }
 
 window.fnLoadEditor = function (element) {
-    if (element instanceof HTMLDivElement) {
-        $(element).summernote();
+    if (element instanceof HTMLDivElement || element instanceof HTMLTextAreaElement) {
+        $(element).summernote({
+            height: 400
+        });
     }
+}
+
+window.fnGetEditorValue = function (element) {
+    if (element instanceof HTMLDivElement || element instanceof HTMLTextAreaElement) {
+        return $(element).summernote('code');
+    }
+    return null;
 }
