@@ -69,12 +69,12 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
             if (response.Success)
             {
-                await JSRuntime.ShowToastAsync(response?.Message ?? "Success!", SwalIcon.Success);
+                await JSRuntime.ShowToastAsync(response?.ErrorMessage ?? "Success!", SwalIcon.Success);
                 await MobileOtpModal!.ShowAsync();
             }
             else
             {
-                await JSRuntime.ShowToastAsync(response.Message ?? "Something is wrong", SwalIcon.Error);
+                await JSRuntime.ShowToastAsync(response.ErrorMessage ?? "Something is wrong", SwalIcon.Error);
             }
         }
 

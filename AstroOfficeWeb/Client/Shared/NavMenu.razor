@@ -141,9 +141,11 @@ z" />
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
-                    <AuthorizeView>
+
+                    <AuthorizeView Roles="@(ApplicationConst.Role_AdminUser)">
                         <Authorized>
 
+                            @* Dashboard *@
                             <li>
                                 <a href="/" class="nav-link">
                                     @* <i class="fa fa-th"></i> *@
@@ -151,6 +153,8 @@ z" />
                                     Dashboard
                                 </a>
                             </li>
+
+                            @* Karan *@
                             <li>
                                 <a href="/karan" class="nav-link">
                                     @* <i class="fa fa-table"></i> *@
@@ -158,30 +162,32 @@ z" />
                                     Karan
                                 </a>
                             </li>
+
+                            @* Viewed Kundalis *@
                             <li>
                                 <a href="/viewed-kundalis" class="nav-link">
                                     <svg class="bi d-block mb-1 mr-2 mr-lg-0" width="24" height="24"><use xlink:href="#tableSymbol"></use></svg>
                                     Viewed Kundalis
                                 </a>
                             </li>
+
+                            @* Saved Kundalis *@
                             <li>
                                 <a href="/saved-kundalis" class="nav-link">
                                     <svg class="bi d-block mb-1 mr-2 mr-lg-0" width="24" height="24"><use xlink:href="#tableSymbol"></use></svg>
                                     Saved Kundalis
                                 </a>
                             </li>
+
+                            @* Transactions *@
                             <li>
                                 <a href="/transactions" class="nav-link">
                                     <svg class="bi d-block mb-1 mr-2 mr-lg-0" width="24" height="24"><use xlink:href="#tableSymbol"></use></svg>
                                     Transactions
                                 </a>
                             </li>
-                            <li>
-                                <a href="/manage-products" class="nav-link">
-                                    <svg class="bi d-block mb-1 mr-2 mr-lg-0" width="24" height="24"><use xlink:href="#tableSymbol"></use></svg>
-                                    Manage Product
-                                </a>
-                            </li>
+
+                            @* Recharge *@
                             <li>
                                 <a href="/token-recharge" class="nav-link">
                                     @* <i class="fa fa-th"></i> *@
@@ -189,6 +195,47 @@ z" />
                                     Recharge
                                 </a>
                             </li>
+
+                        </Authorized>
+                    </AuthorizeView>
+
+                    <AuthorizeView Roles="@(ApplicationConst.Role_User)">
+                        <Authorized>
+                            @* Shop *@
+                            <li>
+                                <a href="/view-products" class="nav-link">
+                                    <svg class="bi d-block mb-1 mr-2 mr-lg-0" width="24" height="24"><use xlink:href="#tableSymbol"></use></svg>
+                                    Shop
+                                </a>
+                            </li>
+
+                            @* Cart *@
+                            <li>
+                                <a href="/product-cart" title="Shopping cart" class="nav-link">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    Cart
+                                </a>
+                            </li>
+
+                        </Authorized>
+                    </AuthorizeView>
+
+                    <AuthorizeView Roles="@(ApplicationConst.Role_Admin)">
+                        <Authorized>
+                            @* Manage Product *@
+                            <li>
+                                <a href="/manage-products" class="nav-link">
+                                    <svg class="bi d-block mb-1 mr-2 mr-lg-0" width="24" height="24"><use xlink:href="#tableSymbol"></use></svg>
+                                    Manage Product
+                                </a>
+                            </li>
+
+                        </Authorized>
+                    </AuthorizeView>
+
+                    <AuthorizeView Roles="@(ApplicationConst.Role_AdminUser)">
+                        <Authorized>
+                            @* Logout *@
                             <li>
                                 <a href="/logout" class="nav-link">
                                     @* <i class="fa fa-user"></i> *@
@@ -196,9 +243,7 @@ z" />
                                     Logout
                                 </a>
                             </li>
-
                         </Authorized>
-
                     </AuthorizeView>
                 </ul>
             </div>
@@ -210,6 +255,7 @@ z" />
 <TokenRechargeModal @ref="TokenModal" />
 
 @code {
+
     private TokenRechargeModal TokenModal = new();
 
     private async Task OnClick_BtnToken(MouseEventArgs e)

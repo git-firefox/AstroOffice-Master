@@ -48,12 +48,12 @@ namespace AstroOfficeWeb.Client.Services
             var response = await _swagger.PostAsync<SaveProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.POST_AddProduct, saveProduct);
             if (response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message);
+                await _jsRuntime.ShowToastAsync(response.ErrorMessage);
                 _navigation.NavigateTo("/manage-products", true, true);
             }
             else
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                await _jsRuntime.ShowToastAsync(response.ErrorMessage, SwalIcon.Error);
             }
         }
         public async Task UpdateProduct(SaveProductDTO saveProduct, long sno)
@@ -61,11 +61,11 @@ namespace AstroOfficeWeb.Client.Services
             var response = await _swagger.PutAsync<SaveProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.PUT_UpdateProduct + "?sno=" + sno, saveProduct);
             if (response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message);
+                await _jsRuntime.ShowToastAsync(response.ErrorMessage);
             }
             else
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                await _jsRuntime.ShowToastAsync(response.ErrorMessage, SwalIcon.Error);
             }
         }
         public async Task<bool> IsDeletedSelectdProduct(long sno)
@@ -78,12 +78,12 @@ namespace AstroOfficeWeb.Client.Services
             var response = await _swagger.DeleteAsync<ApiResponse<ViewProductDTO>>(ProductApiConst.DELETE_Product, queryParams);
             if (response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message);
+                await _jsRuntime.ShowToastAsync(response.ErrorMessage);
                 return true;
             }
             else
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                await _jsRuntime.ShowToastAsync(response.ErrorMessage, SwalIcon.Error);
                 return false;
             }
         }

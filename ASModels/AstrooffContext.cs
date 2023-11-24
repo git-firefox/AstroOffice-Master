@@ -141,12 +141,14 @@ namespace ASModels
         public virtual DbSet<AVfalUpay1> AVfalUpay1s { get; set; } = null!;
         public virtual DbSet<AVfale> AVfales { get; set; } = null!;
         public virtual DbSet<AVfalh> AVfalhs { get; set; } = null!;
+        public virtual DbSet<CartItem> CartItems { get; set; } = null!;
         public virtual DbSet<Common> Commons { get; set; } = null!;
         public virtual DbSet<Female> Females { get; set; } = null!;
         public virtual DbSet<Male> Males { get; set; } = null!;
         public virtual DbSet<NewMixDasha> NewMixDashas { get; set; } = null!;
         public virtual DbSet<Query> Queries { get; set; } = null!;
         public virtual DbSet<QueryEng> QueryEngs { get; set; } = null!;
+        public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
         public virtual DbSet<TimeMaster> TimeMasters { get; set; } = null!;
         public virtual DbSet<VfalBangla> VfalBanglas { get; set; } = null!;
         public virtual DbSet<VfalKannadum> VfalKannada { get; set; } = null!;
@@ -942,6 +944,22 @@ namespace ASModels
                 entity.Property(e => e.Ruleno1).ValueGeneratedOnAdd();
             });
 
+            modelBuilder.Entity<CartItem>(entity =>
+            {
+                entity.HasKey(e => e.Sno)
+                    .HasName("PK__CartItem__CA1FE464BB1EAA1C");
+
+                entity.HasOne(d => d.AProductsSnoNavigation)
+                    .WithMany(p => p.CartItems)
+                    .HasForeignKey(d => d.AProductsSno)
+                    .HasConstraintName("FK__CartItems__A_Pro__6359AB88");
+
+                entity.HasOne(d => d.ShoppingCartsSnoNavigation)
+                    .WithMany(p => p.CartItems)
+                    .HasForeignKey(d => d.ShoppingCartsSno)
+                    .HasConstraintName("FK__CartItems__Shopp__6265874F");
+            });
+
             modelBuilder.Entity<NewMixDasha>(entity =>
             {
                 entity.HasKey(e => e.Tid)
@@ -954,6 +972,17 @@ namespace ASModels
                 entity.Property(e => e.ShubhGhar).HasDefaultValueSql("('0')");
 
                 entity.Property(e => e.Sno).HasDefaultValueSql("('-1')");
+            });
+
+            modelBuilder.Entity<ShoppingCart>(entity =>
+            {
+                entity.HasKey(e => e.Sno)
+                    .HasName("PK__Shopping__CA1FE4647FF08811");
+
+                entity.HasOne(d => d.AUsersSnoNavigation)
+                    .WithMany(p => p.ShoppingCarts)
+                    .HasForeignKey(d => d.AUsersSno)
+                    .HasConstraintName("FK__ShoppingC__A_Use__5F891AA4");
             });
 
             modelBuilder.Entity<TimeMaster>(entity =>

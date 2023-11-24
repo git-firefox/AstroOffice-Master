@@ -8,8 +8,8 @@ namespace AstroOfficeWeb.Shared.Models
 {
     public class ApiResponseBase
     {
-        public bool Success { get; set; }
-        public string? Message { get; set; }
-        public int ErrorNo { get; set; }
+        public bool Success { get; set; } = true;
+        public string? ErrorMessage { get; set; }
+        public int ErrorNo { get; set; } = 0;
     }
 }

@@ -4,6 +4,7 @@
     {
         public const string Role_Admin = "Admin";
         public const string Role_User = "User";
+        public const string Role_AdminUser = "Admin, User";
 
         public const string CanEdit_Rights = "canEdit";
         public const string CanReport_Rights = "canReport";
@@ -16,5 +17,7 @@
         public const string Local_KPPlanetMappingVOs = "KPPlanetMappingVOs";
         public const string Local_SavedStateModel = "SavedStateModel";
         public const string Local_SelectedProduct = "SelectedProduct";
+
+
     }
 }

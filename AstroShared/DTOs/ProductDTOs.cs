@@ -11,9 +11,18 @@ namespace AstroShared.DTOs
     {
         [Required]
         public string Name { get; set; } = null!;
+
+        [Required]
+        [Range(1, 1_000_000, ErrorMessage = "{0} must be between {1} and {2}.")]
         public decimal Price { get; set; }
-        public string? Description { get; set; }
+
+        [Required]
+        public string Description { get; set; } = null!;
+
+        [Required]
+        [Range(1, 100, ErrorMessage = "{0} must be between {1} and {2}.")]
         public int StockQuantity { get; set; }
+
         public string? ImageUrl { get; set; }
         public DateTime AddedDate { get; set; }
         public DateTime? LastModifiedDate { get; set; }

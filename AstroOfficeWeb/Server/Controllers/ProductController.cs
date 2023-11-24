@@ -56,7 +56,7 @@ namespace AstroOfficeWeb.Server.Controllers
             {
                 apiResponse.ErrorNo = 1;
                 apiResponse.Success = false;
-                apiResponse.Message = ProductMessageConst.NotFoundProduct;
+                apiResponse.ErrorMessage = ProductMessageConst.NotFoundProduct;
                 return Ok(apiResponse);
             }
 
@@ -82,7 +82,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
                 _context.SaveChanges();
 
-                apiResponse.Message = ProductMessageConst.AddProduct;
+                apiResponse.ErrorMessage = ProductMessageConst.AddProduct;
                 apiResponse.Success = true;
                 var viewProduct = _mapper.Map<ViewProductDTO>(aProduct);
                 apiResponse.Data = viewProduct;
@@ -90,7 +90,7 @@ namespace AstroOfficeWeb.Server.Controllers
             catch (Exception ex)
             {
                 apiResponse.Success = false;
-                apiResponse.Message = ex.Message;
+                apiResponse.ErrorMessage = ex.Message;
             }
             return Ok(apiResponse);
         }
@@ -118,7 +118,7 @@ namespace AstroOfficeWeb.Server.Controllers
                     _context.AProducts.Update(aProduct);
                     _context.SaveChanges();
 
-                    apiResponse.Message = ProductMessageConst.UpdateProduct;
+                    apiResponse.ErrorMessage = ProductMessageConst.UpdateProduct;
                     apiResponse.Success = true;
 
                     var viewProduct = _mapper.Map<ViewProductDTO>(aProduct);
@@ -129,7 +129,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 {
                     apiResponse.ErrorNo = 1;
                     apiResponse.Success = false;
-                    apiResponse.Message = ProductMessageConst.NotFoundProduct;
+                    apiResponse.ErrorMessage = ProductMessageConst.NotFoundProduct;
                     return Ok(apiResponse);
                 }
             }
@@ -137,7 +137,7 @@ namespace AstroOfficeWeb.Server.Controllers
             {
                 apiResponse.ErrorNo = 2;
                 apiResponse.Success = false;
-                apiResponse.Message = ex.Message;
+                apiResponse.ErrorMessage = ex.Message;
             }
 
             return Ok(apiResponse);
@@ -157,7 +157,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 {
                     apiResponse.ErrorNo = 1;
                     apiResponse.Success = false;
-                    apiResponse.Message = ProductMessageConst.NotFoundProduct;
+                    apiResponse.ErrorMessage = ProductMessageConst.NotFoundProduct;
                     return Ok(apiResponse);
                 }
 
@@ -167,7 +167,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 _context.AProducts.Update(existedProduct);
                 _context.SaveChanges();
 
-                apiResponse.Message = ProductMessageConst.DeleteProduct;
+                apiResponse.ErrorMessage = ProductMessageConst.DeleteProduct;
                 apiResponse.Success = true;
                 var viewProduct = _mapper.Map<ViewProductDTO>(existedProduct);
                 apiResponse.Data = viewProduct;
@@ -175,9 +175,52 @@ namespace AstroOfficeWeb.Server.Controllers
             catch (Exception ex)
             {
                 apiResponse.Success = false;
-                apiResponse.Message = ex.Message;
+                apiResponse.ErrorMessage = ex.Message;
             }
             return Ok(apiResponse);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpPost]
+        public IActionResult AddToCart(AddToCartRequest request)
+        {
+            var response = new ApiResponse<string>();
+            var shoppingCart = _context.ShoppingCarts.FirstOrDefault(a => a.AUsersSno == User.GetUserSno());
+
+            if (shoppingCart == null)
+            {
+                shoppingCart = new ShoppingCart() { AUsersSno = User.GetUserSno() };
+                _context.ShoppingCarts.Add(shoppingCart);
+                _context.SaveChanges();
+            }
+
+            var cartItem = _context.CartItems.FirstOrDefault(ci => ci.ShoppingCartsSno == shoppingCart.Sno && ci.AProductsSno == request.ProductSno);
+
+            if (cartItem == null)
+            {
+                cartItem = new CartItem() { AProductsSno = request.ProductSno, Quantity = request.Quantity, ShoppingCartsSno = shoppingCart?.Sno, };
+                _context.CartItems.Add(cartItem);
+            }
+            else
+            {
+                cartItem.Quantity += request.Quantity;
+            }
+
+            _context.SaveChanges();
+
+            response.Data = "Product added to your cart.";
+            return Ok(response);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet]
+        public IActionResult GetUserShoppingCart()
+        {
+            var response = new ApiResponse<List<CartItemDTO>>();
+            var shoppingCart = _context.ShoppingCarts.Include(sc => sc.CartItems).ThenInclude(sc => sc.AProductsSnoNavigation).FirstOrDefault(a => a.AUsersSno == User.GetUserSno());
+            var cartItems = shoppingCart?.CartItems.Select(ci => new CartItemDTO { ProductSno = ci.AProductsSno ?? 0, ProductName = ci.AProductsSnoNavigation?.Name ?? "", ProductQuantity = ci.Quantity ?? 0 }).ToList();
+            response.Data = cartItems;
+            return Ok(response);
         }
     }
 }

@@ -95,16 +95,16 @@ namespace AstroOffice
                 var response = await _httpClient.GetAsync<ApiResponse<string>>($"SMS/SendOtp?mobileNumber={mobileNumber}");
                 if (response.Success)
                 {
-                    MessageBox.Show(response.Message);
+                    MessageBox.Show(response.ErrorMessage);
                     Panel_SendOtp.Visible = false;
                     ChkLoginOption.Visible = false;
                     Panel_VerifyOtp.Visible = true;
                 }
                 else
                 {
-                    if (!string.IsNullOrEmpty(response.Message))
+                    if (!string.IsNullOrEmpty(response.ErrorMessage))
                     {
-                        MessageBox.Show(response.Message);
+                        MessageBox.Show(response.ErrorMessage);
                     }
                 }
             }
@@ -184,13 +184,13 @@ namespace AstroOffice
                 var response = await _httpClient.GetAsync<ApiResponse<string>>($"SMS/SendOtp?mobileNumber={mobileNumber}");
                 if (response.Success)
                 {
-                    MessageBox.Show(response.Message);
+                    MessageBox.Show(response.ErrorMessage);
                 }
                 else
                 {
-                    if (!string.IsNullOrEmpty(response.Message))
+                    if (!string.IsNullOrEmpty(response.ErrorMessage))
                     {
-                        MessageBox.Show(response.Message);
+                        MessageBox.Show(response.ErrorMessage);
                     }
                 }
             }

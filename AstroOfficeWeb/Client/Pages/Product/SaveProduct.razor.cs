@@ -49,11 +49,12 @@ namespace AstroOfficeWeb.Client.Pages.Product
                     IsActive = ViewProductDTO.IsActive
                 };
 
-                SelectedImage = new ImgData { Alt = SaveProductModel.Name, Src = SaveProductModel.ImageUrl ?? "" };
+                SelectedImage = new ImgData { Alt = SaveProductModel.Name, Src = SaveProductModel.ImageUrl ?? "images/image-not-found.png" };
             }
             else
             {
                 SaveProductModel = new SaveProductDTO();
+                SelectedImage = new ImgData { Alt = "No Product Image", Src = "images/image-not-found.png" };
             }
         }
 
@@ -91,6 +92,12 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         private async Task OnChange_InputFile(InputFileChangeEventArgs e)
         {
+            if (e.FileCount > 10)
+            {
+                await JSRuntime.ShowToastAsync($"The maximum number of files accepted is 10, but {e.FileCount} were supplied.", SwalIcon.Error);
+                return;
+            }
+
             if (FileNames == null)
             {
                 FileNames = new List<string>();

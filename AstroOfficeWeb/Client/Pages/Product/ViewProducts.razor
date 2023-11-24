@@ -1,7 +1,68 @@
 ﻿@page "/view-products"
 
-<h3>ViewProducts</h3>
+@using AstroOfficeWeb.Client.Services
+@using AstroShared.DTOs
 
-@code {
+@inject ProductService ProductService
+@inject NavigationManager NavigationManager
+@inject StateContainerService StateContainerService
+@inject IJSRuntime JSRuntime
+@inject ILocalStorageService LocalStorage
 
-}
+<div class="container-fluid p-3">
+    <h1 class="pt-4 pb-2 font-weight-bold "> Shop </h1>
+    <section class="content d-flex justify-content-center">
+
+        @if (Products == null)
+        {
+            <div class="row overlay-wrapper">
+                <div class="overlay dark"><i class="fas fa-3x fa-sync-alt fa-spin"></i><div class="text-bold pt-2">Loading...</div></div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (ViewProductDTO product in Products)
+                {
+
+                    <div class="col-md-3 mt-2">
+                        <div class="card">
+                            <div class="card-body" style="transform: rotate(0);">
+                                <div class="card-img-actions">
+                                    <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="card-img img-fluid" width="96" height="350">
+                                </div>
+                                <a href="/view-product/@product.Sno" class="text-default mb-2 stretched-link" data-abc="true"></a>
+                            </div>
+
+                            <div class="card-body bg-light text-center">
+                                <div class="mb-2 " style="transform: rotate(0);">
+                                    <h6 class="font-weight-semibold mb-2">
+                                        <a href="/view-product/@product.Sno" class="text-default mb-2 stretched-link" data-abc="true">@product.Name</a>
+                                    </h6>
+                                    @* <a href="/view-product/@product.Sno" class="text-muted" data-abc="true">@product.Name</a> *@ @* Category *@
+                                </div>
+
+                                <h3 class="mb-0 font-weight-semibold">
+                                    &#8377; @product.Price.ToString("N2")
+                                </h3>
+
+                                @* <div>
+                        <i class="fa fa-star star"></i>
+                        <i class="fa fa-star star"></i>
+                        <i class="fa fa-star star"></i>
+                        <i class="fa fa-star star"></i>
+                        </div> *@
+
+                                @* <div class="text-muted mb-3">34 reviews</div> *@
+
+                                <button type="button" class="btn bg-cart"><i class="fa fa-cart-plus mr-2"></i> Add to cart</button>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+    </section>
+</div>

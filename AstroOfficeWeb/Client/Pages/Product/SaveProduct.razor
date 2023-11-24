@@ -31,21 +31,24 @@
 
                             <div class="form-group">
                                 <label for="inputName">Name</label>
+                                <ValidationMessage For=@(() => SaveProductModel!.Name) style="position:revert;" />
                                 <InputText id="inputName" class="form-control" @bind-Value="SaveProductModel!.Name" />
                             </div>
 
                             <div class="form-group">
                                 <label for="inputPrice">Price</label>
+                                <ValidationMessage For=@(() => SaveProductModel!.Price) style="position:revert;" />
                                 <InputNumber id="inputPrice" class="form-control" @bind-Value="SaveProductModel!.Price" />
                             </div>
 
                             <div class="form-group">
                                 <label for="inputStockQuantity">Stock Quantity</label>
+                                <ValidationMessage For=@(() => SaveProductModel!.StockQuantity) style="position:revert;" />
                                 <InputNumber id="inputStockQuantity" class="form-control" @bind-Value="SaveProductModel!.StockQuantity" />
                             </div>
 
                             <div class="form-check">
-                                <InputCheckbox class="form-check-input" id="chkIsActive" @bind-Value="SaveProductModel.IsActive" />
+                                <InputCheckbox class="form-check-input" id="chkIsActive" @bind-Value="SaveProductModel.IsActive" style="position:revert;" />
                                 <label class="form-check-label" for="chkIsActive">Is Active</label>
                             </div>
 
@@ -107,6 +110,7 @@
 
             <div class="row mt-3">
                 <div class="col-md-12">
+                    <ValidationMessage For=@(() => SaveProductModel!.StockQuantity) style="position:revert;" />
                     <InputTextArea @ref="ER_TextEditor" @bind-Value="SaveProductModel!.Description"></InputTextArea>
                 </div>
             </div>

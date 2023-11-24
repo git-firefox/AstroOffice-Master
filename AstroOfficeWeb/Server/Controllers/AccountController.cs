@@ -96,8 +96,7 @@ namespace AstroOfficeWeb.Server.Controllers
             catch (Exception ex)
             {
                 response.IsAuthSuccessful = false;
-                response.Message = ApiMessageConst.ServerError;
-                throw ex;
+                response.Message = ex.Message;
             }
 
             returnResponse:
@@ -209,47 +208,47 @@ namespace AstroOfficeWeb.Server.Controllers
             if (aUser == null)
             {
                 response.Success = false;
-                response.Message = AccountMessageConst.MobileNumberNotFound;
+                response.ErrorMessage = AccountMessageConst.MobileNumberNotFound;
                 goto returnResponse;
             }
 
             if (!aUser.Active.GetValueOrDefault())
             {
                 response.Success = false;
-                response.Message = AccountMessageConst.AccountLocked;
+                response.ErrorMessage = AccountMessageConst.AccountLocked;
                 goto returnResponse;
             }
 
             if (aUser.MobileOtp != request.Otp)
             {
                 response.Success = false;
-                response.Message = SMSMessageConst.InvalidOTP;
+                response.ErrorMessage = SMSMessageConst.InvalidOTP;
                 goto returnResponse;
             }
 
             if (request.NewPassword == null || request.Otp == null)
             {
                 response.Success = false;
-                response.Message = AccountMessageConst.UserPassNotUpdated;
+                response.ErrorMessage = AccountMessageConst.UserPassNotUpdated;
                 goto returnResponse;
             }
 
             if (aUser.Sno == 0)
             {
                 response.Success = false;
-                response.Message = AccountMessageConst.UserNotFound;
+                response.ErrorMessage = AccountMessageConst.UserNotFound;
                 goto returnResponse;
             }
 
             if (_balUser.IsUserPassUpdatedByOtp(request.MobileNumber, request.NewPassword, request.Otp))
             {
                 response.Success = true;
-                response.Message = AccountMessageConst.UserPassUpdated;
+                response.ErrorMessage = AccountMessageConst.UserPassUpdated;
             }
             else
             {
                 response.Success = false;
-                response.Message = AccountMessageConst.UserPassNotUpdated;
+                response.ErrorMessage = AccountMessageConst.UserPassNotUpdated;
             }
 
             returnResponse:

@@ -9,6 +9,11 @@ namespace ASModels.Astrooff
     [Table("A_Products")]
     public partial class AProduct
     {
+        public AProduct()
+        {
+            CartItems = new HashSet<CartItem>();
+        }
+
         [Key]
         public long Sno { get; set; }
         [StringLength(255)]
@@ -28,5 +33,8 @@ namespace ASModels.Astrooff
         public long? ModifiedByAUsersSno { get; set; }
         [Required]
         public bool? IsActive { get; set; }
+
+        [InverseProperty("AProductsSnoNavigation")]
+        public virtual ICollection<CartItem> CartItems { get; set; }
     }
 }
