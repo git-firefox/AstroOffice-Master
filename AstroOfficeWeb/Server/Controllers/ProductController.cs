@@ -182,7 +182,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
         [Authorize(Roles = "User")]
         [HttpPost]
-        public IActionResult AddToCart(AddToCartRequest request)
+        public IActionResult AddToShoppingCart(AddToCartRequest request)
         {
             var response = new ApiResponse<string>();
             var shoppingCart = _context.ShoppingCarts.FirstOrDefault(a => a.AUsersSno == User.GetUserSno());
