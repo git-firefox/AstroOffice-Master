@@ -1,1 +1,6 @@
-﻿
+﻿.manage-products-table {
+    max-height: calc(100vh - 341px);
+}
+.manage-products-table .table td{
+    vertical-align:middle;
+}

@@ -11,7 +11,7 @@
 <ConfirmationModal @ref="Confirmation" OnConfirmationChanged="OnConfirmationChanged" Message="Are you sure you want to delete this Product?"></ConfirmationModal>
 
 <div class="container-fluid p-3">
-    
+    ho
     <div class="d-flex justify-content-between">
         <h1 class="pt-4 pb-2 font-weight-bold">Manage Products</h1>
         <div class="pt-4 pb-2 "><button class="btn btn-custom" @onclick="()=>OnClick_BtnAdd()">Add Product</button></div>
@@ -23,18 +23,18 @@
 
                 <div class="card">
 
-                    <div class="card-body table-responsive p-0">
+                    <div class="card-body table-responsive p-0 manage-products-table">
                         <table class="table table-hover text-nowrap">
-                            <thead class="p-0 bg-da-yellow">
+                            <thead class="p-0">
                                 <tr>
-                                    <th>SrNo</th>
-                                    <th>Name</th>
-                                    <th>Image</th>
-                                    <th>Price</th>
-                                    <th>Stock Quantity</th>
-                                    <th>Added Date</th>
-                                    <th>Last Modified Date</th>
-                                    <th>Action</th>
+                                    <th class="sticky-top bg-da-yellow">SrNo</th>
+                                    <th class="sticky-top bg-da-yellow">Name</th>
+                                    <th class="sticky-top bg-da-yellow">Image</th>
+                                    <th class="sticky-top bg-da-yellow">Price</th>
+                                    <th class="sticky-top bg-da-yellow">Stock Quantity</th>
+                                    <th class="sticky-top bg-da-yellow">Added Date</th>
+                                    <th class="sticky-top bg-da-yellow">Last Modified Date</th>
+                                    <th class="sticky-top bg-da-yellow">Action</th>
                                 </tr>
                             </thead>
                             @if (Products == null)
@@ -69,7 +69,7 @@
                                             <tr>
                                                 <td>@row.Sno</td>
                                                 <td>@row.Name</td>
-                                                <td><img alt="@row.Name" class="img-thumbnail" src="@row.ImageUrl" height="100" width="100" title="@row.Name" /></td>
+                                                <td><img alt="@row.Name" class="img-thumbnail" src="@(row.ImageUrl ?? "images/image-not-found.png")" height="50" width="50" title="@row.Name" /></td>
                                                 <td>@row.Price</td>
                                                 <td>@row.StockQuantity</td>
                                                 <td>@row.AddedDate.ToString(format: "dd - MM - yyyy")</td>

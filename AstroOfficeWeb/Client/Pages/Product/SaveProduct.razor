@@ -79,6 +79,7 @@
                             </div>
 
                             <div class="row mt-3">
+
                                 <div class="col-6">
                                     <ul class="list-inline">
                                         @foreach (var image in BrowserFiles)
@@ -91,7 +92,7 @@
                                 </div>
 
                                 <div class="col-6">
-                                    @if (SelectedImage != null)
+                                    @if (SelectedImage?.Src != null)
                                     {
                                         <img alt="@SelectedImage.Alt" class="img-fluid img-thumbnail" src="@SelectedImage.Src" title="@SelectedImage.Alt" />
                                     }

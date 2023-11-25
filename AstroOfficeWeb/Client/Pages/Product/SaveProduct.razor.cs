@@ -8,7 +8,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
 {
     public class ImgData
     {
-        public string Src { get; set; } = null!;
+        public string? Src { get; set; }
         public string Alt { get; set; } = null!;
     }
     public partial class SaveProduct
@@ -49,12 +49,12 @@ namespace AstroOfficeWeb.Client.Pages.Product
                     IsActive = ViewProductDTO.IsActive
                 };
 
-                SelectedImage = new ImgData { Alt = SaveProductModel.Name, Src = SaveProductModel.ImageUrl ?? "images/image-not-found.png" };
+                SelectedImage = new ImgData { Alt = SaveProductModel.Name, Src = SaveProductModel?.ImageUrl  };
             }
             else
             {
                 SaveProductModel = new SaveProductDTO();
-                SelectedImage = new ImgData { Alt = "No Product Image", Src = "images/image-not-found.png" };
+                //SelectedImage = new ImgData { Alt = "No Product Image", Src = "images/image-not-found.png" };
             }
         }
 
