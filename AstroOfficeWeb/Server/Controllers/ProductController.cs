@@ -218,7 +218,16 @@ namespace AstroOfficeWeb.Server.Controllers
         {
             var response = new ApiResponse<List<CartItemDTO>>();
             var shoppingCart = _context.ShoppingCarts.Include(sc => sc.CartItems).ThenInclude(sc => sc.AProductsSnoNavigation).FirstOrDefault(a => a.AUsersSno == User.GetUserSno());
-            var cartItems = shoppingCart?.CartItems.Select(ci => new CartItemDTO { ProductSno = ci.AProductsSno ?? 0, ProductName = ci.AProductsSnoNavigation?.Name ?? "", ProductQuantity = ci.Quantity ?? 0 }).ToList();
+
+            var cartItems = shoppingCart?.CartItems.Select(ci => new CartItemDTO
+            {
+                ProductSno = ci.AProductsSno ?? 0,
+                ProductName = ci.AProductsSnoNavigation?.Name ?? "",
+                ProductQuantity = ci.Quantity ?? 0,
+                ProductImageSrc = ci.AProductsSnoNavigation?.ImageUrl,
+                ProductPrice = ci.AProductsSnoNavigation?.Price ?? 0
+            }).ToList();
+
             response.Data = cartItems;
             return Ok(response);
         }
