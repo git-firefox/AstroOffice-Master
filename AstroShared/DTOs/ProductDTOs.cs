@@ -22,7 +22,7 @@ namespace AstroShared.DTOs
         [Required]
         [Range(1, 100, ErrorMessage = "{0} must be between {1} and {2}.")]
         public int StockQuantity { get; set; }
-
+        
         public string? ImageUrl { get; set; }
         public DateTime AddedDate { get; set; }
         public DateTime? LastModifiedDate { get; set; }
@@ -30,7 +30,7 @@ namespace AstroShared.DTOs
     }
     public class ViewProductDTO : ProductDTOBase
     {
-        public long Sno { get; set; }
+        public long Sno { get; set; }    
     }
 
     public class SaveProductDTO : ProductDTOBase

@@ -10,6 +10,8 @@ namespace AstroShared.DTOs
     {
         public long ProductSno { get; set; }
         public string ProductName { get; set; } = null!;
+        public decimal ProductPrice { get; set; }
+        public string? ProductImageSrc { get; set; }
         public int ProductQuantity { get; set; }
     }
 }

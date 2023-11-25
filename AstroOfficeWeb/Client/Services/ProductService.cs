@@ -87,5 +87,33 @@ namespace AstroOfficeWeb.Client.Services
                 return false;
             }
         }
+
+        public async Task<bool> IsAddToCart(ViewProductDTO product, int quantity = 1)
+        {
+            var request = new AddToCartRequest() { ProductSno = product.Sno, Quantity = quantity };
+            var response = await _swagger.PostAsync<AddToCartRequest, ApiResponse<string>>(ProductApiConst.POST_AddToShoppingCart, request);
+            if (!response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.ErrorMessage, SwalIcon.Error);
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<List<CartItemDTO>?> GetCartItems()
+        {
+            var response = await _swagger.GetAsync<ApiResponse<List<CartItemDTO>>>(ProductApiConst.GET_UserShoppingCart);
+            if (!response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.ErrorMessage, SwalIcon.Error);
+                return null;
+            }
+            return response?.Data;
+        }
+
+        public bool IsInShoppingCart(List<CartItemDTO> cartItems, long productSno)
+        {
+            return cartItems.Any(ci => ci.ProductSno == productSno);
+        }
     }
 }
