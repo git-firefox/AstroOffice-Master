@@ -2,3 +2,9 @@
     margin-bottom: 0;
     height: 100%;
 }
+
+@media(max-width:767px) {
+    .card-body, .card-tabs .card-header {
+        padding: .25rem;
+    }
+}

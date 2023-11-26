@@ -7,6 +7,11 @@
     width: 4.5rem;
 }
 
+
+.fw-semibold {
+    font-weight: 600;
+}
+
 @media screen and (min-width: 576px) {
     .text-sm-end {
         text-align: right !important;
@@ -17,8 +22,4 @@
     .d-sm-inline-block {
         display: inline-block !important;
     }
-}
-
-.fw-semibold {
-    font-weight: 600;
 }

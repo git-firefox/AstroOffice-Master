@@ -196,10 +196,22 @@ header {
 
 
 .btn-custom {
-    background: #17384e !important;
-    color: #fff !important;
+    background: #17384e;
+    color: #fff;
     border: 1px solid #17384e;
+    box-shadow: none;
 }
+
+    .btn-custom:hover {
+        color: #fff;
+    }
+
+    .btn-custom:not(:disabled):not(.disabled).active, .btn-custom:not(:disabled):not(.disabled):active, .show > .btn-custom.dropdown-toggle {
+        color: #fff;
+        border-color: #17384e;
+        background-color: #17384ede;
+    }
+
 
 .btn-outline-custom {
     color: #17384e;
@@ -208,8 +220,8 @@ header {
 
     .btn-outline-custom:not(:disabled):not(.disabled).active, .btn-outline-custom:not(:disabled):not(.disabled):active {
         color: #fff;
-        color: #17384e;
-        border-color: #17384e
+        border-color: #17384e;
+        background-color: #17384ede;
     }
 
     .btn-outline-custom:hover {
@@ -670,11 +682,6 @@ a.forgot-link {
             width: 100%;
             font-size: 14px;
         }
-
-    .card-body,
-    .card-tabs .card-header {
-        padding: .25rem;
-    }
 
     .chart-table table td, .chart-table table th {
         white-space: nowrap;
