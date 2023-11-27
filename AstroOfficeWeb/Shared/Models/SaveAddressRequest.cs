@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AstroShared.DTOs;
 
 namespace AstroOfficeWeb.Shared.Models
 {
-    public class ApiResponseBase
+    public class SaveAddressRequest
     {
-        public bool Success { get; set; } = true;
-        public string? Message { get; set; }
-        public int ErrorNo { get; set; } = 0;
+        public long Sno { get; set; }
+
+        public AddressDTO Address { get; set; } = null!;
     }
 }

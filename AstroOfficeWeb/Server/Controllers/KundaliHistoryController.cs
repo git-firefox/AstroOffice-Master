@@ -91,12 +91,12 @@ namespace AstroOfficeWeb.Server.Controllers
                 if (affectedRecords > 0)
                 {
                     response.Success = true;
-                    response.ErrorMessage = KundaliHistoryMessageConst.KundaliDeleted;
+                    response.Message = KundaliHistoryMessageConst.KundaliDeleted;
                 }
                 else
                 {
                     response.Success = false;
-                    response.ErrorMessage = KundaliHistoryMessageConst.KundaliDeletedFailed;
+                    response.Message = KundaliHistoryMessageConst.KundaliDeletedFailed;
                 }
                 return Ok(response);
             }
@@ -104,7 +104,7 @@ namespace AstroOfficeWeb.Server.Controllers
             {
                 _ = ex;
                 response.Success = false;
-                response.ErrorMessage = KundaliHistoryMessageConst.KundaliDeletedFailed;
+                response.Message = KundaliHistoryMessageConst.KundaliDeletedFailed;
                 return Ok(response);
             }
         }

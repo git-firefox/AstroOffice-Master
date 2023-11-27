@@ -20,7 +20,7 @@ namespace AstroOfficeWeb.Server.Controllers
         public IActionResult IsBestKundali(BestKundaliRequest request)
         {
             bool flag = _bestbll.isBestKundali(request.Best_Online_Result, request.Rating, request.Engine);
-            return Ok(new ApiResponse<bool> { Data = flag, ErrorMessage = "Ok", Success = true });
+            return Ok(new ApiResponse<bool> { Data = flag, Message = "Ok", Success = true });
         }
 
         [HttpPost]

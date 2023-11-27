@@ -141,6 +141,7 @@ namespace ASModels
         public virtual DbSet<AVfalUpay1> AVfalUpay1s { get; set; } = null!;
         public virtual DbSet<AVfale> AVfales { get; set; } = null!;
         public virtual DbSet<AVfalh> AVfalhs { get; set; } = null!;
+        public virtual DbSet<Address> Addresses { get; set; } = null!;
         public virtual DbSet<CartItem> CartItems { get; set; } = null!;
         public virtual DbSet<Common> Commons { get; set; } = null!;
         public virtual DbSet<Female> Females { get; set; } = null!;
@@ -942,6 +943,24 @@ namespace ASModels
             modelBuilder.Entity<AVfalUpay1>(entity =>
             {
                 entity.Property(e => e.Ruleno1).ValueGeneratedOnAdd();
+            });
+
+            modelBuilder.Entity<Address>(entity =>
+            {
+                entity.HasKey(e => e.Sno)
+                    .HasName("PK__Addresse__CA1FE464EFFEEB44");
+
+                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
+
+                entity.HasOne(d => d.ACountrySnoNavigation)
+                    .WithMany(p => p.Addresses)
+                    .HasForeignKey(d => d.ACountrySno)
+                    .HasConstraintName("FK__Addresses__A_cou__71A7CADF");
+
+                entity.HasOne(d => d.AUsersSnoNavigation)
+                    .WithMany(p => p.Addresses)
+                    .HasForeignKey(d => d.AUsersSno)
+                    .HasConstraintName("FK__Addresses__A_Use__70B3A6A6");
             });
 
             modelBuilder.Entity<CartItem>(entity =>

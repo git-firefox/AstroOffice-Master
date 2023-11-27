@@ -1,5 +1,7 @@
 ﻿@page "/checkout"
+
 @using AstroOfficeWeb.Client.Services
+
 @inject ProductService ProductService
 @inject NavigationManager NavigationManager
 @inject StateContainerService StateContainerService
@@ -43,7 +45,7 @@
                                     <div class="tab-content twitter-bs-wizard-tab-content">
                                         <div class="tab-pane active" id="billing-info">
                                             <div>
-                                                <h4 class="header-title">Billing Information</h4>
+                                                <h4 class="header-title d-inline">Billing Information</h4>
                                                 <div class="float-end">
                                                     <button class="btn btn-link" @onclick="()=>OnClick_BtnChangeAddress(0)">
                                                         <i class="fa-regular fa-pen-to-square"></i> Change

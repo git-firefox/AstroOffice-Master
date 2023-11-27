@@ -70,7 +70,7 @@ namespace AstroOfficeWeb.Client.Services
             }
             else
             {
-                await _jsRuntime.ShowToastAsync(response!.ErrorMessage, SwalIcon.Error);
+                await _jsRuntime.ShowToastAsync(response!.Message, SwalIcon.Error);
             }
 
             return response!.Data;
@@ -94,7 +94,7 @@ namespace AstroOfficeWeb.Client.Services
             }
             else
             {
-                await _jsRuntime.ShowToastAsync(response!.ErrorMessage, SwalIcon.Error);
+                await _jsRuntime.ShowToastAsync(response!.Message, SwalIcon.Error);
             }
 
             return response!.Data;

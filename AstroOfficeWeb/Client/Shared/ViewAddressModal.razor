@@ -1,4 +1,9 @@
-﻿@inject IJSRuntime JSRuntime
+﻿@using AstroOfficeWeb.Client.Services
+@using AstroShared.DTOs
+
+@inject IJSRuntime JSRuntime
+@inject ProductService ProductService
+@inject StateContainerService StateContainerService
 
 <div @ref="ER_ViewAddressModal" class="modal fade confirmation-modal" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -11,6 +16,7 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="border p-3 rounded mb-3 mb-md-0">
@@ -20,9 +26,9 @@
                                     <label class="form-check-label" for="checkoutaddressRadio1">Home</label>
                                 </div>
 
-                                @* <div class="float-end d-inline">
+                                <div class="float-end d-inline">
                                     <a href="#"><i class="fas fa-edit text-muted font-20"></i></a>
-                                </div> *@
+                                </div>
 
                                 <h5 class="mt-3">Brent Rowe</h5>
 
@@ -31,15 +37,16 @@
                                 <p class="mb-0"><span class="fw-semibold me-2">Mobile:</span> (+01) 12345 67890</p>
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <div class="border p-3 rounded mb-3 mb-md-0">
                                 <div class="form-check form-check-inline font-16">
                                     <input class="form-check-input" type="radio" name="checkoutaddressRadio" id="checkoutaddressRadio2">
                                     <label class="form-check-label" for="checkoutaddressRadio2">Office</label>
                                 </div>
-                                @* <div class="float-end d-inline">
+                                <div class="float-end d-inline">
                                     <a href="#"><i class="fas fa-edit text-muted font-20"></i></a>
-                                </div> *@
+                                </div>
                                 <h5 class="mt-3">Brent Rowe</h5>
 
                                 <p class="mb-1"><span class="fw-semibold me-2">Address:</span> 3559 Roosevelt Wilson Lane San Bernardino, CA 92405</p>
@@ -65,27 +72,40 @@
     [Parameter]
     public string Title { get; set; } = "Address";
 
-    public async Task ShowAsync()
-    {
-        IsShow = true;
-        await JSRuntime.ShowModalAsync(ER_ViewAddressModal);
-        StateHasChanged();
-    }
-
-
-    public async Task CloseAsync()
-    {
-        IsShow = false;
-        await JSRuntime.CloseModalAsync(ER_ViewAddressModal);
-        StateHasChanged();
-    }
+    [Parameter]
+    public AddressDTO? DefaultAddress { get; set; }
 
     [Parameter]
     public EventCallback<bool> OnConfirmationChanged { get; set; }
 
+    public AddressDTO? AddressDTO { get; set; }
+
+    public List<AddressDTO>? AddressDTOs { get; set; }
+
+    public async Task ShowAsync()
+    {
+        await JSRuntime.ShowModalAsync(ER_ViewAddressModal);
+        StateHasChanged();
+    }
+
+    public async Task CloseAsync()
+    {
+        await JSRuntime.CloseModalAsync(ER_ViewAddressModal);
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
     protected async Task OnConfirmationChange(bool value)
     {
-        IsShow = false;
         await OnConfirmationChanged.InvokeAsync(value);
     }
 }

@@ -208,47 +208,47 @@ namespace AstroOfficeWeb.Server.Controllers
             if (aUser == null)
             {
                 response.Success = false;
-                response.ErrorMessage = AccountMessageConst.MobileNumberNotFound;
+                response.Message = AccountMessageConst.MobileNumberNotFound;
                 goto returnResponse;
             }
 
             if (!aUser.Active.GetValueOrDefault())
             {
                 response.Success = false;
-                response.ErrorMessage = AccountMessageConst.AccountLocked;
+                response.Message = AccountMessageConst.AccountLocked;
                 goto returnResponse;
             }
 
             if (aUser.MobileOtp != request.Otp)
             {
                 response.Success = false;
-                response.ErrorMessage = SMSMessageConst.InvalidOTP;
+                response.Message = SMSMessageConst.InvalidOTP;
                 goto returnResponse;
             }
 
             if (request.NewPassword == null || request.Otp == null)
             {
                 response.Success = false;
-                response.ErrorMessage = AccountMessageConst.UserPassNotUpdated;
+                response.Message = AccountMessageConst.UserPassNotUpdated;
                 goto returnResponse;
             }
 
             if (aUser.Sno == 0)
             {
                 response.Success = false;
-                response.ErrorMessage = AccountMessageConst.UserNotFound;
+                response.Message = AccountMessageConst.UserNotFound;
                 goto returnResponse;
             }
 
             if (_balUser.IsUserPassUpdatedByOtp(request.MobileNumber, request.NewPassword, request.Otp))
             {
                 response.Success = true;
-                response.ErrorMessage = AccountMessageConst.UserPassUpdated;
+                response.Message = AccountMessageConst.UserPassUpdated;
             }
             else
             {
                 response.Success = false;
-                response.ErrorMessage = AccountMessageConst.UserPassNotUpdated;
+                response.Message = AccountMessageConst.UserPassNotUpdated;
             }
 
             returnResponse:

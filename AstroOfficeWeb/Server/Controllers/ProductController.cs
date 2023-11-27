@@ -56,7 +56,7 @@ namespace AstroOfficeWeb.Server.Controllers
             {
                 apiResponse.ErrorNo = 1;
                 apiResponse.Success = false;
-                apiResponse.ErrorMessage = ProductMessageConst.NotFoundProduct;
+                apiResponse.Message = ProductMessageConst.NotFoundProduct;
                 return Ok(apiResponse);
             }
 
@@ -82,7 +82,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
                 _context.SaveChanges();
 
-                apiResponse.ErrorMessage = ProductMessageConst.AddProduct;
+                apiResponse.Message = ProductMessageConst.AddProduct;
                 apiResponse.Success = true;
                 var viewProduct = _mapper.Map<ViewProductDTO>(aProduct);
                 apiResponse.Data = viewProduct;
@@ -90,7 +90,7 @@ namespace AstroOfficeWeb.Server.Controllers
             catch (Exception ex)
             {
                 apiResponse.Success = false;
-                apiResponse.ErrorMessage = ex.Message;
+                apiResponse.Message = ex.Message;
             }
             return Ok(apiResponse);
         }
@@ -118,7 +118,7 @@ namespace AstroOfficeWeb.Server.Controllers
                     _context.AProducts.Update(aProduct);
                     _context.SaveChanges();
 
-                    apiResponse.ErrorMessage = ProductMessageConst.UpdateProduct;
+                    apiResponse.Message = ProductMessageConst.UpdateProduct;
                     apiResponse.Success = true;
 
                     var viewProduct = _mapper.Map<ViewProductDTO>(aProduct);
@@ -129,7 +129,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 {
                     apiResponse.ErrorNo = 1;
                     apiResponse.Success = false;
-                    apiResponse.ErrorMessage = ProductMessageConst.NotFoundProduct;
+                    apiResponse.Message = ProductMessageConst.NotFoundProduct;
                     return Ok(apiResponse);
                 }
             }
@@ -137,7 +137,7 @@ namespace AstroOfficeWeb.Server.Controllers
             {
                 apiResponse.ErrorNo = 2;
                 apiResponse.Success = false;
-                apiResponse.ErrorMessage = ex.Message;
+                apiResponse.Message = ex.Message;
             }
 
             return Ok(apiResponse);
@@ -157,7 +157,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 {
                     apiResponse.ErrorNo = 1;
                     apiResponse.Success = false;
-                    apiResponse.ErrorMessage = ProductMessageConst.NotFoundProduct;
+                    apiResponse.Message = ProductMessageConst.NotFoundProduct;
                     return Ok(apiResponse);
                 }
 
@@ -167,7 +167,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 _context.AProducts.Update(existedProduct);
                 _context.SaveChanges();
 
-                apiResponse.ErrorMessage = ProductMessageConst.DeleteProduct;
+                apiResponse.Message = ProductMessageConst.DeleteProduct;
                 apiResponse.Success = true;
                 var viewProduct = _mapper.Map<ViewProductDTO>(existedProduct);
                 apiResponse.Data = viewProduct;
@@ -175,7 +175,7 @@ namespace AstroOfficeWeb.Server.Controllers
             catch (Exception ex)
             {
                 apiResponse.Success = false;
-                apiResponse.ErrorMessage = ex.Message;
+                apiResponse.Message = ex.Message;
             }
             return Ok(apiResponse);
         }
@@ -229,6 +229,45 @@ namespace AstroOfficeWeb.Server.Controllers
             }).ToList();
 
             response.Data = cartItems;
+            return Ok(response);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet]
+        public IActionResult GetUserAddresses()
+        {
+            var addresses = _context.Addresses.Include(sc => sc.ACountrySnoNavigation).Where(a => a.AUsersSno == User.GetUserSno() && a.IsActive == true).OrderBy(a => a.ACountrySnoNavigation == null ? "" : a.ACountrySnoNavigation.Country);
+            var addressDTOs = _mapper.Map<List<AddressDTO>>(addresses);
+            return Ok(addressDTOs);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpPost]
+        public IActionResult SaveUserAddress(AddressDTO addressDTO)
+        {
+            var response = new ApiResponse<AddressDTO>();
+            var tempAddress = _context.Addresses.FirstOrDefault(a => a.Sno == addressDTO.Sno && a.AUsersSno == User.GetUserSno() && a.IsActive == true);
+            var address = _mapper.Map<Address>(addressDTO);
+
+            if (tempAddress == null)
+            {
+                _context.Addresses.Add(address);
+                _context.SaveChanges();
+
+                addressDTO.Sno = address.Sno;
+
+                response.Data = addressDTO;
+                response.Message = "Address saved to user account";
+            }
+            else
+            {
+                _context.Addresses.Update(address);
+                _context.SaveChanges();
+
+                response.Data = addressDTO;
+                response.Message = "Address saved to user account";
+            }
+
             return Ok(response);
         }
     }

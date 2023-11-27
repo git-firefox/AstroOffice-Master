@@ -79,14 +79,14 @@ namespace AstroOfficeWeb.Server.Controllers
 
             var response = new ApiResponse<decimal?>();
             response.Success = false;
-            response.ErrorMessage = ApiMessageConst.ServerError;
+            response.Message = ApiMessageConst.ServerError;
             response.Data = aUserToken.TokenBalance;
 
 
             if (aUserToken.TokenBalance == 0)
             {
                 response.Success = false;
-                response.ErrorMessage = TokenWalletMessageConst.BalanceZeroMessage;
+                response.Message = TokenWalletMessageConst.BalanceZeroMessage;
                 goto returnResponse;
             }
 
@@ -95,7 +95,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 if (request.Amount > aUserToken.TokenBalance)
                 {
                     response.Success = false;
-                    response.ErrorMessage = TokenWalletMessageConst.InsufficientBalance;
+                    response.Message = TokenWalletMessageConst.InsufficientBalance;
                     goto returnResponse;
                 }
 
@@ -118,7 +118,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
                 response.Data = aUserToken.TokenBalance;
                 response.Success = true;
-                response.ErrorMessage = TokenWalletMessageConst.TokenBalanceUpdated;
+                response.Message = TokenWalletMessageConst.TokenBalanceUpdated;
             }
 
             returnResponse:
@@ -132,14 +132,14 @@ namespace AstroOfficeWeb.Server.Controllers
 
             var response = new ApiResponse<decimal?>();
             response.Success = false;
-            response.ErrorMessage = ApiMessageConst.ServerError;
+            response.Message = ApiMessageConst.ServerError;
             response.Data = aUserToken.TokenBalance;
 
 
             if (request.Amount == 0)
             {
                 response.Success = false;
-                response.ErrorMessage = TokenWalletMessageConst.ErrorBalanceZeroMessage;
+                response.Message = TokenWalletMessageConst.ErrorBalanceZeroMessage;
                 goto returnResponse;
             }
 
@@ -163,7 +163,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
                 response.Data = aUserToken.TokenBalance;
                 response.Success = true;
-                response.ErrorMessage = TokenWalletMessageConst.TokenRecharge;
+                response.Message = TokenWalletMessageConst.TokenRecharge;
             }
 
             returnResponse:

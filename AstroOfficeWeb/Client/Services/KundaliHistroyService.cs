@@ -189,12 +189,12 @@ namespace AstroOfficeWeb.Client.Services
 
             if (response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.ErrorMessage);
+                await _jsRuntime.ShowToastAsync(response.Message);
                 return true;
             }
             else
             {
-                await _jsRuntime.ShowToastAsync(response.ErrorMessage, SwalIcon.Error);
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return false;
             }
         }

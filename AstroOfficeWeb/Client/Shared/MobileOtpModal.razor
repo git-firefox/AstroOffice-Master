@@ -182,11 +182,11 @@
             timer = new Timer(1000); // Interval in milliseconds (1 second)
             timer.Elapsed += TimerElapsed;
             timer.Start();
-            await JSRuntime.ShowToastAsync(response?.ErrorMessage ?? "Otp sent");
+            await JSRuntime.ShowToastAsync(response?.Message ?? "Otp sent");
         }
         else
         {
-            await JSRuntime.ShowToastAsync(response.ErrorMessage ?? "Something is wrong", SwalIcon.Error);
+            await JSRuntime.ShowToastAsync(response.Message ?? "Something is wrong", SwalIcon.Error);
         }
     }
 }
