@@ -1,0 +1,91 @@
+﻿@inject IJSRuntime JSRuntime
+
+<div @ref="ER_ViewAddressModal" class="modal fade confirmation-modal" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">@Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="border p-3 rounded mb-3 mb-md-0">
+
+                                <div class="form-check form-check-inline font-16">
+                                    <input class="form-check-input" type="radio" name="checkoutaddressRadio" id="checkoutaddressRadio1" checked="">
+                                    <label class="form-check-label" for="checkoutaddressRadio1">Home</label>
+                                </div>
+
+                                @* <div class="float-end d-inline">
+                                    <a href="#"><i class="fas fa-edit text-muted font-20"></i></a>
+                                </div> *@
+
+                                <h5 class="mt-3">Brent Rowe</h5>
+
+                                <p class="mb-1"><span class="fw-semibold me-2">Address:</span> 3559 Roosevelt Wilson Lane San Bernardino, CA 92405</p>
+                                <p class="mb-1"><span class="fw-semibold me-2">Phone:</span> (123) 456-7890</p>
+                                <p class="mb-0"><span class="fw-semibold me-2">Mobile:</span> (+01) 12345 67890</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border p-3 rounded mb-3 mb-md-0">
+                                <div class="form-check form-check-inline font-16">
+                                    <input class="form-check-input" type="radio" name="checkoutaddressRadio" id="checkoutaddressRadio2">
+                                    <label class="form-check-label" for="checkoutaddressRadio2">Office</label>
+                                </div>
+                                @* <div class="float-end d-inline">
+                                    <a href="#"><i class="fas fa-edit text-muted font-20"></i></a>
+                                </div> *@
+                                <h5 class="mt-3">Brent Rowe</h5>
+
+                                <p class="mb-1"><span class="fw-semibold me-2">Address:</span> 3559 Roosevelt Wilson Lane San Bernardino, CA 92405</p>
+                                <p class="mb-1"><span class="fw-semibold me-2">Phone:</span> (123) 456-7890</p>
+                                <p class="mb-0"><span class="fw-semibold me-2">Mobile:</span> (+01) 12345 67890</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)"> Close </button>
+                <button type="button" class="btn btn-custom" @onclick="() => OnConfirmationChange(true)">Use this address</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    protected bool IsShow { get; set; } = true;
+    protected ElementReference ER_ViewAddressModal { get; set; }
+
+    [Parameter]
+    public string Title { get; set; } = "Address";
+
+    public async Task ShowAsync()
+    {
+        IsShow = true;
+        await JSRuntime.ShowModalAsync(ER_ViewAddressModal);
+        StateHasChanged();
+    }
+
+
+    public async Task CloseAsync()
+    {
+        IsShow = false;
+        await JSRuntime.CloseModalAsync(ER_ViewAddressModal);
+        StateHasChanged();
+    }
+
+    [Parameter]
+    public EventCallback<bool> OnConfirmationChanged { get; set; }
+
+    protected async Task OnConfirmationChange(bool value)
+    {
+        IsShow = false;
+        await OnConfirmationChanged.InvokeAsync(value);
+    }
+}

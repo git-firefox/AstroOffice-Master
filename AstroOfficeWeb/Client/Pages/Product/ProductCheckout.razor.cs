@@ -1,4 +1,5 @@
 ﻿
+using AstroOfficeWeb.Client.Shared;
 using AstroShared.Helper;
 using Microsoft.AspNetCore.Components;
 
@@ -13,6 +14,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
     }
     public partial class ProductCheckout
     {
+        private ViewAddressModal Modal_ViewAddress { get; set; } = null!;
         private ElementReference ER_SelectCountry { get; set; }
         private ElementReference ER_ABillingInfo { get; set; }
         private ElementReference ER_AShippingInfo { get; set; }
@@ -52,7 +54,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         }
         private async Task OnClick_BtnChangeAddress(int type)
         {
-
+            await Modal_ViewAddress.ShowAsync();
         }
     }
 }

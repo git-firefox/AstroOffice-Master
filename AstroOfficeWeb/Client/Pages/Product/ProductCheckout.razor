@@ -6,6 +6,8 @@
 @inject IJSRuntime JSRuntime
 @inject ILocalStorageService LocalStorage
 
+<ViewAddressModal @ref="Modal_ViewAddress"></ViewAddressModal>
+
 <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold "> Checkout </h1>
     <section class="content">
@@ -323,7 +325,7 @@
                                                     <button class="btn btn-custom" type="button" @onclick="()=>OnClick_BtnProceed(ProceedStatus.Shipping)"><i class="fas fa-arrow-left mx-2"></i> Back to Shipping </button>
                                                 </div>
                                                 <div class="ml-auto">
-                                                    <button class="btn btn-success" type="button" @onclick="()=>OnClick_BtnProceed(ProceedStatus.Payment)"><i class="fas fa-money-bill"></i> Place Order </button>
+                                                    <button class="btn btn-success" type="button" @onclick="()=>OnClick_BtnProceed(ProceedStatus.Payment)"><i class="fas fa-check-circle mx-2"></i> Place Order </button>
                                                 </div>
                                             </div>
                                         </div>
