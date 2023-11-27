@@ -79,7 +79,7 @@ namespace AstroShared.Helper
 
             return jsRuntime.InvokeVoidAsync("fnShowToast", title, swalIcon, swalPosition);
         }
-        
+
         public static ValueTask LoadEditorAsync(this IJSRuntime jsRuntime, ElementReference? element)
         {
             return jsRuntime.InvokeVoidAsync("fnLoadEditor", element);
@@ -87,6 +87,14 @@ namespace AstroShared.Helper
         public static ValueTask<string> GetEditorValue(this IJSRuntime jsRuntime, ElementReference? element)
         {
             return jsRuntime.InvokeAsync<string>("fnGetEditorValue", element);
+        }
+        public static ValueTask LoadSelect2Async(this IJSRuntime jsRuntime, ElementReference? element)
+        {
+            return jsRuntime.InvokeVoidAsync("fnLoadSelect2", element);
+        }
+        public static ValueTask ShowTabAsync(this IJSRuntime jsRuntime, ElementReference? element)
+        {
+            return jsRuntime.InvokeVoidAsync("fnShowTab", element);
         }
     }
 }

@@ -2,27 +2,27 @@
     if (element instanceof HTMLInputElement) {
         element.focus();
     }
-    
+
 }
 
 window.fnSelectTextBlazorElement = function (element) {
     if (element instanceof HTMLInputElement) {
         element.select();
     }
-    
+
 }
 
 window.fnShowModal = function (element) {
     if (element instanceof HTMLDivElement) {
         $(element).modal('show');
     }
-    
+
 }
 window.fnCloseModal = function (element) {
     if (element instanceof HTMLDivElement) {
         $(element).modal('hide');
     }
-    
+
 }
 
 window.fnShowOtpModal = function (element) {
@@ -99,16 +99,14 @@ window.fnShowOtpModal = function (element) {
 
         $(element).modal('show');
     }
-    
+
 }
-
-
 
 window.fnApplyInputMask = function (element, mask, placeHolder) {
     if (element instanceof HTMLInputElement) {
         $(element).inputmask(mask, { 'placeholder': placeHolder });
     }
-    
+
 }
 
 window.fnGetInputMaskValue = function (element) {
@@ -116,7 +114,7 @@ window.fnGetInputMaskValue = function (element) {
         var test = $(element).val();
         return $(element).val();
     }
-    
+
 }
 
 window.fnGetOtpValue = function (element) {
@@ -127,15 +125,14 @@ window.fnGetOtpValue = function (element) {
         });
         return concatenatedValue;
     }
-    
-}
 
+}
 
 window.fnCloseModal = function (element) {
     if (element instanceof HTMLDivElement) {
         $(element).modal('hide');
     }
-    
+
 }
 
 window.fnLoadDateTimePicker = function (element, format) {
@@ -149,7 +146,7 @@ window.fnGetDateFromDateTimePicker = function (element) {
         //return new Date($('input', element).val());
         return $(element).datetimepicker('date').format('MM,DD,YYYY,HH,mm,ss');
     }
-    
+
     return null;
 }
 
@@ -169,30 +166,6 @@ window.fnOpenDocumentInNewTab = function (fileName, base64Data) {
     window.open(pdfUrl, '_blank');
     URL.revokeObjectURL(pdfUrl);
 }
-
-//window.fnShowToast = function (title, icon, position) {
-//    Swal.mixin({
-//        toast: true,
-//        position: position,
-//        showConfirmButton: false,
-//        timer: 3000
-//    }).fire({
-//        icon: icon,
-//        allowOutsideClick: true, // Set this to true to allow closing by clicking outside
-//        backdrop: true, // Set this to true to display a backdrop (overlay) behind the modal
-//        html: '<br />' + title,
-//        timerProgressBar: true,
-//        allowEscapeKey: true,
-//        allowOutsideClick: true,
-//        showClass: {
-//            popup: 'animate__animated animate__fadeInRight'
-//        },
-//        hideClass: {
-//            popup: 'animate__animated animate__fadeOutRight'
-//        }
-//    });
-//}
-
 
 window.fnShowToast = function (title, icon, position) {
     Swal.fire({
@@ -225,6 +198,20 @@ window.fnGetEditorValue = function (element) {
         return $(element).summernote('code');
     }
     return null;
+}
+
+window.fnLoadSelect2 = function (element) {
+    if (element instanceof HTMLSelectElement) {
+        $(element).select2({
+            theme: 'bootstrap4',
+            width: '100%',
+        });
+    }
+}
+window.fnShowTab = function (element) {
+    if (element instanceof HTMLAnchorElement) {
+        $(element).tab('show');         
+    }
 }
 
 
@@ -334,3 +321,5 @@ window.fnGetEditorValue = function (element) {
 //$(document).ready(function () {
 //    $("#zoom_10").fancybox();
 //});
+
+
