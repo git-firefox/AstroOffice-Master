@@ -13,7 +13,16 @@
 <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold "> Shop </h1>
     <section class="content d-flex justify-content-center">
-
+        <div style="width:100%;">
+            <div style="width:30%;margin-right:50px;">
+                <MudTextField @bind-Value="_searchString" Placeholder="Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                <MudSelect T="string" Label="Sort by Price" AnchorOrigin="Origin.BottomCenter">
+                    <MudSelectItem Value="@("Low-Max")" />
+                    <MudSelectItem Value="@("Max-Low")" />
+                </MudSelect>
+            </div>
+        </div>
+        
         @if (Products == null)
         {
             <div class="row overlay-wrapper">

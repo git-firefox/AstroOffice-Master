@@ -13,7 +13,9 @@
     <h1 class="pt-4 pb-2 font-weight-bold "> @(Sno == 0 ? "Add Product" : "Edit Product") </h1>
 
     <section class="content">
-
+         <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+          
+         </MudForm>
         <EditForm Model="SaveProductModel" OnSubmit="OnSubmit_EditForm">
             <DataAnnotationsValidator />
             <div class="row">
@@ -71,6 +73,7 @@
                             <div class="row">
                                 <div class="col-12">
 
+                                    <ValidationMessage For=@(() => SaveProductModel.FileNames) style="position:revert;" />
                                     <div class="custom-file">
                                         <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png" OnChange="OnChange_InputFile" multiple />
                                         <label class="custom-file-label" for="inputFile"> @((FileNames != null && FileNames.Any()) ? string.Join(",", FileNames) : "Choose file...") </label>
@@ -86,6 +89,10 @@
                                         {
                                             <li class="list-inline-item" @onclick="() => OnClick_ImageItems(image)" role="button">
                                                 <img alt="@image.Alt" class="img-thumbnail" src="@image.Src" height="100" width="100" title="@image.Alt" />
+
+                                                <span class="cross-icon" @onclick="() => OnClick_RemoveImage(image)">
+                                                    &#10006; <!-- Unicode character for the cross symbol -->
+                                                </span>
                                             </li>
                                         }
                                     </ul>
@@ -111,7 +118,7 @@
 
             <div class="row mt-3">
                 <div class="col-md-12">
-                    <ValidationMessage For=@(() => SaveProductModel!.StockQuantity) style="position:revert;" />
+                    <ValidationMessage For=@(() => SaveProductModel.Description) style="position:revert;" />
                     <InputTextArea @ref="ER_TextEditor" @bind-Value="SaveProductModel!.Description"></InputTextArea>
                 </div>
             </div>
@@ -126,3 +133,17 @@
         </EditForm>
     </section>
 </div>
+
+
+<style>
+    .list-inline-item {
+        position: relative;
+    }
+
+    .cross-icon {
+        position: absolute;
+        top: 0;
+        right: 0;
+        cursor: pointer;
+    }
+</style>

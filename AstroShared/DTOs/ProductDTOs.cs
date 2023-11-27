@@ -27,6 +27,11 @@ namespace AstroShared.DTOs
         public DateTime AddedDate { get; set; }
         public DateTime? LastModifiedDate { get; set; }
         public bool IsActive { get; set; } = true;
+
+        [Required(ErrorMessage = "Upload atleast 1 image.")]
+        [MinLength(1, ErrorMessage = "Upload atleast 1 image.")]
+        [MaxLength(10, ErrorMessage = "Can only upload max 10 images.")]
+        public List<string> FileNames { get; set; } = new List<string>();
     }
     public class ViewProductDTO : ProductDTOBase
     {
