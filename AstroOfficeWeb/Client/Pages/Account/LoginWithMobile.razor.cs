@@ -47,7 +47,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
         {
 
             var mobileNumberObj = await JSRuntime.GetInputMaskValueAsync(InputMobileNumber?.Element);
-            LoginModel.MobileNumber = mobileNumberObj.ToMobileNumber(" ");
+            LoginModel.MobileNumber = mobileNumberObj.ToMobileNumber();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)

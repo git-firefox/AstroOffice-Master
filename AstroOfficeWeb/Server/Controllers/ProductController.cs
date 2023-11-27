@@ -236,9 +236,10 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpGet]
         public IActionResult GetUserAddresses()
         {
+            var response = new ApiResponse<List<AddressDTO>>();
             var addresses = _context.Addresses.Include(sc => sc.ACountrySnoNavigation).Where(a => a.AUsersSno == User.GetUserSno() && a.IsActive == true).OrderBy(a => a.ACountrySnoNavigation == null ? "" : a.ACountrySnoNavigation.Country);
-            var addressDTOs = _mapper.Map<List<AddressDTO>>(addresses);
-            return Ok(addressDTOs);
+            response.Data = _mapper.Map<List<AddressDTO>>(addresses);
+            return Ok(response);
         }
 
         [Authorize(Roles = "User")]

@@ -124,7 +124,7 @@ namespace AstroOfficeWeb.Client.Services
 
         public async Task SaveUserAddress(AddressDTO addressDTO)
         {
-            var response = await _swagger.PostAsync<AddressDTO, ApiResponse<AddressDTO>>(ProductApiConst.GET_UserShoppingCart, addressDTO);
+            var response = await _swagger.PostAsync<AddressDTO, ApiResponse<AddressDTO>>(ProductApiConst.POST_SaveUserAddress, addressDTO);
             if (response!.Success)
             {
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);

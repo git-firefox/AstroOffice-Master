@@ -1,4 +1,6 @@
-﻿namespace AstroShared.Helper
+﻿using System.Text.RegularExpressions;
+
+namespace AstroShared.Helper
 {
     public static class ObjectExtensions
     {
@@ -10,10 +12,29 @@
         {
             return obj != null ? obj.ToString()!.Trim() : string.Empty;
         }
-        public static string ToMobileNumber(this object? obj, string seperator)
+
+        public static string? ToMobileNumber(this object? obj)
         {
-            string mobileString = obj.ToStringX().Replace(seperator, string.Empty);
-            return mobileString;
+            string? objString = obj?.ToString();
+            if (!string.IsNullOrEmpty(objString))
+            {
+                objString = Regex.Replace(objString, @"\D", "");
+                objString = objString.Substring(0, Math.Min(objString.Length, 10));
+                return objString;
+            }
+            return null;
+        }
+
+        public static string? ToDigits(this object? obj)
+        {
+            string? objString = obj?.ToString();
+            if (!string.IsNullOrEmpty(objString))
+            {
+                objString = Regex.Replace(objString, @"\D", "");
+                objString = objString.Substring(0, Math.Min(objString.Length, 10));
+                return objString;
+            }
+            return string.Empty;
         }
     }
 }
