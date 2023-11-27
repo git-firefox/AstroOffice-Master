@@ -2,6 +2,7 @@
 using AstroOfficeWeb.Client.Shared;
 using AstroShared.DTOs;
 using AstroShared.Helper;
+using static MudBlazor.CategoryTypes;
 
 namespace AstroOfficeWeb.Client.Pages.Product
 {
@@ -10,6 +11,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public List<ViewProductDTO>? Products { get; set; }
         public ConfirmationModal Confirmation { get; set; } = null!;
         public ViewProductDTO? SelectedProduct { get; set; }
+        public string _searchString { get; set; }
         protected override void OnInitialized()
         {
             StateContainerService.OnStateChange += StateHasChanged;
@@ -61,5 +63,20 @@ namespace AstroOfficeWeb.Client.Pages.Product
             await LocalStorage.SetItemAsync<ViewProductDTO>(ApplicationConst.Local_SelectedProduct, productDTO);
             NavigationManager.NavigateTo($"/save-product/{productDTO.Sno}");
         }
+
+        private Func<ViewProductDTO, bool> _quickFilter => x =>
+        {
+            if (string.IsNullOrWhiteSpace(_searchString))
+                return true;
+
+            if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if ($"{x.Price} {x.StockQuantity}".Contains(_searchString))
+                return true;
+
+            return false;
+        };
+
     }
 }

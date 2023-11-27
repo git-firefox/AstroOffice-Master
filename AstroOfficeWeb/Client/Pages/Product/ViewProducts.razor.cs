@@ -10,6 +10,8 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         public ViewProductDTO? SelectedProduct { get; set; }
 
+        public string _searchString { get; set; }
+
         protected override void OnInitialized()
         {
             base.OnInitialized();

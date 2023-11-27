@@ -3,6 +3,8 @@ using AstroShared.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
+using MudBlazor;
+using System.Reflection;
 
 namespace AstroOfficeWeb.Client.Pages.Product
 {
@@ -28,7 +30,10 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         public bool IsImageLoaded { get; set; }
         public ImgData? SelectedImage { get; set; }
-
+        bool success;
+        string[] errors = { };
+        MudForm form;
+        string fileValidation = "none";
         protected override void OnInitialized()
         {
             //base.OnInitialized();
@@ -120,6 +125,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
                     BrowserFiles.Add(new ImgData { Src = $"data:{file.ContentType};base64," + base64String, Alt = file.Name });
                     FileNames.Add(file.Name);
+                    SaveProductModel.FileNames.Add(file.Name);
                 }
             }
             IsImageLoaded = true;
@@ -144,6 +150,15 @@ namespace AstroOfficeWeb.Client.Pages.Product
         private void OnClick_ImageItems(ImgData value)
         {
             SelectedImage = value;
+        }
+
+        private void OnClick_RemoveImage(ImgData value)
+        {
+            BrowserFiles.Remove(value);
+            FileNames.Remove(value.Alt);
+            SaveProductModel.FileNames.Remove(value.Alt);
+            if(SelectedImage == value)
+                SelectedImage = null;
         }
 
         private async Task OnClick_BtnSetAsMain(MouseEventArgs e)
