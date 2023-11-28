@@ -22,24 +22,25 @@ namespace AstroShared.DTOs
         [Required]
         [Range(1, 100, ErrorMessage = "{0} must be between {1} and {2}.")]
         public int StockQuantity { get; set; }
-        
+
         public string? ImageUrl { get; set; }
         public DateTime AddedDate { get; set; }
         public DateTime? LastModifiedDate { get; set; }
         public bool IsActive { get; set; } = true;
 
         [Required(ErrorMessage = "Upload atleast 1 image.")]
-        [MinLength(1, ErrorMessage = "Upload atleast 1 image.")]
+      //  [MinLength(1, ErrorMessage = "Upload atleast 1 image.")]
         [MaxLength(10, ErrorMessage = "Can only upload max 10 images.")]
         public List<string> FileNames { get; set; } = new List<string>();
     }
     public class ViewProductDTO : ProductDTOBase
     {
-        public long Sno { get; set; }    
+        public long Sno { get; set; }
+        public List<ImagesDTO>? ProductImages { get; set; }
     }
 
     public class SaveProductDTO : ProductDTOBase
     {
-
+        public List<ImagesDTO>? ProductImages { get; set; }
     }
 }

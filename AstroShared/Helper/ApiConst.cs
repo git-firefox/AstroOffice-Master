@@ -126,9 +126,11 @@
         public static string GET_ProductBySno = Base + "GetProductBySno";
         public static string GET_UserAddresses = Base + "GetUserAddresses";
         public static string GET_UserShoppingCart = Base + "GetUserShoppingCart";
+        public static string GET_ProductImages = Base + "GetImagesByProductId";
         public static string POST_AddProduct = Base + "AddProduct";
         public static string POST_AddToShoppingCart = Base + "AddToShoppingCart";
         public static string POST_SaveUserAddress = Base + "SaveUserAddress";
+        public static string POST_SaveProductImages = Base + "SaveProductImages";
         public static string PUT_UpdateProduct = Base + "UpdateProduct";
         public static string DELETE_Product = Base + "DeleteProduct";
     }

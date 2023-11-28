@@ -50,7 +50,7 @@ namespace AstroOfficeWeb.Server.Controllers
         {
             var apiResponse = new ApiResponse<ViewProductDTO> { Data = null };
 
-            var aProduct = _context.AProducts.FirstOrDefault(p => p.Sno == sno && p.IsActive == true);
+            var aProduct = _context.AProducts.Include(a => a.ProductImages).FirstOrDefault(p => p.Sno == sno && p.IsActive == true);
 
             if (aProduct == null)
             {
@@ -65,6 +65,26 @@ namespace AstroOfficeWeb.Server.Controllers
             apiResponse.Data = productDTO;
 
             return Ok(apiResponse);
+        }
+        [HttpGet]
+
+        public IActionResult GetImagesByProductId(long productId)
+        {
+            var response = new ApiResponse<List<ImagesDTO>> { Data = null };
+            try
+            {
+                var aProduct = _context.ProductImages.Where(p => p.ProductId == productId).ToList();
+                var imagesDTOs = _mapper.Map<List<ImagesDTO>>(aProduct);
+                response.Data = imagesDTOs;
+            }
+            catch (Exception ex)
+            {
+                response.ErrorNo = 1;
+                response.Success = false;
+                response.Message = ex.Message;
+
+            }
+            return Ok(response);
         }
 
         // POST api/<ProductController>
@@ -86,6 +106,21 @@ namespace AstroOfficeWeb.Server.Controllers
                 apiResponse.Success = true;
                 var viewProduct = _mapper.Map<ViewProductDTO>(aProduct);
                 apiResponse.Data = viewProduct;
+
+                if (productDTO.ProductImages != null)
+                {
+
+                    var productImages = productDTO.ProductImages.Select(a => new ProductImage
+                    {
+                        ImageUrl = a.ImageURL,
+                        ImageName = Path.GetFileNameWithoutExtension(a.ImageName),
+                        ProductId = aProduct.Sno
+                    });
+
+                    _context.ProductImages.AddRange(productImages);
+                    _context.SaveChanges();
+                }
+
             }
             catch (Exception ex)
             {
@@ -121,8 +156,43 @@ namespace AstroOfficeWeb.Server.Controllers
                     apiResponse.Message = ProductMessageConst.UpdateProduct;
                     apiResponse.Success = true;
 
+
                     var viewProduct = _mapper.Map<ViewProductDTO>(aProduct);
 
+
+
+                    if (productDTO.ProductImages != null)
+                    {
+
+                        var existsImages = _context.ProductImages.Where(p => p.ProductId == aProduct.Sno).ToList();
+
+                        var doNotingImageSnos = productDTO.ProductImages.Where(pi => pi.Sno != 0).Select(pi => pi.Sno).ToList();
+
+                        var imagesNeedToDelete = existsImages.Where(ei => !doNotingImageSnos.Contains(ei.Sno));
+
+                        var imagesNeedToAdd = productDTO.ProductImages.Where(pi => !doNotingImageSnos.Contains(pi.Sno)).Select(pi => new ProductImage
+                        {
+                            ImageUrl = pi.ImageURL,
+                            ImageName = Path.GetFileNameWithoutExtension(pi.ImageName),
+                            ProductId = aProduct.Sno
+                        });
+
+                        _context.ProductImages.RemoveRange(imagesNeedToDelete);
+
+                        if (imagesNeedToAdd.Any())
+                        {
+                            foreach (var pi in imagesNeedToAdd)
+                            {
+                                _context.Add(pi);
+                                _context.SaveChanges();
+
+                                var imagesDTO = _mapper.Map<ImagesDTO>(pi);
+                                viewProduct?.ProductImages?.Add(imagesDTO);
+                            }
+
+                        }
+                        _context.SaveChanges();
+                    }
                     apiResponse.Data = viewProduct;
                 }
                 else
@@ -289,5 +359,13 @@ namespace AstroOfficeWeb.Server.Controllers
 
             return Ok(response);
         }
+        //[Authorize(Roles = "Admin")]
+        //[HttpPost]
+        //public IActionResult SaveProductImages(List<ImagesDTO> imagesDTO)
+        //{
+        //    var response = new ApiResponse<ima>();
+        //    return Ok(response);
+        //}
+
     }
 }

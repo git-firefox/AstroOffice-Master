@@ -8,11 +8,11 @@ using System.Reflection;
 
 namespace AstroOfficeWeb.Client.Pages.Product
 {
-    public class ImgData
-    {
-        public string? Src { get; set; }
-        public string Alt { get; set; } = null!;
-    }
+    //public class ImgData
+    //{
+    //    public string? Src { get; set; }
+    //    public string Alt { get; set; } = null!;
+    //}
     public partial class SaveProduct
     {
         [Parameter]
@@ -20,7 +20,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         public InputTextArea? ER_TextEditor { get; set; }
 
-        public List<ImgData> BrowserFiles { get; set; } = new();
+        public List<ImagesDTO> BrowserFiles { get; set; } = new();
 
         public SaveProductDTO? SaveProductModel { get; set; }
 
@@ -29,7 +29,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public List<string>? FileNames { get; set; }
 
         public bool IsImageLoaded { get; set; }
-        public ImgData? SelectedImage { get; set; }
+        public ImagesDTO? SelectedImage { get; set; }
         bool success;
         string[] errors = { };
         MudForm form;
@@ -54,7 +54,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
                     IsActive = ViewProductDTO.IsActive
                 };
 
-                SelectedImage = new ImgData { Alt = SaveProductModel.Name, Src = SaveProductModel?.ImageUrl  };
+                SelectedImage = new ImagesDTO { ImageName = SaveProductModel.Name, ImageURL = SaveProductModel?.ImageUrl };
             }
             else
             {
@@ -82,8 +82,10 @@ namespace AstroOfficeWeb.Client.Pages.Product
             //        IsActive = viewProductDTO.IsActive
             //    };
             //}
-
             await base.OnInitializedAsync();
+
+
+            BrowserFiles = await ProductService.GetImagesByProductIds(Sno) ?? new();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -123,9 +125,9 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
                     var base64String = Convert.ToBase64String(buffer);
 
-                    BrowserFiles.Add(new ImgData { Src = $"data:{file.ContentType};base64," + base64String, Alt = file.Name });
+                    BrowserFiles.Add(new ImagesDTO { ImageURL = $"data:{file.ContentType};base64," + base64String, ImageName = file.Name });
                     FileNames.Add(file.Name);
-                    SaveProductModel.FileNames.Add(file.Name);
+                    SaveProductModel?.FileNames.Add(file.Name);
                 }
             }
             IsImageLoaded = true;
@@ -133,31 +135,34 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         private async Task OnSubmit_EditForm(EditContext context)
         {
+            SaveProductModel!.Description = await JSRuntime.GetEditorValue(ER_TextEditor?.Element);
             if (context.Validate())
             {
-                SaveProductModel!.Description = await JSRuntime.GetEditorValue(ER_TextEditor?.Element);
+                SaveProductModel.ProductImages = BrowserFiles;
                 if (Sno == 0)
                 {
                     await ProductService.AddProduct(SaveProductModel);
+                    //await ProductService.SaveProductImages(BrowserFiles);
                 }
                 else
                 {
                     await ProductService.UpdateProduct(SaveProductModel, Sno);
                 }
+                NavigationManager.NavigateTo("manage-products");
             }
         }
 
-        private void OnClick_ImageItems(ImgData value)
+        private void OnClick_ImageItems(ImagesDTO value)
         {
             SelectedImage = value;
         }
 
-        private void OnClick_RemoveImage(ImgData value)
+        private void OnClick_RemoveImage(ImagesDTO value)
         {
             BrowserFiles.Remove(value);
-            FileNames.Remove(value.Alt);
-            SaveProductModel.FileNames.Remove(value.Alt);
-            if(SelectedImage == value)
+            FileNames?.Remove(value.ImageName);
+            SaveProductModel?.FileNames.Remove(value.ImageName);
+            if (SelectedImage == value)
                 SelectedImage = null;
         }
 
@@ -175,7 +180,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
             }
             else
             {
-                SaveProductModel!.ImageUrl = SelectedImage.Src;
+                SaveProductModel!.ImageUrl = SelectedImage.ImageURL;
                 await JSRuntime.ShowToastAsync("The current selected image has been set as the main image successfully", SwalIcon.Success);
             }
         }

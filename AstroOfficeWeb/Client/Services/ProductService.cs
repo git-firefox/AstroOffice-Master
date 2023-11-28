@@ -4,6 +4,7 @@ using AstroShared.DTOs;
 using AstroShared.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Collections.Generic;
 
 namespace AstroOfficeWeb.Client.Services
 {
@@ -26,10 +27,26 @@ namespace AstroOfficeWeb.Client.Services
             return productDTOs;
         }
 
+
         public async Task<List<ViewProductDTO>?> GetUserAddedProducts()
         {
             var productDTOs = await _swagger.GetAsync<List<ViewProductDTO>>(ProductApiConst.GET_UserAddedProducts);
             return productDTOs;
+        }
+
+        public async Task<List<ImagesDTO>?> GetImagesByProductIds(long sno)
+        {
+            var queryParams = new Dictionary<string, string>
+            {
+                { "productId" , sno.ToString() },
+            };
+            var response = await _swagger.GetAsync<ApiResponse<List<ImagesDTO>>>(ProductApiConst.GET_ProductImages, queryParams);
+            if (!response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                return null;
+            }
+            return response.Data;
         }
 
         public async Task<ViewProductDTO?> GetProductBySno(long sno)
@@ -134,6 +151,11 @@ namespace AstroOfficeWeb.Client.Services
             {
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
             }
+        }
+
+        public async Task SaveProductImages(List<ImagesDTO> imagesDTO)
+        {
+            var response = await _swagger.PostAsync<List<ImagesDTO>, ApiResponse<List<ImagesDTO>>>(ProductApiConst.POST_SaveProductImages, imagesDTO);
         }
 
         public bool IsInShoppingCart(List<CartItemDTO> cartItems, long productSno)

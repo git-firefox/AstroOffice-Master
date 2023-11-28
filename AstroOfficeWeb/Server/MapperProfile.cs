@@ -20,8 +20,10 @@ namespace AstroOfficeWeb.Server
             CreateMap<SaveKundaliRequest, AKundali>();
             CreateMap<AKundali, KundaliDTO>();
             CreateMap<AProduct, ViewProductDTO>();
+            CreateMap<ProductImage, ImagesDTO>();
+            //CreateMap<ImagesDTO, ProductImage>().ForMember(x => x.Product, opt => opt.Ignore()); 
             CreateMap<ViewProductDTO, AProduct>();
-            CreateMap<SaveProductDTO, AProduct>();
+            CreateMap<SaveProductDTO, AProduct>().ForMember(x => x.ProductImages, opt => opt.Ignore());
             CreateMap<Address, AddressDTO>().ForMember(dest => dest.Country, act => act.MapFrom(src => (src.ACountrySnoNavigation != null) ? src.ACountrySnoNavigation.Country : ""));
             CreateMap<AddressDTO, Address>();
         }
