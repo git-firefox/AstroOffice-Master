@@ -12,6 +12,7 @@ namespace ASModels.Astrooff
         public AProduct()
         {
             CartItems = new HashSet<CartItem>();
+            ProductImages = new HashSet<ProductImage>();
         }
 
         [Key]
@@ -36,5 +37,7 @@ namespace ASModels.Astrooff
 
         [InverseProperty("AProductsSnoNavigation")]
         public virtual ICollection<CartItem> CartItems { get; set; }
+        [InverseProperty("Product")]
+        public virtual ICollection<ProductImage> ProductImages { get; set; }
     }
 }

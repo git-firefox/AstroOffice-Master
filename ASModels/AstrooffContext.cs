@@ -147,6 +147,7 @@ namespace ASModels
         public virtual DbSet<Female> Females { get; set; } = null!;
         public virtual DbSet<Male> Males { get; set; } = null!;
         public virtual DbSet<NewMixDasha> NewMixDashas { get; set; } = null!;
+        public virtual DbSet<ProductImage> ProductImages { get; set; } = null!;
         public virtual DbSet<Query> Queries { get; set; } = null!;
         public virtual DbSet<QueryEng> QueryEngs { get; set; } = null!;
         public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
@@ -991,6 +992,17 @@ namespace ASModels
                 entity.Property(e => e.ShubhGhar).HasDefaultValueSql("('0')");
 
                 entity.Property(e => e.Sno).HasDefaultValueSql("('-1')");
+            });
+
+            modelBuilder.Entity<ProductImage>(entity =>
+            {
+                entity.HasKey(e => e.Sno)
+                    .HasName("PK__ProductI__CA1FE464295FE454");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.ProductImages)
+                    .HasForeignKey(d => d.ProductId)
+                    .HasConstraintName("FK__ProductIm__Produ__75785BC3");
             });
 
             modelBuilder.Entity<ShoppingCart>(entity =>
