@@ -44,7 +44,7 @@ namespace AstroOfficeMobile.Pages.Account
         private async Task OnFocusOut_MobileNumber(Microsoft.AspNetCore.Components.Web.FocusEventArgs e)
         {
             var mobileNumberObj = await JSRuntime.GetInputMaskValueAsync(InputMobileNumber?.Element);
-            RegistrationModel.MobileNumber = mobileNumberObj.ToMobileNumber(" ");
+            RegistrationModel.MobileNumber = mobileNumberObj.ToMobileNumber();
         }
 
 
