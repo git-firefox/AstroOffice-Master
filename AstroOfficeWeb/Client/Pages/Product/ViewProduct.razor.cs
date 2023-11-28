@@ -11,9 +11,9 @@ namespace AstroOfficeWeb.Client.Pages.Product
         [Parameter]
         public long Sno { get; set; }
 
-        public ImgData? SelectedImage { get; set; } = new ImgData();
+        public ImagesDTO? SelectedImage { get; set; } = new ImagesDTO();
 
-        public List<ImgData> BrowserFiles { get; set; } = new();
+        public List<ImagesDTO> BrowserFiles { get; set; } = new();
         public CultureInfo CultureInfo { get; set; } = new CultureInfo("en-IN");
 
         public ViewProductDTO? ViewProductDTO { get; set; } = new ViewProductDTO();
@@ -27,7 +27,9 @@ namespace AstroOfficeWeb.Client.Pages.Product
         protected override async Task OnInitializedAsync()
         {
             ViewProductDTO = await LocalStorage.GetItemAsync<ViewProductDTO>(ApplicationConst.Local_SelectedProduct);
-            SelectedImage = new ImgData { Alt = ViewProductDTO?.Name ?? "", Src = ViewProductDTO?.ImageUrl ?? "" };
+            SelectedImage = new ImagesDTO { ImageName = ViewProductDTO?.Name ?? "", ImageURL = ViewProductDTO?.ImageUrl ?? "" };
+
+
         }
     }
 }

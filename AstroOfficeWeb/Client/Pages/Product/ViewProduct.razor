@@ -20,55 +20,74 @@
                 <div class="row">
                     <div class="col-12 col-sm-6">
                         <h3 class="d-inline-block d-sm-none">@ViewProductDTO!.Name</h3>
-                        <div class="pdp-image-gallery-block">
-                            <!-- Gallery -->
-                            <div class="gallery_pdp_container">
-                                <div id="gallery_pdp">
-                                    <a href="#" data-image="https://icodefy.com/Tools/iZoom/images/small/image1.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image1.jpg">
-                                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image1.jpg" />
-                                    </a>
-                                    <a href="#" data-image="https://icodefy.com/Tools/iZoom/images/small/image2.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image2.jpg">
-                                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image2.jpg" />
-                                    </a>
-                                    <a href="#" data-image="https://icodefy.com/Tools/iZoom/images/small/image3.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image3.jpg">
-                                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image3.jpg" />
-                                    </a>
-                                    <a href="#" data-image="https://icodefy.com/Tools/iZoom/images/small/image4.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image4.jpg">
-                                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image4.jpg" />
-                                    </a>
-                                    <a href="#" data-image="https://icodefy.com/Tools/iZoom/images/small/image1.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image1.jpg">
-                                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image1.jpg" />
-                                    </a>
-                                    <a href="#" data-image="https://icodefy.com/Tools/iZoom/images/small/image2.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image2.jpg">
-                                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image2.jpg" />
-                                    </a>
-                                    <a href="#" data-image="images/small/image3.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image3.jpg">
-                                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image3.jpg" />
-                                    </a>
-                                    <a href="#" data-image="images/small/image4.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image4.jpg">
-                                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image4.jpg" />
-                                    </a>
-                                </div>
-                                <!-- Up and down button for vertical carousel -->
-                                <a href="#" id="ui-carousel-next" style="display: inline;"></a>
-                                <a href="#" id="ui-carousel-prev" style="display: inline;"></a>
-                            </div>
-                            <!-- Gallery -->
-                            <!-- gallery Viewer -->
-                            <div class="gallery-viewer">
-                                <img id="zoom_10" src="https://icodefy.com/Tools/iZoom/images/small/image1.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image1.jpg" href="https://icodefy.com/Tools/iZoom/images/large/image1.jpg" />
-                            </div>
+                        @*  <div class="pdp-image-gallery-block">
+                        <!-- Gallery -->
+                        <div class="gallery_pdp_container">
+                        <div id="gallery_pdp">
+                        <a href="#" data-image="https://icodefy.com/Tools/iZoom/images/small/image1.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image1.jpg">
+                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image1.jpg" />
+                        </a>
+                        <a href="#" data-image="https://icodefy.com/Tools/iZoom/images/small/image2.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image2.jpg">
+                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image2.jpg" />
+                        </a>
+                        <a href="#" data-image="https://icodefy.com/Tools/iZoom/images/small/image3.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image3.jpg">
+                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image3.jpg" />
+                        </a>
+                        <a href="#" data-image="https://icodefy.com/Tools/iZoom/images/small/image4.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image4.jpg">
+                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image4.jpg" />
+                        </a>
+                        <a href="#" data-image="https://icodefy.com/Tools/iZoom/images/small/image1.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image1.jpg">
+                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image1.jpg" />
+                        </a>
+                        <a href="#" data-image="https://icodefy.com/Tools/iZoom/images/small/image2.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image2.jpg">
+                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image2.jpg" />
+                        </a>
+                        <a href="#" data-image="images/small/image3.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image3.jpg">
+                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image3.jpg" />
+                        </a>
+                        <a href="#" data-image="images/small/image4.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image4.jpg">
+                        <img id="" src="https://icodefy.com/Tools/iZoom/images/thumb/image4.jpg" />
+                        </a>
                         </div>
+                        <!-- Up and down button for vertical carousel -->
+                        <a href="#" id="ui-carousel-next" style="display: inline;"></a>
+                        <a href="#" id="ui-carousel-prev" style="display: inline;"></a>
+                        </div>
+                        <!-- Gallery -->
+                        <!-- gallery Viewer -->
+                        <div class="gallery-viewer">
+                        <img id="zoom_10" src="https://icodefy.com/Tools/iZoom/images/small/image1.png" data-zoom-image="https://icodefy.com/Tools/iZoom/images/large/image1.jpg" href="https://icodefy.com/Tools/iZoom/images/large/image1.jpg" />
+                        </div>
+                        </div> *@
                         <div class="col-12">
-                            <img src="@SelectedImage!.Src" class="product-image" alt="@SelectedImage!.Alt" title="@SelectedImage!.Alt" />
+                            <img src="@SelectedImage!.ImageURL" class="product-image" alt="@SelectedImage!.ImageName" title="@SelectedImage!.ImageName" />
                         </div>
-                        <div class="col-12 product-image-thumbs">
-                            <div class="product-image-thumb active"><img src="dist/img/prod-1.jpg" alt="Product Image"></div>
-                            <div class="product-image-thumb"><img src="dist/img/prod-2.jpg" alt="Product Image"></div>
-                            <div class="product-image-thumb"><img src="dist/img/prod-3.jpg" alt="Product Image"></div>
-                            <div class="product-image-thumb"><img src="dist/img/prod-4.jpg" alt="Product Image"></div>
-                            <div class="product-image-thumb"><img src="dist/img/prod-5.jpg" alt="Product Image"></div>
+                        @*  <div class="col-12 product-image-thumbs">
+                        <div class="product-image-thumb active"><img src="dist/img/prod-1.jpg" alt="Product Image"></div>
+                        <div class="product-image-thumb"><img src="dist/img/prod-2.jpg" alt="Product Image"></div>
+                        <div class="product-image-thumb"><img src="dist/img/prod-3.jpg" alt="Product Image"></div>
+                        <div class="product-image-thumb"><img src="dist/img/prod-4.jpg" alt="Product Image"></div>
+                        <div class="product-image-thumb"><img src="dist/img/prod-5.jpg" alt="Product Image"></div>
+                        </div> *@
+
+
+                        <div class="row mt-3">
+
+                            <div class="col-12 product-image-thumbs">
+
+                                @foreach (var image in BrowserFiles)
+                                {
+                                    <div class="product-image-thumb">
+                                        <img alt="@image.ImageName" class="img-thumbnail" src="@image.ImageURL" height="100" width="100" title="@image.ImageName" />
+                                    </div>
+                                  
+                                }
+
+                            </div>
+
+
                         </div>
+
                     </div>
                     <div class="col-12 col-sm-6">
                         <h3 class="my-3">@ViewProductDTO!.Name</h3>
