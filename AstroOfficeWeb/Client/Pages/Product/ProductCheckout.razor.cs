@@ -92,20 +92,17 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         private async Task OnClick_BtnProceed(ProceedStatus status)
         {
-            if (BillingInfoContext.Validate())
+            if (status == ProceedStatus.Billing)
             {
-                if (status == ProceedStatus.Billing)
-                {
-                    await JSRuntime.ShowTabAsync(ER_ABillingInfo);
-                }
-                else if (status == ProceedStatus.Shipping)
-                {
-                    await JSRuntime.ShowTabAsync(ER_AShippingInfo);
-                }
-                else if (status == ProceedStatus.Payment)
-                {
-                    await JSRuntime.ShowTabAsync(ER_APaymentInfo);
-                }
+                await JSRuntime.ShowTabAsync(ER_ABillingInfo);
+            }
+            else if (status == ProceedStatus.Shipping)
+            {
+                await JSRuntime.ShowTabAsync(ER_AShippingInfo);
+            }
+            else if (status == ProceedStatus.Payment)
+            {
+                await JSRuntime.ShowTabAsync(ER_APaymentInfo);
             }
         }
 
@@ -131,6 +128,24 @@ namespace AstroOfficeWeb.Client.Pages.Product
         private async Task OnClick_BtnChangeAddress(int type)
         {
             await Modal_ViewAddress.ShowAsync();
+        }
+
+        private void OnSelect_Address(AddressDTO address)
+        {
+            BillingInfo.Sno = address.Sno;
+            BillingInfo.ACountrySno = address.ACountrySno;
+            BillingInfo.AddressType = address.AddressType;
+            BillingInfo.FirstName = address.FirstName;
+            BillingInfo.LastName = address.LastName;
+            BillingInfo.AddressLine1 = address.AddressLine1;
+            BillingInfo.AddressLine1 = address.AddressLine2;
+            BillingInfo.City = address.City;
+            BillingInfo.State = address.State;
+            BillingInfo.ZipCode = address.ZipCode;
+            BillingInfo.Landmark = address.Landmark;
+            BillingInfo.Email = address.Email;
+            BillingInfo.Country = address.Country;
+            BillingInfo.PhoneNumber = address.PhoneNumber;
         }
     }
 }

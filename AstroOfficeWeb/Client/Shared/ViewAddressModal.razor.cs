@@ -2,32 +2,44 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using AstroShared.Helper;
+using AstroOfficeWeb.Client.Pages.Product;
 
 namespace AstroOfficeWeb.Client.Shared
 {
     public partial class ViewAddressModal
     {
-        protected bool IsShow { get; set; } = true;
         protected ElementReference ER_ViewAddressModal { get; set; }
 
         [Parameter]
         public string Title { get; set; } = "Address";
 
         [Parameter]
-        public AddressDTO? DefaultAddress { get; set; }
+        public long DefaultAddressSno { get; set; }
 
         [Parameter]
         public EventCallback<bool> OnConfirmationChanged { get; set; }
 
         [Parameter]
+        public EventCallback<AddressDTO> OnSelectAddressChanged { get; set; }
+
+        [Parameter]
         public List<AddressDTO>? Addresses { get; set; }
 
-        public AddressDTO? AddressDTO { get; set; }
+        public AddressDTO? UpdateAddress { get; set; }
+
+        private AddressDTO SelectedAddress { get; set; } = new();
 
 
         protected override void OnInitialized()
         {
-            base.OnInitialized();
+            if (Addresses != null && Addresses.Any())
+            {
+                SelectedAddress = Addresses.First();
+            }
+            else
+            {
+                SelectedAddress = new();
+            }
         }
 
         protected override async Task OnInitializedAsync()
@@ -35,19 +47,28 @@ namespace AstroOfficeWeb.Client.Shared
             await base.OnInitializedAsync();
         }
 
-        protected async Task OnConfirmationChange(bool value)
+        protected async Task OnConfirmationChange(bool isConfirm)
         {
-            await OnConfirmationChanged.InvokeAsync(value);
+            if (isConfirm)
+            {
+                await OnSelectAddressChanged.InvokeAsync(SelectedAddress);
+            }
         }
 
+        bool AddForm = false;
         private void OnClick_BtnAddAddress(MouseEventArgs e)
         {
-            StateHasChanged();
-        }  
-        
+            AddForm = true;
+        }
+
         private void OnClick_BtnEditAddress(AddressDTO address)
         {
             StateHasChanged();
+        }
+
+        private void OnClick_LabelSelectAddress(AddressDTO address)
+        {
+            SelectedAddress = address;
         }
 
         public async Task ShowAsync()

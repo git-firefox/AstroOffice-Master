@@ -17,70 +17,187 @@
                 }
             </div>
             <div class="modal-body">
-                <div class="container-fluid">
 
-                    <div class="row">
-                        @if (Addresses == null)
-                        {
+                @if (UpdateAddress != null)
+                {
+                    <EditForm Model="BillingInfo" OnValidSubmit="OnSubmit_UpdateAddress">
+                        <DataAnnotationsValidator />
+                        <div class="row">
                             <div class="col-md-6">
-                                <div class="border p-3 rounded mb-3 mb-md-0">
-                                    <MudSkeleton Width="30%" Height="42px;" />
-
-                                    <div class="float-end d-inline">
-                                        <a href="#"><i class="fas fa-edit text-muted font-20"></i></a>
-                                    </div>
-                                    <MudSkeleton Width="30%" Height="42px;" />
-                                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="250px" />
+                                <div class="mb-3">
+                                    <label for="billing-first-name" class="form-label">First Name</label> <span class="text-danger">*</span>
+                                    <ValidationMessage For=@(() => BillingInfo!.FirstName) style="position:revert;" />
+                                    <InputText @bind-Value="BillingInfo!.FirstName" class="form-control" type="text" placeholder="Enter your first name" id="billing-first-name" />
                                 </div>
                             </div>
-                        }
-                        else if (Addresses.Any())
-                        {
-                            foreach (var address in Addresses)
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="billing-last-name" class="form-label">Last Name</label> <span class="text-danger">*</span>
+                                    <ValidationMessage For=@(() => BillingInfo!.LastName) style="position:revert;" />
+                                    <InputText @bind-Value="BillingInfo!.LastName" class="form-control" type="text" placeholder="Enter your last name" id="billing-last-name" />
+                                </div>
+                            </div>
+                        </div> <!-- end row -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="billing-email-address" class="form-label">Email Address <span class="text-danger">*</span></label>
+                                    <ValidationMessage For=@(() => BillingInfo!.Email) style="position:revert;" />
+                                    <InputText @bind-Value="BillingInfo!.Email" class="form-control" type="email" placeholder="Enter your email" id="billing-email-address" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="billing-phone" class="form-label">Phone <span class="text-danger">*</span></label>
+                                    <ValidationMessage For=@(() => BillingInfo!.PhoneNumber) style="position:revert;" />
+                                    <InputText @ref="Input_MobileNumber" @bind-Value="BillingInfo!.PhoneNumber" class="form-control" type="text" id="billing-phone" @onfocusout="OnFocusOut_InputPhoneNumber" />
+                                </div>
+                            </div>
+                        </div> <!-- end row -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="billing-address" class="form-label">Address 1</label>
+                                    <ValidationMessage For=@(() => BillingInfo!.AddressLine1) style="position:revert;" />
+                                    <InputText @bind-Value="BillingInfo!.AddressLine1" class="form-control" type="text" placeholder="Enter full address" id="billing-address" />
+                                </div>
+                            </div>
+                        </div> <!-- end row -->
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="billing-address" class="form-label">Address 2</label>
+                                    <ValidationMessage For=@(() => BillingInfo!.AddressLine2) style="position:revert;" />
+                                    <InputText @bind-Value="BillingInfo!.AddressLine2" class="form-control" type="text" placeholder="Enter full address" id="billing-address" />
+                                </div>
+                            </div>
+                        </div> <!-- end row -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="billing-town-city" class="form-label">Town / City</label>
+                                    <InputText @bind-Value="BillingInfo!.City" class="form-control" type="text" placeholder="Enter your city name" id="billing-town-city" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="billing-state" class="form-label">State</label>
+                                    <InputText @bind-Value="BillingInfo!.State" class="form-control" type="text" placeholder="Enter your state" id="billing-state" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="billing-zip-postal" class="form-label">Zip Code</label>
+                                    <InputText @ref="Input_ZipCode" @bind-Value="BillingInfo!.ZipCode" @onfocusout="OnFocusOut_InputZipCode" class="form-control" type="text" placeholder="Enter your zip code" id="billing-zip-postal" />
+                                </div>
+                            </div>
+                        </div> <!-- end row -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="billing-landmark" class="form-label">Landmark</label>
+                                    <InputText @bind-Value="BillingInfo!.Landmark" class="form-control" type="text" placeholder="Enter your Landmark" id="billing-landmark" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Country</label>
+                                    <InputSelect @ref="Input_Country" @bind-Value="BillingInfo!.ACountrySno" class="form-control" data-placeholder="Select a Country" @onblur="OnBlur_Country">
+                                        <option value="0">Select Country</option>
+                                        @foreach (var country in CountryDTOs)
+                                        {
+                                            <option value="@country.Sno">@country.Country</option>
+                                        }
+                                    </InputSelect>
+                                </div>
+                            </div>
+                        </div> <!-- end row -->
+                    </EditForm>
+                }
+                else
+                {
+                    <div class="container-fluid">
+
+                        <div class="row">
+                            @if (Addresses == null)
                             {
                                 <div class="col-md-6">
                                     <div class="border p-3 rounded mb-3 mb-md-0">
-                                        <div class="form-check form-check-inline font-16">
-                                            <input class="form-check-input" type="radio" name="AddressGroup" id="address-radio-@address.Sno">
-                                            <label class="form-check-label" for="address-radio-@address.Sno">@address.AddressType</label>
-                                        </div>
+                                        <MudSkeleton Width="30%" Height="42px;" />
 
                                         <div class="float-end d-inline">
-                                            <a href="javascript:void(0)" @onclick="() => OnClick_BtnEditAddress(address)"><i class="fas fa-edit text-muted font-20"></i></a>
+                                            <a href="#"><i class="fas fa-edit text-muted font-20"></i></a>
                                         </div>
-
-                                        <h5 class="mt-3">@(address.FullName)</h5>
-
-                                        <p class="mb-1"><span class="fw-semibold me-2">Address:</span> @address.AddressLine1</p>
-                                        <p class="mb-1"><span class="fw-semibold me-2">Phone:</span> @address.PhoneNumber</p>
-                                        <p class="mb-1"><span class="fw-semibold me-2">City:</span> @address.City</p>
-                                        <p class="mb-1"><span class="fw-semibold me-2">State:</span> @address.State</p>
-                                        <p class="mb-0"><span class="fw-semibold me-2">Zip Code:</span> @address.ZipCode</p>
+                                        <MudSkeleton Width="30%" Height="42px;" />
+                                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="250px" />
                                     </div>
                                 </div>
                             }
-                        }
-                        else
-                        {
-                            <div class="col-md-12 text-center mt-5">
-                                <div class="alert alert-info" role="alert">
-                                    <p>No addresses available.</p>
-                                    <hr>
-                                    <p class="mb-0">Click the button below to add a new address.</p>
+                            else if (Addresses.Any())
+                            {
+                                foreach (var address in Addresses)
+                                {
+                                    <div class="col-md-6">
+                                        <label @onclick="() => OnClick_LabelSelectAddress(address)" class="h-100 w-100">
+                                            <div class="card card-default card-input">
+
+                                                <div class="card-header">
+
+                                                    <div class="form-check form-check-inline font-16">
+                                                        @if (address.Sno == SelectedAddress.Sno)
+                                                        {
+                                                            <input class="form-check-input card-input-element" type="radio" name="AddressGroup" id="address-radio-@address.Sno" checked />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input class="form-check-input card-input-element" type="radio" name="AddressGroup" id="address-radio-@address.Sno" />
+                                                        }
+                                                        <label class="form-check-label" for="address-radio-@address.Sno">@address.AddressType</label>
+                                                    </div>
+
+                                                    <div class="float-end d-inline">
+                                                        <a href="javascript:void(0)" @onclick="() => OnClick_BtnEditAddress(address)"><i class="fas fa-edit text-muted font-20"></i></a>
+                                                    </div>
+
+                                                    <h5 class="mt-3">@(address.FullName)</h5>
+                                                </div>
+
+                                                <div class="card-body">
+                                                    <p class="mb-1"><span class="fw-semibold me-2">Address:</span> @address.AddressLine1</p>
+                                                    <p class="mb-1"><span class="fw-semibold me-2">Phone:</span> @address.PhoneNumber</p>
+                                                    <p class="mb-1"><span class="fw-semibold me-2">City:</span> @address.City</p>
+                                                    <p class="mb-1"><span class="fw-semibold me-2">State:</span> @address.State</p>
+                                                    <p class="mb-0"><span class="fw-semibold me-2">Zip Code:</span> @address.ZipCode</p>
+                                                </div>
+                                            </div>
+                                        </label>
+
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-md-12 text-center mt-5">
+                                    <div class="alert alert-warning" role="alert">
+                                        <p>No addresses available.</p>
+                                        <hr>
+                                        <p class="mb-0">Click the button below to add a new address.</p>
+                                    </div>
+                                    <button class="btn btn-custom btn-lg" @onclick="OnClick_BtnAddAddress">
+                                        <i class="fas fa-map-marker-alt me-2"></i>Add Address
+                                    </button>
                                 </div>
-                                <button class="btn btn-primary btn-lg" @onclick="OnClick_BtnAddAddress">
-                                    <i class="fas fa-map-marker-alt me-2"></i>Add Address
-                                </button>
-                            </div>
-                        }
+                            }
+                        </div>
                     </div>
-                </div>
+                }
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)"> Close </button>
                 @if (Addresses != null && Addresses.Any())
                 {
-                    <button type="button" class="btn btn-custom" @onclick="() => OnConfirmationChange(true)">Use this address</button>
+                    <button type="button" class="btn btn-custom" data-dismiss="modal" @onclick="() => OnConfirmationChange(true)">Use this address</button>
                 }
             </div>
         </div>
