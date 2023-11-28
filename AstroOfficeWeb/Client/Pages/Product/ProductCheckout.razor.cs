@@ -29,8 +29,8 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         private InputText Input_MobileNumber { get; set; } = null!;
         private InputText Input_ZipCode { get; set; } = null!;
+        private InputSelect<long> Input_Country { get; set; } = null!;
 
-        private ElementReference ER_SelectCountry { get; set; }
         private ElementReference ER_ABillingInfo { get; set; }
         private ElementReference ER_AShippingInfo { get; set; }
         private ElementReference ER_APaymentInfo { get; set; }
@@ -39,6 +39,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         private EditContext BillingInfoContext { get; set; } = null!;
 
         private List<CountryDTO> CountryDTOs { get; set; } = new();
+        public List<AddressDTO>? Addresses { get; set; }
 
         protected override void OnInitialized()
         {
@@ -51,6 +52,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         {
             await base.OnInitializedAsync();
             CountryDTOs = await GetCountriesAsync();
+            Addresses = await ProductService.GetUserAddresses();
         }
 
         private async Task<List<CountryDTO>> GetCountriesAsync()
@@ -62,7 +64,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         {
             if (firstRender)
             {
-                await JSRuntime.LoadSelect2Async(ER_SelectCountry);
+                await JSRuntime.LoadSelect2Async(Input_Country.Element);
                 await JSRuntime.ApplyInputMaskAsync(Input_MobileNumber.Element, "999 999 9999");
                 await JSRuntime.ApplyInputMaskAsync(Input_ZipCode.Element, "999 999");
             }
@@ -73,15 +75,19 @@ namespace AstroOfficeWeb.Client.Pages.Product
             var mobilenumber = await JSRuntime.GetInputMaskValueAsync(Input_MobileNumber.Element);
             BillingInfo.PhoneNumber = mobilenumber.ToMobileNumber();
             BillingInfoContext.NotifyFieldChanged(FieldIdentifier.Create(() => BillingInfo.PhoneNumber));
-            StateHasChanged();
+            BillingInfoContext.NotifyValidationStateChanged();
         }
 
         private async Task OnFocusOut_InputZipCode(FocusEventArgs e)
         {
             var zipcode = await JSRuntime.GetInputMaskValueAsync(Input_ZipCode.Element);
             BillingInfo.ZipCode = zipcode.ToDigits();
-            BillingInfoContext.NotifyFieldChanged(FieldIdentifier.Create(() => BillingInfo.ZipCode));
-            StateHasChanged();
+            BillingInfoContext.NotifyValidationStateChanged();
+        }
+
+        private async void OnBlur_Country(FocusEventArgs e)
+        {
+            var obj = await JSRuntime.GetSelect2DataAsync(Input_Country.Element);
         }
 
         private async Task OnClick_BtnProceed(ProceedStatus status)
@@ -107,14 +113,15 @@ namespace AstroOfficeWeb.Client.Pages.Product
         {
             if (BillingInfoContext.Validate())
             {
-                BillingInfo.Sno = 1;
+                //BillingInfo.Sno = 1;
                 BillingInfo.AddressType = ProceedStatus.Billing.ToString();
+                BillingInfo.ACountrySno = 80;
                 await ProductService.SaveUserAddress(BillingInfo);
                 if (BillingInfo.ShipToDifferentAddress)
                 {
                     await JSRuntime.ShowTabAsync(ER_AShippingInfo);
                 }
-                else 
+                else
                 {
                     await JSRuntime.ShowTabAsync(ER_APaymentInfo);
                 }

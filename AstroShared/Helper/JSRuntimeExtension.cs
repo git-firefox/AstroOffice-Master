@@ -92,6 +92,11 @@ namespace AstroShared.Helper
         {
             return jsRuntime.InvokeVoidAsync("fnLoadSelect2", element);
         }
+
+        public static ValueTask<object> GetSelect2DataAsync(this IJSRuntime jsRuntime, ElementReference? element)
+        {
+            return jsRuntime.InvokeAsync<object>("fnGetSelect2Data", element);
+        }
         public static ValueTask ShowTabAsync(this IJSRuntime jsRuntime, ElementReference? element)
         {
             return jsRuntime.InvokeVoidAsync("fnShowTab", element);

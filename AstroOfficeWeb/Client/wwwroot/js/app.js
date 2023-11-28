@@ -208,9 +208,17 @@ window.fnLoadSelect2 = function (element) {
         });
     }
 }
+
+window.fnGetSelect2Data = function (element) {
+    if (element instanceof HTMLSelectElement) {
+        return $(element).select2('data');
+    }
+    return null;
+}
+
 window.fnShowTab = function (element) {
     if (element instanceof HTMLAnchorElement) {
-        $(element).tab('show');         
+        $(element).tab('show');
     }
 }
 

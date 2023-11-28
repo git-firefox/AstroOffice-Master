@@ -127,6 +127,7 @@ namespace AstroOfficeWeb.Client.Services
             var response = await _swagger.PostAsync<AddressDTO, ApiResponse<AddressDTO>>(ProductApiConst.POST_SaveUserAddress, addressDTO);
             if (response!.Success)
             {
+                addressDTO.Sno = response!.Data!.Sno;
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
             }
             else

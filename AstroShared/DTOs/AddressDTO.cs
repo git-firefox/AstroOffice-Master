@@ -58,8 +58,12 @@ namespace AstroShared.DTOs
     public class AddressDTO : BaseAddressDTO
     {
         public long Sno { get; set; }
-        public string? ACountrySno { get; set; }
+        public long ACountrySno { get; set; }
         public string? AddressType { get; set; }
+        public string FullName
+        {
+            get { return $"{FirstName} {LastName}"; }
+        }
     }
 }
 

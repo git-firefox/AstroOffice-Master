@@ -10,7 +10,7 @@
 @inject ILocalStorageService LocalStorage
 @inject ISwaggerApiService Swagger
 
-<ViewAddressModal @ref="Modal_ViewAddress"></ViewAddressModal>
+<ViewAddressModal @ref="Modal_ViewAddress" Addresses="Addresses"></ViewAddressModal>
 
 <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold "> Checkout </h1>
@@ -55,7 +55,7 @@
                                                 <div>
                                                     <h4 class="header-title d-inline">Billing Information</h4>
                                                     <div class="float-end">
-                                                        <button class="btn btn-link" @onclick="()=>OnClick_BtnChangeAddress(0)">
+                                                        <button class="btn btn-link" type="button" @onclick="()=>OnClick_BtnChangeAddress(0)">
                                                             <i class="fa-regular fa-pen-to-square"></i> Change
                                                         </button>
                                                     </div>
@@ -137,16 +137,22 @@
                                                         </div>
                                                     </div> <!-- end row -->
                                                     <div class="row">
-                                                        <div class="col-12">
+                                                        <div class="col-md-6">
+                                                            <div class="mb-3">
+                                                                <label for="billing-landmark" class="form-label">Landmark</label>
+                                                                <InputText @bind-Value="BillingInfo!.Landmark" class="form-control" type="text" placeholder="Enter your Landmark" id="billing-landmark" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
                                                             <div class="mb-3">
                                                                 <label class="form-label">Country</label>
-                                                                <select @ref="ER_SelectCountry" class="form-control" data-placeholder="Select a Country">
+                                                                <InputSelect @ref="Input_Country" @bind-Value="BillingInfo!.ACountrySno" class="form-control" data-placeholder="Select a Country" @onblur="OnBlur_Country">
                                                                     <option value="0">Select Country</option>
                                                                     @foreach (var country in CountryDTOs)
                                                                     {
                                                                         <option value="@country.Sno">@country.Country</option>
                                                                     }
-                                                                </select>
+                                                                </InputSelect>
                                                             </div>
                                                         </div>
                                                     </div> <!-- end row -->

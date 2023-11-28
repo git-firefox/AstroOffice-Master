@@ -237,7 +237,17 @@ namespace AstroOfficeWeb.Server.Controllers
         public IActionResult GetUserAddresses()
         {
             var response = new ApiResponse<List<AddressDTO>>();
-            var addresses = _context.Addresses.Include(sc => sc.ACountrySnoNavigation).Where(a => a.AUsersSno == User.GetUserSno() && a.IsActive == true).OrderBy(a => a.ACountrySnoNavigation == null ? "" : a.ACountrySnoNavigation.Country);
+            var addresses = _context.Addresses.Include(sc => sc.ACountrySnoNavigation).Where(a => a.AUsersSno == User.GetUserSno() && a.IsActive == true).OrderBy(a => a.Sno);
+            response.Data = _mapper.Map<List<AddressDTO>>(addresses);
+            return Ok(response);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult GetUserAddress()
+        {
+            var response = new ApiResponse<List<AddressDTO>>();
+            var addresses = _context.Addresses.Include(sc => sc.ACountrySnoNavigation).FirstOrDefault(a => a.AUsersSno == User.GetUserSno() && a.IsActive == true);
             response.Data = _mapper.Map<List<AddressDTO>>(addresses);
             return Ok(response);
         }
@@ -249,7 +259,7 @@ namespace AstroOfficeWeb.Server.Controllers
             var response = new ApiResponse<AddressDTO>();
             var tempAddress = _context.Addresses.FirstOrDefault(a => a.Sno == addressDTO.Sno && a.AUsersSno == User.GetUserSno() && a.IsActive == true);
             var address = _mapper.Map<Address>(addressDTO);
-
+            address.AUsersSno = User.GetUserSno();
             if (tempAddress == null)
             {
                 _context.Addresses.Add(address);
