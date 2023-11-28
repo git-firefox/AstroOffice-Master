@@ -14,6 +14,8 @@ namespace ASModels.Astrooff
         public long? ProductId { get; set; }
         [Column("ImageURL")]
         public string? ImageUrl { get; set; }
+        [StringLength(255)]
+        public string? ImageName { get; set; }
 
         [ForeignKey("ProductId")]
         [InverseProperty("ProductImages")]
