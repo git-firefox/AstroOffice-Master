@@ -49,20 +49,20 @@ namespace AstroOfficeWeb.Client.Services
             return response.Data;
         }
 
-        public async Task<ViewProductDTO?> GetProductBySno(long sno)
+        public async Task<ProductDTO?> GetProductBySno(long sno)
         {
             var queryParams = new Dictionary<string, string>()
             {
                 { "Sno", sno.ToString()}
             };
 
-            var response = await _swagger.GetAsync<ApiResponse<ViewProductDTO>>(ProductApiConst.GET_ProductBySno, queryParams);
+            var response = await _swagger.GetAsync<ApiResponse<ProductDTO>>(ProductApiConst.GET_ProductBySno, queryParams);
 
             return response?.Data;
         }
-        public async Task AddProduct(SaveProductDTO saveProduct)
+        public async Task AddProduct(ProductDTO saveProduct)
         {
-            var response = await _swagger.PostAsync<SaveProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.POST_AddProduct, saveProduct);
+            var response = await _swagger.PostAsync<ProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.POST_AddProduct, saveProduct);
             if (response!.Success)
             {
                 await _jsRuntime.ShowToastAsync(response.Message);
@@ -73,9 +73,9 @@ namespace AstroOfficeWeb.Client.Services
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
             }
         }
-        public async Task UpdateProduct(SaveProductDTO saveProduct, long sno)
+        public async Task UpdateProduct(ProductDTO saveProduct, long sno)
         {
-            var response = await _swagger.PutAsync<SaveProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.PUT_UpdateProduct + "?sno=" + sno, saveProduct);
+            var response = await _swagger.PutAsync<ProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.PUT_UpdateProduct + "?sno=" + sno, saveProduct);
             if (response!.Success)
             {
                 await _jsRuntime.ShowToastAsync(response.Message);

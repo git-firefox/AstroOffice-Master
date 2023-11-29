@@ -48,7 +48,7 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpGet]
         public IActionResult GetProductBySno(long sno)
         {
-            var apiResponse = new ApiResponse<ViewProductDTO> { Data = null };
+            var apiResponse = new ApiResponse<ProductDTO> { Data = null };
 
             var aProduct = _context.AProducts.Include(a => a.ProductImages).FirstOrDefault(p => p.Sno == sno && p.IsActive == true);
 
@@ -61,7 +61,7 @@ namespace AstroOfficeWeb.Server.Controllers
             }
 
             apiResponse.Success = true;
-            var productDTO = _mapper.Map<ViewProductDTO>(aProduct);
+            var productDTO = _mapper.Map<ProductDTO>(aProduct);
             apiResponse.Data = productDTO;
 
             return Ok(apiResponse);

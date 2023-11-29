@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AstroShared.DTOs
 {
-    public abstract class ProductDTOBase
+    public class ProductDTO
     {
         [Required]
         public string Name { get; set; } = null!;
@@ -28,19 +28,36 @@ namespace AstroShared.DTOs
         public DateTime? LastModifiedDate { get; set; }
         public bool IsActive { get; set; } = true;
 
-        [Required(ErrorMessage = "Upload atleast 1 image.")]
-      //  [MinLength(1, ErrorMessage = "Upload atleast 1 image.")]
-        [MaxLength(10, ErrorMessage = "Can only upload max 10 images.")]
+        //  [Required(ErrorMessage = "Upload atleast 1 image.")]
+        ////  [MinLength(1, ErrorMessage = "Upload atleast 1 image.")]
+        //  [MaxLength(10, ErrorMessage = "Can only upload max 10 images.")]
         public List<string> FileNames { get; set; } = new List<string>();
-    }
-    public class ViewProductDTO : ProductDTOBase
-    {
+
+        public string? ProductReference { get; set; }
+
+        public string? ProductStatus { get; set; }
+
+        public string? ProductComment { get; set; }
+        public string? ProductSummary { get; set; }
+
         public long Sno { get; set; }
         public List<ImagesDTO>? ProductImages { get; set; }
     }
-
-    public class SaveProductDTO : ProductDTOBase
+    public class ViewProductDTO : ProductDTO
     {
-        public List<ImagesDTO>? ProductImages { get; set; }
+        //public List<ImagesDTO>? ProductImages { get; set; }
+    }
+
+    public class SaveProductDTO : ProductDTO
+    {
+        //public List<ImagesDTO>? ProductImages { get; set; }
+    }
+
+    public enum ProductStatus
+    {
+        Online,
+        Offline,
+        Draft,
+        Published
     }
 }
