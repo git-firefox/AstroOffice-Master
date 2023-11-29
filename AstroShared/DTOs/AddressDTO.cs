@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -58,7 +59,11 @@ namespace AstroShared.DTOs
     public class AddressDTO : BaseAddressDTO
     {
         public long Sno { get; set; }
+
+        [Display(Name = "Country")]
+        [Required(ErrorMessage = "{0} is required")]
         public long ACountrySno { get; set; }
+
         public string? AddressType { get; set; }
         public string FullName
         {

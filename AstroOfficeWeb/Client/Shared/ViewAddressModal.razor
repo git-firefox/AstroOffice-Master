@@ -18,7 +18,7 @@
             </div>
             <div class="modal-body">
 
-                @if (UpdateAddress != null)
+                @if (BillingInfo != null)
                 {
                     <EditForm Model="BillingInfo" OnValidSubmit="OnSubmit_UpdateAddress">
                         <DataAnnotationsValidator />
@@ -77,18 +77,21 @@
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="billing-town-city" class="form-label">Town / City</label>
+                                    <ValidationMessage For=@(() => BillingInfo!.City) style="position:revert;" />
                                     <InputText @bind-Value="BillingInfo!.City" class="form-control" type="text" placeholder="Enter your city name" id="billing-town-city" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="billing-state" class="form-label">State</label>
+                                    <ValidationMessage For=@(() => BillingInfo!.State) style="position:revert;" />
                                     <InputText @bind-Value="BillingInfo!.State" class="form-control" type="text" placeholder="Enter your state" id="billing-state" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="billing-zip-postal" class="form-label">Zip Code</label>
+                                    <ValidationMessage For=@(() => BillingInfo!.ZipCode) style="position:revert;" />
                                     <InputText @ref="Input_ZipCode" @bind-Value="BillingInfo!.ZipCode" @onfocusout="OnFocusOut_InputZipCode" class="form-control" type="text" placeholder="Enter your zip code" id="billing-zip-postal" />
                                 </div>
                             </div>
@@ -97,14 +100,16 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="billing-landmark" class="form-label">Landmark</label>
+                                    <ValidationMessage For=@(() => BillingInfo!.Landmark) style="position:revert;" />
                                     <InputText @bind-Value="BillingInfo!.Landmark" class="form-control" type="text" placeholder="Enter your Landmark" id="billing-landmark" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Country</label>
-                                    <InputSelect @ref="Input_Country" @bind-Value="BillingInfo!.ACountrySno" class="form-control" data-placeholder="Select a Country" @onblur="OnBlur_Country">
-                                        <option value="0">Select Country</option>
+                                    <ValidationMessage For=@(() => BillingInfo!.ACountrySno) style="position:revert;" />
+                                    <InputSelect @ref="Input_Country" @bind-Value="BillingInfo!.ACountrySno" class="form-control" data-placeholder="Select a Country">
+                                        <option value="">Select Country</option>
                                         @foreach (var country in CountryDTOs)
                                         {
                                             <option value="@country.Sno">@country.Country</option>
@@ -113,6 +118,51 @@
                                 </div>
                             </div>
                         </div> <!-- end row -->
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <InputRadioGroup Name="AddressType" @bind-Value="BillingInfo!.AddressType">
+
+                                        <div class="form-check form-check-inline">
+                                            <InputRadio Value="AddressType.Home" class="form-check-input" id="@("InputRadio" + AddressType.Home)" />
+                                            <label class="form-check-label" for="@("InputRadio" + AddressType.Home)">
+                                                @AddressType.Home
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check form-check-inline">
+                                            <InputRadio Value="AddressType.Office" class="form-check-input" id="@("InputRadio" + AddressType.Office)" />
+                                            <label class="form-check-label" for="@("InputRadio" + AddressType.Office)">
+                                                @AddressType.Home
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check form-check-inline">
+                                            <InputRadio Value="AddressType.Billing" class="form-check-input" id="@("InputRadio" + AddressType.Billing)" />
+                                            <label class="form-check-label" for="@("InputRadio" + AddressType.Billing)">
+                                                @AddressType.Home
+                                            </label>
+                                        </div>
+
+                                        @* @foreach (AddressType addressType in Enum.GetValues(typeof(AddressType)))
+                                        {
+                                            <div class="form-check form-check-inline">
+                                                <InputRadio Value="addressType" class="form-check-input" id="@("InputRadio" + addressType)" />
+                                                <label class="form-check-label" for="@("InputRadio" + addressType)">
+                                                    @addressType
+                                                </label>
+                                            </div>
+                                        } *@
+                                    </InputRadioGroup>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex mb-3">
+                            <div class="mr-auto p-2"><button type="button" class="btn btn-secondary btn-block" @onclick="OnClick_BtnCancel"> Cancel </button></div>
+                            <div class="p-2"><button type="submit" class="btn btn-success btn-block"> Save Address </button></div>
+                        </div>
                     </EditForm>
                 }
                 else
@@ -193,13 +243,17 @@
                     </div>
                 }
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)"> Close </button>
-                @if (Addresses != null && Addresses.Any())
-                {
-                    <button type="button" class="btn btn-custom" data-dismiss="modal" @onclick="() => OnConfirmationChange(true)">Use this address</button>
-                }
-            </div>
+
+            @if (BillingInfo is null)
+            {
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)"> Close </button>
+                    @if (Addresses != null && Addresses.Any())
+                    {
+                        <button type="button" class="btn btn-custom" data-dismiss="modal" @onclick="() => OnConfirmationChange(true)">Use this address</button>
+                    }
+                </div>
+            }
         </div>
     </div>
 </div>
