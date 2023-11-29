@@ -29,6 +29,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
             ViewProductDTO = await LocalStorage.GetItemAsync<ViewProductDTO>(ApplicationConst.Local_SelectedProduct);
             SelectedImage = new ImagesDTO { ImageName = ViewProductDTO?.Name ?? "", ImageURL = ViewProductDTO?.ImageUrl ?? "" };
 
+            BrowserFiles = await ProductService.GetImagesByProductIds(Sno) ?? new();
 
         }
     }

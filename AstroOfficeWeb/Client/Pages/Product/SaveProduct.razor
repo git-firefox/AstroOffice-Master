@@ -1,6 +1,7 @@
 ﻿@page "/save-product"
 @page "/save-product/{Sno:long}"
 @using AstroOfficeWeb.Client.Services
+@using AstroShared.DTOs;
 
 @inject ProductService ProductService
 @inject NavigationManager NavigationManager
@@ -8,142 +9,278 @@
 @inject IJSRuntime JSRuntime
 
 
+
+
 <div class="container-fluid p-3">
-
-    <h1 class="pt-4 pb-2 font-weight-bold "> @(Sno == 0 ? "Add Product" : "Edit Product") </h1>
-
+    <h1 class="pt-4 pb-2 font-weight-bold "> Add product </h1>
     <section class="content">
-         <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
-          
-         </MudForm>
-        <EditForm Model="SaveProductModel" OnSubmit="OnSubmit_EditForm">
-            <DataAnnotationsValidator />
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card card-secondary h-100">
-                        <div class="card-header">
-                            <h3 class="card-title">General Information</h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
 
-                            <div class="form-group">
-                                <label for="inputName">Name</label>
-                                <ValidationMessage For=@(() => SaveProductModel!.Name) style="position:revert;" />
-                                <InputText id="inputName" class="form-control" @bind-Value="SaveProductModel!.Name" />
-                            </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
 
-                            <div class="form-group">
-                                <label for="inputPrice">Price</label>
-                                <ValidationMessage For=@(() => SaveProductModel!.Price) style="position:revert;" />
-                                <InputNumber id="inputPrice" class="form-control" @bind-Value="SaveProductModel!.Price" />
-                            </div>
+                                        <div id="addproduct-nav-pills-wizard" class="twitter-bs-wizard form-wizard-header">
+                                            <ul class="twitter-bs-wizard-nav mb-2 nav nav-pills nav-justified">
+                                                <li class="nav-item">
+                                                    <a @ref="ER_AGeneralInfo" href="#general-info" class="nav-link active" data-bs-toggle="tab" data-toggle="tab">
+                                                        <span class="number">01</span>
+                                                        <span class="d-none d-sm-inline">General</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a @ref="ER_AProductImage" href="#product-img" class="nav-link" data-bs-toggle="tab" data-toggle="tab">
+                                                        <span class="number">02</span>
+                                                        <span class="d-none d-sm-inline">Product Images</span>
+                                                    </a>
+                                                </li>
 
-                            <div class="form-group">
-                                <label for="inputStockQuantity">Stock Quantity</label>
-                                <ValidationMessage For=@(() => SaveProductModel!.StockQuantity) style="position:revert;" />
-                                <InputNumber id="inputStockQuantity" class="form-control" @bind-Value="SaveProductModel!.StockQuantity" />
-                            </div>
+                                                <li class="nav-item">
+                                                    <a @ref="ER_AMetaData" href="#metadata" class="nav-link" data-bs-toggle="tab" data-toggle="tab">
+                                                        <span class="number">03</span>
+                                                        <span class="d-none d-sm-inline">Meta Data</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content twitter-bs-wizard-tab-content">
 
-                            <div class="form-check">
-                                <InputCheckbox class="form-check-input" id="chkIsActive" @bind-Value="SaveProductModel.IsActive" style="position:revert;" />
-                                <label class="form-check-label" for="chkIsActive">Is Active</label>
-                            </div>
 
-                        </div>
 
-                    </div>
+                                                <div class="tab-pane active" id="general-info">
+                                                    <EditForm Model="ProductModel" OnValidSubmit="OnSubmit_EditForm" OnInvalidSubmit="OnInvalidSubmit_EditForm">
+                                                        <DataAnnotationsValidator />
+                                                        <h4 class="header-title">General Information</h4>
+                                                        <p class="sub-header">Fill all information below</p>
 
-                </div>
-                <div class="col-md-6">
-                    <div class="card card-secondary h-100">
-                        <div class="card-header">
-                            <h3 class="card-title">Product Images</h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12">
+                                                        <div>
 
-                                    <ValidationMessage For=@(() => SaveProductModel.FileNames) style="position:revert;" />
-                                    <div class="custom-file">
-                                        <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png" OnChange="OnChange_InputFile" multiple />
-                                        <label class="custom-file-label" for="inputFile"> @((FileNames != null && FileNames.Any()) ? string.Join(",", FileNames) : "Choose file...") </label>
+                                                            <div class="row">
+                                                                <div class="col-lg">
+                                                                    <div class="mb-3">
+                                                                        <label for="product-name" class="form-label">Product Name <span class="text-danger">*</span></label>
+                                                                        <ValidationMessage For=@(()=>ProductModel!.Name) style="position:revert;" />
+                                                                        <InputText @bind-Value="ProductModel!.Name" id="product-name" class="form-control" placeholder="e.g : Apple iMac" />
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="col-lg">
+                                                                    <div class="mb-3">
+                                                                        <label for="product-price" class="form-label">Price <span class="text-danger">*</span></label>
+                                                                        <ValidationMessage For=@(()=>ProductModel.Price) style="position: revert;" />
+                                                                        <InputNumber @bind-Value="ProductModel!.Price " class="form-control" id="product-price" placeholder="Enter amount" />
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-lg">
+                                                                    <div class="mb-3">
+                                                                        <label for="product-stock-quantity" class="form-label">Stock Quantity <span class="text-danger">*</span></label>
+                                                                        <ValidationMessage For=@(()=>ProductModel.StockQuantity) style="position: revert;" />
+                                                                        <InputNumber @bind-Value="ProductModel!.StockQuantity" class="form-control" id="product-stock-quantity" placeholder="Enter quantity" />
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                            @*  <div class="mb-3">
+                                                            <label for="product-description" class="form-label">Product Description <span class="text-danger">*</span></label>
+                                                            </div> *@
+
+                                                            <div class="mb-3">
+
+                                                                @* <ValidationMessage For=@(() => SaveProductModel.Description) style="position:revert;" /> *@
+                                                                @* <InputTextArea @ref="ER_TextEditor" @bind-Value="SaveProductModel!.Description"></InputTextArea> *@
+
+                                                                <label for="product-description" class="form-label">Product Description <span class="text-danger">*</span></label>
+                                                                <ValidationMessage For=@(() => ProductModel!.Description) style="position:revert;" />
+                                                                <InputTextArea @ref="ER_TextEditor" @bind-Value="ProductModel!.Description" id="product-description"></InputTextArea>
+
+
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label for="product-summary" class="form-label">Product Summary</label>
+                                                                        <ValidationMessage For=@(()=>ProductModel.Description) style="position: revert;" />
+                                                                        <InputTextArea @bind-Value="ProductModel.Description" class="form-control" id="product-summary" rows="5" placeholder="Please enter summary"></InputTextArea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label for="product-category" class="form-label">Categories <span class="text-danger">*</span></label>
+
+                                                                        <select class="form-control " id="product-category" data-select2-id="product-category" tabindex="-1" aria-hidden="true">
+                                                                            <option data-select2-id="2">Select</option>
+
+                                                                            <option value="SH1">Shopping 1</option>
+                                                                            <option value="SH2">Shopping 2</option>
+                                                                            <option value="SH3">Shopping 3</option>
+                                                                            <option value="SH4">Shopping 4</option>
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div class="mb-3">
+                                                                        <label for="product-reference" class="form-label">Reference <span class="text-danger">*</span></label>
+                                                                        <InputText @bind-Value="ProductModel!.ProductReference" id="product-reference" class="form-control" placeholder="e.g : Apple iMac" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label class="mb-2">Status <span class="text-danger">*</span></label>
+                                                                <br>
+                                                                <ValidationMessage For=@(()=>ProductModel.ProductStatus) />
+                                                                <InputRadioGroup Name="ProductStatusGroup" @bind-Value="ProductModel!.ProductStatus">
+                                                                    <div class="radio form-check-inline">
+                                                                        <InputRadio id="inlineRadio1" Value="ProductStatus.Online" />
+                                                                        <label for="inlineRadio1"> Online </label>
+                                                                    </div>
+                                                                    <div class="radio form-check-inline">
+                                                                        <InputRadio id="inlineRadio2" Value="ProductStatus.Offline" />
+                                                                        <label for="inlineRadio2"> Offline </label>
+                                                                    </div>
+                                                                    <div class="radio form-check-inline">
+                                                                        <InputRadio id="inlineRadio3" Value="ProductStatus.Offline" />
+                                                                        <label for="inlineRadio3"> Draft </label>
+                                                                    </div>
+                                                                </InputRadioGroup>
+
+                                                            </div>
+
+                                                            <div>
+                                                                <label class="form-label">Comment</label>
+                                                                <InputTextArea @bind-Value="ProductModel!.ProductComment" class="form-control" rows="3" placeholder="Please enter comment"></InputTextArea>
+                                                            </div>
+                                                        </div>
+
+                                                        <ul class="pager wizard mb-0 list-inline text-end mt-3">
+                                                            <li class="next list-inline-item">
+                                                                <button type="submit" class="btn btn-success">Add More Info <i class="mdi mdi-arrow-right ms-1"></i></button>
+                                                            </li>
+                                                        </ul>
+                                                    </EditForm>
+                                                </div>
+
+
+                                                <div class="tab-pane" id="product-img">
+                                                    <EditForm Model="ProductImage">
+                                                        <h4 class="header-title">Product Images</h4>
+                                                        <p class="sub-header">Upload product image</p>
+
+                                                        @*  <form action="/" method="post" class="dropzone dz-clickable" id="myAwesomeDropzone" data-plugin="dropzone" data-previews-container="#file-previews" data-upload-preview-template="#uploadPreviewTemplate">
+
+
+                                                        <div class="dz-message needsclick">
+                                                        <div class="mb-3">
+                                                        <i class="h1 text-muted ri-upload-cloud-2-line"></i>
+                                                        </div>
+                                                        <h3>Drop files here or click to upload.</h3>
+                                                        <span class="text-muted font-13">
+                                                        (This is just a demo dropzone. Selected files are
+                                                        <strong>not</strong> actually uploaded.)
+                                                        </span>
+                                                        </div>
+                                                        </form> *@
+
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="custom-file">
+                                                                    <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png" OnChange="OnChange_InputFile" multiple />
+                                                                    <label class="custom-file-label" for="inputFile"> @((ProductImage!.FileNames != null && ProductImage.FileNames.Any()) ? string.Join(",", ProductImage.FileNames) : "Choose file...") </label>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="row mt-3">
+
+
+                                                            <div class="col-10">
+                                                                <ul class="list-inline">
+                                                                    @foreach (var image in BrowserFiles)
+                                                                    {
+                                                                        <li class="list-inline-item" @onclick="() => OnClick_ImageItems(image)" role="button">
+                                                                            <img alt="@image.ImageName" class="img-thumbnail" src="@image.ImageURL" height="100" width="100" title="@image.ImageName" />
+
+                                                                            <span class="cross-icon" @onclick="() => OnClick_RemoveImage(image)">
+                                                                                &#10006; <!-- Unicode character for the cross symbol -->
+                                                                            </span>
+                                                                        </li>
+                                                                    }
+                                                                </ul>
+                                                            </div>
+
+                                                            <div class="col-2">
+                                                                @if (SelectedImage?.ImageURL != null)
+                                                                {
+                                                                    <img alt="@SelectedImage.ImageName" class="img-fluid img-thumbnail" src="@SelectedImage.ImageURL" title="@SelectedImage.ImageName" />
+                                                                }
+                                                            </div>
+
+                                                        </div>
+
+
+
+
+
+                                                        <!-- Preview -->
+                                                        <div class="dropzone-previews mt-3" id="file-previews"></div>
+
+                                                        <ul class="pager wizard mb-0 list-inline text-end mt-3">
+                                                            <li class="previous list-inline-item disabled">
+                                                                <button @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.General)" type="button" class="btn btn-secondary"><i class="mdi mdi-arrow-left"></i> Back to General </button>
+                                                            </li>
+                                                            <li class="next list-inline-item">
+                                                                <button @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.Metadata)" type="button" class="btn btn-success">Add Meta Data <i class="mdi mdi-arrow-right ms-1"></i></button>
+                                                            </li>
+                                                        </ul>
+                                                    </EditForm>
+
+                                                </div>
+                                                <div class="tab-pane" id="metadata">
+                                                    <h4 class="header-title">Meta Data</h4>
+                                                    <p class="sub-header">Fill all information below</p>
+
+                                                    <form>
+                                                        <div class="mb-3">
+                                                            <label for="product-meta-title" class="form-label">Meta title</label>
+                                                            <input type="text" class="form-control" id="product-meta-title" placeholder="Enter title">
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="product-meta-keywords" class="form-label">Meta Keywords</label>
+                                                            <input type="text" class="form-control" id="product-meta-keywords" placeholder="Enter keywords">
+                                                        </div>
+
+                                                        <div>
+                                                            <label for="product-meta-description" class="form-label">Meta Description </label>
+                                                            <textarea class="form-control" rows="5" id="product-meta-description" placeholder="Please enter description"></textarea>
+                                                        </div>
+                                                    </form>
+
+                                                    <ul class="pager wizard mb-0 list-inline text-end mt-3">
+                                                        <li class="previous list-inline-item disabled">
+                                                            <button @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.General)" type="button" class="btn btn-secondary"><i class="mdi mdi-arrow-left"></i> Edit Information </button>
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <button @onclick="OnClick_BtnPublished" type="button" class="btn btn-success">Publish Product <i class="mdi mdi-arrow-right ms-1"></i></button>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row mt-3">
-
-                                <div class="col-6">
-                                    <ul class="list-inline">
-                                        @foreach (var image in BrowserFiles)
-                                        {
-                                            <li class="list-inline-item" @onclick="() => OnClick_ImageItems(image)" role="button">
-                                                <img alt="@image.ImageName" class="img-thumbnail" src="@image.ImageURL" height="100" width="100" title="@image.ImageName" />
-
-                                                <span class="cross-icon" @onclick="() => OnClick_RemoveImage(image)">
-                                                    &#10006; <!-- Unicode character for the cross symbol -->
-                                                </span>
-                                            </li>
-                                        }
-                                    </ul>
-                                </div>
-
-                                <div class="col-6">
-                                    @if (SelectedImage?.ImageURL != null)
-                                    {
-                                        <img alt="@SelectedImage.ImageName" class="img-fluid img-thumbnail" src="@SelectedImage.ImageURL" title="@SelectedImage.ImageName" />
-                                    }
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card-footer">
-                            <span>Set current selected as main image</span>
-                            <input type="button" value="Set As Main Image" class="btn btn-success float-right" @onclick="OnClick_BtnSetAsMain" />
                         </div>
                     </div>
-
                 </div>
             </div>
-
-            <div class="row mt-3">
-                <div class="col-md-12">
-                    <ValidationMessage For=@(() => SaveProductModel.Description) style="position:revert;" />
-                    <InputTextArea @ref="ER_TextEditor" @bind-Value="SaveProductModel!.Description"></InputTextArea>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12">
-                    <a href="/manage-products" class="btn btn-secondary">Cancel</a>
-                    <input type="submit" value="Save Changes" class="btn btn-success float-right" />
-                </div>
-            </div>
-
-        </EditForm>
+        </div>
     </section>
 </div>
-
-
-<style>
-    .list-inline-item {
-        position: relative;
-    }
-
-    .cross-icon {
-        position: absolute;
-        top: 0;
-        right: 0;
-        cursor: pointer;
-    }
-</style>
