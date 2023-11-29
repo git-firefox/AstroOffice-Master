@@ -122,38 +122,17 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
+                                    <label class="mx-2">Address Type</label> 
                                     <InputRadioGroup Name="AddressType" @bind-Value="BillingInfo!.AddressType">
-
-                                        <div class="form-check form-check-inline">
-                                            <InputRadio Value="AddressType.Home" class="form-check-input" id="@("InputRadio" + AddressType.Home)" />
-                                            <label class="form-check-label" for="@("InputRadio" + AddressType.Home)">
-                                                @AddressType.Home
-                                            </label>
-                                        </div>
-
-                                        <div class="form-check form-check-inline">
-                                            <InputRadio Value="AddressType.Office" class="form-check-input" id="@("InputRadio" + AddressType.Office)" />
-                                            <label class="form-check-label" for="@("InputRadio" + AddressType.Office)">
-                                                @AddressType.Home
-                                            </label>
-                                        </div>
-
-                                        <div class="form-check form-check-inline">
-                                            <InputRadio Value="AddressType.Billing" class="form-check-input" id="@("InputRadio" + AddressType.Billing)" />
-                                            <label class="form-check-label" for="@("InputRadio" + AddressType.Billing)">
-                                                @AddressType.Home
-                                            </label>
-                                        </div>
-
-                                        @* @foreach (AddressType addressType in Enum.GetValues(typeof(AddressType)))
+                                        @foreach (AddressType addressType in Enum.GetValues(typeof(AddressType)))
                                         {
                                             <div class="form-check form-check-inline">
-                                                <InputRadio Value="addressType" class="form-check-input" id="@("InputRadio" + addressType)" />
+                                                <InputRadio Value="addressType.ToString()" class="form-check-input" id="@("InputRadio" + addressType)" />
                                                 <label class="form-check-label" for="@("InputRadio" + addressType)">
                                                     @addressType
                                                 </label>
                                             </div>
-                                        } *@
+                                        }
                                     </InputRadioGroup>
                                 </div>
                             </div>

@@ -8,3 +8,25 @@
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+<EditForm Model="Test" OnSubmit="OnSubmit">
+
+    <AstroOfficeWeb.Client.Shared.CustomInputs.InputMask @bind-Value="Test.Mask"></AstroOfficeWeb.Client.Shared.CustomInputs.InputMask>
+    <MudButton ButtonType="ButtonType.Submit">Submit</MudButton>
+</EditForm>
+
+@code {
+    public class A1
+    {
+        public string? Mask { get; set; }
+    }
+
+    public A1 Test = new();
+
+    void OnSubmit(EditContext context)
+    {
+        
+    }
+
+
+}

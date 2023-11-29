@@ -64,6 +64,7 @@ namespace AstroShared.DTOs
         [Required(ErrorMessage = "{0} is required")]
         public long ACountrySno { get; set; }
 
+        [Required]
         public string? AddressType { get; set; }
         public string FullName
         {
