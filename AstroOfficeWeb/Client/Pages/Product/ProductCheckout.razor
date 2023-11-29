@@ -10,7 +10,7 @@
 @inject ILocalStorageService LocalStorage
 @inject ISwaggerApiService Swagger
 
-<ViewAddressModal @ref="Modal_ViewAddress" Addresses="Addresses"></ViewAddressModal>
+<ViewAddressModal @ref="Modal_ViewAddress" Addresses="Addresses" OnSelectAddressChanged="OnSelect_Address" CountryDTOs="CountryDTOs"></ViewAddressModal>
 
 <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold "> Checkout </h1>
@@ -179,7 +179,7 @@
                                                         <a href="shopping-cart" class="btn btn-custom"><i class="fas fa-arrow-left mx-2"></i> Back to Shopping Cart </a>
                                                     </div>
                                                     <div class="ml-auto">
-                                                        <button class="btn btn-success" type="submit"><i class="fas fa-truck mx-2"></i> @(BillingInfo.ShipToDifferentAddress ? "Proceed to Shipping" : "Proceed to Payment ") </button>
+                                                        <button class="btn btn-success" type="submit"><i class="fas fa-truck mx-2"></i> Update BillingInfo & @(BillingInfo.ShipToDifferentAddress ? "Proceed to Shipping" : "Proceed to Payment ") </button>
                                                     </div>
                                                 </div>
 
@@ -359,11 +359,11 @@
                                                 <div class="">
                                                     @if (BillingInfo.ShipToDifferentAddress)
                                                     {
-                                                        <button class="btn btn-custom" type="button" @onclick="()=>OnClick_BtnProceed(ProceedStatus.Billing)"><i class="fas fa-arrow-left mx-2"></i> Back to Billing </button>
+                                                        <button class="btn btn-custom" type="button" @onclick="()=>OnClick_BtnProceed(ProceedStatus.Shipping)"><i class="fas fa-arrow-left mx-2"></i> Back to Shipping </button>
                                                     }
                                                     else
                                                     {
-                                                        <button class="btn btn-custom" type="button" @onclick="()=>OnClick_BtnProceed(ProceedStatus.Shipping)"><i class="fas fa-arrow-left mx-2"></i> Back to Shipping </button>
+                                                        <button class="btn btn-custom" type="button" @onclick="()=>OnClick_BtnProceed(ProceedStatus.Billing)"><i class="fas fa-arrow-left mx-2"></i> Back to Billing </button>
                                                     }
                                                 </div>
                                                 <div class="ml-auto">

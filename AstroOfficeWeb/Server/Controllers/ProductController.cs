@@ -327,11 +327,13 @@ namespace AstroOfficeWeb.Server.Controllers
         public IActionResult SaveUserAddress(AddressDTO addressDTO)
         {
             var response = new ApiResponse<AddressDTO>();
-            var tempAddress = _context.Addresses.FirstOrDefault(a => a.Sno == addressDTO.Sno && a.AUsersSno == User.GetUserSno() && a.IsActive == true);
-            var address = _mapper.Map<Address>(addressDTO);
-            address.AUsersSno = User.GetUserSno();
-            if (tempAddress == null)
+            var existingAddress = _context.Addresses.FirstOrDefault(a => a.Sno == addressDTO.Sno && a.AUsersSno == User.GetUserSno() && a.IsActive == true);
+
+            if (existingAddress == null)
             {
+                var address = _mapper.Map<Address>(addressDTO);
+                address.AUsersSno = User.GetUserSno();
+
                 _context.Addresses.Add(address);
                 _context.SaveChanges();
 
@@ -342,11 +344,17 @@ namespace AstroOfficeWeb.Server.Controllers
             }
             else
             {
-                _context.Addresses.Update(address);
+                // Update the existing entity with data from addressDTO
+                _mapper.Map(addressDTO, existingAddress);
+
+                // Make sure to set any additional properties that should not be updated
+                existingAddress.AUsersSno = User.GetUserSno();
+
+                // No need to attach or update, the context is already tracking the entity
                 _context.SaveChanges();
 
                 response.Data = addressDTO;
-                response.Message = "Address saved to user account";
+                response.Message = "Address updated in user account";
             }
 
             return Ok(response);
