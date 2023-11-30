@@ -21,6 +21,8 @@ namespace AstroOfficeWeb.Server
             CreateMap<AKundali, KundaliDTO>();
             CreateMap<AProduct, ViewProductDTO>();
             CreateMap<ProductImage, ImagesDTO>();
+            CreateMap<AProduct, ProductDTO>();
+
             //CreateMap<ImagesDTO, ProductImage>().ForMember(x => x.Product, opt => opt.Ignore()); 
             CreateMap<ViewProductDTO, AProduct>();
             CreateMap<SaveProductDTO, AProduct>().ForMember(x => x.ProductImages, opt => opt.Ignore());

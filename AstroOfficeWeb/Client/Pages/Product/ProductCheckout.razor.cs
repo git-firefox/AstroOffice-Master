@@ -1,5 +1,6 @@
 ﻿
 using AstroOfficeWeb.Client.Shared;
+using AstroOfficeWeb.Client.Shared.CustomInputs;
 using AstroShared.DTOs;
 using AstroShared.Helper;
 using Microsoft.AspNetCore.Components;
@@ -38,7 +39,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         private BillingInfoViewModel BillingInfo { get; set; } = new();
         private EditContext BillingInfoContext { get; set; } = null!;
 
-        private List<CountryDTO> CountryDTOs { get; set; } = new();
+        private List<Option> CountryOptions { get; set; } = new();
         public List<AddressDTO>? Addresses { get; set; }
 
         protected override void OnInitialized()
@@ -51,20 +52,23 @@ namespace AstroOfficeWeb.Client.Pages.Product
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            CountryDTOs = await GetCountriesAsync();
+            CountryOptions = await GetCountryOptionsAsync();
             Addresses = await ProductService.GetUserAddresses();
         }
 
-        private async Task<List<CountryDTO>> GetCountriesAsync()
+        private async Task<List<Option>> GetCountryOptionsAsync()
         {
-            return await Swagger.GetAsync<List<CountryDTO>>(CountryApiConst.GET_Countries) ?? new List<CountryDTO>();
+            var countryDTOs = await Swagger.GetAsync<List<CountryDTO>>(CountryApiConst.GET_Countries) ?? new List<CountryDTO>();
+
+            var options = countryDTOs.Select(a => new Option { Text = a.Country, Value = a.Sno }).ToList();
+            return options;
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                await JSRuntime.LoadSelect2Async(Input_Country.Element);
+                //await JSRuntime.LoadSelect2Async(Input_Country.Element);
                 await JSRuntime.ApplyInputMaskAsync(Input_MobileNumber.Element, "999 999 9999");
                 await JSRuntime.ApplyInputMaskAsync(Input_ZipCode.Element, "999 999");
             }
@@ -110,10 +114,13 @@ namespace AstroOfficeWeb.Client.Pages.Product
         {
             if (BillingInfoContext.Validate())
             {
-                //BillingInfo.Sno = 1;
-                BillingInfo.AddressType = ProceedStatus.Billing.ToString();
-                BillingInfo.ACountrySno = 80;
+                if (string.IsNullOrEmpty(BillingInfo.AddressType))
+                {
+                    BillingInfo.AddressType = ProceedStatus.Billing.ToString();
+                }
+
                 await ProductService.SaveUserAddress(BillingInfo);
+
                 if (BillingInfo.ShipToDifferentAddress)
                 {
                     await JSRuntime.ShowTabAsync(ER_AShippingInfo);

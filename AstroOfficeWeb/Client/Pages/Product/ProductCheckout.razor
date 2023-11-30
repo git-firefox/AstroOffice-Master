@@ -2,6 +2,7 @@
 
 @using AstroOfficeWeb.Client.Services
 @using MudBlazor
+@using static AstroOfficeWeb.Client.Shared.CustomInputs.InputSelect2<long>
 
 @inject ProductService ProductService
 @inject NavigationManager NavigationManager
@@ -10,7 +11,7 @@
 @inject ILocalStorageService LocalStorage
 @inject ISwaggerApiService Swagger
 
-<ViewAddressModal @ref="Modal_ViewAddress" Addresses="Addresses" OnSelectAddressChanged="OnSelect_Address" CountryDTOs="CountryDTOs"></ViewAddressModal>
+<ViewAddressModal @ref="Modal_ViewAddress" Addresses="Addresses" OnSelectAddressChanged="OnSelect_Address" CountryOptions="CountryOptions"></ViewAddressModal>
 
 <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold "> Checkout </h1>
@@ -120,18 +121,21 @@
                                                         <div class="col-md-4">
                                                             <div class="mb-3">
                                                                 <label for="billing-town-city" class="form-label">Town / City</label>
+                                                                <ValidationMessage For=@(() => BillingInfo!.City) style="position:revert;" />
                                                                 <InputText @bind-Value="BillingInfo!.City" class="form-control" type="text" placeholder="Enter your city name" id="billing-town-city" />
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="mb-3">
                                                                 <label for="billing-state" class="form-label">State</label>
+                                                                <ValidationMessage For=@(() => BillingInfo!.State) style="position:revert;" />
                                                                 <InputText @bind-Value="BillingInfo!.State" class="form-control" type="text" placeholder="Enter your state" id="billing-state" />
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="mb-3">
                                                                 <label for="billing-zip-postal" class="form-label">Zip Code</label>
+                                                                <ValidationMessage For=@(() => BillingInfo!.ZipCode) style="position:revert;" />
                                                                 <InputText @ref="Input_ZipCode" @bind-Value="BillingInfo!.ZipCode" @onfocusout="OnFocusOut_InputZipCode" class="form-control" type="text" placeholder="Enter your zip code" id="billing-zip-postal" />
                                                             </div>
                                                         </div>
@@ -140,19 +144,15 @@
                                                         <div class="col-md-6">
                                                             <div class="mb-3">
                                                                 <label for="billing-landmark" class="form-label">Landmark</label>
+                                                                <ValidationMessage For=@(() => BillingInfo!.Landmark) style="position:revert;" />
                                                                 <InputText @bind-Value="BillingInfo!.Landmark" class="form-control" type="text" placeholder="Enter your Landmark" id="billing-landmark" />
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="mb-3">
                                                                 <label class="form-label">Country</label>
-                                                                <InputSelect @ref="Input_Country" @bind-Value="BillingInfo!.ACountrySno" class="form-control" data-placeholder="Select a Country" @onblur="OnBlur_Country">
-                                                                    <option value="0">Select Country</option>
-                                                                    @foreach (var country in CountryDTOs)
-                                                                    {
-                                                                        <option value="@country.Sno">@country.Country</option>
-                                                                    }
-                                                                </InputSelect>
+                                                                <ValidationMessage For=@(() => BillingInfo!.ACountrySno) style="position:revert;" />
+                                                                <InputSelect2 @bind-Value="BillingInfo!.ACountrySno" class="form-control" Placeholder="Select a Country" Options="CountryOptions" />
                                                             </div>
                                                         </div>
                                                     </div> <!-- end row -->
@@ -182,6 +182,7 @@
                                                         <button class="btn btn-success" type="submit"><i class="fas fa-truck mx-2"></i> Update BillingInfo & @(BillingInfo.ShipToDifferentAddress ? "Proceed to Shipping" : "Proceed to Payment ") </button>
                                                     </div>
                                                 </div>
+
                                             </EditForm>
                                         </div>
 
