@@ -222,6 +222,21 @@ window.fnShowTab = function (element) {
     }
 }
 
+window.getSearchboxValue = function () {
+    var value = $("#searchShopBox").val();
+    return value;
+}
+
+window.getDropdownValue = function () {
+    var value = $("#sortShopdropdown").val();
+    return value;
+}
+
+window.getPageSizeValue = function () {
+    var value = $("#pageSizeShopdropdown").val();
+    return value;
+}
+
 
 // JavaScript Document
 //function isDevice() {
