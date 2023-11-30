@@ -114,8 +114,6 @@ namespace AstroOfficeWeb.Client.Pages.Product
                 //};
                 BrowserFiles = await ProductService.GetImagesByProductIds(Sno) ?? new();
             }
-
-
         }
 
         //protected override async Task OnAfterRenderAsync(bool firstRender)

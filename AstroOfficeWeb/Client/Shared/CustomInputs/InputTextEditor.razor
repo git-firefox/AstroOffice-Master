@@ -1,11 +1,19 @@
 ﻿@inject IJSRuntime JSRuntime
 @inherits InputTextArea
 
-<textarea @ref="ER_TextArea"></textarea>
+<textarea @ref="ER_TextArea">
+    @if (string.IsNullOrEmpty(DefaultValue))
+    {
+        @DefaultValue
+    }
+</textarea>
 
 @code {
     [Parameter]
     public int Height { get; set; } = 400;
+
+    [Parameter]
+    public string? DefaultValue { get; set; }
 
     private ElementReference ER_TextArea { get; set; }
 

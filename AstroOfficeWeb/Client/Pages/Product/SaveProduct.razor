@@ -66,10 +66,9 @@
                                                                     <div class="mb-3">
                                                                         <label for="product-name" class="form-label">Product Name <span class="text-danger">*</span></label>
                                                                         <ValidationMessage For=@(()=>ProductModel!.Name) style="position:revert;" />
-                                                                        <InputText @bind-Value="ProductModel!.Name" id="product-name" class="form-control" placeholder="e.g : Apple iMac" />
+                                                                        <InputText @bind-Value="ProductModel!.Name" id="product-name" class="form-control" placeholder="e.g : Yantra / यन्त्र" />
                                                                     </div>
                                                                 </div>
-
 
                                                                 <div class="col-lg">
                                                                     <div class="mb-3">
@@ -100,7 +99,7 @@
 
                                                                 <label for="product-description" class="form-label">Product Description <span class="text-danger">*</span></label>
                                                                 <ValidationMessage For=@(() => ProductModel!.Description) style="position:revert;" />
-                                                                <InputTextEditor @bind-Value="ProductModel!.Description" id="product-description"></InputTextEditor>
+                                                                <InputTextEditor @bind-Value="ProductModel!.Description" id="product-description" DefaultValue="@ProductModel!.Description"></InputTextEditor>
 
 
                                                             </div>
