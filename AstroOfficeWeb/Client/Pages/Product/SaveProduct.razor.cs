@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace AstroOfficeWeb.Client.Pages.Product
@@ -12,7 +13,21 @@ namespace AstroOfficeWeb.Client.Pages.Product
     {
         public string? Src { get; set; }
         public string Alt { get; set; } = null!;
-        public List<string>? FileNames { get; set; }
+
+
+        [Required(ErrorMessage = "Upload atleast 1 image.")]
+        //[MinLength(1, ErrorMessage = "Upload atleast 1 image.")]
+        [MaxLength(10, ErrorMessage = "Can only upload max 10 images.")]
+
+        public List<string> FileNames { get; set; } = new();
+    }
+
+    public class MetaData
+    {
+        public string? MetaTitle { get; set; }
+        public string? MetaKeyword { get; set; }
+
+        public string? MetaDescription { get; set; }
     }
     public partial class SaveProduct
     {
@@ -23,7 +38,6 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public ElementReference ER_AGeneralInfo { get; set; }
         public ElementReference ER_AProductImage { get; set; }
         public ElementReference ER_AMetaData { get; set; }
-        public InputTextArea? ER_TextEditor { get; set; }
 
         //public ElementReference? Test1 { get; set; }
 
@@ -31,9 +45,14 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
 
         public SaveProductDTO? SaveProductModel { get; set; }
-        public ProductDTO? ProductModel { get; set; } = new();
+        public ProductDTO ProductModel { get; set; } = new();
 
         public ProductImage? ProductImage { get; set; } = new();
+
+        public MetaData? MetaData { get; set; }= new();
+
+  
+        private List<MetaData> MetaDataList { get; set; } = new List<MetaData>();
 
         //public ProductDTO ViewProductDTO { get; set; } = new();
 
@@ -99,15 +118,13 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-            {
-                await JSRuntime.LoadEditorAsync(ER_TextEditor?.Element);
-                //await JSRuntime.LoadEditorAsync(Test1);
-                StateHasChanged();
-            }
-        }
+        //protected override async Task OnAfterRenderAsync(bool firstRender)
+        //{
+        //    if (firstRender)
+        //    {
+               
+        //    }
+        //}
 
         private async Task OnChange_InputFile(InputFileChangeEventArgs e)
         {
@@ -177,12 +194,29 @@ namespace AstroOfficeWeb.Client.Pages.Product
         private async Task OnInvalidSubmit_EditForm(EditContext context)
         {
             //await JSRuntime.ShowTabAsync(ER_AProductImage);
+        }  
+        private async Task OnSubmit_ProductImage(EditContext context)
+        {            
+                await JSRuntime.ShowTabAsync(ER_AMetaData);
         }
+        private async Task OnInvalidSubmit_ProductImage(EditContext context)
+        {
+            //await JSRuntime.ShowTabAsync(ER_AProductImage);
+        }
+
+        private async Task OnSubmit_MetaData(EditContext context)
+        {
+
+        }
+        private async Task OnInvalidSubmit_MetaData(EditContext context)
+        {
+
+        }
+
         private async Task OnClick_BtnPublished()
         {
 
             //SaveProductModel!.Description = await JSRuntime.GetEditorValue(ER_TextEditor?.Element);
-            ProductModel!.Description = await JSRuntime.GetEditorValue(ER_TextEditor?.Element);
             //if (context.Validate())
             //{
             //SaveProductModel.ProductImages = BrowserFiles;
@@ -229,9 +263,23 @@ namespace AstroOfficeWeb.Client.Pages.Product
             }
             else
             {
-                SaveProductModel!.ImageUrl = SelectedImage.ImageURL;
+                ProductModel!.ImageUrl = SelectedImage.ImageURL;
                 await JSRuntime.ShowToastAsync("The current selected image has been set as the main image successfully", SwalIcon.Success);
             }
         }
+
+        public void Onclick_AddMetaData()
+        {
+            // Add the current MetaData to the list
+            MetaDataList.Add(new MetaData
+            {
+                MetaTitle = MetaData!.MetaTitle,
+                MetaKeyword = MetaData.MetaKeyword,               
+            });
+
+            // Clear the MetaData for new entries
+            MetaData = new MetaData();
+        }
+
     }
 }

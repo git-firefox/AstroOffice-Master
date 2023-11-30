@@ -12,7 +12,7 @@ Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
-<EditForm Model="Test" OnValidSubmit="OnSubmit">
+@* <EditForm Model="Test" OnValidSubmit="OnSubmit">
     <DataAnnotationsValidator />
     <ValidationMessage For=@(() => Test.MaskValue) style="position:revert;" />
     <InputMask @bind-Value="Test.MaskValue" Mask="999 999 9999" class="form-control"></InputMask>
@@ -67,5 +67,5 @@ Welcome to your new app.
         var v3 = Test.Summernote;
     }
 
-
 }
+ *@

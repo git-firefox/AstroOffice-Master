@@ -40,6 +40,7 @@ namespace AstroShared.DTOs
         public string? ProductComment { get; set; }
         public string? ProductSummary { get; set; }
 
+
         public long Sno { get; set; }
         public List<ImagesDTO>? ProductImages { get; set; }
     }
