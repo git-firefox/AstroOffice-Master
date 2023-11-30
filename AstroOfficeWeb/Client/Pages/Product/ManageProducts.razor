@@ -35,7 +35,7 @@
             <PropertyColumn Property="x => x.StockQuantity" Title="Stock Quantity"/>
             <PropertyColumn Property="x => x.AddedDate" Title="Added Date"/>
             <PropertyColumn Property="x => x.LastModifiedDate" Title="Last Modified Date"/>
-            <TemplateColumn CellClass="d-flex justify-end" Filterable="false" Sortable="false">
+            <TemplateColumn Filterable="false" Sortable="false" CellClass="mud-table-cell">
                 <CellTemplate>
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.RemoveRedEye" OnClick="(()=> OnClick_BtnShow(context.Item))" />
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_BtnEdit(context.Item))" />

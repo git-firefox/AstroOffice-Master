@@ -8,6 +8,24 @@
 @inject StateContainerService StateContainerService
 @inject IJSRuntime JSRuntime
 
+@inject IDialogService DialogService
+@* <MudDialogProvider FullWidth="true"
+                   MaxWidth="MaxWidth.ExtraSmall"
+                   CloseButton="true"
+                   DisableBackdropClick="true"
+                   NoHeader="true"
+                   Position="DialogPosition.Center"
+                   CloseOnEscapeKey="true" />
+<MudMessageBox @ref="MessageBox" Title="Alert" CancelText="Cancel">
+
+    <MessageContent>
+        Are you sure you want to delete ?
+    </MessageContent>
+    <YesButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever">Delete!</MudButton>
+    </YesButton>
+</MudMessageBox> *@
+
 
 @*
                                                                     <InputTextEditor></InputTextEditor>
@@ -256,7 +274,9 @@
                                                     <h4 class="header-title">Meta Data</h4>
                                                     <p class="sub-header">Fill all information below</p>
 
-                                                    <EditForm Model="MetaData" OnValidSubmit="OnSubmit_MetaData" OnInvalidSubmit="OnInvalidSubmit_MetaData">
+
+
+                                                    <EditForm Model="MetaData" OnValidSubmit="OnSubmit_MetaData" OnInvalidSubmit="OnInvalidSubmit_MetaData" Context="MetaDataContext">
                                                         <div class="row">
 
                                                             <div class="col-4">
@@ -269,7 +289,14 @@
                                                                 <InputText @bind-Value="MetaData.MetaKeyword" class="form-control" id="product-meta-keywords" placeholder="Meta Value" />
                                                             </div>
                                                             <div class="col-4 mt-4">
-                                                                <button type="button" @onclick="Onclick_AddMetaData" class="btn btn-success float-right">Add MetaData</button>
+                                                                @if (MetaData != null)
+                                                                {
+                                                                    <button type="button" @onclick="(()=> MetaData= new())" class="btn btn-success float-right">Cancel</button>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <button type="button" @onclick="Onclick_AddMetaData" class="btn btn-success float-right">Add MetaData</button>
+                                                                }
                                                             </div>
                                                         </div>
                                                         @*
@@ -282,35 +309,58 @@
                                                         <div class="row mt-3">
                                                             <div class="col-12">
 
-                                                                <table class="table table-striped">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th scope="col">Sno.</th>
-                                                                            <th scope="col">Meta Keywords</th>
-                                                                            <th scope="col">Meta Value</th>
-                                                                            <th scope="col">Action</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
 
-                                                                        @foreach (var (value, index) in MetaDataList.Select((value, index) => (value, index)))
-                                                                        {
-                                                                            @* <button data-target="#carouselExampleIndicators" data-slide-to="@(index+1)" class="thumbnail" aria-label="Slide @(index+2)"> *@
+                                                                <MudDataGrid Items="@MetaDataList.Select((value, index) => (value, index))" Bordered="true" Dense="true">
+                                                                    <Columns>
+                                                                        <PropertyColumn Property="x => x.index+1" Title="Sr No" IsEditable="false" />
+                                                                        <PropertyColumn Property="x => x.value.MetaTitle" />
+                                                                        <PropertyColumn Property="x => x.value.MetaKeyword" />
+                                                                        <TemplateColumn Title="Action" Sortable="false" IsEditable="false">
+                                                                            <CellTemplate>
 
-                                                                            <tr>
-                                                                                <td>@(index + 1) </td>
-                                                                                <td>@value.MetaTitle </td>
-                                                                                <td>@value.MetaKeyword</td>
-                                                                                <td>
-                                                                                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_UpdateMetaData(1,value))" />
-                                                                                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_UpdateMetaData(0,value))" />
-                                                                                </td>
-                                                                            </tr>
+                                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_UpdateMetaData(1,context.Item.value))" />
+                                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_UpdateMetaData(0,context.Item.value))" />
+
+                                                                            </CellTemplate>
+                                                                        </TemplateColumn>
+                                                                    </Columns>
+                                                                </MudDataGrid>
+
+                                                                @*   <table class="table table-striped">
+                                                                <thead>
+                                                                <tr>
+                                                                <th scope="col">Sno.</th>
+                                                                <th scope="col">Meta Keywords</th>
+                                                                <th scope="col">Meta Value</th>
+                                                                <th scope="col">Action</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                @foreach (var (value, index) in MetaDataList.Select((value, index) => (value, index)))
+                                                                {
+                                                                <tr>
+                                                                <td>@(index + 1) </td>
+                                                                <td>@value.MetaTitle </td>
+                                                                <td>@value.MetaKeyword</td>
+                                                                <td>
+                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_UpdateMetaData(1,value))" />
+                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_UpdateMetaData(0,value))" />
+                                                                </td>
+                                                                </tr>
 
 
-                                                                        }
-                                                                    </tbody>
-                                                                </table>
+                                                                }
+                                                                </tbody>
+                                                                </table> *@
+
+
+
+
+
+
+
+
                                                             </div>
                                                         </div>
 

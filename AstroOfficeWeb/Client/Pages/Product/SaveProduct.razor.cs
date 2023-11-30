@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using static MudBlazor.CategoryTypes;
 
 namespace AstroOfficeWeb.Client.Pages.Product
 {
@@ -49,13 +50,14 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         public ProductImage? ProductImage { get; set; } = new();
 
-        public MetaData? MetaData { get; set; }= new();
+        public MetaData MetaData { get; set; } = new();
 
-  
+
         private List<MetaData> MetaDataList { get; set; } = new List<MetaData>();
 
         //public ProductDTO ViewProductDTO { get; set; } = new();
 
+        MudMessageBox MessageBox { get; set; } = null!;
 
         public bool IsImageLoaded { get; set; }
         public ImagesDTO? SelectedImage { get; set; }
@@ -63,6 +65,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         string[] errors = { };
         MudForm form;
         string fileValidation = "none";
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
@@ -120,7 +123,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         //{
         //    if (firstRender)
         //    {
-               
+
         //    }
         //}
 
@@ -192,10 +195,10 @@ namespace AstroOfficeWeb.Client.Pages.Product
         private async Task OnInvalidSubmit_EditForm(EditContext context)
         {
             //await JSRuntime.ShowTabAsync(ER_AProductImage);
-        }  
+        }
         private async Task OnSubmit_ProductImage(EditContext context)
-        {            
-                await JSRuntime.ShowTabAsync(ER_AMetaData);
+        {
+            await JSRuntime.ShowTabAsync(ER_AMetaData);
         }
         private async Task OnInvalidSubmit_ProductImage(EditContext context)
         {
@@ -272,22 +275,31 @@ namespace AstroOfficeWeb.Client.Pages.Product
             MetaDataList.Add(new MetaData
             {
                 MetaTitle = MetaData!.MetaTitle,
-                MetaKeyword = MetaData.MetaKeyword,               
+                MetaKeyword = MetaData.MetaKeyword,
             });
 
-            // Clear the MetaData for new entries
-            MetaData = new MetaData();
         }
 
-        private void OnClick_UpdateMetaData(int action, MetaData data)
+        private async Task OnClick_UpdateMetaData(int action, MetaData data)
         {
-            if(action == 1)
+            if (action == 1)
             {
                 MetaData = data;
             }
+
             else
             {
-                MetaDataList.Remove(data);
+
+
+
+                //bool? result = await MessageBox.Show();
+                bool? result = await DialogService.ShowMessageBox(title: "Alert", message: "Are you sure you want to delete?", yesText: "Delete", noText: "", cancelText: "Cancel", new DialogOptions() { FullWidth = true });
+                if (result.GetValueOrDefault())
+                {
+                    MetaDataList.Remove(data);
+                    StateHasChanged();
+
+                }
             }
         }
     }
