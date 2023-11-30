@@ -1,4 +1,6 @@
 ﻿@page "/index"
+@using System.ComponentModel.DataAnnotations
+@using AstroShared
 
 
 <PageTitle>Index</PageTitle>
@@ -9,24 +11,44 @@ Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
-<EditForm Model="Test" OnSubmit="OnSubmit">
+@* <EditForm Model="Test" OnValidSubmit="OnSubmit">
+    <DataAnnotationsValidator />
+    <ValidationMessage For=@(() => Test.MaskValue) style="position:revert;" />
+    <InputMask @bind-Value="Test.MaskValue" Mask="999 999 9999" class="form-control"></InputMask>
 
-    <AstroOfficeWeb.Client.Shared.CustomInputs.InputMask @bind-Value="Test.Mask"></AstroOfficeWeb.Client.Shared.CustomInputs.InputMask>
+    <ValidationMessage For=@(() => Test.Select2) style="position:revert;" />
+    <InputSelect2 Options="SelectListItems" @bind-Value="Test.Select2"></InputSelect2>
+    
+    <ValidationMessage For=@(() => Test.Summernote) style="position:revert;" />
+    <InputTextEditor @bind-Value="Test.Summernote"></InputTextEditor>
+
     <MudButton ButtonType="ButtonType.Submit">Submit</MudButton>
 </EditForm>
 
 @code {
     public class A1
     {
-        public string? Mask { get; set; }
+        [Required(ErrorMessage = "The mobile number is required.")]
+        [StringLength(10, MinimumLength = 10, ErrorMessage = "Mobile number must be 10 digits.")]
+        public string? MaskValue { get; set; }
+
+        [Required]
+        public string? Select2 { get; set; }  
+        
+        [Required]
+        public string? Summernote { get; set; }
     }
 
+    private List<SelectListItem> SelectListItems = new List<SelectListItem>() { new SelectListItem("Ram", "1"), new SelectListItem("Siya", "2") };
     public A1 Test = new();
+
 
     void OnSubmit(EditContext context)
     {
-        
+        var v1 = Test.MaskValue;
+        var v2 = Test.Select2;
+        var v3 = Test.Summernote;
     }
 
 
-}
+} *@

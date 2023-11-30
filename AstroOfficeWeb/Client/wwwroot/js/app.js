@@ -109,6 +109,60 @@ window.fnApplyInputMask = function (element, mask, placeHolder) {
 
 }
 
+window.InputMaskInterop = {
+    fnInitialize: function (element, mask, placeHolder) {
+        if (element instanceof HTMLInputElement) {
+            $(element).inputmask(mask, { 'placeholder': placeHolder });
+        }
+    },
+
+    fnAddChangeEvent: function (element, dotnetObject) {
+        $(element).on("change", function () {
+            var inputValue = $(this).val();
+            dotnetObject.invokeMethodAsync("OnInputMaskChange", inputValue);
+        });
+    },
+};
+
+window.InputSelect2Interop = {
+    fnInitialize: function (element) {
+        if (element instanceof HTMLSelectElement) {
+            $(element).select2({
+                theme: 'bootstrap4',
+                width: '100%',
+            });
+        }
+    },
+
+    fnAddChangeEvent: function (element, dotnetObject) {
+        $(element).on("change", function () {
+            var inputValue = $(this).val();
+            dotnetObject.invokeMethodAsync("OnInputSelect2Change", inputValue);
+        });
+    },
+};
+
+
+window.fnSummernoteInterop = function (element, height, dotnetObject) {
+    if (element instanceof HTMLDivElement || element instanceof HTMLTextAreaElement) {
+        $(element).summernote({
+            height: height, 
+            focus: true,
+            callbacks: {
+                onInit: function () {
+                    console.log('Summernote is launched');
+                },
+                onChange: function (contents, $editable) {         
+                    dotnetObject.invokeMethodAsync("OnInputSummernoteTextChange", contents);
+                }
+            }
+        });
+        //$(element).on('summernote.change', function (we, contents, $editable) {
+        //    console.log('summernote.change', contents, $editable, we);
+        //});                                                                           
+    }
+}
+
 window.fnGetInputMaskValue = function (element) {
     if (element instanceof HTMLInputElement) {
         var test = $(element).val();

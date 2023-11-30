@@ -1,0 +1,62 @@
+﻿@using AstroShared
+@typeparam IType
+@inherits InputSelect<IType>
+@inject IJSRuntime JSRuntime
+
+<select @ref="ER_InputSelect" data-placeholder="@Placeholder">
+    <option value="">@(string.IsNullOrEmpty(FirstOption) ? Placeholder : FirstOption)</option>
+    @foreach (var item in Options)
+    {
+        <option value="@item.Value">@item.Text</option>
+    }
+</select>
+
+@code {
+
+    public class Option
+    {
+        public object Text { get; set; } = null!;
+        public object Value { get; set; } = null!;
+    }
+
+    [Parameter]
+    public string? FirstOption { get; set; }
+
+    [Parameter]
+    public string Placeholder { get; set; } = "Select an Option";
+
+    [Parameter]
+    public IEnumerable<Option> Options { get; set; } = new List<Option>();
+
+    private ElementReference ER_InputSelect { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("InputSelect2Interop.fnInitialize", ER_InputSelect);
+            await JSRuntime.InvokeVoidAsync("InputSelect2Interop.fnAddChangeEvent", ER_InputSelect, DotNetObjectReference.Create(this));
+        }
+    }
+
+    [JSInvokable]
+    public void OnInputSelect2Change(IType value)
+    {
+        try
+        {
+            if (typeof(IType) == typeof(string) || typeof(IType) == typeof(int) || typeof(IType) == typeof(long))
+            {
+                CurrentValue = value;
+            }
+            else
+            {
+                CurrentValue = default;
+            }
+        }
+        catch(Exception )
+        {
+            CurrentValue = default;
+        }
+        StateHasChanged();
+    }
+}

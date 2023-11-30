@@ -64,7 +64,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         {
             if (firstRender)
             {
-                await JSRuntime.LoadSelect2Async(Input_Country.Element);
+                //await JSRuntime.LoadSelect2Async(Input_Country.Element);
                 await JSRuntime.ApplyInputMaskAsync(Input_MobileNumber.Element, "999 999 9999");
                 await JSRuntime.ApplyInputMaskAsync(Input_ZipCode.Element, "999 999");
             }
@@ -110,10 +110,13 @@ namespace AstroOfficeWeb.Client.Pages.Product
         {
             if (BillingInfoContext.Validate())
             {
-                //BillingInfo.Sno = 1;
-                BillingInfo.AddressType = ProceedStatus.Billing.ToString();
-                BillingInfo.ACountrySno = 80;
+                if (string.IsNullOrEmpty(BillingInfo.AddressType))
+                {
+                    BillingInfo.AddressType = ProceedStatus.Billing.ToString();
+                }
+
                 await ProductService.SaveUserAddress(BillingInfo);
+
                 if (BillingInfo.ShipToDifferentAddress)
                 {
                     await JSRuntime.ShowTabAsync(ER_AShippingInfo);

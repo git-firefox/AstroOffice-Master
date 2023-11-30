@@ -1,0 +1,26 @@
+﻿@inject IJSRuntime JSRuntime
+@inherits InputTextArea
+
+<textarea @ref="ER_TextArea"></textarea>
+
+@code {
+    [Parameter]
+    public int Height { get; set; } = 400;
+
+    private ElementReference ER_TextArea { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("fnSummernoteInterop", ER_TextArea, Height, DotNetObjectReference.Create(this));
+        }
+    }
+
+    [JSInvokable]
+    public void OnInputSummernoteTextChange(object value)
+    {
+        CurrentValue = value.ToString();
+        StateHasChanged();
+    }
+}
