@@ -172,7 +172,7 @@
 
                                                 <div class="tab-pane" id="product-img">
                                                     <EditForm Model="ProductImage" OnValidSubmit="OnSubmit_ProductImage" OnInvalidSubmit="OnInvalidSubmit_ProductImage">
-                                                        <DataAnnotationsValidator/>
+                                                        <DataAnnotationsValidator />
                                                         <h4 class="header-title">Product Images</h4>
                                                         <p class="sub-header">Upload product image</p>
 
@@ -193,7 +193,7 @@
 
                                                         <div class="row">
                                                             <div class="col-12">
-                                                                    <ValidationMessage For=@(()=>ProductImage!.FileNames) style="position: revert;" />
+                                                                <ValidationMessage For=@(()=>ProductImage!.FileNames) style="position: revert;" />
                                                                 <div class="custom-file">
 
                                                                     <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png" OnChange="OnChange_InputFile" multiple />
@@ -225,7 +225,7 @@
                                                                 {
                                                                     <img alt="@SelectedImage.ImageName" class="img-fluid img-thumbnail" src="@SelectedImage.ImageURL" title="@SelectedImage.ImageName" />
                                                                     <div class="mt-3">
-                                                                         <button type="submit" class="btn btn-success" @onclick="OnClick_BtnSetAsMain"> Set image as main</button>
+                                                                        <button type="submit" class="btn btn-success" @onclick="OnClick_BtnSetAsMain"> Set image as main</button>
                                                                     </div>
                                                                 }
 
@@ -239,11 +239,29 @@
                                                         <ul class="pager wizard mb-0 list-inline text-end mt-3">
                                                             <li class="previous list-inline-item disabled">
                                                                 <button type="button" @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.General)" class="btn btn-secondary"> Back to General </button>
-                                                            </li
+                                                            </li>
                                                             <li class="next list-inline-item">
-                                                                <button type="submit"  class="btn btn-success">Add Meta Data</button>
+                                                                <button type="submit" class="btn btn-success">Add Meta Data</button>
                                                             </li>
                                                         </ul>
+
+                                                        <table class="table table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">Sno.</th>
+                                                                    <th scope="col">Meta Title</th>
+                                                                    <th scope="col">Meta Value</th>
+                                                                    <th scope="col">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                            </tbody>
+                                                        </table>
+
+
+
+
                                                     </EditForm>
 
                                                 </div>
@@ -259,29 +277,29 @@
                                                                 @* <input type="text" class="form-control" id="product-meta-title" placeholder="Enter title"> *@
                                                                 <InputText @bind-Value="MetaData!.MetaTitle" class="form-control" id="product-meta-title" placeholder="Enter title" />
                                                             </div>
-                                                             <div class=" col-4">
+                                                            <div class=" col-4">
                                                                 <label for="product-meta-keywords" class="form-label">Meta Keywords</label>
                                                                 <InputText @bind-Value="MetaData.MetaKeyword" class="form-control" id="product-meta-keywords" placeholder="Enter keywords" />
                                                             </div>
-                                                             <div class="col-4 mt-4">
+                                                            <div class="col-4 mt-4">
                                                                 <button type="button" @onclick="Onclick_AddMetaData" class="btn btn-success float-right">Add MetaData</button>
                                                             </div>
                                                         </div>
-@* 
+                                                        @*
                                                         <div>
-                                                            <label for="product-meta-description" class="form-label">Meta Description </label>
-                                                            <InputTextArea @bind-Value="MetaData.MetaDescription" class="form-control" rows="5" id="product-meta-description" placeholder="Please enter description"></InputTextArea>
+                                                        <label for="product-meta-description" class="form-label">Meta Description </label>
+                                                        <InputTextArea @bind-Value="MetaData.MetaDescription" class="form-control" rows="5" id="product-meta-description" placeholder="Please enter description"></InputTextArea>
                                                         </div> *@
-   
 
-                                                    <ul class="pager wizard mb-0 list-inline text-end mt-3">
-                                                        <li class="previous list-inline-item disabled">
-                                                            <button @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.General)" type="button" class="btn btn-secondary"><i class="mdi mdi-arrow-left"></i> Edit Information </button>
-                                                        </li>
-                                                        <li class="list-inline-item">
-                                                            <button @onclick="OnClick_BtnPublished" type="button" class="btn btn-success">Publish Product <i class="mdi mdi-arrow-right ms-1"></i></button>
-                                                        </li>
-                                                    </ul>
+
+                                                        <ul class="pager wizard mb-0 list-inline text-end mt-3">
+                                                            <li class="previous list-inline-item disabled">
+                                                                <button @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.General)" type="button" class="btn btn-secondary"><i class="mdi mdi-arrow-left"></i> Edit Information </button>
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <button @onclick="OnClick_BtnPublished" type="button" class="btn btn-success">Publish Product <i class="mdi mdi-arrow-right ms-1"></i></button>
+                                                            </li>
+                                                        </ul>
                                                     </EditForm>
                                                 </div>
                                             </div>
