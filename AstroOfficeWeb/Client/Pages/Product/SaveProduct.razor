@@ -245,19 +245,7 @@
                                                             </li>
                                                         </ul>
 
-                                                        <table class="table table-striped">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col">Sno.</th>
-                                                                    <th scope="col">Meta Title</th>
-                                                                    <th scope="col">Meta Value</th>
-                                                                    <th scope="col">Action</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
 
-                                                            </tbody>
-                                                        </table>
 
 
 
@@ -273,13 +261,13 @@
                                                         <div class="row">
 
                                                             <div class="col-4">
-                                                                <label for="product-meta-title" class="form-label">Meta title</label>
+                                                                <label for="product-meta-title" class="form-label">Meta Keywords</label>
                                                                 @* <input type="text" class="form-control" id="product-meta-title" placeholder="Enter title"> *@
-                                                                <InputText @bind-Value="MetaData!.MetaTitle" class="form-control" id="product-meta-title" placeholder="Enter title" />
+                                                                <InputText @bind-Value="MetaData!.MetaTitle" class="form-control" id="product-meta-title" placeholder="Meta Keywords" />
                                                             </div>
                                                             <div class=" col-4">
-                                                                <label for="product-meta-keywords" class="form-label">Meta Keywords</label>
-                                                                <InputText @bind-Value="MetaData.MetaKeyword" class="form-control" id="product-meta-keywords" placeholder="Enter keywords" />
+                                                                <label for="product-meta-keywords" class="form-label">Meta Value</label>
+                                                                <InputText @bind-Value="MetaData.MetaKeyword" class="form-control" id="product-meta-keywords" placeholder="Meta Value" />
                                                             </div>
                                                             <div class="col-4 mt-4">
                                                                 <button type="button" @onclick="Onclick_AddMetaData" class="btn btn-success float-right">Add MetaData</button>
@@ -292,6 +280,42 @@
                                                         </div> *@
 
 
+                                                        <div class="row mt-3">
+                                                            <div class="col-12">
+
+                                                                <table class="table table-striped">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col">Sno.</th>
+                                                                            <th scope="col">Meta Keywords</th>
+                                                                            <th scope="col">Meta Value</th>
+                                                                            <th scope="col">Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+
+                                                                        @foreach (var (value, index) in MetaDataList.Select((value, index) => (value, index)))
+                                                                        {
+                                                                            @* <button data-target="#carouselExampleIndicators" data-slide-to="@(index+1)" class="thumbnail" aria-label="Slide @(index+2)"> *@
+
+                                                                            <tr>
+                                                                                <td>@(index + 1) </td>
+                                                                                <td>@value.MetaTitle </td>
+                                                                                <td>@value.MetaKeyword</td>
+                                                                                <td>
+                                                                                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_UpdateMetaData(1,value))" />
+                                                                                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_UpdateMetaData(0,value))" />
+                                                                                </td>
+                                                                            </tr>
+
+
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+
                                                         <ul class="pager wizard mb-0 list-inline text-end mt-3">
                                                             <li class="previous list-inline-item disabled">
                                                                 <button @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.General)" type="button" class="btn btn-secondary"><i class="mdi mdi-arrow-left"></i> Edit Information </button>
@@ -300,6 +324,10 @@
                                                                 <button @onclick="OnClick_BtnPublished" type="button" class="btn btn-success">Publish Product <i class="mdi mdi-arrow-right ms-1"></i></button>
                                                             </li>
                                                         </ul>
+
+
+
+
                                                     </EditForm>
                                                 </div>
                                             </div>

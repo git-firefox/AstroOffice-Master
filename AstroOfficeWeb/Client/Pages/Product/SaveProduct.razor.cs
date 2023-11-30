@@ -281,5 +281,16 @@ namespace AstroOfficeWeb.Client.Pages.Product
             MetaData = new MetaData();
         }
 
+        private void OnClick_UpdateMetaData(int action, MetaData data)
+        {
+            if(action == 1)
+            {
+                MetaData = data;
+            }
+            else
+            {
+                MetaDataList.Remove(data);
+            }
+        }
     }
 }
