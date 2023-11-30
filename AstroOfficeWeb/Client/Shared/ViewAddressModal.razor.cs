@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using AstroShared.Helper;
 using AstroOfficeWeb.Client.Pages.Product;
 using Microsoft.AspNetCore.Components.Forms;
+using AstroOfficeWeb.Client.Shared.CustomInputs;
 
 namespace AstroOfficeWeb.Client.Shared
 {
@@ -18,7 +19,7 @@ namespace AstroOfficeWeb.Client.Shared
         public long DefaultAddressSno { get; set; }
 
         [Parameter]
-        public List<CountryDTO> CountryDTOs { get; set; } = new();
+        public List<Option> CountryOptions { get; set; } = new();
 
         [Parameter]
         public EventCallback<bool> OnConfirmationChanged { get; set; }
@@ -76,10 +77,6 @@ namespace AstroOfficeWeb.Client.Shared
             BillingInfo!.ZipCode = zipcode.ToDigits();
         }
 
-        private async void OnBlur_Country(FocusEventArgs e)
-        {
-            //var obj = await JSRuntime.GetSelect2DataAsync(Input_Country.Element);
-        }
 
         enum AddressMode
         {

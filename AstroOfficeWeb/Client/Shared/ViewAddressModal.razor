@@ -108,13 +108,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Country</label>
                                     <ValidationMessage For=@(() => BillingInfo!.ACountrySno) style="position:revert;" />
-                                    <InputSelect @ref="Input_Country" @bind-Value="BillingInfo!.ACountrySno" class="form-control" data-placeholder="Select a Country">
-                                        <option value="">Select Country</option>
-                                        @foreach (var country in CountryDTOs)
-                                        {
-                                            <option value="@country.Sno">@country.Country</option>
-                                        }
-                                    </InputSelect>
+                                    <InputSelect2 @ref="Input_Country" @bind-Value="BillingInfo!.ACountrySno" Options="CountryOptions" class="form-control" Placeholder="Select a Country"></InputSelect2>
                                 </div>
                             </div>
                         </div> <!-- end row -->

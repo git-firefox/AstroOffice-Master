@@ -60,8 +60,9 @@ namespace AstroShared.DTOs
     {
         public long Sno { get; set; }
 
+        [Required]
         [Display(Name = "Country")]
-        [Required(ErrorMessage = "{0} is required")]
+        [Range(1, 100000, ErrorMessage = "{0} is required.")]
         public long ACountrySno { get; set; }
 
         [Required]

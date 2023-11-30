@@ -11,7 +11,7 @@
 @inject ILocalStorageService LocalStorage
 @inject ISwaggerApiService Swagger
 
-<ViewAddressModal @ref="Modal_ViewAddress" Addresses="Addresses" OnSelectAddressChanged="OnSelect_Address" CountryDTOs="CountryDTOs"></ViewAddressModal>
+<ViewAddressModal @ref="Modal_ViewAddress" Addresses="Addresses" OnSelectAddressChanged="OnSelect_Address" CountryOptions="CountryOptions"></ViewAddressModal>
 
 <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold "> Checkout </h1>
@@ -152,7 +152,7 @@
                                                             <div class="mb-3">
                                                                 <label class="form-label">Country</label>
                                                                 <ValidationMessage For=@(() => BillingInfo!.ACountrySno) style="position:revert;" />
-                                                                <InputSelect2 @bind-Value="BillingInfo!.ACountrySno" class="form-control" Placeholder="Select a Country" Options="CountryDTOs.Select(a => new Option(){ Text = a.Country, Value = a.Sno})" />
+                                                                <InputSelect2 @bind-Value="BillingInfo!.ACountrySno" class="form-control" Placeholder="Select a Country" Options="CountryOptions" />
                                                             </div>
                                                         </div>
                                                     </div> <!-- end row -->

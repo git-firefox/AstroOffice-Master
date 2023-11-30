@@ -3,6 +3,7 @@
 @using AstroShared
 
 
+
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
@@ -11,16 +12,20 @@ Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
-@* <EditForm Model="Test" OnValidSubmit="OnSubmit">
+<EditForm Model="Test" OnValidSubmit="OnSubmit">
     <DataAnnotationsValidator />
     <ValidationMessage For=@(() => Test.MaskValue) style="position:revert;" />
     <InputMask @bind-Value="Test.MaskValue" Mask="999 999 9999" class="form-control"></InputMask>
 
+    <InputNumberMask @bind-Value="Test.MaskValue1" Mask="999" class="form-control"></InputNumberMask>
+
     <ValidationMessage For=@(() => Test.Select2) style="position:revert;" />
-    <InputSelect2 Options="SelectListItems" @bind-Value="Test.Select2"></InputSelect2>
-    
-    <ValidationMessage For=@(() => Test.Summernote) style="position:revert;" />
+    <InputSelect2 Options="Options" @bind-Value="Test.Select2"></InputSelect2>
+    <InputSelect2 Options="Options" @bind-Value="Test.Select1"></InputSelect2>
+
     <InputTextEditor @bind-Value="Test.Summernote"></InputTextEditor>
+    <InputTextEditor @bind-Value="Test.Summernote2"></InputTextEditor>
+    <InputTextArea @bind-Value="Test.Summernote3"></InputTextArea>
 
     <MudButton ButtonType="ButtonType.Submit">Submit</MudButton>
 </EditForm>
@@ -32,14 +37,26 @@ Welcome to your new app.
         [StringLength(10, MinimumLength = 10, ErrorMessage = "Mobile number must be 10 digits.")]
         public string? MaskValue { get; set; }
 
+        public long MaskValue1 { get; set; }
+
+        [Range(1, 100000, ErrorMessage = "{0} is required.")]
         [Required]
-        public string? Select2 { get; set; }  
+        public long Select2 { get; set; }
         
+        [Range(1, 100000, ErrorMessage = "{0} is required.")]
+        [Required]
+        public long Select1 { get; set; }
+
         [Required]
         public string? Summernote { get; set; }
+        
+        [Required]
+        public string? Summernote2 { get; set; }
+        public string? Summernote3 { get; set; }
     }
 
-    private List<SelectListItem> SelectListItems = new List<SelectListItem>() { new SelectListItem("Ram", "1"), new SelectListItem("Siya", "2") };
+    private List<Option> Options = new List<Option>() { new Option() { Text = "Ram", Value = 1 }, new Option() { Text = "Ram", Value = 1 } };
+    // private List<Option> Options = new List<Option>() { new Option<long>() { Text = "Ram", Value = 1 }, new Option<long>() { Text = "Ram", Value = 1 } };
     public A1 Test = new();
 
 
@@ -51,4 +68,4 @@ Welcome to your new app.
     }
 
 
-} *@
+}
