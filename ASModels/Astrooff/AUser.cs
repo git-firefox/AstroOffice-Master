@@ -16,6 +16,7 @@ namespace ASModels.Astrooff
             ATokenTransactions = new HashSet<ATokenTransaction>();
             Addresses = new HashSet<Address>();
             ProductOrders = new HashSet<ProductOrder>();
+            ProductWishlists = new HashSet<ProductWishlist>();
             ShoppingCarts = new HashSet<ShoppingCart>();
         }
 
@@ -54,6 +55,8 @@ namespace ASModels.Astrooff
         public virtual ICollection<Address> Addresses { get; set; }
         [InverseProperty("AUsersSnoNavigation")]
         public virtual ICollection<ProductOrder> ProductOrders { get; set; }
+        [InverseProperty("AUsersSnoNavigation")]
+        public virtual ICollection<ProductWishlist> ProductWishlists { get; set; }
         [InverseProperty("AUsersSnoNavigation")]
         public virtual ICollection<ShoppingCart> ShoppingCarts { get; set; }
     }

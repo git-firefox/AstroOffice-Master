@@ -151,6 +151,7 @@ namespace ASModels
         public virtual DbSet<ProductImage> ProductImages { get; set; } = null!;
         public virtual DbSet<ProductMetaData> ProductMetaDatas { get; set; } = null!;
         public virtual DbSet<ProductOrder> ProductOrders { get; set; } = null!;
+        public virtual DbSet<ProductWishlist> ProductWishlists { get; set; } = null!;
         public virtual DbSet<Query> Queries { get; set; } = null!;
         public virtual DbSet<QueryEng> QueryEngs { get; set; } = null!;
         public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
@@ -1054,6 +1055,22 @@ namespace ASModels
                     .WithMany(p => p.ProductOrderShippingAddressSnoNavigations)
                     .HasForeignKey(d => d.ShippingAddressSno)
                     .HasConstraintName("FK__ProductOr__Shipp__7854C86E");
+            });
+
+            modelBuilder.Entity<ProductWishlist>(entity =>
+            {
+                entity.HasKey(e => e.Sno)
+                    .HasName("PK__ProductW__CA1FE464F1C532B2");
+
+                entity.HasOne(d => d.AProductsSnoNavigation)
+                    .WithMany(p => p.ProductWishlists)
+                    .HasForeignKey(d => d.AProductsSno)
+                    .HasConstraintName("FK__ProductWi__A_Pro__03C67B1A");
+
+                entity.HasOne(d => d.AUsersSnoNavigation)
+                    .WithMany(p => p.ProductWishlists)
+                    .HasForeignKey(d => d.AUsersSno)
+                    .HasConstraintName("FK__ProductWi__A_Use__04BA9F53");
             });
 
             modelBuilder.Entity<ShoppingCart>(entity =>
