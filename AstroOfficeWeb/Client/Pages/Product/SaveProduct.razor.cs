@@ -10,6 +10,13 @@ using static MudBlazor.CategoryTypes;
 
 namespace AstroOfficeWeb.Client.Pages.Product
 {
+    public enum ActionMode
+    {
+        Add,
+        Edit,
+        Delete,
+        Cancel
+    }
     public class ProductImage
     {
         public string? Src { get; set; }
@@ -51,9 +58,10 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public ProductImage? ProductImage { get; set; } = new();
 
         public MetaData MetaData { get; set; } = new();
-
-
+        private ActionMode MetaDataAction { get; set; }
         private List<MetaData> MetaDataList { get; set; } = new List<MetaData>();
+
+
 
         //public ProductDTO ViewProductDTO { get; set; } = new();
 
@@ -217,7 +225,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         private async Task OnClick_BtnPublished()
         {
 
-            //SaveProductModel!.Description = await JSRuntime.GetEditorValue(ER_TextEditor?.Element);
+            //SaveProductModel!.Description = await JSRuntime.GetEditorValue(ER_TextEditor?.MetaData);
             //if (context.Validate())
             //{
             //SaveProductModel.ProductImages = BrowserFiles;
@@ -280,9 +288,10 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         }
 
-        private async Task OnClick_UpdateMetaData(int action, MetaData data)
+        private async Task OnClick_UpdateMetaData(ActionMode action, MetaData data)
         {
-            if (action == 1)
+            MetaDataAction = action;
+            if (action == ActionMode.Edit)
             {
                 MetaData = data;
             }
@@ -302,5 +311,11 @@ namespace AstroOfficeWeb.Client.Pages.Product
                 }
             }
         }
+
+        private string SearchMetaTitle { get; set; } = string.Empty;
+        private Func<string, bool> QuickFilter => x =>
+        {
+            return x.Contains(SearchMetaTitle, StringComparison.OrdinalIgnoreCase);
+        };
     }
 }

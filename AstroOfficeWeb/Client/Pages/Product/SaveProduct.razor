@@ -280,7 +280,7 @@
                                                         <div class="row">
 
                                                             <div class="col-4">
-                                                                <label for="product-meta-title" class="form-label">Meta Keywords</label>
+                                                                <label for="product-meta-title" class="form-label">Meta Keyword</label>
                                                                 @* <input type="text" class="form-control" id="product-meta-title" placeholder="Enter title"> *@
                                                                 <InputText @bind-Value="MetaData!.MetaTitle" class="form-control" id="product-meta-title" placeholder="Meta Keywords" />
                                                             </div>
@@ -289,13 +289,13 @@
                                                                 <InputText @bind-Value="MetaData.MetaKeyword" class="form-control" id="product-meta-keywords" placeholder="Meta Value" />
                                                             </div>
                                                             <div class="col-4 mt-4">
-                                                                @if (MetaData != null)
+                                                                @if (MetaDataAction is ActionMode.Add)
                                                                 {
-                                                                    <button type="button" @onclick="(()=> MetaData= new())" class="btn btn-success float-right">Cancel</button>
+                                                                    <button type="button" @onclick="Onclick_AddMetaData" class="btn btn-success float-right">Add MetaData</button>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <button type="button" @onclick="Onclick_AddMetaData" class="btn btn-success float-right">Add MetaData</button>
+                                                                    <button type="button" @onclick="(()=> MetaDataAction = ActionMode.Add)" class="btn btn-success float-right">Cancel</button>
                                                                 }
                                                             </div>
                                                         </div>
@@ -309,18 +309,15 @@
                                                         <div class="row mt-3">
                                                             <div class="col-12">
 
-
-                                                                <MudDataGrid Items="@MetaDataList.Select((value, index) => (value, index))" Bordered="true" Dense="true">
+                                                                <MudDataGrid Items="@MetaDataList.Select((value, index) => (value, index))" Bordered="true">
                                                                     <Columns>
                                                                         <PropertyColumn Property="x => x.index+1" Title="Sr No" IsEditable="false" />
-                                                                        <PropertyColumn Property="x => x.value.MetaTitle" />
-                                                                        <PropertyColumn Property="x => x.value.MetaKeyword" />
+                                                                        <PropertyColumn Property="x => x.value.MetaKeyword" Title="Meta Keyword" />
+                                                                        <PropertyColumn Property="x => x.value.MetaTitle" Title="Meta Value" />
                                                                         <TemplateColumn Title="Action" Sortable="false" IsEditable="false">
                                                                             <CellTemplate>
-
-                                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_UpdateMetaData(1,context.Item.value))" />
-                                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_UpdateMetaData(0,context.Item.value))" />
-
+                                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_UpdateMetaData(ActionMode.Edit,context.Item.value))" />
+                                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_UpdateMetaData(ActionMode.Delete,context.Item.value))" />
                                                                             </CellTemplate>
                                                                         </TemplateColumn>
                                                                     </Columns>
