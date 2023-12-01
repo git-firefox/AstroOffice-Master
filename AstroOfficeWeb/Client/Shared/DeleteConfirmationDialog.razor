@@ -1,0 +1,30 @@
+﻿@using AstroShared.DTOs;
+<MudDialog>
+    <DialogContent>
+        <p>Are you sure you want to delete this item?</p>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Secondary" OnClick="@(() => MudDialog!.Cancel())">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="@ConfirmDelete">Delete</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance? MudDialog { get; set; }
+    [Parameter] public MetaDataDTO? MetaDataToDelete { get; set; }
+    [Parameter] public List<MetaDataDTO>? MetaDataList { get; set; }
+    [Parameter] public EventCallback OnDeleted { get; set; }
+
+    private void ConfirmDelete()
+    {
+        // Perform the delete logic
+        if (MetaDataList!.Contains(MetaDataToDelete))
+        {
+            MetaDataList.Remove(MetaDataToDelete);
+            OnDeleted.InvokeAsync(); // Notify parent component about the deletion
+        }
+
+        // Close the dialog
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+}

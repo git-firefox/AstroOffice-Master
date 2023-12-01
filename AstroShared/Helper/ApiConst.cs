@@ -123,9 +123,9 @@
         public static string Base = "api/Product/";
         public static string GET_Products = Base + "GetProducts";
         public static string GET_UserAddedProducts = Base + "GetUserAddedProducts";
-        public static string GET_ProductBySno = Base + "GetProductBySno";
+        public static string GET_ProductBySno = Base + "GetProductBySno";       
         public static string GET_UserAddresses = Base + "GetUserAddresses";
-        public static string GET_UserShoppingCart = Base + "GetUserShoppingCart";
+        public static string GET_UserShoppingCart = Base + "GetUserShoppingCart";       
         public static string GET_ProductImages = Base + "GetImagesByProductId";
         public static string POST_AddProduct = Base + "AddProduct";
         public static string POST_AddToShoppingCart = Base + "AddToShoppingCart";

@@ -1,11 +1,15 @@
-﻿using AstroShared.DTOs;
+﻿using AstroOfficeWeb.Client.Shared;
+using AstroShared.DTOs;
 using AstroShared.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Options;
 using MudBlazor;
+using MudBlazor.Extensions;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using System.Text.Json;
 using static MudBlazor.CategoryTypes;
 
 namespace AstroOfficeWeb.Client.Pages.Product
@@ -30,13 +34,14 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public List<string> FileNames { get; set; } = new();
     }
 
-    public class MetaData
-    {
-        public string? MetaTitle { get; set; }
-        public string? MetaKeyword { get; set; }
+    //public class MetaData
+    //{
+    //    public int Number { get; set; }
+    //    public string MetaTitle { get; set; } = string.Empty;
+    //    public string MetaKeyword { get; set; } = string.Empty;
 
-        public string? MetaDescription { get; set; }
-    }
+    //    public string? MetaDescription { get; set; }
+    //}
     public partial class SaveProduct
     {
         [Parameter]
@@ -48,6 +53,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public ElementReference ER_AMetaData { get; set; }
 
         //public ElementReference? Test1 { get; set; }
+        public DeleteConfirmationDialog DeleteConfirmationDialog { get; set; }
 
         public List<ImagesDTO> BrowserFiles { get; set; } = new();
 
@@ -57,9 +63,10 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         public ProductImage? ProductImage { get; set; } = new();
 
-        public MetaData MetaData { get; set; } = new();
+        public MetaDataDTO MetaData { get; set; } = new();
+        public MetaDataDTO? SelectedMetaData { get; set; }
         private ActionMode MetaDataAction { get; set; }
-        private List<MetaData> MetaDataList { get; set; } = new List<MetaData>();
+        private List<MetaDataDTO> MetaDataList { get; set; } = new List<MetaDataDTO>();
 
 
 
@@ -112,6 +119,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
             if (Sno != 0)
             {
                 ProductModel = await ProductService.GetProductBySno(Sno) ?? new();
+              
                 //SaveProductModel = new SaveProductDTO()
                 //{
                 //    Price = viewProductDTO!.Price,
@@ -177,7 +185,27 @@ namespace AstroOfficeWeb.Client.Pages.Product
             ProductImage,
             Metadata
         }
+        DialogOptions closeButton = new DialogOptions() { CloseButton = true };
 
+        private async Task OpenDeleteConfirmationDialog(MetaDataDTO metaDataDTO)
+        {
+
+            if (MetaDataList.Contains(metaDataDTO))
+            {
+
+                var data =  Dialog.Show<DeleteConfirmationDialog>("Confirmation", closeButton);
+                if (data!= null)
+                {
+
+                    MetaDataList.Remove(metaDataDTO);
+                    StateHasChanged();
+                }
+
+            }
+
+
+
+        }
         private async Task OnClick_BtnProceed(ProceedSaveProduct mode)
         {
             if (mode == ProceedSaveProduct.General)
@@ -225,11 +253,14 @@ namespace AstroOfficeWeb.Client.Pages.Product
         private async Task OnClick_BtnPublished()
         {
 
-            //SaveProductModel!.Description = await JSRuntime.GetEditorValue(ER_TextEditor?.MetaData);
+            //SaveProductModel!.Description = await JSRuntime.GetEditorValue(ER_TextEditor?.MetaDataDTO);
             //if (context.Validate())
             //{
             //SaveProductModel.ProductImages = BrowserFiles;
             ProductModel.ProductImages = BrowserFiles;
+            ProductModel.MetaDatas = MetaDataList;
+
+
             if (Sno == 0)
             {
                 await ProductService.AddProduct(ProductModel);
@@ -258,6 +289,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
                 SelectedImage = null;
         }
 
+
         private async Task OnClick_BtnSetAsMain(MouseEventArgs e)
         {
             if (SelectedImage == null)
@@ -275,40 +307,35 @@ namespace AstroOfficeWeb.Client.Pages.Product
                 ProductModel!.ImageUrl = SelectedImage.ImageURL;
                 await JSRuntime.ShowToastAsync("The current selected image has been set as the main image successfully", SwalIcon.Success);
             }
-        }
 
+        }
+        public string searchString = string.Empty;
         public void Onclick_AddMetaData()
         {
-            // Add the current MetaData to the list
-            MetaDataList.Add(new MetaData
+            // Add the current MetaDataDTO to the list
+            MetaDataList.Add(new MetaDataDTO
             {
-                MetaTitle = MetaData!.MetaTitle,
+                MetaValue = MetaData!.MetaValue,
                 MetaKeyword = MetaData.MetaKeyword,
             });
-
+            MetaData = new MetaDataDTO();
+        }
+        private bool FilterFunc(MetaDataDTO element)
+        {
+            if (string.IsNullOrWhiteSpace(searchString))
+                return true;
+            if (element.MetaKeyword!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
         }
 
-        private async Task OnClick_UpdateMetaData(ActionMode action, MetaData data)
+        private async Task OnClick_DeleteMetaData(MetaDataDTO data)
         {
-            MetaDataAction = action;
-            if (action == ActionMode.Edit)
+            bool? result = await Dialog.ShowMessageBox(title: "Alert", message: "Are you sure you want to delete?", yesText: "Delete", noText: "", cancelText: "Cancel", new DialogOptions() { FullWidth = true });
+            if (result.GetValueOrDefault())
             {
-                MetaData = data;
-            }
-
-            else
-            {
-
-
-
-                //bool? result = await MessageBox.Show();
-                bool? result = await DialogService.ShowMessageBox(title: "Alert", message: "Are you sure you want to delete?", yesText: "Delete", noText: "", cancelText: "Cancel", new DialogOptions() { FullWidth = true });
-                if (result.GetValueOrDefault())
-                {
-                    MetaDataList.Remove(data);
-                    StateHasChanged();
-
-                }
+                MetaDataList.Remove(data);
+                StateHasChanged();
             }
         }
 
@@ -317,5 +344,74 @@ namespace AstroOfficeWeb.Client.Pages.Product
         {
             return x.Contains(SearchMetaTitle, StringComparison.OrdinalIgnoreCase);
         };
+
+        private MetaDataDTO? elementBeforeEdit;
+
+
+        //private void ClearEventLog()
+        //{
+        //    editEvents.Clear();
+        //}
+
+        //private void AddEditionEvent(string message)
+        //{
+        //    editEvents.Add(message);
+        //    StateHasChanged();
+        //}
+
+        private void AddEditionEvent(string message)
+        {
+
+            StateHasChanged();
+        }
+        private void BackupItem(object element)
+        {
+            //elementBeforeEdit = element.As<MetaData>(); 
+            //AddEditionEvent($"RowEditPreview event: made a backup of Element {((MetaData)element).MetaTitle}");
+            if (element is MetaDataDTO metaData)
+            {
+                // Serialize and then deserialize to create a deep copy
+                var serializedElement = JsonSerializer.Serialize(metaData);
+                elementBeforeEdit = JsonSerializer.Deserialize<MetaDataDTO>(serializedElement);
+
+                AddEditionEvent($"RowEditPreview event: made a backup of Element {metaData.MetaValue}");
+            }
+        }
+
+        private void ResetItemToOriginalValues(object? element)
+        {
+
+            //element = elementBeforeEdit; 
+            ////element.As<MetaDataDTO>();
+            ////MetaDataDTO.MetaKeyword = elementBeforeEdit!.MetaKeyword;
+            ////MetaData.MetaTitle = elementBeforeEdit.MetaTitle;
+            //AddEditionEvent($"RowEditCancel event: Editing of Element {((MetaData)element).MetaTitle} canceled");
+
+
+
+
+            if (element is MetaDataDTO metaDataElement)
+            {
+                // Make a copy or create a new instance
+                MetaDataDTO originalValues = new MetaDataDTO
+                {
+                    MetaKeyword = elementBeforeEdit?.MetaKeyword,
+                    MetaValue = elementBeforeEdit?.MetaValue,
+                    // Copy other properties as needed
+                };
+
+                // Reset MetaDataDTO properties using values from the copy
+                metaDataElement.MetaKeyword = originalValues.MetaKeyword;
+                metaDataElement.MetaValue = originalValues.MetaValue;
+
+                AddEditionEvent($"RowEditCancel event: Editing of Element {metaDataElement.MetaValue} canceled");
+            }
+
+        }
+
+        private void ItemHasBeenCommitted(object element)
+        {
+            AddEditionEvent($"RowEditCommit event: Changes to Element {((MetaDataDTO)element).MetaValue} committed");
+        }
     }
 }

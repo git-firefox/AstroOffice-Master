@@ -60,6 +60,19 @@ namespace AstroOfficeWeb.Client.Services
 
             return response?.Data;
         }
+
+        //public async Task<MetaDataDTO> GetMetaDataBySno(long sno)
+        //{
+        //    var queryParams = new Dictionary<string, string>()
+        //    {
+        //        { "Sno", sno.ToString()}
+        //    };
+
+        //    var response = await _swagger.GetAsync<ApiResponse<MetaDataDTO>>(ProductApiConst.GET_MetaDataBySno, queryParams);
+
+        //    return response?.Data;
+        //}
+
         public async Task AddProduct(ProductDTO saveProduct)
         {
             var response = await _swagger.PostAsync<ProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.POST_AddProduct, saveProduct);
