@@ -94,7 +94,7 @@
                                                             <div class="mb-3">
                                                                 <label for="billing-phone" class="form-label">Phone <span class="text-danger">*</span></label>
                                                                 <ValidationMessage For=@(() => BillingInfo!.PhoneNumber) style="position:revert;" />
-                                                                <InputText @ref="Input_MobileNumber" @bind-Value="BillingInfo!.PhoneNumber" class="form-control" type="text" id="billing-phone" @onfocusout="OnFocusOut_InputPhoneNumber" />
+                                                                <InputMask IType="string" @bind-Value="BillingInfo!.PhoneNumber" class="form-control" id="billing-phone" />
                                                             </div>
                                                         </div>
                                                     </div> <!-- end row -->
@@ -136,7 +136,7 @@
                                                             <div class="mb-3">
                                                                 <label for="billing-zip-postal" class="form-label">Zip Code</label>
                                                                 <ValidationMessage For=@(() => BillingInfo!.ZipCode) style="position:revert;" />
-                                                                <InputText @ref="Input_ZipCode" @bind-Value="BillingInfo!.ZipCode" @onfocusout="OnFocusOut_InputZipCode" class="form-control" type="text" placeholder="Enter your zip code" id="billing-zip-postal" />
+                                                                <InputMask IType="string" @bind-Value="BillingInfo!.ZipCode" Mask="999 999" class="form-control" placeholder="Enter your zip code" id="billing-zip-postal" />
                                                             </div>
                                                         </div>
                                                     </div> <!-- end row -->
@@ -168,7 +168,7 @@
 
                                                             <div class="mb-3 mt-3">
                                                                 <label for="example-textarea" class="form-label">Order Notes:</label>
-                                                                <textarea class="form-control" id="example-textarea" rows="3" placeholder="Write some note.."></textarea>
+                                                                <textarea @bind="PlaceOrder.OrderNotes" class="form-control" id="example-textarea" rows="3" placeholder="Write some note.."></textarea>
                                                             </div>
                                                         </div>
                                                     </div> <!-- end row -->
@@ -379,76 +379,100 @@
                                 <div class="checkout-order-review">
                                     <div class="card mt-4 mt-xl-0">
                                         <div class="card-body">
-                                            <h4 class="header-title mb-3">Order Summary</h4>
+                                            @if (CartItems == null)
+                                            {
+                                                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="500px" />
+                                            }
+                                            else
+                                            {
+                                                <h4 class="header-title mb-3">Order Summary</h4>
 
-                                            <div class="table-responsive">
-                                                <table class="table table-centered table-nowrap mb-0">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td style="width: 80px;">
-                                                                <img src="../assets/images/products/product-1.png" alt="product-img" title="product-img" class="rounded" height="48">
-                                                            </td>
-                                                            <td>
-                                                                <a href="ecommerce-product-detail.html" class="text-body fw-semibold">Blue color T-shirt</a>
-                                                                <small class="d-block">1 x $ 41</small>
-                                                            </td>
+                                                <div class="table-responsive">
+                                                    <table class="table table-centered table-nowrap mb-0">
+                                                        <tbody>
 
-                                                            <td class="text-end">
-                                                                $ 41
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <img src="../assets/images/products/product-6.png" alt="product-img" title="product-img" class="rounded" height="48">
-                                                            </td>
 
-                                                            <td>
-                                                                <a href="ecommerce-product-detail.html" class="text-body fw-semibold">Blue Hoodie for men</a>
-                                                                <small class="d-block">2 x $ 45</small>
-                                                            </td>
-                                                            <td class="text-end">
-                                                                $ 90
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <img src="../assets/images/products/product-8.png" alt="product-img" title="product-img" class="rounded me-2" height="48">
-                                                            </td>
-                                                            <td>
-                                                                <a href="ecommerce-product-detail.html" class="text-body fw-semibold">Full sleeve Pink T-shirt</a>
-                                                                <small class="d-block">1 x $ 45</small>
-                                                            </td>
-                                                            <td class="text-end">
-                                                                $ 45
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="text-end">
-                                                            <td colspan="2">
-                                                                <h6 class="m-0">Sub Total:</h6>
-                                                            </td>
-                                                            <td class="text-end">
-                                                                $ 176
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="text-end">
-                                                            <td colspan="2">
-                                                                <h6 class="m-0">Shipping:</h6>
-                                                            </td>
-                                                            <td class="text-end">
-                                                                FREE
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="text-end">
-                                                            <td colspan="2">
-                                                                <h5 class="m-0">Total:</h5>
-                                                            </td>
-                                                            <td class="text-end fw-semibold">
-                                                                $ 176
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+
+                                                            @foreach (var cartItem in CartItems)
+                                                            {
+                                                                <tr>
+                                                                    <td class="w-25">
+                                                                        <img src="@cartItem.ProductImageSrc" alt="@cartItem.ProductName" title="@cartItem.ProductName" class="rounded" height="48">
+                                                                    </td>
+                                                                    <td class="w-50">
+                                                                        <a href="javascript:void(0)" class="text-body fw-semibold">@cartItem.ProductName</a>
+                                                                        <small class="d-block">@cartItem.ProductQuantity x <MudIcon Icon="@Icons.Material.Filled.CurrencyRupee" Title="Rupee" /> @cartItem.ProductPrice.ToString("F2")</small>
+                                                                    </td>
+
+                                                                    <td class="w-25 text-end">
+                                                                        <MudIcon Icon="@Icons.Material.Filled.CurrencyRupee" Title="Rupee" /> @((cartItem.ProductQuantity * cartItem.ProductPrice).ToString("F2"))
+                                                                    </td>
+                                                                </tr>
+                                                            }
+
+                                                            <tr class="text-end">
+                                                                <td colspan="2">
+                                                                    <h6 class="m-0">Sub Total:</h6>
+                                                                </td>
+                                                                <td class="text-end">
+                                                                    <MudIcon Icon="@Icons.Material.Filled.CurrencyRupee" Title="Rupee" /> @OrderSummary.GrandTotal.ToString("F2")
+                                                                </td>
+                                                            </tr>
+
+                                                            @* <tr class="text-end">
+                                                        <td colspan="2">
+                                                        <h6 class="m-0">Shipping:</h6>
+                                                        </td>
+                                                        <td class="text-end">
+                                                        FREE
+                                                        </td>
+                                                        </tr> *@
+
+                                                            @if (OrderSummary.Discount != 0)
+                                                            {
+                                                                <tr class="text-end">
+                                                                    <td colspan="2">
+                                                                        <h6 class="m-0"> Discount :</h6>
+                                                                    </td>
+                                                                    <td class="text-end">
+                                                                        - <MudIcon Icon="@Icons.Material.Filled.CurrencyRupee" Title="Rupee" /> @OrderSummary.Discount.ToString("F2")
+                                                                    </td>
+                                                                </tr>
+                                                            }
+
+                                                            @if (OrderSummary.ShippingCharge != 0)
+                                                            {
+                                                                <tr class="text-end">
+                                                                    <td colspan="2">
+                                                                        <h6 class="m-0">  Shipping Charge :</h6>
+                                                                    </td>
+                                                                    <td class="text-end">
+                                                                        <MudIcon Icon="@Icons.Material.Filled.CurrencyRupee" Title="Rupee" /> @OrderSummary.ShippingCharge.ToString("F2")
+                                                                    </td>
+                                                                </tr>
+                                                            }
+
+                                                            <tr class="text-end">
+                                                                <td colspan="2">
+                                                                    <h6 class="m-0"> Estimated Tax :</h6>
+                                                                </td>
+                                                                <td class="text-end">
+                                                                    <MudIcon Icon="@Icons.Material.Filled.CurrencyRupee" Title="Rupee" /> @OrderSummary.EstimatedTax.ToString("F2")
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr class="text-end">
+                                                                <td colspan="2">
+                                                                    <h5 class="m-0">Total:</h5>
+                                                                </td>
+                                                                <td class="text-end fw-semibold">
+                                                                    <MudIcon Icon="@Icons.Material.Filled.CurrencyRupee" Title="Rupee" /> @OrderSummary.Total.ToString("F2")
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 </div>

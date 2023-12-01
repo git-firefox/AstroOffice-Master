@@ -25,7 +25,7 @@
     [JSInvokable]
     public void OnInputMaskChange(object value)
     {
-        CurrentValue = value.ToMobileNumber();
+        CurrentValue = value.ToDigits();
         StateHasChanged();
     }
 }

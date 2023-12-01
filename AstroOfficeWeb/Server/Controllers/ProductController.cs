@@ -3,11 +3,15 @@ using ASModels;
 using ASModels.Astrooff;
 using AstroOfficeWeb.Server.Helper;
 using AstroOfficeWeb.Shared.Models;
+using AstroShared;
 using AstroShared.DTOs;
+using AstroShared.Utilities;
 using AutoMapper;
+using AutoMapper.Configuration.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -359,13 +363,73 @@ namespace AstroOfficeWeb.Server.Controllers
 
             return Ok(response);
         }
-        //[Authorize(Roles = "Admin")]
-        //[HttpPost]
-        //public IActionResult SaveProductImages(List<ImagesDTO> imagesDTO)
-        //{
-        //    var response = new ApiResponse<ima>();
-        //    return Ok(response);
-        //}
+
+        [Authorize(Roles = "User")]
+        [HttpPost]
+        public IActionResult PlaceOrder(PlaceOrderRequest request)
+        {
+
+            var response = new ApiResponse<string>();
+            var placeOrder = new ProductOrder();
+
+            placeOrder.OrderDate = request.OrderDate;
+            placeOrder.PaymentMethod = request.PaymentMethod.ToString();
+            placeOrder.ShippingAddressSno = request.ShippingAddressSno;
+            placeOrder.ShipToDifferentAddress = request.ShipToDifferentAddress;
+            placeOrder.OrderNotes = request.OrderNotes;
+            placeOrder.ShippingMethod = request.ShippingMethod.ToString();
+
+            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    _context.ProductOrders.Add(placeOrder);
+                    _context.SaveChanges();
+
+                    var shoppingCart = _context.ShoppingCarts.Include(sc => sc.CartItems).ThenInclude(sc => sc.AProductsSnoNavigation).FirstOrDefault(sc => sc.AUsersSno == User.GetUserSno());
+
+                    if (shoppingCart != null)
+                    {
+                        var orderItems = shoppingCart.CartItems.Select(ci => new OrderItem
+                        {
+                            Sno = ci.Sno,
+                            Quantity = ci.Quantity,
+                            AProductsSno = ci.AProductsSno,
+                            ProductOrdersSno = placeOrder.Sno,
+                        }).ToList();
+
+
+                        if (request.ShippingMethod == ShippingMethod.Express)
+                        {
+                            var totalPlusExpress = shoppingCart.CartItems.Sum(ci => ci.Quantity * ci.AProductsSnoNavigation!.Price);
+                            var orderSummary = new CalculateOrderSummary(totalPlusExpress ?? 0);
+                            placeOrder.TotalAmount = orderSummary.Total + 50;
+                        }
+
+                        _context.CartItems.RemoveRange(shoppingCart.CartItems);
+
+                        _context.SaveChanges();
+
+                        _context.AddRange(orderItems);
+
+                        _context.SaveChanges();
+                    }
+
+                    transaction.Commit();
+
+                    response.Message = "Order Success Fully";
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    response.ErrorNo = 1;
+                    response.Success = false;
+                    response.Message = ex.Message;
+                }
+            }
+
+            return Ok(response);
+        }
 
     }
 }

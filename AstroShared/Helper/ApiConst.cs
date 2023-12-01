@@ -131,6 +131,7 @@
         public static string POST_AddToShoppingCart = Base + "AddToShoppingCart";
         public static string POST_SaveUserAddress = Base + "SaveUserAddress";
         public static string POST_SaveProductImages = Base + "SaveProductImages";
+        public static string POST_PlaceOrder = Base + "PlaceOrder";
         public static string PUT_UpdateProduct = Base + "UpdateProduct";
         public static string DELETE_Product = Base + "DeleteProduct";
     }

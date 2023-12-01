@@ -1,8 +1,11 @@
 ﻿
 using AstroOfficeWeb.Client.Shared;
 using AstroOfficeWeb.Client.Shared.CustomInputs;
+using AstroOfficeWeb.Shared.Models;
+using AstroShared;
 using AstroShared.DTOs;
 using AstroShared.Helper;
+using AstroShared.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
@@ -24,13 +27,14 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public string? OrderNotes { get; set; }
     }
 
+    public class PlaceOrderViewModel : PlaceOrderRequest
+    {
+
+    }
+
     public partial class ProductCheckout
     {
         private ViewAddressModal Modal_ViewAddress { get; set; } = null!;
-
-        private InputText Input_MobileNumber { get; set; } = null!;
-        private InputText Input_ZipCode { get; set; } = null!;
-        private InputSelect<long> Input_Country { get; set; } = null!;
 
         private ElementReference ER_ABillingInfo { get; set; }
         private ElementReference ER_AShippingInfo { get; set; }
@@ -38,6 +42,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         private BillingInfoViewModel BillingInfo { get; set; } = new();
         private EditContext BillingInfoContext { get; set; } = null!;
+        private PlaceOrderViewModel PlaceOrder { get; set; } = new();
 
         private List<Option> CountryOptions { get; set; } = new();
         public List<AddressDTO>? Addresses { get; set; }
@@ -49,11 +54,16 @@ namespace AstroOfficeWeb.Client.Pages.Product
             BillingInfoContext = new EditContext(BillingInfo);
         }
 
+        private List<CartItemDTO>? CartItems { get; set; }
+        private CalculateOrderSummary OrderSummary { get; set; } = null!;
+
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
             CountryOptions = await GetCountryOptionsAsync();
             Addresses = await ProductService.GetUserAddresses();
+            CartItems = await ProductService.GetCartItems();
+            OrderSummary = new(CartItems!.Sum(ci => ci.ProductQuantity * ci.ProductPrice));
         }
 
         private async Task<List<Option>> GetCountryOptionsAsync()
@@ -64,35 +74,12 @@ namespace AstroOfficeWeb.Client.Pages.Product
             return options;
         }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override Task OnAfterRenderAsync(bool firstRender)
         {
-            if (firstRender)
-            {
-                //await JSRuntime.LoadSelect2Async(Input_Country.Element);
-                await JSRuntime.ApplyInputMaskAsync(Input_MobileNumber.Element, "999 999 9999");
-                await JSRuntime.ApplyInputMaskAsync(Input_ZipCode.Element, "999 999");
-            }
+            return base.OnAfterRenderAsync(firstRender);
         }
 
-        private async Task OnFocusOut_InputPhoneNumber(FocusEventArgs e)
-        {
-            var mobilenumber = await JSRuntime.GetInputMaskValueAsync(Input_MobileNumber.Element);
-            BillingInfo.PhoneNumber = mobilenumber.ToMobileNumber();
-            BillingInfoContext.NotifyFieldChanged(FieldIdentifier.Create(() => BillingInfo.PhoneNumber));
-            BillingInfoContext.NotifyValidationStateChanged();
-        }
 
-        private async Task OnFocusOut_InputZipCode(FocusEventArgs e)
-        {
-            var zipcode = await JSRuntime.GetInputMaskValueAsync(Input_ZipCode.Element);
-            BillingInfo.ZipCode = zipcode.ToDigits();
-            BillingInfoContext.NotifyValidationStateChanged();
-        }
-
-        private async void OnBlur_Country(FocusEventArgs e)
-        {
-            var obj = await JSRuntime.GetSelect2DataAsync(Input_Country.Element);
-        }
 
         private async Task OnClick_BtnProceed(ProceedStatus status)
         {
@@ -102,11 +89,13 @@ namespace AstroOfficeWeb.Client.Pages.Product
             }
             else if (status == ProceedStatus.Shipping)
             {
+                PlaceOrder.ShipToDifferentAddress = true;
                 await JSRuntime.ShowTabAsync(ER_AShippingInfo);
             }
             else if (status == ProceedStatus.Payment)
             {
-                await JSRuntime.ShowTabAsync(ER_APaymentInfo);
+                //await JSRuntime.ShowTabAsync(ER_APaymentInfo);
+                await ProductService.PlaceOrder(PlaceOrder);
             }
         }
 
@@ -121,12 +110,18 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
                 await ProductService.SaveUserAddress(BillingInfo);
 
+                PlaceOrder.BillingAddressSno = BillingInfo.Sno;
+
                 if (BillingInfo.ShipToDifferentAddress)
                 {
+                    PlaceOrder.ShipToDifferentAddress = true;
                     await JSRuntime.ShowTabAsync(ER_AShippingInfo);
+                    PlaceOrder.BillingAddressSno = BillingInfo.Sno;
                 }
                 else
                 {
+                    PlaceOrder.ShipToDifferentAddress = false;
+                    PlaceOrder.BillingAddressSno = BillingInfo.Sno;
                     await JSRuntime.ShowTabAsync(ER_APaymentInfo);
                 }
             }

@@ -1,5 +1,6 @@
 ﻿using AstroOfficeWeb.Client.Services.IService;
 using AstroOfficeWeb.Shared.Models;
+using AstroShared;
 using AstroShared.DTOs;
 using AstroShared.Helper;
 using Microsoft.AspNetCore.Components;
@@ -156,6 +157,22 @@ namespace AstroOfficeWeb.Client.Services
         public async Task SaveProductImages(List<ImagesDTO> imagesDTO)
         {
             var response = await _swagger.PostAsync<List<ImagesDTO>, ApiResponse<List<ImagesDTO>>>(ProductApiConst.POST_SaveProductImages, imagesDTO);
+        }
+
+        public async Task PlaceOrder(PlaceOrderRequest request)
+        {
+            request.OrderDate = DateTime.Now;
+            request.PaymentMethod = PaymentMethod.PayPal;
+            request.ShippingMethod = ShippingMethod.Standard;
+            var response = await _swagger.PostAsync<PlaceOrderRequest, ApiResponse<string>>(ProductApiConst.POST_PlaceOrder, request);
+            if (response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
+            }
+            else
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+            }
         }
 
         public bool IsInShoppingCart(List<CartItemDTO> cartItems, long productSno)
