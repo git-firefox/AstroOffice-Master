@@ -147,7 +147,10 @@ namespace ASModels
         public virtual DbSet<Female> Females { get; set; } = null!;
         public virtual DbSet<Male> Males { get; set; } = null!;
         public virtual DbSet<NewMixDasha> NewMixDashas { get; set; } = null!;
+        public virtual DbSet<OrderItem> OrderItems { get; set; } = null!;
         public virtual DbSet<ProductImage> ProductImages { get; set; } = null!;
+        public virtual DbSet<ProductMetaData> ProductMetaDatas { get; set; } = null!;
+        public virtual DbSet<ProductOrder> ProductOrders { get; set; } = null!;
         public virtual DbSet<Query> Queries { get; set; } = null!;
         public virtual DbSet<QueryEng> QueryEngs { get; set; } = null!;
         public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
@@ -994,6 +997,22 @@ namespace ASModels
                 entity.Property(e => e.Sno).HasDefaultValueSql("('-1')");
             });
 
+            modelBuilder.Entity<OrderItem>(entity =>
+            {
+                entity.HasKey(e => e.Sno)
+                    .HasName("PK__OrderIte__CA1FE464917A62CA");
+
+                entity.HasOne(d => d.AProductsSnoNavigation)
+                    .WithMany(p => p.OrderItems)
+                    .HasForeignKey(d => d.AProductsSno)
+                    .HasConstraintName("FK__OrderItem__A_Pro__7E0DA1C4");
+
+                entity.HasOne(d => d.ProductOrdersSnoNavigation)
+                    .WithMany(p => p.OrderItems)
+                    .HasForeignKey(d => d.ProductOrdersSno)
+                    .HasConstraintName("FK__OrderItem__Produ__7D197D8B");
+            });
+
             modelBuilder.Entity<ProductImage>(entity =>
             {
                 entity.HasKey(e => e.Sno)
@@ -1003,6 +1022,38 @@ namespace ASModels
                     .WithMany(p => p.ProductImages)
                     .HasForeignKey(d => d.ProductId)
                     .HasConstraintName("FK__ProductIm__Produ__75785BC3");
+            });
+
+            modelBuilder.Entity<ProductMetaData>(entity =>
+            {
+                entity.HasKey(e => e.Sno)
+                    .HasName("PK__ProductM__CA1FE464E765B4EF");
+
+                entity.HasOne(d => d.AProductsSnoNavigation)
+                    .WithMany(p => p.ProductMetaData)
+                    .HasForeignKey(d => d.AProductsSno)
+                    .HasConstraintName("FK__ProductMe__A_Pro__00EA0E6F");
+            });
+
+            modelBuilder.Entity<ProductOrder>(entity =>
+            {
+                entity.HasKey(e => e.Sno)
+                    .HasName("PK__ProductO__CA1FE4649A2DBF98");
+
+                entity.HasOne(d => d.AUsersSnoNavigation)
+                    .WithMany(p => p.ProductOrders)
+                    .HasForeignKey(d => d.AUsersSno)
+                    .HasConstraintName("FK__ProductOr__A_Use__7A3D10E0");
+
+                entity.HasOne(d => d.BillingAddressSnoNavigation)
+                    .WithMany(p => p.ProductOrderBillingAddressSnoNavigations)
+                    .HasForeignKey(d => d.BillingAddressSno)
+                    .HasConstraintName("FK__ProductOr__Billi__7948ECA7");
+
+                entity.HasOne(d => d.ShippingAddressSnoNavigation)
+                    .WithMany(p => p.ProductOrderShippingAddressSnoNavigations)
+                    .HasForeignKey(d => d.ShippingAddressSno)
+                    .HasConstraintName("FK__ProductOr__Shipp__7854C86E");
             });
 
             modelBuilder.Entity<ShoppingCart>(entity =>

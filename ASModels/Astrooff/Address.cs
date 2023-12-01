@@ -8,6 +8,12 @@ namespace ASModels.Astrooff
 {
     public partial class Address
     {
+        public Address()
+        {
+            ProductOrderBillingAddressSnoNavigations = new HashSet<ProductOrder>();
+            ProductOrderShippingAddressSnoNavigations = new HashSet<ProductOrder>();
+        }
+
         [Key]
         public long Sno { get; set; }
         [StringLength(20)]
@@ -59,5 +65,9 @@ namespace ASModels.Astrooff
         [ForeignKey("AUsersSno")]
         [InverseProperty("Addresses")]
         public virtual AUser? AUsersSnoNavigation { get; set; }
+        [InverseProperty("BillingAddressSnoNavigation")]
+        public virtual ICollection<ProductOrder> ProductOrderBillingAddressSnoNavigations { get; set; }
+        [InverseProperty("ShippingAddressSnoNavigation")]
+        public virtual ICollection<ProductOrder> ProductOrderShippingAddressSnoNavigations { get; set; }
     }
 }
