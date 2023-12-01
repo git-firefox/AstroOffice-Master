@@ -30,6 +30,11 @@ namespace ASModels.Astrooff
         public long? BillingAddressSno { get; set; }
         [Column("A_Users_Sno")]
         public long? AUsersSno { get; set; }
+        [StringLength(255)]
+        public string? OrderNotes { get; set; }
+        [StringLength(255)]
+        public string? ShippingMethod { get; set; }
+        public bool? ShipToDifferentAddress { get; set; }
 
         [ForeignKey("AUsersSno")]
         [InverseProperty("ProductOrders")]
