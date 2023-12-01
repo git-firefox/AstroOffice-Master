@@ -43,6 +43,9 @@ namespace AstroShared.DTOs
 
         public long Sno { get; set; }
         public List<ImagesDTO>? ProductImages { get; set; }
+
+        public List<MetaDataDTO> MetaDatas { get; set; }
+
     }
     public class ViewProductDTO : ProductDTO
     {

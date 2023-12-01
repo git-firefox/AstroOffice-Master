@@ -13,5 +13,8 @@ namespace AstroShared.DTOs
         public string? ImageURL { get; set; }
         public string? ImageName { get; set; }
     }
+
+
+
 }
 

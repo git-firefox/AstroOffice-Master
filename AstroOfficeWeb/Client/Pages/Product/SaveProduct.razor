@@ -7,8 +7,8 @@
 @inject NavigationManager NavigationManager
 @inject StateContainerService StateContainerService
 @inject IJSRuntime JSRuntime
-
-@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject IDialogService Dialog
 @* <MudDialogProvider FullWidth="true"
                    MaxWidth="MaxWidth.ExtraSmall"
                    CloseButton="true"
@@ -277,14 +277,17 @@
 
 
                                                     <EditForm Model="MetaData" OnValidSubmit="OnSubmit_MetaData" OnInvalidSubmit="OnInvalidSubmit_MetaData" Context="MetaDataContext">
+                                                        <DataAnnotationsValidator />
                                                         <div class="row">
 
                                                             <div class="col-4">
+                                                                <ValidationMessage For=@(()=>MetaData!.MetaValue) style="position: revert;" />
                                                                 <label for="product-meta-title" class="form-label">Meta Keyword</label>
                                                                 @* <input type="text" class="form-control" id="product-meta-title" placeholder="Enter title"> *@
-                                                                <InputText @bind-Value="MetaData!.MetaTitle" class="form-control" id="product-meta-title" placeholder="Meta Keywords" />
+                                                                <InputText @bind-Value="MetaData!.MetaValue" class="form-control" id="product-meta-title" placeholder="Meta Keywords" />
                                                             </div>
                                                             <div class=" col-4">
+                                                                <ValidationMessage For=@(()=>MetaData.MetaKeyword) style="position: revert;" />
                                                                 <label for="product-meta-keywords" class="form-label">Meta Value</label>
                                                                 <InputText @bind-Value="MetaData.MetaKeyword" class="form-control" id="product-meta-keywords" placeholder="Meta Value" />
                                                             </div>
@@ -309,21 +312,70 @@
                                                         <div class="row mt-3">
                                                             <div class="col-12">
 
-                                                                <MudDataGrid Items="@MetaDataList.Select((value, index) => (value, index))" Bordered="true">
-                                                                    <Columns>
-                                                                        <PropertyColumn Property="x => x.index+1" Title="Sr No" IsEditable="false" />
-                                                                        <PropertyColumn Property="x => x.value.MetaKeyword" Title="Meta Keyword" />
-                                                                        <PropertyColumn Property="x => x.value.MetaTitle" Title="Meta Value" />
-                                                                        <TemplateColumn Title="Action" Sortable="false" IsEditable="false">
-                                                                            <CellTemplate>
-                                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_UpdateMetaData(ActionMode.Edit,context.Item.value))" />
-                                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_UpdateMetaData(ActionMode.Delete,context.Item.value))" />
-                                                                            </CellTemplate>
-                                                                        </TemplateColumn>
-                                                                    </Columns>
-                                                                </MudDataGrid>
 
-                                                                @*   <table class="table table-striped">
+
+                                                                <MudTable T="MetaDataDTO" Items="@MetaDataList" Dense="true" Hover="true" ReadOnly="false" CanCancelEdit="true" Filter="new Func<MetaDataDTO,bool>(FilterFunc)" SortLabel="Sort By" CommitEditTooltip="Commit Edit" OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" tabindex="=" RowEditPreview="BackupItem" RowEditCancel="ResetItemToOriginalValues" RowEditCommit="ItemHasBeenCommitted"
+                                                                          IsEditRowSwitchingBlocked="false" ApplyButtonPosition="TableApplyButtonPosition.Start" EditButtonPosition="TableEditButtonPosition.Start" EditTrigger="TableEditTrigger.EditButton">
+                                                                    <ToolBarContent>
+                                                                        <MudText Typo="Typo.h6">Periodic Elements</MudText>
+                                                                        <MudSpacer />
+                                                                        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                                                                    </ToolBarContent>
+                                                                    <HeaderContent>
+                                                                        <MudTh><MudTableSortLabel SortBy="new Func<MetaDataDTO, object>(x=>x.Sno)">Sr.No.</MudTableSortLabel></MudTh>
+                                                                        <MudTh><MudTableSortLabel SortBy="new Func<MetaDataDTO, object>(x=>x.MetaKeyword)">Meta Keyword</MudTableSortLabel></MudTh>
+                                                                        <MudTh><MudTableSortLabel SortBy="new Func<MetaDataDTO, object>(x=>x.MetaValue)">Meta Value</MudTableSortLabel></MudTh>
+
+                                                                        <MudTh>Action</MudTh>
+                                                                    </HeaderContent>
+                                                                    <RowTemplate>
+                                                                        <MudTd DataLabel="Nr">@context.Sno</MudTd>
+                                                                        <MudTd DataLabel="Sign">@context.MetaKeyword</MudTd>
+                                                                        <MudTd DataLabel="Name">@context.MetaValue</MudTd>
+                                                                        <MudTd>
+                                                                            @* <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="(() => OnClick_BtnMetaDataDelete(context))"></MudIconButton> *@
+                                                                            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="(() => OnClick_DeleteMetaData(context))"></MudIconButton>
+
+                                                                        </MudTd>
+
+                                                                    </RowTemplate>
+                                                                    <RowEditingTemplate>
+                                                                        <MudTd DataLabel="Nr">@context.Sno</MudTd>
+                                                                        <MudTd DataLabel="Sign">
+                                                                            <MudTextField @bind-Value="@context.MetaKeyword" Required />
+                                                                         </MudTd>
+                                                                         <MudTd DataLabel="Name">
+                                                                             <MudTextField @bind-Value="@context.MetaValue" Required />
+                                                                         </MudTd>
+                                                                         <MudTd>
+                                                                             <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete"></MudIconButton>
+                                                                         </MudTd>
+                                                                     </RowEditingTemplate>
+                                                                     <PagerContent>
+                                                                         <MudTablePager />
+                                                                     </PagerContent>
+                                                                     <EditButtonContent Context="button">
+                                                                         <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
+                                                                     </EditButtonContent>
+                                                                 </MudTable>
+
+
+
+                                                                 @*  <MudDataGrid Items="@MetaDataList.Select((value, index) => (value, index))" Bordered="true">
+                                                                <Columns>
+                                                                <PropertyColumn Property="x => x.index+1" Title="Sr No" IsEditable="false" />
+                                                                <PropertyColumn Property="x => x.value.MetaKeyword" Title="Meta Keyword" />
+                                                                <PropertyColumn Property="x => x.value.MetaTitle" Title="Meta Value" />
+                                                                <TemplateColumn Title="Action" Sortable="false" IsEditable="false">
+                                                                <CellTemplate>
+                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_UpdateMetaData(ActionMode.Edit,context.Item.value))" />
+                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_UpdateMetaData(ActionMode.Delete,context.Item.value))" />
+                                                                </CellTemplate>
+                                                                </TemplateColumn>
+                                                                </Columns>
+                                                                </MudDataGrid> *@
+
+                                                                 @*   <table class="table table-striped">
                                                                 <thead>
                                                                 <tr>
                                                                 <th scope="col">Sno.</th>
@@ -358,34 +410,34 @@
 
 
 
-                                                            </div>
-                                                        </div>
+                                                             </div>
+                                                         </div>
 
 
-                                                        <ul class="pager wizard mb-0 list-inline text-end mt-3">
-                                                            <li class="previous list-inline-item disabled">
-                                                                <button @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.General)" type="button" class="btn btn-secondary"><i class="mdi mdi-arrow-left"></i> Edit Information </button>
-                                                            </li>
-                                                            <li class="list-inline-item">
-                                                                <button @onclick="OnClick_BtnPublished" type="button" class="btn btn-success">Publish Product <i class="mdi mdi-arrow-right ms-1"></i></button>
-                                                            </li>
-                                                        </ul>
+                                                         <ul class="pager wizard mb-0 list-inline text-end mt-3">
+                                                             <li class="previous list-inline-item disabled">
+                                                                 <button @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.General)" type="button" class="btn btn-secondary"><i class="mdi mdi-arrow-left"></i> Edit Information </button>
+                                                             </li>
+                                                             <li class="list-inline-item">
+                                                                 <button @onclick="OnClick_BtnPublished" type="button" class="btn btn-success">Publish Product <i class="mdi mdi-arrow-right ms-1"></i></button>
+                                                             </li>
+                                                         </ul>
 
 
 
 
-                                                    </EditForm>
-                                                </div>
-                                            </div>
+                                                     </EditForm>
+                                                 </div>
+                                             </div>
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</div>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </section>
+ </div>

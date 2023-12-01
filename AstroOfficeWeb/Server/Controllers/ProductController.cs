@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Linq;
+using System.Linq.Expressions;
 using ASModels;
 using ASModels.Astrooff;
 using AstroOfficeWeb.Server.Helper;
@@ -70,6 +71,27 @@ namespace AstroOfficeWeb.Server.Controllers
 
             return Ok(apiResponse);
         }
+
+        //[HttpGet]
+        //public IActionResult GetMetaDataBySno(long sno)
+        //{
+        //    var apiResponse = new ApiResponse<MetaDataDTO> { Data = null };
+        //    var aProduct = _context.AProducts.Where(p => p.Sno == sno).ToList();
+        //    if (aProduct == null)
+        //    {
+        //        apiResponse.ErrorNo = 1;
+        //        apiResponse.Success = false;
+        //        apiResponse.Message = ProductMessageConst.NotFoundProduct;
+        //        return Ok(apiResponse);
+        //    }
+
+        //    apiResponse.Success = true;
+        //    var metaDataDTOs = _mapper.Map<MetaDataDTO>(aProduct);
+        //    apiResponse.Data = metaDataDTOs;
+
+        //    return Ok(apiResponse);
+        //}
+
         [HttpGet]
 
         public IActionResult GetImagesByProductId(long productId)
@@ -90,6 +112,7 @@ namespace AstroOfficeWeb.Server.Controllers
             }
             return Ok(response);
         }
+
 
         // POST api/<ProductController>
         [Authorize]
@@ -195,6 +218,44 @@ namespace AstroOfficeWeb.Server.Controllers
                             }
 
                         }
+
+
+                        var existMetaData = _context.ProductMetaDatas.Where(p => p.AProductsSno == aProduct.Sno).ToList();
+
+                        var doNothingMetaDataSnos = productDTO.MetaDatas.Where(p => p.Sno != 0).Select(pi => pi.Sno).ToList();
+
+                        var metaDataNeedToDelete = existMetaData.Where(p => !doNothingMetaDataSnos.Contains(p.Sno));
+
+                        var metaDataNeedToUpdate = existMetaData.Where(p => doNothingMetaDataSnos.Contains(p.Sno));
+
+                        var metaDataNeedToAdd = productDTO.MetaDatas.Where(pi => !doNothingMetaDataSnos.Contains(pi.Sno)).Select(pi => new ProductMetaData
+                        {
+                            MetaKeyword = pi.MetaKeyword,
+                            MetaValue = pi.MetaValue,
+                            AProductsSno = aProduct.Sno
+                        });
+
+                        if (metaDataNeedToUpdate.Any())
+                        {
+                            var newMetaDatas = productDTO.MetaDatas.Where(pi => doNothingMetaDataSnos.Contains(pi.Sno));
+
+                            var joinData = metaDataNeedToUpdate.Join(newMetaDatas,
+                                metaData => metaData.Sno,
+                                metaDataDto => metaDataDto.Sno,
+                                (metaData, metaDataDto) => new { OldMetaData = metaData, NewMetaDataDTO = metaDataDto });
+
+
+                            foreach (var tempData in joinData)
+                            {
+                                tempData.OldMetaData.MetaKeyword = tempData.NewMetaDataDTO.MetaKeyword;
+                                tempData.OldMetaData.MetaValue = tempData.NewMetaDataDTO.MetaValue;
+                                _context.Update(tempData);
+                                _context.SaveChanges();
+                            }
+                        }
+
+                        _context.AddRange(metaDataNeedToAdd);
+                        _context.ProductMetaDatas.RemoveRange(metaDataNeedToDelete);
                         _context.SaveChanges();
                     }
                     apiResponse.Data = viewProduct;
