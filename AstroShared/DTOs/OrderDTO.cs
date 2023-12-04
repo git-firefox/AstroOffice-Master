@@ -11,6 +11,7 @@ namespace AstroShared.DTOs
         public long OrderId { get; set; }
 
         public string BillingName { get; set; } = null!;
+        public string ShippingAddress { get; set; } = null!;
 
         public DateTime? Date { get; set; }
 
@@ -21,5 +22,7 @@ namespace AstroShared.DTOs
         public PaymentMethod PaymentMethod { get; set; }
 
         public OrderStatus OrderStatus { get; set; }
+
+        public List<OrderItemDTO> OrderItems { get; set; } = null!;
     }
 }

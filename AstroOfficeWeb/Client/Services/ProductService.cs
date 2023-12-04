@@ -5,6 +5,7 @@ using AstroShared.DTOs;
 using AstroShared.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Stripe;
 using System.Collections.Generic;
 
 namespace AstroOfficeWeb.Client.Services
@@ -175,7 +176,7 @@ namespace AstroOfficeWeb.Client.Services
         public async Task PlaceOrder(PlaceOrderRequest request)
         {
             request.OrderDate = DateTime.Now;
-            request.PaymentMethod = PaymentMethod.PayPal;
+            request.PaymentMethod = AstroShared.PaymentMethod.PayPal;
             request.ShippingMethod = ShippingMethod.Standard;
             var response = await _swagger.PostAsync<PlaceOrderRequest, ApiResponse<string>>(ProductApiConst.POST_PlaceOrder, request);
             if (response!.Success)

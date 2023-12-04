@@ -315,7 +315,7 @@
                                                         <div class="col-md-12">
                                                             <div class="mb-2">
                                                                 <label for="card-number" class="form-label">Card Number</label>
-                                                                <input type="text" id="card-number" class="form-control" data-toggle="input-mask" data-mask-format="0000 0000 0000 0000" placeholder="4242 4242 4242 4242">
+                                                                <input @bind="CreditCard.CardNumber" type="text" id="card-number" class="form-control" data-toggle="input-mask" data-mask-format="0000 0000 0000 0000" placeholder="4242 4242 4242 4242">
                                                             </div>
                                                         </div>
                                                     </div> <!-- end row -->
@@ -323,19 +323,19 @@
                                                         <div class="col-md-6">
                                                             <div class="mb-2">
                                                                 <label for="card-name-on" class="form-label">Name on card</label>
-                                                                <input type="text" id="card-name-on" class="form-control" placeholder="Master Name">
+                                                                <input @bind="CreditCard.CardHolderName" type="text" id="card-name-on" class="form-control" placeholder="Master Name">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="mb-2">
                                                                 <label for="card-expiry-date" class="form-label">Expiry date</label>
-                                                                <input type="text" id="card-expiry-date" class="form-control" data-toggle="input-mask" data-mask-format="00/00" placeholder="MM/YY">
+                                                                <input @bind="CreditCard.ExpiryDate" type="text" id="card-expiry-date" class="form-control" data-toggle="input-mask" data-mask-format="00/00" placeholder="MM/YY">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="mb-2">
                                                                 <label for="card-cvv" class="form-label">CVV code</label>
-                                                                <input type="text" id="card-cvv" class="form-control" data-toggle="input-mask" data-mask-format="000" placeholder="012">
+                                                                <input @bind="CreditCard.CVV" type="text" id="card-cvv" class="form-control" data-toggle="input-mask" data-mask-format="000" placeholder="012">
                                                             </div>
                                                         </div>
                                                     </div> <!-- end row -->

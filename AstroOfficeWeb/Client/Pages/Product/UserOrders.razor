@@ -1,4 +1,6 @@
-﻿@using AstroOfficeWeb.Client.Services
+﻿@page "/my-orders"
+
+@using AstroOfficeWeb.Client.Services
 @using AstroShared.DTOs
 
 @inject ProductService ProductService
@@ -6,10 +8,62 @@
 @inject StateContainerService StateContainerService
 @inject IJSRuntime JSRuntime
 
-<ContainerFluid HeaderTitle="My Title" title="My Orders">
+<ContainerFluid HeaderTitle="My Orders">
     <Header>
         <button class="btn btn-custom">Back</button>
     </Header>
     <ChildContent>
+        <div class="row">
+            @if (OrderDTOs == null)
+            {
+
+            }
+            else if (OrderDTOs.Any())
+            {
+                foreach (var order in OrderDTOs)
+                {
+
+                    foreach (var orderItem in order.OrderItems)
+                    {
+                        <div class="col-12 col-sm-4 col-md-3">
+                            <div class="card order-card" @onclick="() => OnClick_DivElement(order)">
+                                <div class="card-header order-card-header">
+                                    Order ID: @order.OrderId
+                                </div>
+                                <img src="@orderItem.ProductImageSrc" alt="@orderItem.ProductName" class="product-image" title="@orderItem.ProductName">
+                                <div class="card-body">
+                                    <h5 class="card-title">@orderItem.ProductName</h5>
+                                    <div class="content-section">
+                                        <span class="icon">&#128197;</span>
+                                        <span class="caption-text">Placed on @order.Date?.ToString(format: "MMM dd, yyyy")</span>
+                                    </div>
+                                    <div class="content-section">
+                                        <span class="icon">&#128203;</span>
+                                        <span class="caption-text">Quantity: @orderItem.ProductQuantity.ToString("N2")</span>
+                                    </div>
+                                    <div class="content-section">
+                                        <span class="icon">&#128176;</span>
+                                        <span class="caption-text">Total Price: @((orderItem.ProductPrice * orderItem.ProductQuantity).ToString("N2"))</span>
+                                    </div>
+                                    <div class="content-section">
+                                        <span class="icon">&#128204;</span>
+                                        <span class="caption-text">Shipping Address: @order.ShippingAddress</span>
+                                    </div>
+                                    <div class="content-section">
+                                        <span class="icon">&#128179;</span>
+                                        <span class="caption-text">Payment Method: @order.PaymentMethod</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+            else
+            {
+
+            }
+        </div>
     </ChildContent>
+
 </ContainerFluid>

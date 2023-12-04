@@ -30,7 +30,7 @@ namespace AstroShared
         Both
     }
 
-    [JsonConverter(typeof(StringEnumConverter))]
+    //[JsonConverter(typeof(StringEnumConverter))]
     public enum PaymentMethod
     {
         CreditCard,
@@ -38,14 +38,14 @@ namespace AstroShared
         BankTransfer,
     }
 
-    [JsonConverter(typeof(StringEnumConverter))]
+    //[JsonConverter(typeof(StringEnumConverter))]
     public enum ShippingMethod
     {
         Standard,
         Express,
     }
 
-    [JsonConverter(typeof(StringEnumConverter))]
+    //[JsonConverter(typeof(StringEnumConverter))]
     public enum OrderStatus
     {
         PendingPayment,
@@ -56,7 +56,7 @@ namespace AstroShared
         Returned
     }
 
-    [JsonConverter(typeof(StringEnumConverter))]
+    //[JsonConverter(typeof(StringEnumConverter))]
     public enum PaymentStatus
     {
         Pending,
@@ -66,7 +66,7 @@ namespace AstroShared
         Refunded
     }
 
-    [JsonConverter(typeof(StringEnumConverter))]
+    //[JsonConverter(typeof(StringEnumConverter))]
     public enum ProductStatus
     {
         Draft,
@@ -85,7 +85,7 @@ namespace AstroShared
         InStock,
     }
 
-    [JsonConverter(typeof(StringEnumConverter))]
+    //[JsonConverter(typeof(StringEnumConverter))]
     public enum CategoryStatus
     {
         Draft,

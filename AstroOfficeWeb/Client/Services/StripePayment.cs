@@ -1,0 +1,98 @@
+﻿using Stripe;
+
+namespace AstroOfficeWeb.Client.Services
+{
+    public class StripePayment
+    {
+        public StripePayment()
+        {
+            StripeConfiguration.ApiKey = "sk_test_51N4JNqSDthT1ctefV2hXxAss5Ry8I8PRgUmpscORfxdPy2j3d5abB8NbKbctI9FKIXj89KFvRpGJU9h77ytlkOFw00jxWuZIZU";
+        }
+
+        public async Task MakePayment(string number, string expMonth, string expYear, string cvc)
+        {
+            try
+            {
+
+
+                var optionsToken = new TokenCreateOptions
+                {
+                    Card = new TokenCardOptions
+                    {
+                        Number = number,
+                        ExpMonth = expMonth,
+                        ExpYear = expYear,
+                        Cvc = cvc
+                    }
+                };
+
+                var serviceToken = new TokenService();
+
+                Token stripToken = await serviceToken.CreateAsync(optionsToken);
+
+                var customer = new Stripe.Customer
+                {
+                    Name = "Test",
+                    Address = new Address
+                    {
+                        Country = "India",
+                        City = "Mumbai",
+                        Line1 = "Gore Gow",
+                        PostalCode = "400606"
+                    }
+                };
+
+                var options = new ChargeCreateOptions()
+                {
+                    Amount = 10000,
+                    Currency = "INR",
+                    Description = "Test",
+                    Source = stripToken.Id
+                };
+
+                var service = new ChargeService();
+
+                Charge charge = await service.CreateAsync(options);
+
+                if (charge.Paid)
+                {
+                    //Success 
+                }
+                else
+                {
+                    //Faild
+                }
+            }
+            catch (Exception ex)
+            {
+                _ = ex;
+            }
+
+        }
+
+        public async Task<string> CreatePaymentIntent(int amountInCents, string currency = "inr")
+        {
+            try
+            {
+
+
+                var options = new PaymentIntentCreateOptions
+                {
+                    Amount = amountInCents,
+                    Currency = currency,
+                };
+
+                var service = new PaymentIntentService();
+                var paymentIntent = await service.CreateAsync(options);
+
+                return paymentIntent.ClientSecret;
+                //'pi_3OJg0KSDthT1ctef0HmfMOuA_secret_pAFeHzBBKht6wOzGXvV6hHlS6'
+            }
+            catch (Exception ex)
+            {
+                _ = ex;
+                return "";
+            }
+        }
+    }
+}

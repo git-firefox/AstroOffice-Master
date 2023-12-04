@@ -11,7 +11,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         [Parameter]
         public long OrderId { get; set; }
         public GetOrderResponse? Order { get; set; }
-        public CalculateOrderSummary OrderSummary { get; set; }
+        public CalculateOrderSummary? OrderSummary { get; set; }
 
         protected override void OnInitialized()
         {

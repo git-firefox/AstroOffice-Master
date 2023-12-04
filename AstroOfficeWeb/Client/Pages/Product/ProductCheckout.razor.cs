@@ -1,4 +1,5 @@
 ﻿
+using AstroOfficeWeb.Client.Services;
 using AstroOfficeWeb.Client.Shared;
 using AstroOfficeWeb.Client.Shared.CustomInputs;
 using AstroOfficeWeb.Shared.Models;
@@ -32,6 +33,30 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
     }
 
+    public class CreditCard
+    {
+        public string CardNumber { get; set; } = null!;
+        public string CardHolderName { get; set; } = null!;
+        public DateTime ExpiryDate { get; set; }
+        public string CVV { get; set; } = null!;
+
+        public string ExpiryMonth
+        {
+            get
+            {
+                return ExpiryDate.ToString(format: "MM");
+            }
+        }
+        public string ExpiryYear
+        {
+            get
+            {
+                return ExpiryDate.ToString(format: "yyyy");
+            }
+        }
+
+    }
+
     public partial class ProductCheckout
     {
         private ViewAddressModal Modal_ViewAddress { get; set; } = null!;
@@ -45,7 +70,10 @@ namespace AstroOfficeWeb.Client.Pages.Product
         private PlaceOrderViewModel PlaceOrder { get; set; } = new();
 
         private List<Option> CountryOptions { get; set; } = new();
-        public List<AddressDTO>? Addresses { get; set; }
+        private List<AddressDTO>? Addresses { get; set; }
+        private CreditCard CreditCard { get; set; } = new();
+
+
 
         protected override void OnInitialized()
         {
@@ -93,7 +121,10 @@ namespace AstroOfficeWeb.Client.Pages.Product
             else if (status == ProceedStatus.Payment)
             {
                 //await JSRuntime.ShowTabAsync(ER_APaymentInfo);
-                await ProductService.PlaceOrder(PlaceOrder);
+                var payment = new StripePayment();
+                //await payment.MakePayment(CreditCard.CardNumber, CreditCard.ExpiryMonth, CreditCard.ExpiryYear, CreditCard.CVV);
+                var response = await payment.CreatePaymentIntent(200);
+                //await ProductService.PlaceOrder(PlaceOrder);
             }
         }
 

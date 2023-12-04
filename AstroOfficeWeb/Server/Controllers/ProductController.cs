@@ -570,16 +570,27 @@ namespace AstroOfficeWeb.Server.Controllers
             var response = new ApiResponse<List<OrderDTO>>();
             var orderDTOs = await _context.ProductOrders
                 .Include(poi => poi.BillingAddressSnoNavigation)
+                .Include(poi => poi.OrderItems)
+                    .ThenInclude(poi => poi.ProductOrdersSnoNavigation)
                 .Where(po => po.AUsersSno == User.GetUserSno())
                 .Select(po => new OrderDTO
                 {
                     OrderId = po.Sno,
                     BillingName = po!.BillingAddressSnoNavigation!.FirstName + " " + po.BillingAddressSnoNavigation.LastName,
+                    ShippingAddress = po!.ShippingAddressSnoNavigation!.AddressLine1!,
                     Date = po.OrderDate,
                     OrderStatus = Enum.Parse<OrderStatus>(po.Status!),
                     PaymentMethod = Enum.Parse<PaymentMethod>(po.PaymentMethod!),
                     PaymentStatus = Enum.Parse<PaymentStatus>(po.Status!),
-                    Total = po.TotalAmount
+                    Total = po.TotalAmount,
+                    OrderItems = po.OrderItems.Select(ci => new OrderItemDTO
+                    {
+                        ProductQuantity = ci.Quantity ?? default,
+                        ProductSno = ci.AProductsSno ?? default,
+                        ProductName = ci.AProductsSnoNavigation!.Name,
+                        ProductPrice = ci.AProductsSnoNavigation.Price,
+                        ProductImageSrc = ci.AProductsSnoNavigation.ImageUrl,
+                    }).ToList()
                 }).ToListAsync();
 
             response.Data = orderDTOs;
