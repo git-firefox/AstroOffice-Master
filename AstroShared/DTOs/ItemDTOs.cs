@@ -14,4 +14,9 @@ namespace AstroShared.DTOs
         public string? ProductImageSrc { get; set; }
         public int ProductQuantity { get; set; }
     }
+
+    public class OrderItemDTO : CartItemDTO
+    {
+
+    }
 }

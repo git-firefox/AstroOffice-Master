@@ -181,10 +181,82 @@ namespace AstroOfficeWeb.Client.Services
             if (response!.Success)
             {
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
+                _navigation.NavigateTo("/order-success", true, true);
             }
             else
             {
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+            }
+        }
+
+        public async Task<GetOrderResponse?> GetUserOrder(long orderSno)
+        {
+            var response = await _swagger.GetAsync<GetOrderResponse>(ProductApiConst.GET_UserOrder, new Dictionary<string, string> { { "orderSno", orderSno.ToStringX() } });
+            if (!response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                return default;
+            }
+            return (response);
+        }
+        public async Task<List<OrderDTO>?> GetUserOrders()
+        {
+            var response = await _swagger.GetAsync<ApiResponse<List<OrderDTO>>>(ProductApiConst.GET_UserOrders);
+
+            if (!response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                return null;
+            }
+            return response.Data;
+        }
+
+        public async Task<List<OrderDTO>?> GetOrders()
+        {
+            var response = await _swagger.GetAsync<ApiResponse<List<OrderDTO>>>(ProductApiConst.GET_Orders);
+
+            if (!response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                return null;
+            }
+            return response.Data;
+        }
+
+        public async Task<List<ViewProductDTO>?> GetUserWishList()
+        {
+            var response = await _swagger.GetAsync<ApiResponse<List<ViewProductDTO>>>(ProductApiConst.GET_UserWishList);
+
+            if (!response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                return null;
+            }
+            return response.Data;
+        }
+        public async Task<bool> IsDeletedFromWishList(long productSno)
+        {
+            var response = await _swagger.DeleteAsync<ApiResponse<string>>(ProductApiConst.DELETE_FromWishList, new Dictionary<string, string> { { "productSno", productSno.ToStringX() } });
+
+            if (!response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                return false;
+            }
+            return response.Success;
+        }
+
+        public async Task AddToWishList(long productSno)
+        {
+            var response = await _swagger.PutAsync<AddToVishRequest, ApiResponse<string>>(ProductApiConst.PUT_AddToWishList, new AddToVishRequest { ProductSno = productSno });
+
+            if (!response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+            }
+            else
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
             }
         }
 

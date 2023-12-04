@@ -50,6 +50,7 @@ namespace AstroShared.DTOs
         [MaxLength(255, ErrorMessage = "Country cannot exceed 255 characters")]
         public string? Country { get; set; }
 
+        [Required]
         [MaxLength(12, ErrorMessage = "Phone Number cannot exceed 12 characters")]
         [RegularExpression(@"^\d{10}$", ErrorMessage = "Phone Number must contain exactly 10 digits")]
         public string? PhoneNumber { get; set; }

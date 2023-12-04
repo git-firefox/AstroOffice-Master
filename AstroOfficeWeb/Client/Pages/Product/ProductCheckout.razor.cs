@@ -79,8 +79,6 @@ namespace AstroOfficeWeb.Client.Pages.Product
             return base.OnAfterRenderAsync(firstRender);
         }
 
-
-
         private async Task OnClick_BtnProceed(ProceedStatus status)
         {
             if (status == ProceedStatus.Billing)

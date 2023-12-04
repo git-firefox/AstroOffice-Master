@@ -10,6 +10,7 @@ using AstroShared.Utilities;
 using AutoMapper;
 using AutoMapper.Configuration.Annotations;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -434,11 +435,15 @@ namespace AstroOfficeWeb.Server.Controllers
             var placeOrder = new ProductOrder();
 
             placeOrder.OrderDate = request.OrderDate;
-            placeOrder.PaymentMethod = request.PaymentMethod.ToString();
-            placeOrder.ShippingAddressSno = request.ShippingAddressSno;
-            placeOrder.ShipToDifferentAddress = request.ShipToDifferentAddress;
             placeOrder.OrderNotes = request.OrderNotes;
+            placeOrder.ShipToDifferentAddress = request.ShipToDifferentAddress;
+            placeOrder.BillingAddressSno = request.BillingAddressSno;
+            placeOrder.ShippingAddressSno = request.ShipToDifferentAddress ? request.ShippingAddressSno : request.BillingAddressSno;
+            placeOrder.PaymentMethod = request.PaymentMethod.ToString();
             placeOrder.ShippingMethod = request.ShippingMethod.ToString();
+
+            placeOrder.AUsersSno = User.GetUserSno();
+            placeOrder.Status = OrderStatus.Processing.ToString();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
             {
@@ -453,7 +458,6 @@ namespace AstroOfficeWeb.Server.Controllers
                     {
                         var orderItems = shoppingCart.CartItems.Select(ci => new OrderItem
                         {
-                            Sno = ci.Sno,
                             Quantity = ci.Quantity,
                             AProductsSno = ci.AProductsSno,
                             ProductOrdersSno = placeOrder.Sno,
@@ -472,7 +476,7 @@ namespace AstroOfficeWeb.Server.Controllers
                         _context.SaveChanges();
 
                         _context.AddRange(orderItems);
-
+                        _context.ProductOrders.Update(placeOrder);
                         _context.SaveChanges();
                     }
 
@@ -492,5 +496,158 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> GetOrders()
+        {
+            var response = new ApiResponse<List<OrderDTO>>();
+            var orderDTOs = await _context.ProductOrders
+                .Include(poi => poi.BillingAddressSnoNavigation)
+                .Select(po => new OrderDTO
+                {
+                    OrderId = po.Sno,
+                    BillingName = po!.BillingAddressSnoNavigation!.FirstName + " " + po.BillingAddressSnoNavigation.LastName,
+                    Date = po.OrderDate,
+                    OrderStatus = Enum.Parse<OrderStatus>(po.Status ?? ""),
+                    PaymentMethod = Enum.Parse<PaymentMethod>(po.PaymentMethod ?? ""),
+                    PaymentStatus = Enum.Parse<PaymentStatus>(po.Status ?? ""),
+                    Total = po.TotalAmount
+                }).ToListAsync();
+            response.Data = orderDTOs;
+            return Ok(response);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetUserOrder(long orderSno)
+        {
+            var response = new GetOrderResponse();
+
+            var order = await _context.ProductOrders
+                .Include(poi => poi.BillingAddressSnoNavigation)
+                .Include(poi => poi.ShippingAddressSnoNavigation)
+                .Include(poi => poi.OrderItems)
+                    .ThenInclude(poi => poi.AProductsSnoNavigation)
+                .FirstOrDefaultAsync(po => po.Sno == orderSno);
+
+            if (order == null)
+            {
+                return Unauthorized();
+            }
+
+            response.ShippingInformation = _mapper.Map<AddressDTO>(order!.ShippingAddressSnoNavigation);
+            response.BillingInformation = _mapper.Map<AddressDTO>(order!.BillingAddressSnoNavigation);
+
+            var orderItems = order.OrderItems.Select(ci => new OrderItemDTO
+            {
+                ProductQuantity = ci.Quantity ?? default,
+                ProductSno = ci.AProductsSno ?? default,
+                ProductName = ci.AProductsSnoNavigation!.Name,
+                ProductPrice = ci.AProductsSnoNavigation.Price,
+                ProductImageSrc = ci.AProductsSnoNavigation.ImageUrl,
+            }).ToList();
+
+            response.OrderItems = orderItems;
+
+            response.Order = new OrderDTO()
+            {
+                OrderId = order.Sno,
+                BillingName = order!.BillingAddressSnoNavigation!.FirstName + " " + order.BillingAddressSnoNavigation.LastName,
+                Date = order.OrderDate,
+                OrderStatus = Enum.Parse<OrderStatus>(order.Status!),
+                PaymentMethod = Enum.Parse<PaymentMethod>(order.PaymentMethod!),
+                PaymentStatus = Enum.Parse<PaymentStatus>(order.Status!),
+                Total = order.TotalAmount
+            };
+
+            return Ok(response);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet]
+        public async Task<IActionResult> GetUserOrders()
+        {
+            var response = new ApiResponse<List<OrderDTO>>();
+            var orderDTOs = await _context.ProductOrders
+                .Include(poi => poi.BillingAddressSnoNavigation)
+                .Where(po => po.AUsersSno == User.GetUserSno())
+                .Select(po => new OrderDTO
+                {
+                    OrderId = po.Sno,
+                    BillingName = po!.BillingAddressSnoNavigation!.FirstName + " " + po.BillingAddressSnoNavigation.LastName,
+                    Date = po.OrderDate,
+                    OrderStatus = Enum.Parse<OrderStatus>(po.Status!),
+                    PaymentMethod = Enum.Parse<PaymentMethod>(po.PaymentMethod!),
+                    PaymentStatus = Enum.Parse<PaymentStatus>(po.Status!),
+                    Total = po.TotalAmount
+                }).ToListAsync();
+
+            response.Data = orderDTOs;
+            return Ok(response);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpPut]
+        public async Task<IActionResult> AddToWishList(AddToVishRequest request)
+        {
+            ProductWishlist? productWishlist = null;
+            var response = new ApiResponse<string>();
+
+            productWishlist = await _context.ProductWishlists.FirstOrDefaultAsync(pw => pw.AProductsSno == request.ProductSno && pw.AUsersSno == User.GetUserSno());
+
+            if (productWishlist == null)
+            {
+                productWishlist = new ProductWishlist();
+                productWishlist.AProductsSno = request.ProductSno;
+                productWishlist.AUsersSno = User.GetUserSno();
+                await _context.ProductWishlists.AddAsync(productWishlist);
+                await _context.SaveChangesAsync();
+                response.Message = "Product added to your wishlist.";
+            }
+            else
+            {
+                response.Message = "Product already exists in your wishlist.";
+            }
+
+            return Ok(response);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteFromWishList(long productSno)
+        {
+            ProductWishlist? productWishlist = null;
+            var response = new ApiResponse<string>();
+
+
+            productWishlist = await _context.ProductWishlists.FirstOrDefaultAsync(pw => pw.AProductsSno == productSno && pw.AUsersSno == User.GetUserSno());
+
+            if (productWishlist == null)
+            {
+                response.Success = false;
+                response.ErrorNo = 1;
+                response.Message = "Product not exists in your wishlist.";
+                return Ok(response);
+            }
+
+            _context.ProductWishlists.Remove(productWishlist);
+            await _context.SaveChangesAsync();
+
+            response.Message = "Product removed from your wishlist.";
+            return Ok(response);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet]
+        public async Task<IActionResult> GetUserWishList()
+        {
+            var response = new ApiResponse<List<ViewProductDTO>>();
+            var productWishlists = await _context.ProductWishlists.Include(pw => pw.AProductsSnoNavigation).Where(pw => pw.AUsersSno == User.GetUserSno()).ToListAsync();
+            var aProducts = productWishlists.Select(wi => wi.AProductsSnoNavigation).Where(p => p!.IsActive == true).OrderByDescending(p => p!.Sno).ToList();
+            var productDTOs = _mapper.Map<List<ViewProductDTO>>(aProducts);
+
+            response.Data = productDTOs;
+            return Ok(response);
+        }
     }
 }

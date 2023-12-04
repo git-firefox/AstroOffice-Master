@@ -12,12 +12,12 @@
 
 <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold "> Shop </h1>
-   @*  <MudTextField @bind-Value="@textFieldValue" Label="Enter Text" OnValueChanged="@OnTextFieldValueChanged" />
+    @*  <MudTextField @bind-Value="@textFieldValue" Label="Enter Text" OnValueChanged="@OnTextFieldValueChanged" />
 
     <MudSelect Label="Select an Option" @bind-Value="@selectedOption" OnValueChanged="@OnSelectValueChanged">
-        <MudSelectItem Value="@("Option1")">Option 1</MudSelectItem>
-        <MudSelectItem Value="@("Option2")">Option 2</MudSelectItem>
-        <MudSelectItem Value="@("Option3")">Option 3</MudSelectItem>
+    <MudSelectItem Value="@("Option1")">Option 1</MudSelectItem>
+    <MudSelectItem Value="@("Option2")">Option 2</MudSelectItem>
+    <MudSelectItem Value="@("Option3")">Option 3</MudSelectItem>
     </MudSelect> *@
 
     <MudGrid>
@@ -47,17 +47,17 @@
         </MudItem>
     </MudGrid>
 
-    
+
     @* <MudTextField T="string" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" Value="@_searchString" ValueChanged="(async (x)=> await ApplyFilter())" /> *@
-   
+    AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" Value="@_searchString" ValueChanged="(async (x)=> await ApplyFilter())" /> *@
+
     @* <Input type="text" @onchange="ApplyFilter" id="searchShopBox" Placeholder="Search" IconSize="Size.Medium" Class="mt-0" /> *@
     @* <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField> *@
-    
+    AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField> *@
 
-   
-    <section class="content d-flex justify-content-center">        
+
+
+    <section class="content d-flex justify-content-center">
         @if (Products == null)
         {
             <div class="row overlay-wrapper">
@@ -76,13 +76,13 @@
                                 <div class="card-img-actions">
                                     <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="card-img img-fluid" width="96" height="350">
                                 </div>
-                                <a href="/view-product/@product.Sno" class="text-default mb-2 stretched-link" data-abc="true"></a>
+                                <a href="javascript:void(0);" class="text-default mb-2 stretched-link" data-abc="true" @onclick="() => OnClick_ALinkView(product)"></a>
                             </div>
 
                             <div class="card-body bg-light text-center">
                                 <div class="mb-2 " style="transform: rotate(0);">
                                     <h6 class="font-weight-semibold mb-2">
-                                        <a href="/view-product/@product.Sno" class="text-default mb-2 stretched-link" data-abc="true">@product.Name</a>
+                                        <a href="javascript:void(0);" class="text-default mb-2 stretched-link" data-abc="true" @onclick="() => OnClick_ALinkView(product)">@product.Name</a>
                                     </h6>
                                     @* <a href="/view-product/@product.Sno" class="text-muted" data-abc="true">@product.Name</a> *@ @* Category *@
                                 </div>

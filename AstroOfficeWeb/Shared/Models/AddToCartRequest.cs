@@ -8,7 +8,12 @@ namespace AstroOfficeWeb.Shared.Models
 {
     public class AddToCartRequest
     {
-        public  int Quantity { get; set; }
-        public  long ProductSno { get; set; }
+        public int Quantity { get; set; }
+        public long ProductSno { get; set; }
+    }
+
+    public class AddToVishRequest
+    {
+        public long ProductSno { get; set; }
     }
 }

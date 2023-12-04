@@ -1,4 +1,8 @@
-﻿namespace AstroShared
+﻿using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace AstroShared
 {
     public enum Gender
     {
@@ -26,18 +30,70 @@
         Both
     }
 
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum PaymentMethod
     {
         CreditCard,
         PayPal,
         BankTransfer,
-        // Add other payment methods as needed
     }
 
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum ShippingMethod
     {
         Standard,
         Express,
-        // Add other shipping methods as needed
+    }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum OrderStatus
+    {
+        PendingPayment,
+        Processing,
+        Shipped,
+        Delivered,
+        Cancelled,
+        Returned
+    }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum PaymentStatus
+    {
+        Pending,
+        Processing,
+        Completed,
+        Failed,
+        Refunded
+    }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum ProductStatus
+    {
+        Draft,
+        PendingApproval,
+        Approved,
+        Rejected,
+        Active,
+        Discontinued,
+        OnSale,
+        Archived,
+
+        [Display(Name = "Out of Stock")]
+        OutOfStock,
+
+        [Display(Name = "In Stock")]
+        InStock,
+    }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum CategoryStatus
+    {
+        Draft,
+        PendingApproval,
+        Approved,
+        Rejected,
+        Active,
+        Inactive,
+        Archived
     }
 }

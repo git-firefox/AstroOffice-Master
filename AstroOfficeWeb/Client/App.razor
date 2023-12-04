@@ -13,12 +13,14 @@
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"> 
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <Authorizing>
                     <p>Please wait, we are authorizring the user!</p>
                 </Authorizing>
                 <NotAuthorized>
-                    <AstroOfficeWeb.Client.Pages.Account.Login></AstroOfficeWeb.Client.Pages.Account.Login>
+                    @* <LayoutView Layout="@typeof(AccountLayout)"> *@
+                        <AstroOfficeWeb.Client.Pages.Account.Login></AstroOfficeWeb.Client.Pages.Account.Login>
+                    @* </LayoutView> *@
                 </NotAuthorized>
             </AuthorizeRouteView>
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -26,7 +28,7 @@
         <NotFound>
             <PageTitle>Not found</PageTitle>
             <LayoutView Layout="@typeof(MainLayout)">
-                <p role="alert">Sorry, there's nothing at this address.</p>
+                <p role="alert">Sorry, there's nothing at this address.</p>   
             </LayoutView>
         </NotFound>
     </Router>

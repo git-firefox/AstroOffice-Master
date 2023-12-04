@@ -3,6 +3,7 @@
 @inject IAuthenticationService AuthService
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
+@* @layout AccountLayout *@
 
 <div class="login-page">
     <img src="images/loader-4.gif" class="astroOffice-logo-image mb-3" />
@@ -25,8 +26,8 @@
 
                         </div>
                         <div class="input-group mb-4">
-                            <InputText type="@(PasswordIsClicked ? "text" : "password")" @bind-Value="LoginModel!.Password"  class="form-control" placeholder="Password" />
-                            <i class="fas @(PasswordIsClicked ? "fa-eye-slash" : "fa-eye")" @onclick="()=>{PasswordIsClicked = !PasswordIsClicked; }"></i>                         
+                            <InputText type="@(PasswordIsClicked ? "text" : "password")" @bind-Value="LoginModel!.Password" class="form-control" placeholder="Password" />
+                            <i class="fas @(PasswordIsClicked ? "fa-eye-slash" : "fa-eye")" @onclick="()=>{PasswordIsClicked = !PasswordIsClicked; }"></i>
                             <ValidationMessage For="() => LoginModel.Password" />
                         </div>
                         <div class="row down-form">

@@ -3,6 +3,7 @@ using VO = ASDLL.ASDLL.ValueObjects;
 using AutoMapper;
 using AstroOfficeWeb.Shared.Models;
 using AstroShared.DTOs;
+using System.Diagnostics.Eventing.Reader;
 
 namespace AstroOfficeWeb.Server
 {
@@ -21,7 +22,7 @@ namespace AstroOfficeWeb.Server
             CreateMap<AKundali, KundaliDTO>();
             CreateMap<AProduct, ViewProductDTO>();
             CreateMap<ProductImage, ImagesDTO>();
-            CreateMap<AProduct, ProductDTO>();          
+            CreateMap<AProduct, ProductDTO>();
 
             //CreateMap<ImagesDTO, ProductImage>().ForMember(x => x.Product, opt => opt.Ignore()); 
             CreateMap<ViewProductDTO, AProduct>();

@@ -123,16 +123,22 @@
         public static string Base = "api/Product/";
         public static string GET_Products = Base + "GetProducts";
         public static string GET_UserAddedProducts = Base + "GetUserAddedProducts";
-        public static string GET_ProductBySno = Base + "GetProductBySno";       
+        public static string GET_ProductBySno = Base + "GetProductBySno";
         public static string GET_UserAddresses = Base + "GetUserAddresses";
-        public static string GET_UserShoppingCart = Base + "GetUserShoppingCart";       
+        public static string GET_UserShoppingCart = Base + "GetUserShoppingCart";
         public static string GET_ProductImages = Base + "GetImagesByProductId";
+        public static string GET_UserOrder = Base + "GetUserOrder";
+        public static string GET_UserOrders = Base + "GetUserOrders";
+        public static string GET_Orders = Base + "GetOrders";
+        public static string GET_UserWishList = Base + "GetUserWishList";
         public static string POST_AddProduct = Base + "AddProduct";
         public static string POST_AddToShoppingCart = Base + "AddToShoppingCart";
         public static string POST_SaveUserAddress = Base + "SaveUserAddress";
         public static string POST_SaveProductImages = Base + "SaveProductImages";
         public static string POST_PlaceOrder = Base + "PlaceOrder";
         public static string PUT_UpdateProduct = Base + "UpdateProduct";
+        public static string PUT_AddToWishList = Base + "AddToWishList";
         public static string DELETE_Product = Base + "DeleteProduct";
+        public static string DELETE_FromWishList = Base + "DeleteFromWishList";
     }
 }

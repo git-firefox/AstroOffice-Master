@@ -2,6 +2,7 @@
 using AstroShared.DTOs;
 using AstroShared.Helper;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace AstroOfficeWeb.Client.Pages.Product
 {
@@ -31,6 +32,20 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
             BrowserFiles = await ProductService.GetImagesByProductIds(Sno) ?? new();
 
+        }
+
+        private async Task OnClick_BtnAddToWishlist(MouseEventArgs e)
+        {
+            await ProductService.AddToWishList(Sno);
+        }
+
+        private async Task OnClick_BtnAddToCart(MouseEventArgs e)
+        {
+            bool isAddedToCart = await ProductService.IsAddToCart(ViewProductDTO!);
+            if (isAddedToCart)
+            {
+                await JSRuntime.ShowToastAsync($"\"{ViewProductDTO!.Name}\" added to your cart.", SwalIcon.Success);
+            }
         }
     }
 }

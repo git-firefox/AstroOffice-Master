@@ -1,0 +1,16 @@
+﻿.card-title {
+    float: revert;
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin: 0.75rem;
+}
+
+
+.fa-heart:before {
+    display: block;
+    margin-bottom: 20px;
+    color: var(--color-gray-200);
+    font-weight: 400;
+    font-size: 3.8em;
+    line-height: 1;
+}

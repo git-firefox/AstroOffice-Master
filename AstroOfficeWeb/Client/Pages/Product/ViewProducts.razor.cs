@@ -55,6 +55,12 @@ namespace AstroOfficeWeb.Client.Pages.Product
             }
         }
 
+        private async Task OnClick_ALinkView(ViewProductDTO product)
+        {
+            await LocalStorage.SetItemAsync<ViewProductDTO>(ApplicationConst.Local_SelectedProduct, product);
+            NavigationManager.NavigateTo($"/view-product/{product.Sno}");
+        }
+
         private async Task ApplyFilter()
         {
             filteredProducts = Products.ToList();
@@ -69,9 +75,9 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
             if (filter == "Low-Max")
                 filteredProducts = filteredProducts.OrderBy(x => x.Price).ToList();
-            else if(filter == "Max-Low")
+            else if (filter == "Max-Low")
                 filteredProducts = filteredProducts.OrderByDescending(x => x.Price).ToList();
-                       
+
             currentPage = 1;
             //totalPages = (int)Math.Ceiling((double)filteredItems.Count / pageSize);// Reset to the first page after filtering
             UpdateVisibleItems();
@@ -90,7 +96,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
             currentPage++;
             if (!IsLastPage)
             {
-                
+
                 UpdateVisibleItems();
             }
         }

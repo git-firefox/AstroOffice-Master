@@ -94,7 +94,7 @@
                                                             <div class="mb-3">
                                                                 <label for="billing-phone" class="form-label">Phone <span class="text-danger">*</span></label>
                                                                 <ValidationMessage For=@(() => BillingInfo!.PhoneNumber) style="position:revert;" />
-                                                                <InputMask IType="string" @bind-Value="BillingInfo!.PhoneNumber" class="form-control" id="billing-phone" />
+                                                                <InputMask IType="string" Mask="999 999 9999" @bind-Value="BillingInfo!.PhoneNumber" class="form-control" id="billing-phone" />
                                                             </div>
                                                         </div>
                                                     </div> <!-- end row -->

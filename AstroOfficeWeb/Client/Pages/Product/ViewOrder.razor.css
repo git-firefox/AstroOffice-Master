@@ -1,0 +1,21 @@
+﻿.table-centered td, .table-centered th {
+    vertical-align: middle !important;
+}
+
+.fw-semibold {
+    font-weight: 600;
+}
+.header-title {
+    font-size: 1rem;
+    margin: 0 0 7px 0;
+}
+
+.fa, .far, .fas {
+    font-family: "Font Awesome 5 Free";
+}
+
+i.h1, i.h2, i.h3, i.h4, i.h5, i.h6, i.h1,i.h2, i.h3, i.h4, i.h5, i.h6 {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    line-height: 1.2;
+}

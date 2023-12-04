@@ -1,0 +1,78 @@
+﻿@page "/user-wishlist"
+@using AstroOfficeWeb.Client.Services
+@using AstroShared.DTOs
+
+@inject ProductService ProductService
+@inject NavigationManager NavigationManager
+@inject StateContainerService StateContainerService
+@inject IJSRuntime JSRuntime
+@inject ILocalStorageService LocalStorage
+
+
+<ContainerFluid HeaderTitle="My Wishlist">
+    <Header>
+        @if (ViewProductDTOs != null && ViewProductDTOs.Any())
+        {
+            <button class="btn btn-custom">Add To Wishlist</button>
+        }
+    </Header>
+    <ChildContent>
+        <div class="row">
+            @if (ViewProductDTOs == null)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+
+                    <div class="col-12 col-sm-2 col-md-6 col-xl-4">
+                        <div class="card bg-transparent">
+                            <MudSkeleton Class="card-img-top" SkeletonType="SkeletonType.Rectangle" Height="150px" />
+                            <div class="card-body text-center">
+                                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="50px" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                if (ViewProductDTOs.Any())
+                {
+                    foreach (var product in ViewProductDTOs)
+                    {
+                        <div class="col-12 col-sm-2 col-md-6 col-xl-4">
+                            <div class="card bg-transparent">
+                                <img class="card-img-top" src="@product.ImageUrl" alt="@product.Name" title="@product.Name">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">@product.Name</h5>
+
+                                    <MudStack Justify="Justify.SpaceBetween" Row="true">
+                                        <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye" OnClick="()=>OnCLick_ALickViewProdcut(product)" aria-label="view product" Title="View Product"></MudIconButton>
+                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" OnClick="()=>OnCLick_ALickVRemoveWishlist(product)" aria-label="delete to wishlist" Title="Delete To Wishlist"></MudIconButton>
+                                    </MudStack>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-md-12">
+                        <div class="card shadow-none bg-transparent">
+                            <div class="card-body">
+                                <div class="col-sm-12 text-center">
+                                    <h3 class="fas fa-heart"></h3>
+                                    <h3>This wishlist is empty.</h3>
+                                    <h4>You don't have any products in the wishlist yet.</h4>
+                                    <h4>You will find a lot of interesting products on our "Shop" page. :)</h4>
+                                    <a href="products" class="btn btn-custom fw-semibold"><i class="fas fa-arrow-left px-2"></i> Continue Shopping</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </ChildContent>
+</ContainerFluid>
+

@@ -143,15 +143,15 @@
                         </div>
 
                         <div class="mt-4">
-                            <div class="btn btn-primary btn-lg btn-flat">
+                            <button class="btn btn-primary btn-lg btn-flat" @onclick="OnClick_BtnAddToCart">
                                 <i class="fas fa-cart-plus fa-lg mr-2"></i>
                                 Add to Cart
-                            </div>
+                            </button>
 
-                            <div class="btn btn-default btn-lg btn-flat">
+                            <button class="btn btn-default btn-lg btn-flat" @onclick="OnClick_BtnAddToWishlist">
                                 <i class="fas fa-heart fa-lg mr-2"></i>
                                 Add to Wishlist
-                            </div>
+                            </button>
                         </div>
 
                         @* <div class="mt-4 product-share">
