@@ -1,12 +1,11 @@
 ﻿@page "/token-recharge"
 @using AstroOfficeWeb.Client.Services;
 @using AstroShared.ViewModels;
-
 @attribute [Authorize]
 
 @inherits BaseComponent
-
 @inject TokenWalletService TokenWallet
+@inject IJSRuntime JSRuntime
 
 
 
@@ -178,9 +177,24 @@
     }
     private async void OnValidSubmit()
     {
-        var balance = await TokenWallet.UpdateRechargeTokenBalance(AstroOfficeWeb.Shared.Models.TransactionType.Deposit, Token.TokenAmount, $"Recharge of {Token.TokenAmount} successfully completed.");
+        var minRechargeForBonusAmount = 1000;
+        var bonusAmount = 150;
+        var totalBalance = 0;
+        if (Token.TokenAmount >= minRechargeForBonusAmount)
+        {
+            var AmountWithBonus= Token.TokenAmount + bonusAmount;         
+            var balance = await TokenWallet.UpdateRechargeTokenBalance(AstroOfficeWeb.Shared.Models.TransactionType.Deposit, AmountWithBonus, $"Congratulations! You got the bonus of {bonusAmount}. And your total recharge of {AmountWithBonus} successfully completed.");
+            totalBalance = (int)balance;
+        }
+        else
+        {
+            var balance = await TokenWallet.UpdateRechargeTokenBalance(AstroOfficeWeb.Shared.Models.TransactionType.Deposit, Token.TokenAmount, $"Recharge of {Token.TokenAmount} successfully completed.");
+            totalBalance = (int)balance;
+        }
+
         TokenRechargeTableTRs = await TokenWallet.GetTokenRechargeTransactionHistory();
-        UserToken = balance;
+        // UserToken = balance;
+        UserToken = totalBalance;
         StateHasChanged();
     }
 }

@@ -1971,6 +1971,8 @@ namespace AstroOfficeWeb.Client.Pages
         {
             isNumVarshVisible = true;
             this.show_vfal = true;
+            BirthDetails.KundaliUdvYear = (DateTime.Now.Year - BirthDetails.DateOfBirth.Year);
+
             if (BirthDetails.KundaliUdvYear < 1)
             {
                 BirthDetails.KundaliUdvYear = 1;
@@ -1979,6 +1981,9 @@ namespace AstroOfficeWeb.Client.Pages
             {
                 BirthDetails.KundaliUdvYear = 120;
             }
+
+            
+
             List<KPPlanetMappingVO> kPPlanetMappingVOs = new List<KPPlanetMappingVO>();
             KundliBLL kundliBLL = new KundliBLL();
             kPPlanetMappingVOs = await KundliBLL.NEW_GetVarshaphalKundliMapping(Convert.ToInt16(BirthDetails.KundaliUdvYear), this.persKV, this.kp_chart);
@@ -3127,6 +3132,11 @@ namespace AstroOfficeWeb.Client.Pages
                 if (balance == 0)
                 {
                     await JSRuntime.ShowToastAsync("Your balance is currently 0.00 Please recharge token.", SwalIcon.Error);
+                    return;
+                }
+                else if(balance < 250)
+                {
+                    await JSRuntime.ShowToastAsync("Your balance is less than 250 rs. Please recharge token for view the Kundali.", SwalIcon.Error);
                     return;
                 }
                 var htmlString = await KPBLL.Get_New_Products(lower);

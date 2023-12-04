@@ -20,97 +20,155 @@
     <MudSelectItem Value="@("Option3")">Option 3</MudSelectItem>
     </MudSelect> *@
 
-    <MudGrid>
-        <MudItem xs="12" sm="4">
-            <div class="mud-input-control mud-input-input-control mt-0">
-                <div class="mud-input-control-input-container">
-                    <!--!--><!--!-->
-                    <div class="mud-input mud-input-text mud-input-adorned-start mud-input-underline mud-shrink">
-                        <!--!--><div class="mud-input-adornment mud-input-adornment-start"><!--!--><svg aria-label="Icon" tabindex="-1" class="mud-icon-root mud-icon-default mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><!--!--><path d="M0 0h24v24H0z" fill="none"></path><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg></div><input class="mud-input-slot mud-input-root mud-input-root-text mud-input-root-adorned-start" type="text" @onchange="ApplyFilter" id="searchShopBox" placeholder="Search" inputmode="text" maxlength="524288" aria-invalid="false" _bl_23=""><div class="mud-input-slot mud-input-root mud-input-root-text mud-input-root-adorned-start" style="display:none" tabindex="-1" _bl_24=""></div>
-                    </div>
+
+
+    <div class="row">
+        <div class="col-3">
+
+            <h2>Shop Categories</h2>
+
+            <div class="ml-5 mt-5">
+                <div class="mt-3">
+                    <a href="/view-products" class="nav flex-column text-color">Astro Services</a>
+                </div>
+                <div class="mt-3">
+                    <a href="/view-products" class="nav flex-column text-color">Conch/शंख</a>
+                </div>
+                <div class="mt-3">
+                    <a href="/view-products" class="nav flex-column text-color">Bracelets/ब्रेसलेट्स</a>
+                </div>
+                <div class="mt-3">
+                    <a href="/view-products" class="nav flex-column text-color">Books/पुस्तकें</a>
+                </div>
+                <div class="mt-3">
+                    <a href="/view-products" class="nav flex-column text-color">Crystal/स्फटिक</a>
+                </div>
+                <div class="mt-3 text-color">
+                    <a href="/view-products" class="nav flex-column text-color">Decoration/सजावट</a>
+                </div>
+                <div class="mt-3">
+                    <a href="/view-products" class="nav flex-column text-color">Fengshui/फेंगशुई</a>
+                </div>
+                <div class="mt-3">
+                    <a href="/view-products" class="nav flex-column text-color">Gemstones/नवरत्न</a>
+                </div>
+                <div class="mt-3">
+                    <a href="/view-products" class="nav flex-column text-color">Pendants/लॉकेट</a>
+                </div>
+                <div class="mt-3">
+                    <a href="/view-products" class="nav flex-column text-color">Gemstones/नवरत्न</a>
+                </div>
+                <div class="mt-3">
+                    <a href="/view-products" class="nav flex-column text-color">Rudraksha/रुद्राक्ष</a>
+                </div>
+                <div class="mt-3">
+                    <a href="/view-products" class="nav flex-column text-color">Yantra/यन्त्र</a>
                 </div>
             </div>
-        </MudItem>
-        <MudItem xs="12" sm="4" Style="margin-bottom:10px">
-            <MudSelect T="string" Label="Sort by Price" SelectedValuesChanged="(async (x)=> await ApplyFilter())" AnchorOrigin="Origin.BottomCenter" id="sortShopdropdown">
-                <MudSelectItem Value="@("Default")" />
-                <MudSelectItem Value="@("Low-Max")" />
-                <MudSelectItem Value="@("Max-Low")" />
-            </MudSelect>
-        </MudItem>
-        <MudItem xs="12" sm="4" Style="margin-bottom:10px">
-            <MudSelect T="string" Label="Size" SelectedValuesChanged="(async (x)=> await ApplyFilter())" AnchorOrigin="Origin.BottomCenter" id="pageSizeShopdropdown">
-                <MudSelectItem Value="@("24")" />
-                <MudSelectItem Value="@("40")" />
-                <MudSelectItem Value="@("80")" />
-            </MudSelect>
-        </MudItem>
-    </MudGrid>
 
 
-    @* <MudTextField T="string" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-    AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" Value="@_searchString" ValueChanged="(async (x)=> await ApplyFilter())" /> *@
+        </div>
+        <div class="col-9">
 
-    @* <Input type="text" @onchange="ApplyFilter" id="searchShopBox" Placeholder="Search" IconSize="Size.Medium" Class="mt-0" /> *@
-    @* <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-    AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField> *@
-
-
-
-    <section class="content d-flex justify-content-center">
-        @if (Products == null)
-        {
-            <div class="row overlay-wrapper">
-                <div class="overlay dark"><i class="fas fa-3x fa-sync-alt fa-spin"></i><div class="text-bold pt-2">Loading...</div></div>
-            </div>
-        }
-        else
-        {
-            <div class="row">
-                @foreach (ViewProductDTO product in listedProducts)
-                {
-
-                    <div class="col-md-3 mt-2">
-                        <div class="card">
-                            <div class="card-body" style="transform: rotate(0);">
-                                <div class="card-img-actions">
-                                    <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="card-img img-fluid" width="96" height="350">
+            <MudGrid>
+                <MudItem xs="12" sm="4" Style="margin-bottom:10px">
+                    <div class="mud-input-control mud-input-input-control mt-0">
+                        <div class="mud-input-control-input-container">
+                            <!--!--><!--!-->
+                            <div class="mud-input mud-input-text mud-input-adorned-start mud-input-underline mud-shrink">
+                                <div class="mud-input-adornment mud-input-adornment-start">
+                                    <svg aria-label="Icon" tabindex="-1" class="mud-icon-root mud-icon-default mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><!--!--><path d="M0 0h24v24H0z" fill="none"></path><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
                                 </div>
-                                <a href="javascript:void(0);" class="text-default mb-2 stretched-link" data-abc="true" @onclick="() => OnClick_ALinkView(product)"></a>
-                            </div>
-
-                            <div class="card-body bg-light text-center">
-                                <div class="mb-2 " style="transform: rotate(0);">
-                                    <h6 class="font-weight-semibold mb-2">
-                                        <a href="javascript:void(0);" class="text-default mb-2 stretched-link" data-abc="true" @onclick="() => OnClick_ALinkView(product)">@product.Name</a>
-                                    </h6>
-                                    @* <a href="/view-product/@product.Sno" class="text-muted" data-abc="true">@product.Name</a> *@ @* Category *@
+                                <input class="mud-input-slot mud-input-root mud-input-root-text mud-input-root-adorned-start" type="text" @onchange="ApplyFilter" id="searchShopBox" placeholder="Search" inputmode="text" maxlength="524288" aria-invalid="false" _bl_23="">
+                                <div class="mud-input-slot mud-input-root mud-input-root-text mud-input-root-adorned-start" style="display:none" tabindex="-1" _bl_24="">
                                 </div>
-
-                                <h3 class="mb-0 font-weight-semibold">
-                                    &#8377; @product.Price.ToString("N2")
-                                </h3>
-
-                                @* <div>
-                        <i class="fa fa-star star"></i>
-                        <i class="fa fa-star star"></i>
-                        <i class="fa fa-star star"></i>
-                        <i class="fa fa-star star"></i>
-                        </div> *@
-
-                                @* <div class="text-muted mb-3">34 reviews</div> *@
-
-                                <button type="button" class="btn bg-cart" @onclick="() => OnClick_BtnAddToCart(product)"><i class="fa fa-cart-plus mr-2"></i> Add to cart</button>
-
                             </div>
                         </div>
                     </div>
-                }
-            </div>
-        }
+                </MudItem>
+                <MudItem xs="12" sm="4" Style="margin-bottom:10px">
+                    <MudSelect T="string" Label="Sort by Price" SelectedValuesChanged="(async (x)=> await ApplyFilter())" AnchorOrigin="Origin.BottomCenter" id="sortShopdropdown">
+                        <MudSelectItem Value="@("Default")" />
+                        <MudSelectItem Value="@("Low-Max")" />
+                        <MudSelectItem Value="@("Max-Low")" />
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="4" Style="margin-bottom:10px">
+                    <MudSelect T="string" Label="Size" SelectedValuesChanged="(async (x)=> await ApplyFilter())" AnchorOrigin="Origin.BottomCenter" id="pageSizeShopdropdown">
+                        <MudSelectItem Value="@("24")" />
+                        <MudSelectItem Value="@("40")" />
+                        <MudSelectItem Value="@("80")" />
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
 
-    </section>
-    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Error" @onclick="PreviousPage" disabled="@IsFirstPage"></MudButton>
-    <span>Page @currentPage of @totalPages</span>
-    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowForward" Color="Color.Error" @onclick="NextPage" disabled="@IsLastPage"></MudButton>
+
+            @* <MudTextField T="string" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+            AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" Value="@_searchString" ValueChanged="(async (x)=> await ApplyFilter())" /> *@
+
+            @* <Input type="text" @onchange="ApplyFilter" id="searchShopBox" Placeholder="Search" IconSize="Size.Medium" Class="mt-0" /> *@
+            @* <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+            AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField> *@
+
+
+
+            <section class="content d-flex justify-content-center">
+                @if (Products == null)
+                {
+                    <div class="row overlay-wrapper">
+                        <div class="overlay dark"><i class="fas fa-3x fa-sync-alt fa-spin"></i><div class="text-bold pt-2">Loading...</div></div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        @foreach (ViewProductDTO product in listedProducts)
+                        {
+
+                            <div class="col-md-3 mt-2">
+                                <div class="card">
+                                    <div class="card-body" style="transform: rotate(0);">
+                                        <div class="card-img-actions">
+                                            <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="card-img img-fluid" width="96" height="350">
+                                        </div>
+                                        <a href="javascript:void(0);" class="text-default mb-2 stretched-link" data-abc="true" @onclick="() => OnClick_ALinkView(product)"></a>
+                                    </div>
+
+                                    <div class="card-body bg-light text-center">
+                                        <div class="mb-2 " style="transform: rotate(0);">
+                                            <h6 class="font-weight-semibold mb-2">
+                                                <a href="javascript:void(0);" class="text-default mb-2 stretched-link" data-abc="true" @onclick="() => OnClick_ALinkView(product)">@product.Name</a>
+                                            </h6>
+                                            @* <a href="/view-product/@product.Sno" class="text-muted" data-abc="true">@product.Name</a> *@ @* Category *@
+                                        </div>
+
+                                        <h3 class="mb-0 font-weight-semibold">
+                                            &#8377; @product.Price.ToString("N2")
+                                        </h3>
+
+                                        @* <div>
+                                <i class="fa fa-star star"></i>
+                                <i class="fa fa-star star"></i>
+                                <i class="fa fa-star star"></i>
+                                <i class="fa fa-star star"></i>
+                                </div> *@
+
+                                        @* <div class="text-muted mb-3">34 reviews</div> *@
+
+                                        <button type="button" class="btn bg-cart" @onclick="() => OnClick_BtnAddToCart(product)"><i class="fa fa-cart-plus mr-2"></i> Add to cart</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+
+            </section>
+            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Error" @onclick="PreviousPage" disabled="@IsFirstPage"></MudButton>
+            <span>Page @currentPage of @totalPages</span>
+            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowForward" Color="Color.Error" @onclick="NextPage" disabled="@IsLastPage"></MudButton>
+
+        </div>
+    </div>
 </div>

@@ -53,7 +53,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public ElementReference ER_AMetaData { get; set; }
 
         //public ElementReference? Test1 { get; set; }
-        public DeleteConfirmationDialog DeleteConfirmationDialog { get; set; }
+        public DeleteConfirmationDialog? DeleteConfirmationDialog { get; set; }
 
         public List<ImagesDTO> BrowserFiles { get; set; } = new();
 
@@ -119,7 +119,8 @@ namespace AstroOfficeWeb.Client.Pages.Product
             if (Sno != 0)
             {
                 ProductModel = await ProductService.GetProductBySno(Sno) ?? new();
-              
+               
+
                 //SaveProductModel = new SaveProductDTO()
                 //{
                 //    Price = viewProductDTO!.Price,

@@ -40,7 +40,7 @@ namespace AstroShared.ViewModels
         public string TxtTimezone { get; set; } = string.Empty;
         public bool ChkShowRef { get; set; }
         public Gender Gender { get; set; }
-        public int KundaliUdvYear { get; set; } = 18;
+        public int KundaliUdvYear { get; set; } 
         public long? PlaceOfBirthID { get; set; }
 
         public BirthDetails()
