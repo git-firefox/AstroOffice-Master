@@ -1667,7 +1667,9 @@ namespace AstroOfficeWeb.Client.Pages
                 {
                     this.persKV.Current_Age = 1;
                 }
-                //this.NumUDVYears.Value = this.persKV.Current_Age + 1; !
+                //BirthDetails.KundaliUdvYear = (DateTime.Now.Year - BirthDetails.DateOfBirth.Year);
+                BirthDetails.KundaliUdvYear = this.persKV.Current_Age + 1;
+
             }
             else
             {
@@ -1971,7 +1973,7 @@ namespace AstroOfficeWeb.Client.Pages
         {
             isNumVarshVisible = true;
             this.show_vfal = true;
-            BirthDetails.KundaliUdvYear = (DateTime.Now.Year - BirthDetails.DateOfBirth.Year);
+            //BirthDetails.KundaliUdvYear = (DateTime.Now.Year - BirthDetails.DateOfBirth.Year);
 
             if (BirthDetails.KundaliUdvYear < 1)
             {
