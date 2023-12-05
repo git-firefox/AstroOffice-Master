@@ -1,0 +1,23 @@
+﻿@using AstroOfficeWeb.Client.Pages.Product;
+@inject ISnackbar Snackbar
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.DeleteForever" Class="mr-3 mb-n1" />
+            Delete server?
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField Value="@Category.Title" Label="Title" />
+        <MudTextField Value="@Category.Slug" Label="Slug"  />
+        <MudTextField Value="@Category.FileUpload" Label="FileUpload" />
+        <MudTextField Value="@Category.ParentCategory" Label="Parent Category" />
+        <MudTextField Value="@Category.Description" Label="Description"  />
+        <MudTextField Value="@Category.Status" Label="Status"  />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Success" OnClick="AddCategory">Add </MudButton>
+    </DialogActions>
+</MudDialog>

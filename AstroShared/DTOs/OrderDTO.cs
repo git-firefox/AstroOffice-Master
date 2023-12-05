@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AstroShared.DTOs
 {
-    public class OrderDTO
+    public class OrderDTO               
     {
         public long OrderId { get; set; }
 

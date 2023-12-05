@@ -53,7 +53,8 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public ElementReference ER_AMetaData { get; set; }
 
         //public ElementReference? Test1 { get; set; }
-        public DeleteConfirmationDialog? DeleteConfirmationDialog { get; set; }
+        //public DeleteConfirmationDialog? DeleteConfirmationDialog { get; set; }
+
 
         public List<ImagesDTO> BrowserFiles { get; set; } = new();
 
