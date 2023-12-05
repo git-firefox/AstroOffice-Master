@@ -37,9 +37,5 @@
     <ProjectReference Include="..\Shared\AstroOfficeWeb.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\IServices\" />
-  </ItemGroup>
-
 
 </Project>

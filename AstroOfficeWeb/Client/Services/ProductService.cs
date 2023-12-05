@@ -249,7 +249,7 @@ namespace AstroOfficeWeb.Client.Services
 
         public async Task AddToWishList(long productSno)
         {
-            var response = await _swagger.PutAsync<AddToVishRequest, ApiResponse<string>>(ProductApiConst.PUT_AddToWishList, new AddToVishRequest { ProductSno = productSno });
+            var response = await _swagger.PutAsync<AddToWishlistRequest, ApiResponse<string>>(ProductApiConst.PUT_AddToWishList, new AddToWishlistRequest { ProductSno = productSno });
 
             if (!response!.Success)
             {
@@ -260,6 +260,22 @@ namespace AstroOfficeWeb.Client.Services
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
             }
         }
+
+        public async Task<string?> CreateCheckoutSession()
+        {
+            var response = await _swagger.PostAsync<object, ApiResponse<string>>(ProductApiConst.POST_CreateCheckoutSession, new { Success = "Test" });
+
+            if (!response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                return null;
+            }
+            else
+            {
+                return response.Data;
+            }
+        }
+
 
         public bool IsInShoppingCart(List<CartItemDTO> cartItems, long productSno)
         {

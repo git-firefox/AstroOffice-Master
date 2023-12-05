@@ -12,7 +12,7 @@ namespace AstroOfficeWeb.Shared.Models
         public long ProductSno { get; set; }
     }
 
-    public class AddToVishRequest
+    public class AddToWishlistRequest
     {
         public long ProductSno { get; set; }
     }

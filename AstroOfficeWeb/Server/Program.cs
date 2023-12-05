@@ -6,6 +6,8 @@ using ASDLL;
 using ASDLL.AstroScienceWeb.BLL;
 using ASDLL.DataAccess.Core;
 using ASModels;
+using AstroOfficeWeb.Server.Services;
+using AstroOfficeWeb.Server.Services.IServices;
 using AstroOfficeWeb.Shared.Models;
 using AstroShared.Helper;
 using AutoMapper;
@@ -51,6 +53,7 @@ builder.Services.AddTransient<KPDAO>();
 builder.Services.AddTransient<BestBLL>();
 builder.Services.AddTransient<KPPredBLL>();
 builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+builder.Services.AddScoped<IStripePaymentService, StripePaymentService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

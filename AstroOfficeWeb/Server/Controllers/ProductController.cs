@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using ASModels;
 using ASModels.Astrooff;
 using AstroOfficeWeb.Server.Helper;
+using AstroOfficeWeb.Server.Services.IServices;
 using AstroOfficeWeb.Shared.Models;
 using AstroShared;
 using AstroShared.DTOs;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Stripe.Checkout;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,11 +27,13 @@ namespace AstroOfficeWeb.Server.Controllers
     {
         private readonly AstrooffContext _context;
         private readonly IMapper _mapper;
+        private readonly IStripePaymentService _stripePayment;
 
-        public ProductController(AstrooffContext context, IMapper mapper)
+        public ProductController(AstrooffContext context, IMapper mapper, IStripePaymentService stripePayment)
         {
             _context = context;
             _mapper = mapper;
+            _stripePayment = stripePayment;
         }
 
         // GET: api/<ProductController>
@@ -599,7 +603,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
         [Authorize(Roles = "User")]
         [HttpPut]
-        public async Task<IActionResult> AddToWishList(AddToVishRequest request)
+        public async Task<IActionResult> AddToWishList(AddToWishlistRequest request)
         {
             ProductWishlist? productWishlist = null;
             var response = new ApiResponse<string>();
@@ -658,6 +662,69 @@ namespace AstroOfficeWeb.Server.Controllers
             var productDTOs = _mapper.Map<List<ViewProductDTO>>(aProducts);
 
             response.Data = productDTOs;
+            return Ok(response);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpPost]
+        public async Task<IActionResult> CreateCheckoutSession()
+        {
+            var response = new ApiResponse<string>();
+            var shoppingCart = await _context.ShoppingCarts.Include(sc => sc.CartItems).ThenInclude(sc => sc.AProductsSnoNavigation).FirstOrDefaultAsync(a => a.AUsersSno == User.GetUserSno());
+
+            var cartItems = shoppingCart?.CartItems.Select(ci => new CartItemDTO
+            {
+                ProductSno = ci.AProductsSno ?? 0,
+                ProductName = ci.AProductsSnoNavigation?.Name ?? "",
+                ProductQuantity = ci.Quantity ?? 0,
+                ProductImageSrc = ci.AProductsSnoNavigation?.ImageUrl,
+                ProductPrice = ci.AProductsSnoNavigation?.Price ?? 0
+            }).ToList();
+
+            //var session = _stripePayment.CreateCheckoutSession(cartItems!);
+
+            try
+            {
+                var lineItems = new List<SessionLineItemOptions>();
+                cartItems!.ForEach(product => lineItems.Add(new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmountDecimal = product.ProductPrice * 100,
+                        Currency = "inr",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = product.ProductName,
+                            Images = new List<string> { product!.ProductImageSrc! }
+                        }
+                    },
+                    Quantity = product.ProductQuantity
+                }));
+
+                var options = new SessionCreateOptions
+                {
+                    //CustomerEmail = _authService.GetUserEmail(),
+                    ShippingAddressCollection = new SessionShippingAddressCollectionOptions
+                    {
+                        AllowedCountries = new List<string> { "IND" }
+                    },
+                    PaymentMethodTypes = new List<string> { "card" },
+                    LineItems = lineItems,
+                    Mode = "payment",
+                    SuccessUrl = "https://localhost:5004/order-success?session_id={CHECKOUT_SESSION_ID}",
+                    CancelUrl = "https://localhost:5004/shopping-cart"
+                };
+
+                var service = new SessionService();
+                Session session = service.Create(options);
+                response.Data = session.Url;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+
             return Ok(response);
         }
     }
