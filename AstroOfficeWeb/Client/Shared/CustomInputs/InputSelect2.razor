@@ -2,7 +2,7 @@
 @inherits InputSelect<TValue>
 @inject IJSRuntime JSRuntime
 
-<select @ref="ER_InputSelect" data-placeholder="@Placeholder">
+<select @ref="ER_InputSelect" data-placeholder="@Placeholder" @bind="CurrentValue">
     <option value="0">@(string.IsNullOrEmpty(FirstOption) ? Placeholder : FirstOption)</option>
     @foreach (var item in Options)
     {

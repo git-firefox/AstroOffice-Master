@@ -1,12 +1,19 @@
-﻿using Stripe;
+﻿using Microsoft.AspNetCore.Components;
+using Stripe;
+using Stripe.Checkout;
 
 namespace AstroOfficeWeb.Client.Services
 {
     public class StripePayment
     {
-        public StripePayment()
+        private readonly HttpClient _httpClient;
+        private readonly NavigationManager _navigation;
+
+        public StripePayment(HttpClient httpClient, NavigationManager navigation)
         {
             StripeConfiguration.ApiKey = "sk_test_51N4JNqSDthT1ctefV2hXxAss5Ry8I8PRgUmpscORfxdPy2j3d5abB8NbKbctI9FKIXj89KFvRpGJU9h77ytlkOFw00jxWuZIZU";
+            _httpClient = httpClient;
+            _navigation = navigation;
         }
 
         public async Task MakePayment(string number, string expMonth, string expYear, string cvc)
@@ -93,6 +100,43 @@ namespace AstroOfficeWeb.Client.Services
                 _ = ex;
                 return "";
             }
+        }
+
+        public Session? CreateCheckoutSession()
+        {
+            try
+            {
+                var options = new SessionCreateOptions
+                {
+                    LineItems = new List<SessionLineItemOptions>
+                {
+                    new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = 2000,
+                            Currency = "inr",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = "T-shirt",
+                            },
+                        },
+                        Quantity = 1,
+                    },
+                },
+                    Mode = "payment",
+                    SuccessUrl = _httpClient.BaseAddress + "success",
+                    CancelUrl = _httpClient.BaseAddress + "cancel",
+                };
+
+                var service = new SessionService();
+                Session session = service.Create(options);
+            }
+            catch (Exception ex)
+            {
+                _ = ex.Message;
+            }
+            return default;
         }
     }
 }
