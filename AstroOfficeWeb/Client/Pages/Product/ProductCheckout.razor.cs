@@ -121,10 +121,11 @@ namespace AstroOfficeWeb.Client.Pages.Product
             else if (status == ProceedStatus.Payment)
             {
                 //await JSRuntime.ShowTabAsync(ER_APaymentInfo);
-                var payment = new StripePayment();
+                //var payment = new StripePayment();
                 //await payment.MakePayment(CreditCard.CardNumber, CreditCard.ExpiryMonth, CreditCard.ExpiryYear, CreditCard.CVV);
-                var response = await payment.CreatePaymentIntent(200);
-                //await ProductService.PlaceOrder(PlaceOrder);
+                //var response = await StripePayment.CreatePaymentIntent(200);
+                //StripePayment.CreateCheckoutSession();
+                await ProductService.PlaceOrder(PlaceOrder);
             }
         }
 
@@ -169,7 +170,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
             BillingInfo.FirstName = address.FirstName;
             BillingInfo.LastName = address.LastName;
             BillingInfo.AddressLine1 = address.AddressLine1;
-            BillingInfo.AddressLine1 = address.AddressLine2;
+            BillingInfo.AddressLine2 = address.AddressLine2;
             BillingInfo.City = address.City;
             BillingInfo.State = address.State;
             BillingInfo.ZipCode = address.ZipCode;

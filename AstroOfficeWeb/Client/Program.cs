@@ -28,5 +28,6 @@ builder.Services.AddScoped<KundaliHistroyService>();
 builder.Services.AddScoped<TokenWalletService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<StateContainerService>();
+builder.Services.AddScoped<StripePayment>();
 
 await builder.Build().RunAsync();
