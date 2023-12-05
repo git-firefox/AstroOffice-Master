@@ -32,6 +32,10 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         private IEnumerable<OrderDTO>? OrderDTOs { get; set; }
 
+        [Parameter]
+        public EventCallback<CategoryDialoge> OnSelectCategoryChanged { get; set; }
+
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
@@ -54,21 +58,16 @@ namespace AstroOfficeWeb.Client.Pages.Product
             parameters.Add("Category", CategoryDialoge);
 
             var dialog = await DialogService.ShowAsync<CategoryDialog>("Add Category", parameters, new DialogOptions() { MaxWidth = MaxWidth.Large, CloseButton = true });
-            var result = await dialog.Result;
 
-       
-           
-                CategoryList.Add(new CategoryDialoge
-                {
-                    Title = CategoryDialoge!.Title,
-                    Slug = CategoryDialoge!.Slug,
-                    FileUpload = CategoryDialoge!.FileUpload,
-                    ParentCategory = CategoryDialoge!.ParentCategory,
-                    Description = CategoryDialoge!.Description,
-                    Status = CategoryDialoge!.Status
-                });
-                CategoryDialoge = new CategoryDialoge();
-            
+
+
+
+            CategoryList.Add(new CategoryDialoge
+            {
+                
+            });
+            //CategoryDialoge = new CategoryDialoge();
+
 
             //CategoryList.Add(new CategoryDialoge
             //{

@@ -12,7 +12,7 @@
         @* <button @onclick="Onclick_AddMetaData" class="btn btn-custom">Add Category</button> *@
         <MudButton OnClick="Onclick_AddMetaData" Class="btn-custom">Add Category</MudButton>
 
-        
+
     </Header>
     <ChildContent>
         @if (OrderDTOs == null)
@@ -25,19 +25,19 @@
         else
         {
 
-            <MudDataGrid T="OrderDTO" Items="OrderDTOs" Filterable="true" FilterMode="DataGridFilterMode.ColumnFilterRow" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive">
+            <MudDataGrid T="CategoryDialoge" Items="CategoryList" Filterable="true" FilterMode="DataGridFilterMode.ColumnFilterRow" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive">
                 <Columns>
-                    <PropertyColumn Property="x => x.OrderId" Title="Sr No" Filterable="false" />
-                    <PropertyColumn Property="x => x.BillingName" Title="Billing Name" />
-                    <PropertyColumn Property="x => x.Date" Format="MMM dd yyyy" />
-                    <PropertyColumn Property="x => x.PaymentStatus" Title="Payment Status" />
-                    <PropertyColumn Property="x => x.Total" />
-                    <PropertyColumn Property="x => x.PaymentMethod" Title="Payment Method" />
-                    <PropertyColumn Property="x => x.OrderStatus" Title="Order Status" />
+                    <PropertyColumn Property="x => x.Title" Title="Title" Filterable="false" />
+                    <PropertyColumn Property="x => x.Slug" Title="Billing Name" />
+                    @*  <PropertyColumn Property="x => x.FileUpload" Format="MMM dd yyyy" />
+                <PropertyColumn Property="x => x." Title="Payment Status" />
+                <PropertyColumn Property="x => x.Total" />
+                <PropertyColumn Property="x => x.PaymentMethod" Title="Payment Method" />
+                <PropertyColumn Property="x => x.OrderStatus" Title="Order Status" /> *@
                     <TemplateColumn CellClass="d-flex justify-end" Filterable="false">
                         <CellTemplate>
                             <MudStack Row>
-                             <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye" aria-label="view" OnClick="()=>OnClick_BtnViewOrder(context.Item)" />
+                             @*   <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye" aria-label="view" OnClick="()=>OnClick_BtnViewOrder(context.Item)" /> *@
                              @* <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="()=>OnClick_BtnViewOrder(context.Item)" /> *@
                              @* <MudIconButton Icon="@Icons.Material.Filled.ModeEdit" aria-label="delete" OnClick="()=>OnClick_BtnViewOrder(context.Item)" /> *@
                          </MudStack>

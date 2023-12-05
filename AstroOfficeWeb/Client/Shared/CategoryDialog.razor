@@ -9,12 +9,12 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField Value="@Category.Title" Label="Title" />
-        <MudTextField Value="@Category.Slug" Label="Slug"  />
-        <MudTextField Value="@Category.FileUpload" Label="FileUpload" />
-        <MudTextField Value="@Category.ParentCategory" Label="Parent Category" />
-        <MudTextField Value="@Category.Description" Label="Description"  />
-        <MudTextField Value="@Category.Status" Label="Status"  />
+        <MudTextField @bind-Value="@Category.Title" Label="Title" />
+        <MudTextField @bind-Value="@Category.Slug" Label="Slug" />
+        <MudTextField @bind-Value="@Category.FileUpload" Label="FileUpload" />
+        <MudTextField @bind-Value="@Category.ParentCategory" Label="Parent Category" />
+        <MudTextField @bind-Value="@Category.Description" Label="Description" />
+        <MudTextField @bind-Value="@Category.Status" Label="Status" />
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
