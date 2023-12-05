@@ -8,7 +8,7 @@ namespace AstroOfficeWeb.Server.Services
     {
         public StripePaymentService()
         {
-            StripeConfiguration.ApiKey = "";
+            StripeConfiguration.ApiKey = "sk_test_51N4JNqSDthT1ctefV2hXxAss5Ry8I8PRgUmpscORfxdPy2j3d5abB8NbKbctI9FKIXj89KFvRpGJU9h77ytlkOFw00jxWuZIZU";
         }
 
         public Session CreateCheckoutSession(List<CartItemDTO> cartItems)
@@ -43,8 +43,8 @@ namespace AstroOfficeWeb.Server.Services
                 },
                 LineItems = lineItems,
                 Mode = "payment",
-                SuccessUrl = "https://localhost:7226/order-success",
-                CancelUrl = "https://localhost:7226/cart"
+                SuccessUrl = "https://localhost:5004/order-success",
+                CancelUrl = "https://localhost:5004/shopping-cart"
             };
 
             var service = new SessionService();
