@@ -9,6 +9,7 @@ namespace AstroShared.DTOs
 {
     public class ProductDTO
     {
+        
         [Required]
         public string Name { get; set; } = null!;
 
@@ -33,13 +34,17 @@ namespace AstroShared.DTOs
         //  [MaxLength(10, ErrorMessage = "Can only upload max 10 images.")]
         public List<string> FileNames { get; set; } = new List<string>();
 
-        public string? ProductReference { get; set; }
 
-        public string? ProductStatus { get; set; }
+        [StringLength(255, ErrorMessage = "Summary must be at most 255 characters.")]
+        public string? Summary { get; set; }
 
-        public string? ProductComment { get; set; }
-        public string? ProductSummary { get; set; }
+        [StringLength(255, ErrorMessage = "Reference must be at most 255 characters.")]
+        public string? Reference { get; set; }
 
+        [StringLength(255, ErrorMessage = "Comment must be at most 255 characters.")]
+        public string? Comment { get; set; }
+
+        public ProductStatus Status { get; set; }
 
         public long Sno { get; set; }
         public List<ImagesDTO>? ProductImages { get; set; }
@@ -55,13 +60,5 @@ namespace AstroShared.DTOs
     public class SaveProductDTO : ProductDTO
     {
         //public List<ImagesDTO>? ProductImages { get; set; }
-    }
-
-    public enum ProductStatus
-    {
-        Online,
-        Offline,
-        Draft,
-        Published
     }
 }

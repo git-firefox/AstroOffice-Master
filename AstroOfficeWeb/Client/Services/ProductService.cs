@@ -81,7 +81,7 @@ namespace AstroOfficeWeb.Client.Services
             if (response!.Success)
             {
                 await _jsRuntime.ShowToastAsync(response.Message);
-                _navigation.NavigateTo("/manage-products", true, true);
+                _navigation.NavigateTo("/manage-products");
             }
             else
             {
@@ -94,6 +94,7 @@ namespace AstroOfficeWeb.Client.Services
             if (response!.Success)
             {
                 await _jsRuntime.ShowToastAsync(response.Message);
+                _navigation.NavigateTo("/manage-products");
             }
             else
             {
@@ -120,9 +121,9 @@ namespace AstroOfficeWeb.Client.Services
             }
         }
 
-        public async Task<bool> IsAddToCart(ViewProductDTO product, int quantity = 1)
+        public async Task<bool> IsAddToCart(long productSno, int quantity = 1)
         {
-            var request = new AddToCartRequest() { ProductSno = product.Sno, Quantity = quantity };
+            var request = new AddToCartRequest() { ProductSno = productSno, Quantity = quantity };
             var response = await _swagger.PostAsync<AddToCartRequest, ApiResponse<string>>(ProductApiConst.POST_AddToShoppingCart, request);
             if (!response!.Success)
             {

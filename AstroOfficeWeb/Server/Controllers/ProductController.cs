@@ -259,7 +259,7 @@ namespace AstroOfficeWeb.Server.Controllers
                             {
                                 tempData.OldMetaData.MetaKeyword = tempData.NewMetaDataDTO.MetaKeyword;
                                 tempData.OldMetaData.MetaValue = tempData.NewMetaDataDTO.MetaValue;
-                                _context.Update(tempData);
+                                _context.ProductMetaDatas.Update(tempData.OldMetaData);
                                 _context.SaveChanges();
                             }
                         }

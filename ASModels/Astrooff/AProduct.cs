@@ -37,6 +37,15 @@ namespace ASModels.Astrooff
         public long? ModifiedByAUsersSno { get; set; }
         [Required]
         public bool? IsActive { get; set; }
+        [StringLength(255)]
+        public string? Summary { get; set; }
+        [StringLength(255)]
+        public string? Reference { get; set; }
+        [StringLength(255)]
+        public string? Comment { get; set; }
+        [StringLength(50)]
+        [Unicode(false)]
+        public string? Status { get; set; }
 
         [InverseProperty("AProductsSnoNavigation")]
         public virtual ICollection<CartItem> CartItems { get; set; }

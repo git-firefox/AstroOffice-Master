@@ -1,6 +1,7 @@
 ﻿@page "/save-product"
 @page "/save-product/{Sno:long}"
 @using AstroOfficeWeb.Client.Services
+@using AstroShared
 @using AstroShared.DTOs;
 
 @inject ProductService ProductService
@@ -68,9 +69,6 @@
                                                 </li>
                                             </ul>
                                             <div class="tab-content twitter-bs-wizard-tab-content">
-
-
-
                                                 <div class="tab-pane active" id="general-info">
                                                     <EditForm Model="ProductModel" OnValidSubmit="OnSubmit_EditForm" OnInvalidSubmit="OnInvalidSubmit_EditForm">
                                                         <DataAnnotationsValidator />
@@ -126,8 +124,8 @@
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="product-summary" class="form-label">Product Summary</label>
-                                                                        <ValidationMessage For=@(()=>ProductModel.ProductSummary) style="position: revert;" />
-                                                                        <InputTextArea @bind-Value="ProductModel.ProductSummary" class="form-control" id="product-summary" rows="5" placeholder="Please enter summary"></InputTextArea>
+                                                                        <ValidationMessage For=@(()=>ProductModel.Summary) style="position: revert;" />
+                                                                        <InputTextArea @bind-Value="ProductModel.Summary" class="form-control" id="product-summary" rows="5" placeholder="Please enter summary"></InputTextArea>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-6">
@@ -146,35 +144,34 @@
 
                                                                     <div class="mb-3">
                                                                         <label for="product-reference" class="form-label">Reference <span class="text-danger">*</span></label>
-                                                                        <InputText @bind-Value="ProductModel!.ProductReference" id="product-reference" class="form-control" placeholder="e.g : Amethyst" />
+                                                                        <InputText @bind-Value="ProductModel!.Reference" id="product-reference" class="form-control" placeholder="e.g : Amethyst" />
                                                                     </div>
                                                                 </div>
                                                             </div>
 
-                                                            <div class="mb-3">
-                                                                <label class="mb-2">Status <span class="text-danger">*</span></label>
-                                                                <br>
-                                                                <ValidationMessage For=@(()=>ProductModel.ProductStatus) />
-                                                                <InputRadioGroup Name="ProductStatusGroup" @bind-Value="ProductModel!.ProductStatus">
-                                                                    <div class="radio form-check-inline">
-                                                                        <InputRadio id="inlineRadio1" Value="ProductStatus.Online" />
-                                                                        <label for="inlineRadio1"> Online </label>
+                                                            <div class="row">
+                                                                <div class="col-12 col-sm-10">
+                                                                    <div class="mb-3">
+                                                                        <label class="mb-2">Status <span class="text-danger">*</span></label>
+                                                                        <br>
+                                                                        <ValidationMessage For=@(()=>ProductModel.Status) />
+                                                                        <InputRadioGroup Name="ProductStatusGroup" @bind-Value="ProductModel!.Status">
+                                                                            @foreach (var value in Enum.GetValues<ProductStatus>())
+                                                                            {
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <InputRadio id=@(value + "Radio") Value=@value class="form-check-input" />
+                                                                                    <label for=@(value + "Radio")> @value </label>
+                                                                                </div>
+                                                                            }
+                                                                        </InputRadioGroup>
                                                                     </div>
-                                                                    <div class="radio form-check-inline">
-                                                                        <InputRadio id="inlineRadio2" Value="ProductStatus.Offline" />
-                                                                        <label for="inlineRadio2"> Offline </label>
-                                                                    </div>
-                                                                    <div class="radio form-check-inline">
-                                                                        <InputRadio id="inlineRadio3" Value="ProductStatus.Offline" />
-                                                                        <label for="inlineRadio3"> Draft </label>
-                                                                    </div>
-                                                                </InputRadioGroup>
+                                                                </div>
 
-                                                            </div>
+                                                                <div class="col-12 col-sm-10">
+                                                                    <label class="form-label">Comment</label>
+                                                                    <InputTextArea @bind-Value="ProductModel!.Comment" class="form-control" rows="3" placeholder="Please enter comment"></InputTextArea>
+                                                                </div>
 
-                                                            <div>
-                                                                <label class="form-label">Comment</label>
-                                                                <InputTextArea @bind-Value="ProductModel!.ProductComment" class="form-control" rows="3" placeholder="Please enter comment"></InputTextArea>
                                                             </div>
                                                         </div>
 
@@ -185,7 +182,6 @@
                                                         </ul>
                                                     </EditForm>
                                                 </div>
-
 
                                                 <div class="tab-pane" id="product-img">
                                                     <EditForm Model="ProductImage" OnValidSubmit="OnSubmit_ProductImage" OnInvalidSubmit="OnInvalidSubmit_ProductImage">
@@ -270,26 +266,24 @@
                                                     </EditForm>
 
                                                 </div>
+
                                                 <div class="tab-pane" id="metadata">
-                                                    <h4 class="header-title">Meta Data</h4>
+                                                    <h4 class="header-title">Metadata</h4>
                                                     <p class="sub-header">Fill all information below</p>
-
-
 
                                                     <EditForm Model="MetaData" OnValidSubmit="OnSubmit_MetaData" OnInvalidSubmit="OnInvalidSubmit_MetaData" Context="MetaDataContext">
                                                         <DataAnnotationsValidator />
                                                         <div class="row">
 
                                                             <div class="col-4">
-                                                                <ValidationMessage For=@(()=>MetaData!.MetaValue) style="position: revert;" />
-                                                                <label for="product-meta-title" class="form-label">Meta Keyword</label>
-                                                                @* <input type="text" class="form-control" id="product-meta-title" placeholder="Enter title"> *@
-                                                                <InputText @bind-Value="MetaData!.MetaValue" class="form-control" id="product-meta-title" placeholder="Meta Keywords" />
+                                                                <ValidationMessage For=@(()=>MetaData.MetaKeyword) style="position: revert;" />
+                                                                <label for="product-meta-keyword" class="form-label">Meta Keyword</label>
+                                                                <InputText @bind-Value="MetaData.MetaKeyword" class="form-control" id="product-meta-keyword" placeholder="Meta Value" />
                                                             </div>
                                                             <div class=" col-4">
-                                                                <ValidationMessage For=@(()=>MetaData.MetaKeyword) style="position: revert;" />
-                                                                <label for="product-meta-keywords" class="form-label">Meta Value</label>
-                                                                <InputText @bind-Value="MetaData.MetaKeyword" class="form-control" id="product-meta-keywords" placeholder="Meta Value" />
+                                                                <ValidationMessage For=@(()=>MetaData!.MetaValue) style="position: revert;" />
+                                                                <label for="product-meta-value" class="form-label">Meta Value</label>
+                                                                <InputText @bind-Value="MetaData!.MetaValue" class="form-control" id="product-meta-value" placeholder="Meta Keywords" />
                                                             </div>
                                                             <div class="col-4 mt-4">
                                                                 @if (MetaDataAction is ActionMode.Add)
@@ -311,52 +305,55 @@
 
                                                         <div class="row mt-3">
                                                             <div class="col-12">
+                                                                <MudTable T="MetaDataDTO" Items="@MetaDataList" Dense="true" Hover="true" ReadOnly="false" CanCancelEdit="true" Filter="new Func<MetaDataDTO,bool>(FilterFunc)" SortLabel="Sort By" CommitEditTooltip="Commit Edit" tabindex="=" RowEditPreview="BackupItem" RowEditCancel="ResetItemToOriginalValues" RowEditCommit="ItemHasBeenCommitted" IsEditRowSwitchingBlocked="false" ApplyButtonPosition="TableApplyButtonPosition.Start" EditButtonPosition="TableEditButtonPosition.Start" EditTrigger="TableEditTrigger.EditButton">
 
-
-
-                                                                <MudTable T="MetaDataDTO" Items="@MetaDataList" Dense="true" Hover="true" ReadOnly="false" CanCancelEdit="true" Filter="new Func<MetaDataDTO,bool>(FilterFunc)" SortLabel="Sort By" CommitEditTooltip="Commit Edit" OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" tabindex="=" RowEditPreview="BackupItem" RowEditCancel="ResetItemToOriginalValues" RowEditCommit="ItemHasBeenCommitted"
-                                                                          IsEditRowSwitchingBlocked="false" ApplyButtonPosition="TableApplyButtonPosition.Start" EditButtonPosition="TableEditButtonPosition.Start" EditTrigger="TableEditTrigger.EditButton">
                                                                     <ToolBarContent>
-                                                                        <MudText Typo="Typo.h6">Periodic Elements</MudText>
+                                                                        <MudText Typo="Typo.h6">Product Metadata</MudText>
                                                                         <MudSpacer />
                                                                         <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                                                                     </ToolBarContent>
-                                                                    <HeaderContent>
-                                                                        <MudTh><MudTableSortLabel SortBy="new Func<MetaDataDTO, object>(x=>x.Sno)">Sr.No.</MudTableSortLabel></MudTh>
-                                                                        <MudTh><MudTableSortLabel SortBy="new Func<MetaDataDTO, object>(x=>x.MetaKeyword)">Meta Keyword</MudTableSortLabel></MudTh>
-                                                                        <MudTh><MudTableSortLabel SortBy="new Func<MetaDataDTO, object>(x=>x.MetaValue)">Meta Value</MudTableSortLabel></MudTh>
 
+                                                                    <HeaderContent>
+                                                                        <MudTh>
+                                                                            <MudTableSortLabel SortBy="new Func<MetaDataDTO, object>(x=>x.MetaValue)">Meta Keyword</MudTableSortLabel>
+                                                                        </MudTh>
+                                                                        <MudTh>
+                                                                            <MudTableSortLabel SortBy="new Func<MetaDataDTO, object>(x=>x.MetaValue)">Meta Value</MudTableSortLabel>
+                                                                        </MudTh>
                                                                         <MudTh>Action</MudTh>
                                                                     </HeaderContent>
+
                                                                     <RowTemplate>
-                                                                        <MudTd DataLabel="Nr">@context.Sno</MudTd>
-                                                                        <MudTd DataLabel="Sign">@context.MetaKeyword</MudTd>
-                                                                        <MudTd DataLabel="Name">@context.MetaValue</MudTd>
-                                                                        <MudTd>
-                                                                            @* <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="(() => OnClick_BtnMetaDataDelete(context))"></MudIconButton> *@
-                                                                            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="(() => OnClick_DeleteMetaData(context))"></MudIconButton>
-
+                                                                        <MudTd DataLabel="MetaKeyword">
+                                                                            @context.MetaKeyword
                                                                         </MudTd>
-
+                                                                        <MudTd DataLabel="MetaValue">
+                                                                            @context.MetaValue
+                                                                        </MudTd>
+                                                                        <MudTd>
+                                                                            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="(() => OnClick_DeleteMetaData(context))"></MudIconButton>
+                                                                        </MudTd>
                                                                     </RowTemplate>
+
                                                                     <RowEditingTemplate>
-                                                                        <MudTd DataLabel="Nr">@context.Sno</MudTd>
-                                                                        <MudTd DataLabel="Sign">
+
+                                                                        <MudTd DataLabel="MetaKeyword">
                                                                             <MudTextField @bind-Value="@context.MetaKeyword" Required />
                                                                          </MudTd>
-                                                                         <MudTd DataLabel="Name">
+                                                                         <MudTd DataLabel="MetaValue">
                                                                              <MudTextField @bind-Value="@context.MetaValue" Required />
                                                                          </MudTd>
-                                                                         <MudTd>
-                                                                             <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete"></MudIconButton>
-                                                                         </MudTd>
+                                                                         <MudTd></MudTd>
                                                                      </RowEditingTemplate>
+
                                                                      <PagerContent>
                                                                          <MudTablePager />
                                                                      </PagerContent>
+
                                                                      <EditButtonContent Context="button">
                                                                          <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
                                                                      </EditButtonContent>
+
                                                                  </MudTable>
 
 

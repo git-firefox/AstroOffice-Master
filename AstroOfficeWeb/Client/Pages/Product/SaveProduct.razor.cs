@@ -1,4 +1,5 @@
 ﻿using AstroOfficeWeb.Client.Shared;
+using AstroShared;
 using AstroShared.DTOs;
 using AstroShared.Helper;
 using Microsoft.AspNetCore.Components;
@@ -47,6 +48,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         [Parameter]
         public long Sno { get; set; }
 
+        private int Counter = 0;
 
         public ElementReference ER_AGeneralInfo { get; set; }
         public ElementReference ER_AProductImage { get; set; }
@@ -84,6 +86,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         protected override void OnInitialized()
         {
+            var d = Enum.GetNames<ProductStatus>();
             base.OnInitialized();
         }
 
@@ -96,6 +99,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
                 MetaDataList = ProductModel.MetaDatas ??= new();
             }
         }
+
 
         protected override Task OnAfterRenderAsync(bool firstRender)
         {
@@ -211,26 +215,17 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         private async Task OnClick_BtnPublished()
         {
-
-            //SaveProductModel!.Description = await JSRuntime.GetEditorValue(ER_TextEditor?.MetaDataDTO);
-            //if (context.Validate())
-            //{
-            //SaveProductModel.ProductImages = BrowserFiles;
             ProductModel.ProductImages = BrowserFiles;
             ProductModel.MetaDatas = MetaDataList;
-
 
             if (Sno == 0)
             {
                 await ProductService.AddProduct(ProductModel);
-                //await ProductService.SaveProductImages(BrowserFiles);
             }
             else
             {
                 await ProductService.UpdateProduct(ProductModel, Sno);
             }
-            NavigationManager.NavigateTo("manage-products");
-            //}
         }
 
 
@@ -305,18 +300,6 @@ namespace AstroOfficeWeb.Client.Pages.Product
         };
 
         private MetaDataDTO? elementBeforeEdit;
-
-
-        //private void ClearEventLog()
-        //{
-        //    editEvents.Clear();
-        //}
-
-        //private void AddEditionEvent(string message)
-        //{
-        //    editEvents.Add(message);
-        //    StateHasChanged();
-        //}
 
         private void AddEditionEvent(string message)
         {

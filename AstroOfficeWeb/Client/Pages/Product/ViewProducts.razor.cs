@@ -48,7 +48,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         private async Task OnClick_BtnAddToCart(ViewProductDTO product)
         {
-            bool isAddedToCart = await ProductService.IsAddToCart(product);
+            bool isAddedToCart = await ProductService.IsAddToCart(product.Sno);
             if (isAddedToCart)
             {
                 await JSRuntime.ShowToastAsync($"\"{product.Name}\" added to your cart.", SwalIcon.Success);
