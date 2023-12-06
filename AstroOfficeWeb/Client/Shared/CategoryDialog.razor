@@ -11,10 +11,50 @@
     <DialogContent>
         <MudTextField @bind-Value="@Category.Title" Label="Title" />
         <MudTextField @bind-Value="@Category.Slug" Label="Slug" />
-        <MudTextField @bind-Value="@Category.FileUpload" Label="FileUpload" />
-        <MudTextField @bind-Value="@Category.ParentCategory" Label="Parent Category" />
+       @*  <MudTextField @bind-Value="@Category.FileUpload" Label="FileUpload" /> *@
+        @* <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles">
+            <ButtonTemplate>
+                <MudButton HtmlTag="label"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.CloudUpload"
+                           for="@context.Id">
+                    Upload Files
+                </MudButton>
+            </ButtonTemplate>
+        </MudFileUpload>  <MudText Typo="@Typo.h6">@Category.FileUpload?.Name</MudText> *@
+        <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png" @bind-value="@Category.FileUpload" />
+        <label class="custom-file-label" for="inputFile"> @(Category!.FileUpload != null ? Category.FileUpload.Name : "Choose file...") </label>
+       @*  <MudGrid>
+            <MudItem xs="6">
+                <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles">
+                    <ButtonTemplate>
+                        <MudButton HtmlTag="label"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   for="@context.Id">
+                            Choose File
+                        </MudButton>
+                    </ButtonTemplate>
+                </MudFileUpload>
+            </MudItem>
+            <MudItem xs="6">
+                <MudTextField Value=@(Category.FileUpload != null ? Category.FileUpload.Name : "No file choosen") Placeholder="No file chosen" Variant="Variant.Text" Disabled="true" />
+            </MudItem>
+        </MudGrid> *@
+        <MudSelect T="string" @bind-Value="@Category.ParentCategory" Label="Parent Category" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+            @foreach (var item in CategoryList)
+            {
+                <MudSelectItem T="string" Value="@item.Title">@item.Title</MudSelectItem>
+            }
+        </MudSelect>
         <MudTextField @bind-Value="@Category.Description" Label="Description" />
-        <MudTextField @bind-Value="@Category.Status" Label="Status" />
+        <InputTextEditor @bind-Value="@Category.Description" id="product-description" DefaultValue="@Category.Description"></InputTextEditor>
+        <MudSelect T="string" @bind-Value="@Category.Status" Label="Status" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+            <MudSelectItem Value="@("Scheduled")" />
+            <MudSelectItem Value="@("Publish")" />
+            <MudSelectItem Value="@("Inactive")" />
+        </MudSelect>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>

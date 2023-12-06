@@ -1,6 +1,7 @@
 ﻿using AstroOfficeWeb.Client.Shared;
 using AstroShared.DTOs;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using static AstroOfficeWeb.Client.Shared.CategoryDialog;
 using static System.Formats.Asn1.AsnWriter;
@@ -10,17 +11,17 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
     public class CategoryDialoge 
     {
-        public string? Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
-        public string? Slug { get; set; }
+        public string Slug { get; set; } = string.Empty;
 
-        public string? FileUpload { get; set; }
+        public IBrowserFile FileUpload { get; set; }
 
-        public string? ParentCategory { get; set; }
+        public string ParentCategory { get; set; } = string.Empty;
 
-        public string? Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
-        public string? Status { get; set; }
+        public string Status { get; set; } = string.Empty;
     }
 
     public partial class ManageCategories
@@ -59,26 +60,26 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
             var dialog = await DialogService.ShowAsync<CategoryDialog>("Add Category", parameters, new DialogOptions() { MaxWidth = MaxWidth.Large, CloseButton = true });
 
+            var result = await dialog.Result;
 
-
-
-            CategoryList.Add(new CategoryDialoge
+            if (!result.Canceled)
             {
-                
-            });
-            //CategoryDialoge = new CategoryDialoge();
+                CategoryList.Add((CategoryDialoge)result.Data);
+            }
+        }
 
+        public async Task<string> CategoryImages(IBrowserFile file)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.OpenReadStream(file.Size).CopyToAsync(memoryStream);
 
-            //CategoryList.Add(new CategoryDialoge
-            //{
-            //    Title = CategoryDialoge!.Title,
-            //    Slug = CategoryDialoge!.Slug,
-            //    FileUpload = CategoryDialoge!.FileUpload,
-            //    ParentCategory = CategoryDialoge!.ParentCategory,
-            //    Description = CategoryDialoge!.Description,
-            //    Status = CategoryDialoge!.Status,
-            //});
-            //CategoryDialoge = new CategoryDialoge();
+                var buffer = memoryStream.ToArray();
+
+                var base64String = Convert.ToBase64String(buffer);
+
+                return $"data:{file.ContentType};base64," + base64String;
+            }
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using AstroOfficeWeb.Client.Pages.Product;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 
 namespace AstroOfficeWeb.Client.Shared
@@ -10,12 +11,19 @@ namespace AstroOfficeWeb.Client.Shared
 
         [Parameter] public CategoryDialoge Category { get; set; } = new CategoryDialoge();
        
-
+        List<IBrowserFile> Files { get; set; } = new List<IBrowserFile>();
 
         private List<CategoryDialoge> CategoryList { get; set; } = new List<CategoryDialoge>();
         private void Cancel()
         {
             MudDialog!.Cancel();
+        }
+
+        private void UploadFiles(IBrowserFile file)
+        {
+            Files.Add(file);
+            Category.FileUpload = file;
+            //TODO upload the files to the server
         }
 
         public  void AddCategory()
@@ -32,7 +40,7 @@ namespace AstroOfficeWeb.Client.Shared
             });
             
             Snackbar.Add("Category Added", Severity.Success);
-            MudDialog!.Close(DialogResult.Ok(Category.Title));
+            MudDialog.Close(DialogResult.Ok(Category));
         }
     }
 }
