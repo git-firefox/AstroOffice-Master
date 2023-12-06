@@ -126,7 +126,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
                 //var response = await StripePayment.CreatePaymentIntent(200);
                 //StripePayment.CreateCheckoutSession();
                 //await ProductService.PlaceOrder(PlaceOrder);
-                var response = await ProductService.CreateCheckoutSession();
+                await ProductService.CreateCheckoutSession();
             }
         }
 

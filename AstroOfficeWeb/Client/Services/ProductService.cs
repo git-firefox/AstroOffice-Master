@@ -261,18 +261,17 @@ namespace AstroOfficeWeb.Client.Services
             }
         }
 
-        public async Task<string?> CreateCheckoutSession()
+        public async Task CreateCheckoutSession()
         {
             var response = await _swagger.PostAsync<object, ApiResponse<string>>(ProductApiConst.POST_CreateCheckoutSession, new { Success = "Test" });
 
             if (!response!.Success)
             {
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
-                return null;
             }
             else
             {
-                return response.Data;
+                _navigation.NavigateTo(response!.Data!);
             }
         }
 

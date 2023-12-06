@@ -60,7 +60,7 @@ namespace AstroOfficeWeb.Server.Controllers
         {
             var apiResponse = new ApiResponse<ProductDTO> { Data = null };
 
-            var aProduct = _context.AProducts.Include(a => a.ProductImages).FirstOrDefault(p => p.Sno == sno && p.IsActive == true);
+            var aProduct = _context.AProducts.Include(a => a.ProductImages).Include(a => a.ProductMetaData).FirstOrDefault(p => p.Sno == sno && p.IsActive == true);
 
             if (aProduct == null)
             {
@@ -71,7 +71,12 @@ namespace AstroOfficeWeb.Server.Controllers
             }
 
             apiResponse.Success = true;
+
             var productDTO = _mapper.Map<ProductDTO>(aProduct);
+            var imagesDTOs = _mapper.Map<List<ImagesDTO>>(aProduct.ProductImages);
+            var metaDataDTOs = _mapper.Map<List<MetaDataDTO>>(aProduct.ProductMetaData);
+            productDTO.ProductImages = imagesDTOs;
+            productDTO.MetaDatas = metaDataDTOs;
             apiResponse.Data = productDTO;
 
             return Ok(apiResponse);
@@ -681,48 +686,16 @@ namespace AstroOfficeWeb.Server.Controllers
                 ProductPrice = ci.AProductsSnoNavigation?.Price ?? 0
             }).ToList();
 
-            //var session = _stripePayment.CreateCheckoutSession(cartItems!);
-
             try
             {
-                var lineItems = new List<SessionLineItemOptions>();
-                cartItems!.ForEach(product => lineItems.Add(new SessionLineItemOptions
-                {
-                    PriceData = new SessionLineItemPriceDataOptions
-                    {
-                        UnitAmountDecimal = product.ProductPrice * 100,
-                        Currency = "inr",
-                        ProductData = new SessionLineItemPriceDataProductDataOptions
-                        {
-                            Name = product.ProductName,
-                            Images = new List<string> { product!.ProductImageSrc! }
-                        }
-                    },
-                    Quantity = product.ProductQuantity
-                }));
-
-                var options = new SessionCreateOptions
-                {
-                    //CustomerEmail = _authService.GetUserEmail(),
-                    ShippingAddressCollection = new SessionShippingAddressCollectionOptions
-                    {
-                        AllowedCountries = new List<string> { "IND" }
-                    },
-                    PaymentMethodTypes = new List<string> { "card" },
-                    LineItems = lineItems,
-                    Mode = "payment",
-                    SuccessUrl = "https://localhost:5004/order-success?session_id={CHECKOUT_SESSION_ID}",
-                    CancelUrl = "https://localhost:5004/shopping-cart"
-                };
-
-                var service = new SessionService();
-                Session session = service.Create(options);
+                var session = _stripePayment.CreateCheckoutSession(cartItems!);
                 response.Data = session.Url;
             }
             catch (Exception ex)
             {
-                response.Success = false;
+                response.ErrorNo = 1;
                 response.Message = ex.Message;
+                response.Success = false;
             }
 
             return Ok(response);

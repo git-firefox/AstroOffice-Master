@@ -85,34 +85,6 @@ namespace AstroOfficeWeb.Client.Pages.Product
         protected override void OnInitialized()
         {
             base.OnInitialized();
-
-            //ViewProductDTO = StateContainerService.GetSelectedProduct();
-
-            //if (ViewProductDTO != null)
-            //{
-            //    SaveProductModel = new SaveProductDTO()
-            //    {
-            //        Price = ViewProductDTO.Price,
-            //        Name = ViewProductDTO.Name,
-            //        Description = ViewProductDTO.Description,
-            //        ImageUrl = ViewProductDTO.ImageUrl,
-            //        StockQuantity = ViewProductDTO.StockQuantity,
-            //        AddedDate = ViewProductDTO.AddedDate,
-            //        LastModifiedDate = ViewProductDTO.LastModifiedDate,
-            //        IsActive = ViewProductDTO.IsActive
-            //    };
-
-            //    SelectedImage = new ImagesDTO { ImageName = SaveProductModel.Name, ImageURL = SaveProductModel?.ImageUrl };
-
-
-
-            //}
-            //else
-            //{
-            //    SaveProductModel = new SaveProductDTO();
-            //    //SelectedImage = new ImgData { Alt = "No Product Image", Src = "images/image-not-found.png" };
-            //}
-
         }
 
         protected override async Task OnInitializedAsync()
@@ -120,30 +92,15 @@ namespace AstroOfficeWeb.Client.Pages.Product
             if (Sno != 0)
             {
                 ProductModel = await ProductService.GetProductBySno(Sno) ?? new();
-               
-
-                //SaveProductModel = new SaveProductDTO()
-                //{
-                //    Price = viewProductDTO!.Price,
-                //    Name = viewProductDTO.Name,
-                //    Description = viewProductDTO.Description,
-                //    ImageUrl = viewProductDTO.ImageUrl,
-                //    StockQuantity = viewProductDTO.StockQuantity,
-                //    AddedDate = viewProductDTO.AddedDate,
-                //    LastModifiedDate = viewProductDTO.LastModifiedDate,
-                //    IsActive = viewProductDTO.IsActive
-                //};
-                BrowserFiles = await ProductService.GetImagesByProductIds(Sno) ?? new();
+                BrowserFiles = ProductModel.ProductImages ??= new();
+                MetaDataList = ProductModel.MetaDatas ??= new();
             }
         }
 
-        //protected override async Task OnAfterRenderAsync(bool firstRender)
-        //{
-        //    if (firstRender)
-        //    {
-
-        //    }
-        //}
+        protected override Task OnAfterRenderAsync(bool firstRender)
+        {
+            return base.OnAfterRenderAsync(firstRender);
+        }
 
         private async Task OnChange_InputFile(InputFileChangeEventArgs e)
         {
@@ -195,8 +152,8 @@ namespace AstroOfficeWeb.Client.Pages.Product
             if (MetaDataList.Contains(metaDataDTO))
             {
 
-                var data =  Dialog.Show<DeleteConfirmationDialog>("Confirmation", closeButton);
-                if (data!= null)
+                var data = Dialog.Show<DeleteConfirmationDialog>("Confirmation", closeButton);
+                if (data != null)
                 {
 
                     MetaDataList.Remove(metaDataDTO);

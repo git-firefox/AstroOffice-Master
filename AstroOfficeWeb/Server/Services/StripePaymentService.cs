@@ -16,10 +16,8 @@ namespace AstroOfficeWeb.Server.Services
         {
             try
             {
-
-
                 var lineItems = new List<SessionLineItemOptions>();
-                cartItems.ForEach(product => lineItems.Add(new SessionLineItemOptions
+                cartItems!.ForEach(product => lineItems.Add(new SessionLineItemOptions
                 {
                     PriceData = new SessionLineItemPriceDataOptions
                     {
@@ -28,7 +26,7 @@ namespace AstroOfficeWeb.Server.Services
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
                             Name = product.ProductName,
-                            Images = new List<string> { product!.ProductImageSrc! }
+                            //Images = new List<string> { product!.ProductImageSrc! }
                         }
                     },
                     Quantity = product.ProductQuantity
@@ -39,7 +37,7 @@ namespace AstroOfficeWeb.Server.Services
                     //CustomerEmail = _authService.GetUserEmail(),
                     ShippingAddressCollection = new SessionShippingAddressCollectionOptions
                     {
-                        AllowedCountries = new List<string> { "US" }
+                        AllowedCountries = new List<string> { "IN" }
                     },
                     PaymentMethodTypes = new List<string> { "card" },
                     LineItems = lineItems,
@@ -48,15 +46,16 @@ namespace AstroOfficeWeb.Server.Services
                     CancelUrl = "https://localhost:5004/shopping-cart"
                 };
 
-                
                 var service = new SessionService();
                 Session session = service.Create(options);
                 return session;
             }
             catch (Exception ex)
             {
+                _ = ex;
                 throw new Exception("Failed");
             }
+
         }
     }
 }

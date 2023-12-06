@@ -1,12 +1,8 @@
 ﻿
-.welcome-content {
-    text-align: center;
+.welcome-content img {
+    max-width: 100%;
+    border-radius: 50%;
 }
-
-    .welcome-content img {
-        max-width: 100%;
-        border-radius: 50%;
-    }
 
 .astro-info {
     margin-top: 30px;

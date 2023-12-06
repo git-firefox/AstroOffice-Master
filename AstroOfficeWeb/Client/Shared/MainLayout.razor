@@ -1,7 +1,9 @@
 ﻿@inherits LayoutComponentBase
 <MudThemeProvider />
-<MudDialogProvider />
+@* <MudDialogProvider /> *@
+<MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.ExtraSmall" CloseButton="true" DisableBackdropClick="true" NoHeader="true" Position="DialogPosition.Center" CloseOnEscapeKey="true" />
 <MudSnackbarProvider />
+
 <div class="page">
     <main>
         <AuthorizeView>
