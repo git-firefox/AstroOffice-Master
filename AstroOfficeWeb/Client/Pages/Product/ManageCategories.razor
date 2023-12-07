@@ -15,42 +15,42 @@
 
     </Header>
     <ChildContent>
-        @if (OrderDTOs == null)
-        {
-            for (int row = 0; row < 10; row++)
-            {
-                <MudSkeleton />
-            }
-        }
-        else
-        {
-            <MudDataGrid T="CategoryDialoge" Items="@CategoryList" SortMode="SortMode.Multiple" Filterable="true" >
-                <ToolBarContent>
-                    <MudTextField Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                                  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-                </ToolBarContent>
-                <Columns>
-
-                    <PropertyColumn Property="x => x.Title" Title="Title" />
-                    <PropertyColumn Property="x=> x.Slug" Title="Slug">
-                        <CellTemplate>
-                            <img class="img-thumbnail" src="@CategoryImages(context.Item.FileUpload)" height="50" width="50"  />
-                        </CellTemplate>
-                    </PropertyColumn>
-                    <PropertyColumn Property="x => x.Description" Title="Description" />
-                    @* <TemplateColumn Filterable="false" Sortable="false" CellClass="mud-table-cell">
-                        <CellTemplate>
-                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.RemoveRedEye" OnClick="(()=> OnClick_BtnShow(context.Item))" />
-                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_BtnEdit(context.Item))" />
-                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_BtnDelete(context.Item))" />
-                        </CellTemplate>
-                    </TemplateColumn> *@
-                </Columns>
-                <PagerContent>
-                    <MudDataGridPager T="ViewProductDTO" />
-                </PagerContent>
-            </MudDataGrid>
-        }
+        <MudDataGrid T="CategoryDialoge" Items="@CategoryList" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter">
+            <ToolBarContent>
+                <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            <NoRecordsContent>
+                <MudText Typo="Typo.h5" Class="mud-text-secondary mt-16 mb-16">No data to display</MudText>
+            </NoRecordsContent>
+            <Columns>
+                <SelectColumn T="CategoryDialoge" />
+                <PropertyColumn Property="x=> x.Title" Title="Category">
+                    <CellTemplate>
+                        <table>
+                            <tr> <td>
+                                    <img class="img-thumbnail" src="@context.Item.FileUpload" height="50" width="50" />
+                            </td><td>
+                                    <MudText>@((MarkupString)context.Item.Title)</MudText>
+                                    <MudText>@((MarkupString)context.Item.Description)</MudText>
+                            </td></tr>
+                        </table>
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.TotalProducts" Title="Total Products" />
+                <PropertyColumn Property="x => x.TotalEarning" Title="Total Earning" />
+                @* <TemplateColumn Filterable="false" Sortable="false" CellClass="mud-table-cell">
+                <CellTemplate>
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.RemoveRedEye" OnClick="(()=> OnClick_BtnShow(context.Item))" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_BtnEdit(context.Item))" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_BtnDelete(context.Item))" />
+                </CellTemplate>
+                </TemplateColumn> *@
+            </Columns>
+            <PagerContent>
+                <MudDataGridPager T="CategoryDialoge" />
+            </PagerContent>
+        </MudDataGrid>
     </ChildContent>
 </ContainerFluid>
 

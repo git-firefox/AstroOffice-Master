@@ -11,23 +11,38 @@ namespace AstroOfficeWeb.Client.Shared
 
         [Parameter] public CategoryDialoge Category { get; set; } = new CategoryDialoge();
        
-        List<IBrowserFile> Files { get; set; } = new List<IBrowserFile>();
+        public string CategoryImage { get; set; }
 
         private List<CategoryDialoge> CategoryList { get; set; } = new List<CategoryDialoge>();
+
+        MudForm form;
+
         private void Cancel()
         {
             MudDialog!.Cancel();
         }
 
-        private void UploadFiles(IBrowserFile file)
+        private async Task UploadFiles(IBrowserFile file)
         {
-            Files.Add(file);
-            Category.FileUpload = file;
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.OpenReadStream(file.Size).CopyToAsync(memoryStream);
+
+                var buffer = memoryStream.ToArray();
+
+                var base64String = Convert.ToBase64String(buffer);
+                CategoryImage = file.Name;
+                Category.FileUpload = $"data:{file.ContentType};base64," + base64String;
+            }
             //TODO upload the files to the server
         }
 
-        public  void AddCategory()
+        public  void AddCategory(EditContext context)
         {
+            StateHasChanged();
+            Random random = new Random();
+
+            // Generate a random number between 0 and 2000
             //In a real world scenario this bool would probably be a service to delete the item from api/database
             CategoryList.Add(new CategoryDialoge
             {
@@ -36,7 +51,9 @@ namespace AstroOfficeWeb.Client.Shared
                  FileUpload = Category!.FileUpload,
                 ParentCategory = Category!.ParentCategory,
                 Description = Category!.Description,
-                Status = Category!.Status
+                Status = Category!.Status,
+                TotalEarning = random.Next(0, 2001),
+                TotalProducts = random.Next(0, 2001)
             });
             
             Snackbar.Add("Category Added", Severity.Success);
