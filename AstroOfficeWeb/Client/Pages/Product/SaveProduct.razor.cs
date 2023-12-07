@@ -84,6 +84,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         string[] errors = { };
         MudForm form;
         string fileValidation = "none";
+        private int CharacterCount { get; set; } = 0;
 
         protected override void OnInitialized()
         {
@@ -98,10 +99,17 @@ namespace AstroOfficeWeb.Client.Pages.Product
                 ProductModel = await ProductService.GetProductBySno(Sno) ?? new();
                 BrowserFiles = ProductModel.ProductImages ??= new();
                 MetaDataList = ProductModel.MetaDatas ??= new();
+            CharacterCount = ProductModel.Summary?.Length ?? 0;
             }
         }
 
 
+
+        private void UpdateCharacterCount(ChangeEventArgs args)
+        {
+            string summary = args.Value?.ToString() ?? string.Empty;
+            CharacterCount = summary.Length;
+        }
         protected override Task OnAfterRenderAsync(bool firstRender)
         {
             return base.OnAfterRenderAsync(firstRender);

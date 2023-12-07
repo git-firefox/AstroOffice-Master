@@ -29,6 +29,8 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public int TotalProducts { get; set; } = 0;
 
         public int TotalEarning { get; set; } = 0;
+
+
     }
 
     public partial class ManageCategories

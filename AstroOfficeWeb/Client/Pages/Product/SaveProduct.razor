@@ -127,8 +127,12 @@
                                                                     <div class="mb-3">
                                                                         <label for="product-summary" class="form-label">Product Summary</label>
                                                                         <ValidationMessage For=@(()=>ProductModel.Summary) style="position: revert;" />
-                                                                        <InputTextArea @bind-Value="ProductModel.Summary" class="form-control" id="product-summary" rows="5" placeholder="Please enter summary"></InputTextArea>
+                                                                        <InputTextArea @bind-Value="ProductModel.Summary" @oninput="UpdateCharacterCount" class="form-control" id="product-summary" rows="5" placeholder="Please enter summary"></InputTextArea>
                                                                     </div>
+                                                                    @if (ProductModel.Summary != null)
+                                                                    {
+                                                                        <label>Total length: @CharacterCount</label>
+                                                                    }
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
@@ -213,7 +217,6 @@
 
                                                                     <ValidationMessage For=@(()=>ProductImage!.FileNames) style="position: revert;" />
                                                                     <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png" OnChange="OnChange_InputFile" multiple />
-                                                                    @* <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png"  multiple /> *@
                                                                     <label class="custom-file-label" for="inputFile"> @((ProductImage!.FileNames != null && ProductImage.FileNames.Any()) ? string.Join(",", ProductImage.FileNames) : "Choose file...") </label>
                                                                 </div>
                                                             </div>
@@ -221,7 +224,7 @@
                                                         </div>
 
 
-                                                      
+
                                                         <div class="row mt-3">
 
 
