@@ -212,8 +212,8 @@
                                                                 <div class="custom-file">
 
                                                                     <ValidationMessage For=@(()=>ProductImage!.FileNames) style="position: revert;" />
-                                                                    @* <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png" OnChange="OnChange_InputFile" multiple /> *@
-                                                                    <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png"  multiple />
+                                                                    <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png" OnChange="OnChange_InputFile" multiple />
+                                                                    @* <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png"  multiple /> *@
                                                                     <label class="custom-file-label" for="inputFile"> @((ProductImage!.FileNames != null && ProductImage.FileNames.Any()) ? string.Join(",", ProductImage.FileNames) : "Choose file...") </label>
                                                                 </div>
                                                             </div>
