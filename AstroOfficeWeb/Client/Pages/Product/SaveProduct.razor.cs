@@ -28,7 +28,8 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public string Alt { get; set; } = null!;
 
 
-        [Required(ErrorMessage = "Upload atleast 1 image.")]
+    
+        [Required(ErrorMessage = "Please select a file.")]
         //[MinLength(1, ErrorMessage = "Upload atleast 1 image.")]
         [MaxLength(10, ErrorMessage = "Can only upload max 10 images.")]
 

@@ -505,7 +505,7 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,ManageProduct")]
         [HttpGet]
         public async Task<IActionResult> GetOrders()
         {

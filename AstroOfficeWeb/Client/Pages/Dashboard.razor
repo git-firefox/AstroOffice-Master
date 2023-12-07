@@ -1,10 +1,10 @@
-﻿@page "/"
+﻿@page "/dashboard"
 
 @using AstroOfficeWeb.Client.Services
 @using AstroOfficeWeb.Shared.Models
 @using AstroShared;
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Admin,User")]
 
 @inherits BaseComponent
 

@@ -1,0 +1,78 @@
+﻿
+
+
+
+.display-3 {
+    font-size: 3em; /* Increase the font size of the heading */
+    margin-bottom: 20px; /* Add some space below the heading */
+}
+
+.lead {
+    color: #6c757d; /* Set a slightly muted text color */
+}
+
+.btn-primary {
+    background-color: rgb(16, 50, 75); /* Set the primary button color to (16, 50, 75) */
+    border: none; /* Remove the button border */
+    
+}
+
+    .btn-primary:hover {
+        background-color: #003366; /* Darken the button color on hover */
+    }
+
+/* Animation classes from animate.css library */
+.animate__animated {
+    animation-duration: 1s;
+}
+
+.animate__fadeIn {
+    animation-name: fadeIn;
+}
+
+.animate__bounceIn {
+    animation-name: bounceIn;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes bounceIn {
+    from, 20%, 40%, 60%, 80%, to {
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
+    0% {
+        opacity: 0;
+        transform: scale3d(0.3, 0.3, 0.3);
+    }
+
+    20% {
+        transform: scale3d(1.1, 1.1, 1.1);
+    }
+
+    40% {
+        transform: scale3d(0.9, 0.9, 0.9);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale3d(1.03, 1.03, 1.03);
+    }
+
+    80% {
+        transform: scale3d(0.97, 0.97, 0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale3d(1, 1, 1);
+    }
+}

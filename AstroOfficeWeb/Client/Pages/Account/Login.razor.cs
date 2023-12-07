@@ -8,6 +8,7 @@ using AstroShared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
+using System;
 using System.Net;
 using System.Net.Http.Json;
 using System.Security.Claims;
@@ -19,6 +20,11 @@ namespace AstroOfficeWeb.Client.Pages.Account
     {
         private bool PasswordIsClicked { get; set; } = false;
         private LoginModel LoginModel { get; set; } = new();
+
+        protected override async Task OnInitializedAsync()
+        {
+            await CheckAuthenticationState();
+        }
 
         private void OnInvalidSubmit()
         {
@@ -40,6 +46,19 @@ namespace AstroOfficeWeb.Client.Pages.Account
             else
             {
                 await JSRuntime.ShowToastAsync(response?.Message ?? "Error!", SwalIcon.Error);
+            }
+        }
+
+        private async Task CheckAuthenticationState()
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity.IsAuthenticated)
+            {
+                // User is already authenticated, redirect to another page
+                NavigationManager.NavigateTo("/");
+                //await JSRuntime.ShowToastAsync("You don't have access to open this page", SwalIcon.Success);
             }
         }
 

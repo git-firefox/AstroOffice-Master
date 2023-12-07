@@ -139,6 +139,44 @@
                             </li>
                         </Authorized>
                     </AuthorizeView>
+
+
+                    <AuthorizeView Roles="@(ApplicationConst.Role_ManageProductUser)">
+                        <Authorized>
+                            @* Manage Product *@
+                            <li>
+                                <a href="/manage-products" class="nav-link">
+                                    <i class="fas fa-list"></i>
+                                    Manage Product
+                                </a>
+                            </li>
+
+                            @* Manage Orders *@
+                            <li>
+                                <a href="/manage-orders" class="nav-link">
+                                    <i class="fas fa-list"></i>
+                                    Manage Orders
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/manage-categories" class="nav-link">
+                                    <i class="fas fa-list"></i>
+                                    Manage Categories
+                                </a>
+                            </li>
+
+                            @* Logout *@
+                            <li>
+                                <a href="/logout" class="nav-link">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </a>
+                            </li>
+
+                        </Authorized>
+                    </AuthorizeView>
+
+
                 </ul>
             </div>
         </nav>

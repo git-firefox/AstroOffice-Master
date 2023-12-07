@@ -99,7 +99,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = ex.Message;
             }
 
-            returnResponse:
+        returnResponse:
             return Ok(response);
         }
 
@@ -167,7 +167,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = ApiMessageConst.ServerError;
             }
 
-            returnResponse:
+        returnResponse:
             return Ok(response);
         }
 
@@ -251,7 +251,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = AccountMessageConst.UserPassNotUpdated;
             }
 
-            returnResponse:
+        returnResponse:
             return Ok(response);
         }
 
@@ -330,7 +330,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = AccountMessageConst.SignUpFailed;
             }
 
-            returnResponse:
+        returnResponse:
             return Ok(response);
         }
 
@@ -350,8 +350,19 @@ namespace AstroOfficeWeb.Server.Controllers
                 new Claim("canAdd", user.CanAdd?.ToString() ?? "false"),
                 new Claim("canEdit", user.CanEdit?.ToString() ?? "false"),
                 new Claim("canReport", user.CanReport?.ToString() ?? "false"),
-                new Claim(ClaimTypes.Role, user.Adminuser == true ? "Admin" : "User"),
+                //new Claim(ClaimTypes.Role, user.Adminuser == true ? "Admin" : "User")
+
             };
+            //new Claim(ClaimTypes.Role, user.Adminuser == true ? "Admin" : "User"),
+            if (user.Username == "productmanager")
+            {
+                claims.Add(new Claim(ClaimTypes.Role, "ManageProduct"));
+            }
+            else
+            {
+                claims.Add(new Claim(ClaimTypes.Role, user.Adminuser == true ? "Admin" : "User"));
+            }
+
             return claims;
         }
     }
