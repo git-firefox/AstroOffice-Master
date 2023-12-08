@@ -51,9 +51,9 @@
                     <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png" OnChange="OnChange_InputFile" />
                     <label class="custom-file-label" for="inputFile">  @(CategoryImage != null ? CategoryImage : "Choose file...") </label>
                 </div>
-                @if (Category.FileUpload != null)
+                @if (Category.ImageUrl != null)
                 {
-                    <img alt="CategoryImage" class="img-thumbnail" src="@Category.FileUpload" height="100" width="100" title="@CategoryImage" />
+                    <img alt="CategoryImage" class="img-thumbnail" src="@Category.ImageUrl" height="100" width="100" title="@CategoryImage" />
 
                 }
 
@@ -79,17 +79,11 @@
 
             <MudPaper Class="pa-2 ma-2" Elevation="0">
                 <label for="Category-ParentCategory">Parent Category</label>
-                <MudSelect T="string" @bind-Value="@Category.ParentCategory" For="@(() => Category.ParentCategory)" Placeholder="Select parent category" id="Category-ParentCategory" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
-                    @*  @foreach (var item in CategoryList)
+                <MudSelect T="long?" @bind-Value="@Category.ParentCategorySno" For="@(() => Category.ParentCategorySno)" Placeholder="Select parent category" id="Category-ParentCategory" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+                    @foreach (var item in CategoryDTOs)
                     {
-                    <MudSelectItem T="string" Value="@item.Title">@item.Title</MudSelectItem>
-                    } *@
-                    <MudSelectItem Value="@("Household")" />
-                    <MudSelectItem Value="@("Management")" />
-                    <MudSelectItem Value="@("Electronics")" />
-                    <MudSelectItem Value="@("Office")" />
-                    <MudSelectItem Value="@("Automotive")" />
-
+                        <MudSelectItem T="long?" Value="item.Sno">@item.Title</MudSelectItem>
+                    }
 
 
                 </MudSelect>
@@ -104,7 +98,7 @@
             </MudPaper>
             <MudPaper Class="pa-2 ma-2" Elevation="0">
                 <label for="product-description">Description</label>
-                <InputTextEditor @bind-Value="@Category.Description" For="@(() => Category.Description)" id="product-description" DefaultValue="@Category.Description"></InputTextEditor>
+                <InputTextEditor @bind-Value="@Category.Descriptions" id="product-description" ></InputTextEditor>
             </MudPaper>
 
         </DialogContent>

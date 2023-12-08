@@ -14,6 +14,8 @@ namespace AstroOfficeWeb.Client.Shared
 
         [Parameter] public CategoryDialoge Category { get; set; } = new CategoryDialoge();
 
+        [Parameter] public IEnumerable<CategoryDialoge> CategoryDTOs { get; set; } = new List<CategoryDialoge>();
+
         public string CategoryImage { get; set; }
 
         //public CategoryImageDTO BrowserFiles { get; set; } = new();
@@ -59,11 +61,9 @@ namespace AstroOfficeWeb.Client.Shared
                 await file.OpenReadStream(file.Size).CopyToAsync(memoryStream);
 
                 var buffer = memoryStream.ToArray();
-
                 var base64String = Convert.ToBase64String(buffer);
 
-                // BrowserFiles.Add(new CategoryImageDTO { ImageURL = $"data:{file.ContentType};base64," + base64String, ImageName = file.Name });
-                Category.FileUpload = Category.FileUpload = $"data:{file.ContentType};base64," + base64String; ;
+                Category.ImageUrl = $"data:{file.ContentType};base64," + base64String;
                 CategoryImage = file.Name;
             }
 
@@ -86,7 +86,7 @@ namespace AstroOfficeWeb.Client.Shared
                 Slug = Category!.Slug,
                 FileUpload = Category!.FileUpload,
                 ParentCategory = Category!.ParentCategory,
-                Description = Category!.Description,
+                Descriptions = Category!.Descriptions,
                 Status = Category!.Status,
                 TotalEarning = random.Next(0, 2001),
                 TotalProducts = random.Next(0, 2001)

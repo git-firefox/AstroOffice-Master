@@ -18,7 +18,7 @@ namespace AstroShared.DTOs
       
         public long? ParentCategorySno { get; set; }
         public string? Descriptions { get; set; }
-      
+
         public string? Status { get; set; }
    
         public DateTime? AddedDate { get; set; }

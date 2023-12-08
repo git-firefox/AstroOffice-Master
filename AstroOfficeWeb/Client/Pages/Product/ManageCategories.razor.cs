@@ -18,7 +18,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         public string ParentCategory { get; set; } = string.Empty;
 
-        public string Description { get; set; } = string.Empty;
+    
 
         public int TotalEarning { get; set; } = 0;
 
@@ -55,7 +55,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
             if (x.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
                 return true;
 
-            if (x.Description.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            if (x.Descriptions.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
                 return true;
 
             if ($"{x.TotalProducts} {x.TotalEarning}".Contains(_searchString))
@@ -83,6 +83,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         {
             var parameters = new DialogParameters();
             parameters.Add("Category", CategoryDialoge);
+            parameters.Add("CategoryDTOs", categoryList);
 
             var dialog = await DialogService.ShowAsync<CategoryDialog>("Add Category", parameters, new DialogOptions() { MaxWidth = MaxWidth.Large, CloseButton = true });
 
@@ -141,7 +142,8 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
 
             var parameters = new DialogParameters();
-            parameters.Add("Category", CategoryDialoge);
+            parameters.Add("Category", categoryDTO);
+            parameters.Add("CategoryDTOs", categoryList);
 
             var dialog = await DialogService.ShowAsync<CategoryDialog>("Edit Category", parameters, new DialogOptions() { MaxWidth = MaxWidth.Large, CloseButton = true });
 
@@ -153,23 +155,23 @@ namespace AstroOfficeWeb.Client.Pages.Product
                 var updatedCategory = (CategoryDialoge)result.Data;
 
                 // Find the existing category in CategoryList
-                //var existingCategory = categoryList.FirstOrDefault(c => c.Sno == updatedCategory.Sno);
+                var existingCategory = CategoryList.FirstOrDefault(c => c.Sno == updatedCategory.Sno);
 
-                //if (existingCategory != null)
-                //{
-                    
-                //    existingCategory.Title = updatedCategory.Title; 
-                //    existingCategory.Slug = updatedCategory.Slug;
-                //    existingCategory.ImageUrl = updatedCategory.ImageUrl;
-                //    existingCategory.ParentCategory = updatedCategory.ParentCategory;
-                //    existingCategory.Status = updatedCategory.Status;
-                //    existingCategory.Description = updatedCategory.Description;
-                    
-                //}
-                //else
-                //{
-                //    // Handle the case where the category is not found in the list
-                //}
+                if (existingCategory != null)
+                {
+
+                    existingCategory.Title = updatedCategory.Title;
+                    existingCategory.Slug = updatedCategory.Slug;
+                    existingCategory.ImageUrl = updatedCategory.ImageUrl;
+                    existingCategory.ParentCategory = updatedCategory.ParentCategory;
+                    existingCategory.Status = updatedCategory.Status;
+                    existingCategory.Descriptions = updatedCategory.Descriptions;
+
+                }
+                else
+                {
+                    // Handle the case where the category is not found in the list
+                }
             }
 
         }
