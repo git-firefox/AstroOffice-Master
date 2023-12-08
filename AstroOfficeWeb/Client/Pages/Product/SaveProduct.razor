@@ -129,10 +129,7 @@
                                                                         <ValidationMessage For=@(()=>ProductModel.Summary) style="position: revert;" />
                                                                         <InputTextArea @bind-Value="ProductModel.Summary" @oninput="UpdateCharacterCount" class="form-control" id="product-summary" rows="5" placeholder="Please enter summary"></InputTextArea>
                                                                     </div>
-                                                                    @if (ProductModel.Summary != null)
-                                                                    {
-                                                                        <label>Total length: @CharacterCount</label>
-                                                                    }
+                                                                    <span>@CharacterCount / 255</span>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
