@@ -25,7 +25,7 @@
                 <MudText Typo="Typo.h5" Class="mud-text-secondary mt-16 mb-16">No data to display</MudText>
             </NoRecordsContent>
             <Columns>
-                <SelectColumn T="CategoryDialoge" />
+                @* <SelectColumn T="CategoryDialoge" /> *@
                 <PropertyColumn Property="x=> x.Title" Title="Category">
                     <CellTemplate>
                         <table>
@@ -49,27 +49,12 @@
                 <PropertyColumn Property="x => x.TotalProducts" Title="Total Products" />
                 <PropertyColumn Property="x => x.AddedDate" Title="Added Date" />
                 <PropertyColumn Property="x => x.LastModifiedDate" Title="Last Modified Date" />
-
-
-
-
-                @* <TemplateColumn Filterable="false" Sortable="false" CellClass="mud-table-cell">
-                <CellTemplate>
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.RemoveRedEye" OnClick="(()=> OnClick_BtnShow(context.Item))" />
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_BtnEdit(context.Item))" />
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_BtnDelete(context.Item))" />
-                </CellTemplate>
-                </TemplateColumn> *@
-
-
                 <TemplateColumn Filterable="false" Sortable="false" CellClass="mud-table-cell">
                     <CellTemplate>
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="()=> OnClick_CategoryEdit(context.Item)"/>
+                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="()=> OnClick_CategoryEdit(context.Item)" />
                         <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="() => OnClick_DeleteCategory(context.Item.Sno)" />
                     </CellTemplate>
                 </TemplateColumn>
-
-
             </Columns>
             <PagerContent>
                 <MudDataGridPager T="CategoryDialoge" />
