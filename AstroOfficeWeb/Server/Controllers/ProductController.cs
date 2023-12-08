@@ -82,6 +82,24 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(apiResponse);
         }
 
+        [HttpGet]
+        public IActionResult GetCategories()
+        {
+            //var apiResponse = new ApiResponse<string> { Data = null };
+
+            var apiResponse = new ApiResponse<List<CategoryDTO>> { Data = null };
+            var categories = _context.ProductCategories.Include(i => i.AProducts).ToList();
+            var categoryDTO = _mapper.Map<List<CategoryDTO>>(categories);
+
+            foreach (var category in categoryDTO)
+            {
+                category.TotalProducts = categories.First( c => c.Sno == category.Sno).AProducts.Count;
+            }
+
+            apiResponse.Data = categoryDTO;
+            return Ok(apiResponse);
+        }
+
         //[HttpGet]
         //public IActionResult GetMetaDataBySno(long sno)
         //{

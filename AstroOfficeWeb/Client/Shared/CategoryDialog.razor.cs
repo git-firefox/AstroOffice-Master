@@ -16,7 +16,7 @@ namespace AstroOfficeWeb.Client.Shared
 
         public string CategoryImage { get; set; }
 
-        public CategoryImageDTO BrowserFiles { get; set; } = new();
+        //public CategoryImageDTO BrowserFiles { get; set; } = new();
 
         //public List<string> FileNames { get; set; } = new();
 

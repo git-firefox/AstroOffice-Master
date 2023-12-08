@@ -295,6 +295,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         private async Task OnClick_DeleteMetaData(MetaDataDTO data)
         {
             bool? result = await Dialog.ShowMessageBox(title: "Alert", message: "Are you sure you want to delete?", yesText: "Delete", noText: "", cancelText: "Cancel", new DialogOptions() { FullWidth = true });
+            
             if (result.GetValueOrDefault())
             {
                 MetaDataList.Remove(data);

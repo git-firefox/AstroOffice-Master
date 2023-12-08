@@ -46,7 +46,12 @@ namespace ASModels.Astrooff
         [StringLength(50)]
         [Unicode(false)]
         public string? Status { get; set; }
+        [Column("ProductCategories_Sno")]
+        public long? ProductCategoriesSno { get; set; }
 
+        [ForeignKey("ProductCategoriesSno")]
+        [InverseProperty("AProducts")]
+        public virtual ProductCategory? ProductCategoriesSnoNavigation { get; set; }
         [InverseProperty("AProductsSnoNavigation")]
         public virtual ICollection<CartItem> CartItems { get; set; }
         [InverseProperty("AProductsSnoNavigation")]

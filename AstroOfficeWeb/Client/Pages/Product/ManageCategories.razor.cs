@@ -11,22 +11,14 @@ using static System.Formats.Asn1.AsnWriter;
 namespace AstroOfficeWeb.Client.Pages.Product
 {
 
-    public class CategoryDialoge 
+    public class CategoryDialoge : CategoryDTO
     {
-        [Required]
-        public string Title { get; set; } = string.Empty;
-        [Required]
-        public string Slug { get; set; } = string.Empty;
 
-        public string FileUpload { get; set; }
+        public string FileUpload { get; set; } 
 
         public string ParentCategory { get; set; } = string.Empty;
 
         public string Description { get; set; } = string.Empty;
-         [Required]
-        public string Status { get; set; } = string.Empty;
-
-        public int TotalProducts { get; set; } = 0;
 
         public int TotalEarning { get; set; } = 0;
 
@@ -41,6 +33,9 @@ namespace AstroOfficeWeb.Client.Pages.Product
         private List<CategoryDialoge> CategoryList { get; set; } = new List<CategoryDialoge>();
 
         private IEnumerable<OrderDTO>? OrderDTOs { get; set; }
+        private IEnumerable<CategoryDialoge>? categoryList { get; set; }
+
+        //private List<CategoryDialoge> cateList;
 
         [Parameter]
         public EventCallback<CategoryDialoge> OnSelectCategoryChanged { get; set; }
@@ -69,9 +64,13 @@ namespace AstroOfficeWeb.Client.Pages.Product
             return false;
         };
 
+       
+
         protected override async Task OnInitializedAsync()
         {
-            OrderDTOs = await ProductService.GetOrders();
+            
+            categoryList = await ProductService.GetCategories();
+            
         }
 
         private void OnClick_BtnViewOrder(OrderDTO order)
@@ -92,6 +91,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
             if (!result.Canceled)
             {
                 CategoryList.Add((CategoryDialoge)result.Data);
+                
                 //Add code to add data in Database here
             }
         }
@@ -110,6 +110,68 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
                 return $"data:{file.ContentType};base64," + base64String;
             }
+        }
+
+        private async Task OnClick_DeleteCategory(long sno) 
+        {
+            bool? result = await DialogService.ShowMessageBox(title: "Alert", message: "Are you sure you want to delete?", yesText: "Delete", noText: "", cancelText: "Cancel", new DialogOptions() { FullWidth = true });
+            
+            if (result.GetValueOrDefault())
+            {
+                categoryList = categoryList?.Where(category => category.Sno != sno);
+                StateHasChanged();
+            }
+        }
+
+      
+        private async Task OnClick_CategoryEdit(CategoryDTO categoryDTO) 
+        {
+            //var parameters = new DialogParameters();
+            //parameters.Add("Category", CategoryDialoge);
+
+            //var dialog = await DialogService.ShowAsync<CategoryDialog>("Edit Category", parameters, new DialogOptions() { MaxWidth = MaxWidth.Large, CloseButton = true });
+
+            //var result = await dialog.Result;
+
+            //if (!result.Canceled)
+            //{
+            //    CategoryList.Add((CategoryDialoge)result.Data);
+
+            //}
+
+
+            var parameters = new DialogParameters();
+            parameters.Add("Category", CategoryDialoge);
+
+            var dialog = await DialogService.ShowAsync<CategoryDialog>("Edit Category", parameters, new DialogOptions() { MaxWidth = MaxWidth.Large, CloseButton = true });
+
+            var result = await dialog.Result;
+
+
+            if (!result.Canceled)
+            {
+                var updatedCategory = (CategoryDialoge)result.Data;
+
+                // Find the existing category in CategoryList
+                //var existingCategory = categoryList.FirstOrDefault(c => c.Sno == updatedCategory.Sno);
+
+                //if (existingCategory != null)
+                //{
+                    
+                //    existingCategory.Title = updatedCategory.Title; 
+                //    existingCategory.Slug = updatedCategory.Slug;
+                //    existingCategory.ImageUrl = updatedCategory.ImageUrl;
+                //    existingCategory.ParentCategory = updatedCategory.ParentCategory;
+                //    existingCategory.Status = updatedCategory.Status;
+                //    existingCategory.Description = updatedCategory.Description;
+                    
+                //}
+                //else
+                //{
+                //    // Handle the case where the category is not found in the list
+                //}
+            }
+
         }
 
     }

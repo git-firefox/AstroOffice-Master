@@ -25,6 +25,8 @@ namespace AstroOfficeWeb.Server
             CreateMap<AProduct, ProductDTO>();
             CreateMap<ProductMetaData, MetaDataDTO>();
             CreateMap<ViewProductDTO, AProduct>();
+
+            CreateMap<ProductCategory, CategoryDTO>();
             CreateMap<SaveProductDTO, AProduct>().ForMember(x => x.ProductImages, opt => opt.Ignore());
             CreateMap<Address, AddressDTO>().ForMember(dest => dest.Country, act => act.MapFrom(src => (src.ACountrySnoNavigation != null) ? src.ACountrySnoNavigation.Country : ""));
             CreateMap<AddressDTO, Address>();

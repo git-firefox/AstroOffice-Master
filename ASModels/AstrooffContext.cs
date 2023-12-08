@@ -148,6 +148,7 @@ namespace ASModels
         public virtual DbSet<Male> Males { get; set; } = null!;
         public virtual DbSet<NewMixDasha> NewMixDashas { get; set; } = null!;
         public virtual DbSet<OrderItem> OrderItems { get; set; } = null!;
+        public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
         public virtual DbSet<ProductImage> ProductImages { get; set; } = null!;
         public virtual DbSet<ProductMetaData> ProductMetaDatas { get; set; } = null!;
         public virtual DbSet<ProductOrder> ProductOrders { get; set; } = null!;
@@ -775,6 +776,11 @@ namespace ASModels
                     .HasName("PK__A_Produc__CA1FE4644F9E97C5");
 
                 entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
+
+                entity.HasOne(d => d.ProductCategoriesSnoNavigation)
+                    .WithMany(p => p.AProducts)
+                    .HasForeignKey(d => d.ProductCategoriesSno)
+                    .HasConstraintName("FK_ProductCategories_Sno");
             });
 
             modelBuilder.Entity<APunjabi>(entity =>
@@ -1012,6 +1018,27 @@ namespace ASModels
                     .WithMany(p => p.OrderItems)
                     .HasForeignKey(d => d.ProductOrdersSno)
                     .HasConstraintName("FK__OrderItem__Produ__7D197D8B");
+            });
+
+            modelBuilder.Entity<ProductCategory>(entity =>
+            {
+                entity.HasKey(e => e.Sno)
+                    .HasName("PK__ProductC__CA1FE464A8C4700C");
+
+                entity.HasOne(d => d.AddedByAUsersSnoNavigation)
+                    .WithMany(p => p.ProductCategoryAddedByAUsersSnoNavigations)
+                    .HasForeignKey(d => d.AddedByAUsersSno)
+                    .HasConstraintName("FK__ProductCa__Added__14F1071C");
+
+                entity.HasOne(d => d.ModifiedByAUsersSnoNavigation)
+                    .WithMany(p => p.ProductCategoryModifiedByAUsersSnoNavigations)
+                    .HasForeignKey(d => d.ModifiedByAUsersSno)
+                    .HasConstraintName("FK__ProductCa__Modif__15E52B55");
+
+                entity.HasOne(d => d.ParentCategorySnoNavigation)
+                    .WithMany(p => p.InverseParentCategorySnoNavigation)
+                    .HasForeignKey(d => d.ParentCategorySno)
+                    .HasConstraintName("FK__ProductCa__Paren__13FCE2E3");
             });
 
             modelBuilder.Entity<ProductImage>(entity =>

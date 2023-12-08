@@ -1,4 +1,5 @@
-﻿using AstroOfficeWeb.Client.Services.IService;
+﻿using AstroOfficeWeb.Client.Pages.Product;
+using AstroOfficeWeb.Client.Services.IService;
 using AstroOfficeWeb.Shared.Models;
 using AstroShared;
 using AstroShared.DTOs;
@@ -205,6 +206,17 @@ namespace AstroOfficeWeb.Client.Services
         {
             var response = await _swagger.GetAsync<ApiResponse<List<OrderDTO>>>(ProductApiConst.GET_UserOrders);
 
+            if (!response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                return null;
+            }
+            return response.Data;
+        }
+
+        public async Task<List<CategoryDialoge>> GetCategories()
+        {
+            var response = await _swagger.GetAsync<ApiResponse<List<CategoryDialoge>>>(ProductApiConst.GET_Categories);
             if (!response!.Success)
             {
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
