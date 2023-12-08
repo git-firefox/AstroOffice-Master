@@ -36,6 +36,8 @@ namespace AstroShared
         CreditCard,
         PayPal,
         BankTransfer,
+        Stripe,
+        CashOnDelivery
     }
 
     //[JsonConverter(typeof(StringEnumConverter))]
