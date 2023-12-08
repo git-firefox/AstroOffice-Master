@@ -1,6 +1,7 @@
 ﻿@page "/checkout"
 
 @using AstroOfficeWeb.Client.Services
+@using AstroShared
 @using MudBlazor
 @using static AstroOfficeWeb.Client.Shared.CustomInputs.InputSelect2<long>
 
@@ -287,22 +288,31 @@
                                                     send you the order's invoice.
                                                 </p>
 
-                                                <!-- Pay with Paypal box-->
+                                                <!-- Pay with stripe box-->
+
                                                 <div class="border p-3 mb-3 rounded">
                                                     <div class="float-end">
-                                                        <i class="fab fa-cc-paypal font-24 text-primary"></i>
+                                                        <i class="fab fa-cc-stripe font-24 text-primary"></i>
                                                     </div>
 
                                                     <div class="form-check form-check-inline font-16 mb-0">
-                                                        <input class="form-check-input" type="radio" name="billingOptions" id="BillingOptRadio1">
-                                                        <label class="form-check-label" for="BillingOptRadio1">Pay with Paypal</label>
+                                                        <input id="BillingOptRadio1" class="form-check-input" type="radio" checked="@(BillingOption == PaymentMethod.Stripe)" name="billingOptions" @onchange="@(() => BillingOption = PaymentMethod.Stripe)" />
+                                                        <label class="form-check-label" for="BillingOptRadio1">Pay with Stripe</label>
                                                     </div>
-                                                    <p class="mb-0 ps-3 pt-1">You will be redirected to PayPal website to complete your purchase securely.</p>
-
+                                                    <p class="mb-0 ps-3 pt-1">You will be redirected to Stripe website to complete your purchase securely.</p>
                                                 </div>
+
+
+
+
+
+
+
+
+
                                                 <!-- end Pay with Paypal box-->
                                                 <!-- Credit/Debit Card box-->
-                                                <div class="border p-3 mb-3 rounded">
+                                                @* <div class="border p-3 mb-3 rounded">
                                                     <div class="float-end">
                                                         <i class="far fa-credit-card font-24 text-primary"></i>
                                                     </div>
@@ -340,7 +350,7 @@
                                                             </div>
                                                         </div>
                                                     </div> <!-- end row -->
-                                                </div>
+                                                </div> *@
                                                 <!-- end Credit/Debit Card box-->
                                                 <!-- Cash on Delivery box-->
                                                 <div class="border p-3 mb-3 rounded">
@@ -348,7 +358,7 @@
                                                         <i class="fas fa-money-bill-alt font-24 text-primary"></i>
                                                     </div>
                                                     <div class="form-check form-check-inline font-16 mb-0">
-                                                        <input class="form-check-input" type="radio" name="billingOptions" id="BillingOptRadio3">
+                                                        <input id="BillingOptRadio3" class="form-check-input" type="radio" checked="@(BillingOption == PaymentMethod.CashOnDelivery)" name="billingOptions" @onchange="@(() => BillingOption = PaymentMethod.CashOnDelivery)" />
                                                         <label class="form-check-label" for="BillingOptRadio3">Cash on Delivery</label>
                                                     </div>
                                                     <p class="mb-0 ps-3 pt-1">Pay with cash when your order is delivered.</p>

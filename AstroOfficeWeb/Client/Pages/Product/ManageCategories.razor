@@ -38,9 +38,12 @@
                                     <MudText>
                                         @(context.Item.Title)
                                     </MudText>
-                                    <MudText>
-                                        @(new MarkupString(context.Item.Descriptions))
-                                    </MudText>
+                                    @if (!string.IsNullOrEmpty(context.Item.Descriptions))
+                                    {
+                                        <MudText>
+                                            @(new MarkupString(context.Item.Descriptions))
+                                        </MudText>
+                                    }
                                 </td>
                             </tr>
                         </table>
