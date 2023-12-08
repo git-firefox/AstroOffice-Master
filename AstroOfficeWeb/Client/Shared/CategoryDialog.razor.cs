@@ -1,4 +1,5 @@
 ﻿using AstroOfficeWeb.Client.Pages.Product;
+using AstroOfficeWeb.Client.Services;
 using AstroShared.DTOs;
 using AstroShared.Helper;
 using Microsoft.AspNetCore.Components;
@@ -11,6 +12,7 @@ namespace AstroOfficeWeb.Client.Shared
     public partial class CategoryDialog
     {
         [CascadingParameter] MudDialogInstance? MudDialog { get; set; }
+        [CascadingParameter] ManageCategories? ManageCategories { get; set; }
 
         [Parameter] public CategoryDialoge Category { get; set; } = new CategoryDialoge();
 
@@ -73,24 +75,26 @@ namespace AstroOfficeWeb.Client.Shared
 
 
 
-        public void AddCategory(EditContext context)
+        public async Task AddCategory(EditContext context)
         {
             StateHasChanged();
             Random random = new Random();
 
             // Generate a random number between 0 and 2000
             //In a real world scenario this bool would probably be a service to delete the item from api/database
-            CategoryList.Add(new CategoryDialoge
-            {
-                Title = Category!.Title,
-                Slug = Category!.Slug,
-                FileUpload = Category!.FileUpload,
-                ParentCategory = Category!.ParentCategory,
-                Descriptions = Category!.Descriptions,
-                Status = Category!.Status,
-                TotalEarning = random.Next(0, 2001),
-                TotalProducts = random.Next(0, 2001)
-            });
+            //CategoryList.Add(new CategoryDialoge
+            //{
+            //    Title = Category!.Title,
+            //    Slug = Category!.Slug,
+            //    FileUpload = Category!.FileUpload,
+            //    ParentCategory = Category!.ParentCategory,
+            //    Descriptions = Category!.Descriptions,
+            //    Status = Category!.Status,
+            //    TotalEarning = random.Next(0, 2001),
+            //    TotalProducts = random.Next(0, 2001)
+            //});
+            //ManageCategories.check();
+            await ProductService.SaveAndUpdateCategory(Category);
 
             Snackbar.Add("Category Added", Severity.Success);
             MudDialog.Close(DialogResult.Ok(Category));

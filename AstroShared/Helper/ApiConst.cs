@@ -136,12 +136,17 @@
         public static string POST_AddProduct = Base + "AddProduct";
         public static string POST_AddToShoppingCart = Base + "AddToShoppingCart";
         public static string POST_SaveUserAddress = Base + "SaveUserAddress";
+        public static string POST_SaveAndUpdateCategory = Base + "SaveAndUpdateCategory";
+
+
         public static string POST_SaveProductImages = Base + "SaveProductImages";
         public static string POST_PlaceOrder = Base + "PlaceOrder";
         public static string PUT_UpdateProduct = Base + "UpdateProduct";
         public static string PUT_AddToWishList = Base + "AddToWishList";
         public static string POST_CreateCheckoutSession = Base + "CreateCheckoutSession";
         public static string DELETE_Product = Base + "DeleteProduct";
+        public static string DELETE_Category = Base + "DeleteCategory";
+
         public static string DELETE_FromWishList = Base + "DeleteFromWishList";
     }
 }

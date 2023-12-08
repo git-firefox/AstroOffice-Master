@@ -14,11 +14,11 @@ namespace AstroOfficeWeb.Client.Pages.Product
     public class CategoryDialoge : CategoryDTO
     {
 
-        public string FileUpload { get; set; } 
+        public string FileUpload { get; set; }
 
         public string ParentCategory { get; set; } = string.Empty;
 
-    
+
 
         public int TotalEarning { get; set; } = 0;
 
@@ -29,11 +29,12 @@ namespace AstroOfficeWeb.Client.Pages.Product
     {
         [CascadingParameter]
         public CategoryDialoge CategoryDialoge { get; set; } = new();
+        //[CascadingParameter] ManageCategories obj { get; set; } = this;
 
         private List<CategoryDialoge> CategoryList { get; set; } = new List<CategoryDialoge>();
 
         private IEnumerable<OrderDTO>? OrderDTOs { get; set; }
-        private IEnumerable<CategoryDialoge>? categoryList { get; set; }
+        private List<CategoryDialoge>? categoryList { get; set; }
 
         //private List<CategoryDialoge> cateList;
 
@@ -64,13 +65,13 @@ namespace AstroOfficeWeb.Client.Pages.Product
             return false;
         };
 
-       
+
 
         protected override async Task OnInitializedAsync()
         {
-            
+
             categoryList = await ProductService.GetCategories();
-            
+
         }
 
         private void OnClick_BtnViewOrder(OrderDTO order)
@@ -78,7 +79,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
             NavigationManager.NavigateTo($"/view-order/{order.OrderId}");
         }
 
-        
+
         public async Task Onclick_AddMetaData()
         {
             var parameters = new DialogParameters();
@@ -92,7 +93,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
             if (!result.Canceled)
             {
                 CategoryList.Add((CategoryDialoge)result.Data);
-                
+
                 //Add code to add data in Database here
             }
         }
@@ -113,19 +114,23 @@ namespace AstroOfficeWeb.Client.Pages.Product
             }
         }
 
-        private async Task OnClick_DeleteCategory(long sno) 
+        private async Task OnClick_DeleteCategory(CategoryDialoge category)
         {
             bool? result = await DialogService.ShowMessageBox(title: "Alert", message: "Are you sure you want to delete?", yesText: "Delete", noText: "", cancelText: "Cancel", new DialogOptions() { FullWidth = true });
-            
+
             if (result.GetValueOrDefault())
             {
-                categoryList = categoryList?.Where(category => category.Sno != sno);
-                StateHasChanged();
+                var response = await ProductService.IsDeletedSelectedCategory(category.Sno);
+                if (response)
+                {
+                    categoryList?.Remove(category);
+                    StateHasChanged();
+                }
             }
         }
 
-      
-        private async Task OnClick_CategoryEdit(CategoryDTO categoryDTO) 
+
+        private async Task OnClick_CategoryEdit(CategoryDTO categoryDTO)
         {
             //var parameters = new DialogParameters();
             //parameters.Add("Category", CategoryDialoge);
@@ -174,6 +179,13 @@ namespace AstroOfficeWeb.Client.Pages.Product
                 }
             }
 
+        }
+
+
+
+        public void check()
+        {
+            categoryList.ToList().Add(new());
         }
 
     }

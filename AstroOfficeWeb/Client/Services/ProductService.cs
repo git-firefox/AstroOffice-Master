@@ -122,6 +122,26 @@ namespace AstroOfficeWeb.Client.Services
             }
         }
 
+        public async Task<bool> IsDeletedSelectedCategory(long sno)
+        {
+            var queryParams = new Dictionary<string, string>()
+            {
+                { "sno", sno.ToString()}
+            };
+            var response = await _swagger.DeleteAsync<ApiResponse<CategoryDTO>>(ProductApiConst.DELETE_Category, queryParams);
+            if (response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.Message);
+                return true;
+            }
+            else
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                return false;
+            }
+        }
+
+
         public async Task<bool> IsAddToCart(long productSno, int quantity = 1)
         {
             var request = new AddToCartRequest() { ProductSno = productSno, Quantity = quantity };
@@ -162,6 +182,20 @@ namespace AstroOfficeWeb.Client.Services
             if (response!.Success)
             {
                 addressDTO.Sno = response!.Data!.Sno;
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
+            }
+            else
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+            }
+        }
+
+        public async Task SaveAndUpdateCategory(CategoryDialoge categoryDTO)
+        {
+            var response = await _swagger.PostAsync<CategoryDTO, ApiResponse<CategoryDTO>>(ProductApiConst.POST_SaveAndUpdateCategory, categoryDTO);
+            if (response!.Success)
+            {
+                categoryDTO.Sno = response!.Data!.Sno;
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
             }
             else

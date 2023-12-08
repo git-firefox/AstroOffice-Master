@@ -93,7 +93,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
             foreach (var category in categoryDTO)
             {
-                category.TotalProducts = categories.First( c => c.Sno == category.Sno).AProducts.Count;
+                category.TotalProducts = categories.First(c => c.Sno == category.Sno).AProducts.Count;
             }
 
             apiResponse.Data = categoryDTO;
@@ -185,7 +185,6 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(apiResponse);
         }
 
-        
 
 
         // PUT api/<ProductController>/5
@@ -456,6 +455,32 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
+
+        [HttpPost]
+        public IActionResult SaveAndUpdateCategory(CategoryDTO categoryDTO)
+        {
+            var response = new ApiResponse<CategoryDTO>();
+            var existingCategory = _context.ProductCategories.FirstOrDefault(a => a.Sno == categoryDTO.Sno);
+            if (existingCategory == null)
+            {
+                var addCategory = _mapper.Map<ProductCategory>(categoryDTO);
+                _context.ProductCategories.Add(addCategory);
+                _context.SaveChanges();
+                addCategory.Sno = categoryDTO.Sno;
+                response.Data = categoryDTO;
+                response.Message = "Category has been saved.";
+            }
+            else
+            {
+                _mapper.Map(categoryDTO, existingCategory);
+                _context.SaveChanges();
+                response.Data = categoryDTO;
+                response.Message = "Category has been Updated";
+            }
+
+            return Ok(response);
+        }
+
         [Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult PlaceOrder(PlaceOrderRequest request)
@@ -677,6 +702,27 @@ namespace AstroOfficeWeb.Server.Controllers
             response.Message = "Product removed from your wishlist.";
             return Ok(response);
         }
+
+
+        [HttpDelete]
+
+        public async Task<IActionResult> DeleteCategory(long sno)
+        {
+            var response = new ApiResponse<string>();
+            try
+            {
+                var category = await _context.ProductCategories.FirstAsync(a => a.Sno == sno);
+                _context.ProductCategories.Remove(category);
+                await _context.SaveChangesAsync();
+                response.Message = "Category has been deleted";
+            }
+            catch
+            {
+                response.Message = "Category not found";
+            }
+            return Ok(response);
+        }
+
 
         [Authorize(Roles = "User")]
         [HttpGet]

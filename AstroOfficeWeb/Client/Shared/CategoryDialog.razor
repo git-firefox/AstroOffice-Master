@@ -1,6 +1,8 @@
 ﻿@using AstroOfficeWeb.Client.Pages.Product;
+@using AstroOfficeWeb.Client.Services;
 @inject ISnackbar Snackbar
 @inject IJSRuntime JSRuntime
+@inject ProductService ProductService
 <EditForm Model="@Category" OnValidSubmit="AddCategory">
     <DataAnnotationsValidator />
     <MudDialog>
