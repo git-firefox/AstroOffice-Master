@@ -14,6 +14,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         private List<ViewProductDTO> filteredProducts = new List<ViewProductDTO>();
         private List<ViewProductDTO> listedProducts = new List<ViewProductDTO>();
+        private List<CategoryDialoge> CategoryDTOs { get; set; } = new();
 
         private int pageSize = 40;
         private int currentPage { get; set; } = 1;
@@ -41,7 +42,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-
+            CategoryDTOs = await ProductService.GetCategories();
             Products = await ProductService.GetProducts();
             await ApplyFilter();
         }

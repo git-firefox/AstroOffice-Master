@@ -30,21 +30,12 @@
 
 
                 <ul class="pl-0 m-0">
-                    <li><a href="/view-products">Astro Services</a></li>
-                    <li><a href="/view-products">Astro Services</a></li>
-                    <li><a href="/view-products">Astro Services</a></li>
-                    <li><a href="/view-products">Astro Services</a></li>
-                    <li><a href="/view-products">Astro Services</a></li>
-                    <li><a href="/view-products">Astro Services</a></li>
-                    <li><a href="/view-products">Astro Services</a></li>
-                    <li><a href="/view-products">Astro Services</a></li>
-                    <li><a href="/view-products">Astro Services</a></li>
-                    <li><a href="/view-products">Astro Services</a></li>
-                    <li><a href="/view-products">Astro Services</a></li>
-                    <li><a href="/view-products">Astro Services</a></li>
-                    <li><a href="/view-products">Astro Services</a></li>
-                    <li><a href="/view-products">Astro Services</a></li>
-                    <li><a href="/view-products">Astro Services</a></li>
+                    @foreach (var category in CategoryDTOs)
+                    {
+                        <li><a href="/view-products">@category.Title</a></li>
+                    }
+
+
                 </ul>
 
 
