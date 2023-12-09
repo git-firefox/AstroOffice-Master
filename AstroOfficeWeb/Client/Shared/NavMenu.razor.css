@@ -38,8 +38,8 @@
         align-items: center;
     }
 .navbar {
-    padding-left: 2rem !important;
-    padding-right: 1.5rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
 }
 .nav-item ::deep a.active {
     background-color: rgba(255,255,255,0.25);
@@ -56,10 +56,7 @@
         display: none;
     }
 
-    .collapse {
-         /*Never collapse the sidebar for wide screens*/ 
-        display: block;
-    }
+   
 }
 .bd-placeholder-img {
     font-size: 1.125rem;
@@ -136,3 +133,30 @@
     .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
     }
+.navbar-nav a {
+    font-size: 14px;
+    text-align: center;
+}
+@media(min-width:992px) and (max-width:1199px){
+    .brand-text{
+        display:none;
+    }
+    .navbar-nav a{
+        font-size:12px;
+    }
+ 
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding-right: 0.8rem;
+        padding-left: 0.8rem;
+    }
+}
+@media(min-width:1200px) and (max-width:1399px){
+    .brand-text{
+        font-size:25px;
+    }
+    .navbar-nav a {
+        font-size: 13px;
+    }
+ 
+  
+}
