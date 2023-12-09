@@ -195,6 +195,8 @@ namespace AstroOfficeWeb.Client.Services
             var response = await _swagger.PostAsync<CategoryDTO, ApiResponse<CategoryDTO>>(ProductApiConst.POST_SaveAndUpdateCategory, categoryDTO);
             if (response!.Success)
             {
+                categoryDTO.AddedDate = response!.Data!.AddedDate;
+                categoryDTO.LastModifiedDate = response!.Data!.LastModifiedDate;
                 categoryDTO.Sno = response!.Data!.Sno;
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
             }

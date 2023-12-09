@@ -28,7 +28,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public string Alt { get; set; } = null!;
 
 
-    
+
         [Required(ErrorMessage = "Please select a file.")]
         //[MinLength(1, ErrorMessage = "Upload atleast 1 image.")]
         [MaxLength(10, ErrorMessage = "Can only upload max 10 images.")]
@@ -71,6 +71,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public MetaDataDTO? SelectedMetaData { get; set; }
         private ActionMode MetaDataAction { get; set; }
         private List<MetaDataDTO> MetaDataList { get; set; } = new List<MetaDataDTO>();
+        private List<CategoryDialoge> CategoryDTOs { get; set; } = new();
 
 
 
@@ -94,12 +95,13 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         protected override async Task OnInitializedAsync()
         {
+            CategoryDTOs = await ProductService.GetCategories();
             if (Sno != 0)
             {
                 ProductModel = await ProductService.GetProductBySno(Sno) ?? new();
                 BrowserFiles = ProductModel.ProductImages ??= new();
                 MetaDataList = ProductModel.MetaDatas ??= new();
-            CharacterCount = ProductModel.Summary?.Length ?? 0;
+                CharacterCount = ProductModel.Summary?.Length ?? 0;
             }
         }
 
@@ -295,7 +297,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         private async Task OnClick_DeleteMetaData(MetaDataDTO data)
         {
             bool? result = await Dialog.ShowMessageBox(title: "Alert", message: "Are you sure you want to delete?", yesText: "Delete", noText: "", cancelText: "Cancel", new DialogOptions() { FullWidth = true });
-            
+
             if (result.GetValueOrDefault())
             {
                 MetaDataList.Remove(data);

@@ -40,7 +40,8 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpGet]
         public IActionResult GetProducts()
         {
-            var aProducts = _context.AProducts.Where(p => p.IsActive == true).OrderByDescending(p => p.Sno).ToList();
+            var aProducts = _context.AProducts.Include(a => a.ProductCategoriesSnoNavigation).Where(p => p.IsActive == true).OrderByDescending(p => p.Sno).ToList();
+
             var productDTOs = _mapper.Map<List<ViewProductDTO>>(aProducts);
             return Ok(productDTOs);
         }
@@ -60,7 +61,8 @@ namespace AstroOfficeWeb.Server.Controllers
         {
             var apiResponse = new ApiResponse<ProductDTO> { Data = null };
 
-            var aProduct = _context.AProducts.Include(a => a.ProductImages).Include(a => a.ProductMetaData).FirstOrDefault(p => p.Sno == sno && p.IsActive == true);
+            var aProduct = _context.AProducts.Include(a => a.ProductImages).Include(a => a.ProductMetaData).Include(a => a.ProductCategoriesSnoNavigation).FirstOrDefault(p => p.Sno == sno && p.IsActive == true);
+
 
             if (aProduct == null)
             {
@@ -77,6 +79,7 @@ namespace AstroOfficeWeb.Server.Controllers
             var metaDataDTOs = _mapper.Map<List<MetaDataDTO>>(aProduct.ProductMetaData);
             productDTO.ProductImages = imagesDTOs;
             productDTO.MetaDatas = metaDataDTOs;
+            productDTO.ProductCategory = aProduct.ProductCategoriesSnoNavigation?.Title ?? string.Empty;
             apiResponse.Data = productDTO;
 
             return Ok(apiResponse);
@@ -463,15 +466,19 @@ namespace AstroOfficeWeb.Server.Controllers
             var existingCategory = _context.ProductCategories.FirstOrDefault(a => a.Sno == categoryDTO.Sno);
             if (existingCategory == null)
             {
-                var addCategory = _mapper.Map<ProductCategory>(categoryDTO);
-                _context.ProductCategories.Add(addCategory);
+                categoryDTO.AddedDate = DateTime.Now;
+                categoryDTO.AddedByAUsersSno = User.GetUserSno();
+                var category = _mapper.Map<ProductCategory>(categoryDTO);
+                _context.ProductCategories.Add(category);
                 _context.SaveChanges();
-                addCategory.Sno = categoryDTO.Sno;
+                categoryDTO.Sno = category.Sno;
                 response.Data = categoryDTO;
                 response.Message = "Category has been saved.";
             }
             else
             {
+                categoryDTO.LastModifiedDate = DateTime.Now;
+                categoryDTO.ModifiedByAUsersSno = User.GetUserSno();
                 _mapper.Map(categoryDTO, existingCategory);
                 _context.SaveChanges();
                 response.Data = categoryDTO;

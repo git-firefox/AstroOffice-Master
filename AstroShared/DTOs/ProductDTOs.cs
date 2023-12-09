@@ -25,6 +25,8 @@ namespace AstroShared.DTOs
         public int StockQuantity { get; set; }
 
         public string? ImageUrl { get; set; }
+        public long ProductCategoriesSno { get; set; }
+        public string ProductCategory { get; set; } = null!;
         public DateTime AddedDate { get; set; }
         public DateTime? LastModifiedDate { get; set; }
         public bool IsActive { get; set; } = true;

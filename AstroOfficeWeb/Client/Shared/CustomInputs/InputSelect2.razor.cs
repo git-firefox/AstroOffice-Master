@@ -11,9 +11,9 @@ namespace AstroOfficeWeb.Client.Shared.CustomInputs
         public object Value { get; set; } = default!;
 
         public Option() { }
-        public Option(string text, object value)
+        public Option(string? text, object value)
         {
-            Text = text;
+            Text = text ?? string.Empty;
             Value = value;
         }
     }

@@ -134,15 +134,7 @@
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="product-category" class="form-label">Categories <span class="text-danger">*</span></label>
-
-                                                                        <select class="form-control " id="product-category" data-select2-id="product-category" tabindex="-1" aria-hidden="true">
-                                                                            <option data-select2-id="2">Select</option>
-
-                                                                            <option value="SH1">Shopping 1</option>
-                                                                            <option value="SH2">Shopping 2</option>
-                                                                            <option value="SH3">Shopping 3</option>
-                                                                            <option value="SH4">Shopping 4</option>
-                                                                        </select>
+                                                                        <InputSelect2 @bind-Value="ProductModel.ProductCategoriesSno" Options="CategoryDTOs.Select(s => new Option( value:  s.Sno, text: s.Title))" class="form-control " id="product-category" />
                                                                     </div>
 
                                                                     <div class="mb-3">

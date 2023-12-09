@@ -11,22 +11,14 @@ namespace AstroOfficeWeb.Client.Shared
 {
     public partial class CategoryDialog
     {
-        [CascadingParameter] MudDialogInstance? MudDialog { get; set; }
-        [CascadingParameter] ManageCategories? ManageCategories { get; set; }
+        [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
 
         [Parameter] public CategoryDialoge Category { get; set; } = new CategoryDialoge();
 
-        [Parameter] public IEnumerable<CategoryDialoge> CategoryDTOs { get; set; } = new List<CategoryDialoge>();
+        [Parameter] public List<CategoryDialoge> CategoryDTOs { get; set; } = null!;
+        [Parameter] public ActionMode Mode { get; set; }
 
-        public string CategoryImage { get; set; }
-
-        //public CategoryImageDTO BrowserFiles { get; set; } = new();
-
-        //public List<string> FileNames { get; set; } = new();
-
-        private List<CategoryDialoge> CategoryList { get; set; } = new List<CategoryDialoge>();
-
-        MudForm form;
+        public string? CategoryImage { get; set; }
 
         private void Cancel()
         {
@@ -45,9 +37,7 @@ namespace AstroOfficeWeb.Client.Shared
                 CategoryImage = file.Name;
 
                 Category.FileUpload = $"data:{file.ContentType};base64," + base64String;
-
             }
-            //TODO upload the files to the server
         }
 
 
@@ -73,30 +63,13 @@ namespace AstroOfficeWeb.Client.Shared
         }
 
 
-
-
         public async Task AddCategory(EditContext context)
         {
-            StateHasChanged();
-            Random random = new Random();
-
-            // Generate a random number between 0 and 2000
-            //In a real world scenario this bool would probably be a service to delete the item from api/database
-            //CategoryList.Add(new CategoryDialoge
-            //{
-            //    Title = Category!.Title,
-            //    Slug = Category!.Slug,
-            //    FileUpload = Category!.FileUpload,
-            //    ParentCategory = Category!.ParentCategory,
-            //    Descriptions = Category!.Descriptions,
-            //    Status = Category!.Status,
-            //    TotalEarning = random.Next(0, 2001),
-            //    TotalProducts = random.Next(0, 2001)
-            //});
-            //ManageCategories.check();
             await ProductService.SaveAndUpdateCategory(Category);
-
-            Snackbar.Add("Category Added", Severity.Success);
+            if (Mode == ActionMode.Add)
+            {
+                CategoryDTOs.Add(Category);
+            }
             MudDialog.Close(DialogResult.Ok(Category));
         }
     }

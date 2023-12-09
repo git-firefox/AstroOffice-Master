@@ -83,8 +83,8 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public async Task Onclick_AddMetaData()
         {
             var parameters = new DialogParameters();
-            parameters.Add("Category", CategoryDialoge);
             parameters.Add("CategoryDTOs", categoryList);
+            parameters.Add("Mode", ActionMode.Add);
 
             var dialog = await DialogService.ShowAsync<CategoryDialog>("Add Category", parameters, new DialogOptions() { MaxWidth = MaxWidth.Large, CloseButton = true });
 
@@ -132,61 +132,15 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         private async Task OnClick_CategoryEdit(CategoryDTO categoryDTO)
         {
-            //var parameters = new DialogParameters();
-            //parameters.Add("Category", CategoryDialoge);
-
-            //var dialog = await DialogService.ShowAsync<CategoryDialog>("Edit Category", parameters, new DialogOptions() { MaxWidth = MaxWidth.Large, CloseButton = true });
-
-            //var result = await dialog.Result;
-
-            //if (!result.Canceled)
-            //{
-            //    CategoryList.Add((CategoryDialoge)result.Data);
-
-            //}
-
-
             var parameters = new DialogParameters();
             parameters.Add("Category", categoryDTO);
             parameters.Add("CategoryDTOs", categoryList);
+            parameters.Add("Mode", ActionMode.Edit);
 
             var dialog = await DialogService.ShowAsync<CategoryDialog>("Edit Category", parameters, new DialogOptions() { MaxWidth = MaxWidth.Large, CloseButton = true });
 
             var result = await dialog.Result;
 
-
-            if (!result.Canceled)
-            {
-                var updatedCategory = (CategoryDialoge)result.Data;
-
-                // Find the existing category in CategoryList
-                var existingCategory = CategoryList.FirstOrDefault(c => c.Sno == updatedCategory.Sno);
-
-                if (existingCategory != null)
-                {
-
-                    existingCategory.Title = updatedCategory.Title;
-                    existingCategory.Slug = updatedCategory.Slug;
-                    existingCategory.ImageUrl = updatedCategory.ImageUrl;
-                    existingCategory.ParentCategory = updatedCategory.ParentCategory;
-                    existingCategory.Status = updatedCategory.Status;
-                    existingCategory.Descriptions = updatedCategory.Descriptions;
-
-                }
-                else
-                {
-                    // Handle the case where the category is not found in the list
-                }
-            }
-
         }
-
-
-
-        public void check()
-        {
-            categoryList.ToList().Add(new());
-        }
-
     }
 }
