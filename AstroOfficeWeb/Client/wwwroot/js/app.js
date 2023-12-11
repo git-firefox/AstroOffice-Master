@@ -125,12 +125,19 @@ window.InputMaskInterop = {
 };
 
 window.InputSelect2Interop = {
-    fnInitialize: function (element) {
+    fnInitialize: function (element, dropdownParent = null) {
+
+        var select2Config = {
+            theme: 'bootstrap4',
+            width: '100%',
+        };
+        
+        if (dropdownParent != undefined || dropdownParent != null) {
+            select2Config.dropdownParent = dropdownParent;
+        }
+
         if (element instanceof HTMLSelectElement) {
-            $(element).select2({
-                theme: 'bootstrap4',
-                width: '100%',
-            });
+            $(element).select2(select2Config);
         }
     },
 

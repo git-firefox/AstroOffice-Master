@@ -88,13 +88,6 @@ namespace AstroOfficeWeb.Client.Shared
             Close
         }
 
-        enum AddressType
-        {
-            Home,
-            Billing,
-            Office,
-        }
-
         private AddressMode Mode { get; set; } = AddressMode.View;
         private async Task OnSubmit_UpdateAddress()
         {

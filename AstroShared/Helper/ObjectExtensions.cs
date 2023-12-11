@@ -36,5 +36,10 @@ namespace AstroShared.Helper
             }
             return string.Empty;
         }
+        
+        public static bool IsNull(this object? obj)
+        {
+            return obj == null;
+        }
     }
 }

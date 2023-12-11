@@ -71,6 +71,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         private List<Option> CountryOptions { get; set; } = new();
         private List<AddressDTO>? Addresses { get; set; }
+        private List<AddressDTO> ShippingAddresses { get; set; } = new();
         private CreditCard CreditCard { get; set; } = new();
         private PaymentMethod BillingOption { get; set; } = PaymentMethod.CashOnDelivery;
 
@@ -116,7 +117,6 @@ namespace AstroOfficeWeb.Client.Pages.Product
             }
             else if (status == ProceedStatus.Shipping)
             {
-                PlaceOrder.ShipToDifferentAddress = true;
                 await JSRuntime.ShowTabAsync(ER_AShippingInfo);
             }
             else if (status == ProceedStatus.Payment)
@@ -143,20 +143,28 @@ namespace AstroOfficeWeb.Client.Pages.Product
         {
             if (BillingInfoContext.Validate())
             {
-                if (string.IsNullOrEmpty(BillingInfo.AddressType))
-                {
-                    BillingInfo.AddressType = ProceedStatus.Billing.ToString();
-                }
-
+                BillingInfo.AddressType = AddressType.Billing;
                 await ProductService.SaveUserAddress(BillingInfo);
 
                 PlaceOrder.BillingAddressSno = BillingInfo.Sno;
 
                 if (BillingInfo.ShipToDifferentAddress)
                 {
+                    ShippingAddresses.Clear();
+                    var homeAddress = Addresses?.FirstOrDefault(a => a.AddressType == AddressType.Home);
+                    var officeAddress = Addresses?.FirstOrDefault(a => a.AddressType == AddressType.Office);
+                    if (homeAddress != null)
+                    {
+                        ShippingAddresses.Add(homeAddress);
+                    }
+                    if (officeAddress != null)
+                    {
+                        ShippingAddresses.Add(officeAddress);
+                    }
                     PlaceOrder.ShipToDifferentAddress = true;
                     await JSRuntime.ShowTabAsync(ER_AShippingInfo);
                     PlaceOrder.BillingAddressSno = BillingInfo.Sno;
+                    StateHasChanged();
                 }
                 else
                 {

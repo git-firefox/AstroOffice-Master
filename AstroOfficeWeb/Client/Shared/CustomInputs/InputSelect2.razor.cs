@@ -23,6 +23,8 @@ namespace AstroOfficeWeb.Client.Shared.CustomInputs
         [Parameter]
         public string? FirstOption { get; set; }
 
+        [Parameter]
+        public ElementReference? DropdownParent { get; set; }
 
         [Parameter]
         public string Placeholder { get; set; } = "Select an Option";
@@ -36,7 +38,7 @@ namespace AstroOfficeWeb.Client.Shared.CustomInputs
         {
             if (firstRender)
             {
-                await JSRuntime.InvokeVoidAsync("InputSelect2Interop.fnInitialize", ER_InputSelect);
+                await JSRuntime.InvokeVoidAsync("InputSelect2Interop.fnInitialize", ER_InputSelect, DropdownParent);
                 await JSRuntime.InvokeVoidAsync("InputSelect2Interop.fnAddChangeEvent", ER_InputSelect, DotNetObjectReference.Create(this));
             }
         }

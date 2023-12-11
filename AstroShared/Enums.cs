@@ -30,6 +30,12 @@ namespace AstroShared
         Both
     }
 
+    public enum AddressType
+    {
+        Home,
+        Billing,
+        Office,
+    }
     //[JsonConverter(typeof(StringEnumConverter))]
     public enum PaymentMethod
     {
