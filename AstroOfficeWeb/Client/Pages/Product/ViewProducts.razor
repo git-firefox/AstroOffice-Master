@@ -1,4 +1,5 @@
 ﻿@page "/products"
+@page "/products/{CategorySno}"
 @page "/view-products"
 
 @using AstroOfficeWeb.Client.Services
@@ -29,14 +30,36 @@
                 <h2 class="category-title">Shop Categories</h2>
 
 
-                <ul class="pl-0 m-0">
+
+
+                <MudNavMenu>
                     @foreach (var category in CategoryDTOs)
                     {
-                        <li><a href="/view-products">@category.Title</a></li>
+                        if (category.SubCategories != null && category.SubCategories.Any())
+                        {
+                            <MudNavGroup Title="@category.Title">
+                                @foreach (var subcategory in category.SubCategories)
+                                {
+                                    <MudNavLink OnClick="(()=> Onclick_categoryList(subcategory.Sno))">@subcategory.Title</MudNavLink>
+                                }
+                            </MudNavGroup>
+                        }
+                        else
+                        {
+                            <MudNavLink OnClick="(()=> Onclick_categoryList(category.Sno))">@category.Title</MudNavLink>
+                        }
                     }
 
+                </MudNavMenu>
 
-                </ul>
+
+
+                @* <ul class="pl-0 m-0">
+                @foreach (var category in CategoryDTOs)
+                {
+                <li><a href="javascript:void(0)" title=@category.Title @onclick="()=> Onclick_categoryList(category)">@category.Title</a></li>
+                }
+                </ul> *@
 
 
             </div>
@@ -45,10 +68,10 @@
         </div>
         <div class="col-10">
 
-           <div class="shop-search">
+            <div class="shop-search">
                 <MudGrid>
-                        <MudItem xs="12" sm="4" Style="padding-top:0;padding-bottom:25px">
-                    <div class="shop-search-input">
+                    <MudItem xs="12" sm="4" Style="padding-top:0;padding-bottom:25px">
+                        <div class="shop-search-input">
                             <div class="mud-input-control mud-input-input-control mt-0">
                                 <div class="mud-input-control-input-container">
                                     <!--!--><!--!-->
@@ -62,7 +85,7 @@
                                     </div>
                                 </div>
                             </div>
-                    </div>
+                        </div>
                     </MudItem>
                     <MudItem xs="12" sm="4" Style="padding-top:0;padding-bottom:25px">
                         <MudSelect T="string" Label="Sort by Price" SelectedValuesChanged="(async (x)=> await ApplyFilter())" AnchorOrigin="Origin.BottomCenter" id="sortShopdropdown">
@@ -79,7 +102,7 @@
                         </MudSelect>
                     </MudItem>
                 </MudGrid>
-           </div>
+            </div>
 
 
             @* <MudTextField T="string" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"

@@ -24,10 +24,26 @@ namespace AstroOfficeWeb.Client.Services
             _navigation = navigation;
         }
 
-        public async Task<List<ViewProductDTO>?> GetProducts()
+
+        public async Task<List<ViewProductDTO>?> GetProducts(long? categorySno = null)
         {
-            var productDTOs = await _swagger.GetAsync<List<ViewProductDTO>>(ProductApiConst.GET_Products);
-            return productDTOs;
+            List<ViewProductDTO>? products = null;
+
+            if (categorySno != null)
+            {
+                var queryParams = new Dictionary<string, string>()
+                {
+                    { "categorySno", categorySno!.ToStringX()}
+                };
+
+                products = await _swagger.GetAsync<List<ViewProductDTO>>(ProductApiConst.GET_Products, queryParams);
+            }
+            else
+            {
+
+                products = await _swagger.GetAsync<List<ViewProductDTO>>(ProductApiConst.GET_Products);
+            }
+            return products;
         }
 
 
@@ -39,11 +55,11 @@ namespace AstroOfficeWeb.Client.Services
 
         public async Task<List<ImagesDTO>?> GetImagesByProductIds(long sno)
         {
+
             var queryParams = new Dictionary<string, string>
             {
                 { "productId" , sno.ToString() },
-            };
-            var response = await _swagger.GetAsync<ApiResponse<List<ImagesDTO>>>(ProductApiConst.GET_ProductImages, queryParams);
+            }; var response = await _swagger.GetAsync<ApiResponse<List<ImagesDTO>>>(ProductApiConst.GET_ProductImages, queryParams);
             if (!response!.Success)
             {
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
@@ -253,6 +269,18 @@ namespace AstroOfficeWeb.Client.Services
         public async Task<List<CategoryDialoge>> GetCategories()
         {
             var response = await _swagger.GetAsync<ApiResponse<List<CategoryDialoge>>>(ProductApiConst.GET_Categories);
+            if (!response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                return null;
+            }
+            return response.Data;
+        }
+        
+        
+        public async Task<List<PCategoryDTO>?> GetShopCategories()
+        {
+            var response = await _swagger.GetAsync<ApiResponse<List<PCategoryDTO>>>(ProductApiConst.GET_ShopCategories);
             if (!response!.Success)
             {
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);

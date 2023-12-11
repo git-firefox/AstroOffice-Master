@@ -130,6 +130,7 @@
         public static string GET_UserOrder = Base + "GetUserOrder";
         public static string GET_UserOrders = Base + "GetUserOrders";
         public static string GET_Categories = Base + "GetCategories";
+        public static string GET_ShopCategories = Base + "GetShopCategories";
 
         public static string GET_Orders = Base + "GetOrders";
         public static string GET_UserWishList = Base + "GetUserWishList";

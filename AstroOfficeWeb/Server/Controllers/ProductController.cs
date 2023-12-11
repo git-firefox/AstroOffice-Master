@@ -38,9 +38,18 @@ namespace AstroOfficeWeb.Server.Controllers
 
         // GET: api/<ProductController>
         [HttpGet]
-        public IActionResult GetProducts()
+        public IActionResult GetProducts(long? categorySno = null)
         {
-            var aProducts = _context.AProducts.Include(a => a.ProductCategoriesSnoNavigation).Where(p => p.IsActive == true).OrderByDescending(p => p.Sno).ToList();
+            List<AProduct>? aProducts = null;
+            if (categorySno != null)
+            {
+                aProducts = _context.AProducts.Include(a => a.ProductCategoriesSnoNavigation).Where(p => p.ProductCategoriesSno == categorySno && p.IsActive == true).OrderByDescending(p => p.Sno).ToList();
+
+            }
+            else
+            {
+                aProducts = _context.AProducts.Include(a => a.ProductCategoriesSnoNavigation).Where(p => p.IsActive == true).OrderByDescending(p => p.Sno).ToList();
+            }
 
             var productDTOs = _mapper.Map<List<ViewProductDTO>>(aProducts);
             return Ok(productDTOs);
@@ -100,6 +109,54 @@ namespace AstroOfficeWeb.Server.Controllers
             }
 
             apiResponse.Data = categoryDTO;
+            return Ok(apiResponse);
+        }
+
+        [HttpGet]
+        public IActionResult GetShopCategories()
+        {
+
+            List<PCategoryDTO> tmp = new List<PCategoryDTO>();
+            //var apiResponse = new ApiResponse<string> { Data = null };
+
+            var apiResponse = new ApiResponse<List<PCategoryDTO>> { Data = null };
+            var categories = _context.ProductCategories.Include(i => i.AProducts).Where(i => i.AProducts.Count != 0).ToList();
+
+            var pCategories = categories.Where(p => p.ParentCategorySno == null).Select(p => new PCategoryDTO()
+            {
+                Sno = p.Sno,
+                Descriptions = p.Descriptions,
+                ImageUrl = p.ImageUrl,
+                Title = p.Title,
+            });
+
+            tmp.AddRange(pCategories);
+
+
+            var parentCategorySnos = categories.Select(a => a.ParentCategorySno);
+            var parentCategories = _context.ProductCategories.Where(a => parentCategorySnos.Contains(a.Sno)).Select(p => new PCategoryDTO()
+            {
+                Sno = p.Sno,
+                Descriptions = p.Descriptions,
+                ImageUrl = p.ImageUrl,
+                Title = p.Title,
+            }).ToList();
+
+            var t2 = pCategories.Intersect(parentCategories);
+            tmp.AddRange(t2);
+
+            foreach (var subInit in tmp)
+            {
+                subInit.SubCategories = categories.Where(a => subInit.Sno == a.ParentCategorySno).Select(a => new SCategoryDTO()
+                {
+                    Descriptions = a.Descriptions,
+                    Sno = a.Sno,
+                    Title = a.Title
+                }).ToList();
+            }
+
+
+            apiResponse.Data = tmp;
             return Ok(apiResponse);
         }
 
