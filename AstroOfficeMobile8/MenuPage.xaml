@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AstroOfficeMobile8.MenuPage"
+             Title="MenuPage"
+             BackgroundColor="{DynamicResource Gray200}">
+    <StackLayout>
+        <Label Text="Home" />
+        <Label Text="Profile" />
+        <Label Text="Settings" />
+    </StackLayout>
+</ContentPage>

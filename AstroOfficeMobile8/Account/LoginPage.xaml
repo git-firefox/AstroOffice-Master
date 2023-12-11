@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AstroOfficeMobile8.Account.LoginPage"
+        
+             BackgroundColor="{DynamicResource Secondary} "   >
+
+    <StackLayout Padding="20" VerticalOptions="CenterAndExpand">
+        <Image  Source="logo.png"
+                  HeightRequest="185"
+                  Aspect="AspectFit"
+                  SemanticProperties.Description="dot net bot in a race car number eight" />
+
+        <Label Text="Login" Style="{StaticResource Headline}" HorizontalOptions="CenterAndExpand" />
+
+        <Entry x:Name="UsernameEntry" Placeholder="Username" />
+        <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" />
+
+        <Button Text="Login" Clicked="OnLoginClicked" HorizontalOptions="FillAndExpand" />
+
+        <Label x:Name="ErrorMessageLabel" Text="" TextColor="white" HorizontalOptions="CenterAndExpand" />
+    </StackLayout>
+</ContentPage>

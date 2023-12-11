@@ -9,12 +9,15 @@ namespace AstroOfficeWeb.Client.Pages.Product
     public partial class ViewProducts
     {
         public List<ViewProductDTO>? Products { get; set; } = new List<ViewProductDTO>();
+        [Parameter]
+        public string? CategorySno { get; set; } = null;
+
 
         public ViewProductDTO? SelectedProduct { get; set; }
 
         private List<ViewProductDTO> filteredProducts = new List<ViewProductDTO>();
         private List<ViewProductDTO> listedProducts = new List<ViewProductDTO>();
-        private List<CategoryDialoge> CategoryDTOs { get; set; } = new();
+        private List<PCategoryDTO> CategoryDTOs { get; set; } = new();
 
         private int pageSize = 40;
         private int currentPage { get; set; } = 1;
@@ -42,9 +45,18 @@ namespace AstroOfficeWeb.Client.Pages.Product
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            CategoryDTOs = await ProductService.GetCategories();
+            CategoryDTOs = await ProductService.GetShopCategories();
             Products = await ProductService.GetProducts();
             await ApplyFilter();
+            
+        }
+
+        private async Task  Onclick_categoryList(long categorySno)
+        {
+            //NavigationManager.NavigateTo($"/products/{category.Title}");
+            Products = await ProductService.GetProducts(categorySno);
+            await ApplyFilter();
+            //StateHasChanged();
         }
 
         private async Task OnClick_BtnAddToCart(ViewProductDTO product)
