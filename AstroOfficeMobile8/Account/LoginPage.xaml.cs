@@ -1,18 +1,30 @@
+using AstroOfficeMobile8.Pages;
+using AstroOfficeMobile8.Services;
+using AstroOfficeMobile8.Services.IServices;
+
 namespace AstroOfficeMobile8.Account;
 
 public partial class LoginPage : ContentPage
 {
+    private IAccountService? _accountService;
+
     public LoginPage()
     {
         InitializeComponent();
+        _accountService = new AccountService();
     }
+    //public LoginPage(IAccountService accountService)
+    //{
+    //  InitializeComponent();
+    //    _accountService = accountService;
+    //}
 
-    private void OnLoginClicked(object sender, EventArgs e)
+    private async void OnLoginClicked(object sender, EventArgs e)
     {
+
+
         string username = UsernameEntry.Text;
         string password = PasswordEntry.Text;
-
-
 
         // Perform your login logic here
         // For simplicity, let's just show an error message if both fields are empty
@@ -34,8 +46,23 @@ public partial class LoginPage : ContentPage
         }
         else
         {
-            Navigation.PushAsync(new MainPage());
+            var response = await _accountService.LoginAsync(new AstroOfficeWeb.Shared.Models.SignInRequest
+            {
+                UserName = username,
+                Password = password
+            });
+
+            if (response.IsAuthSuccessful)
+            {
+                //await Navigation.PushAsync(new MainPage(UsernameEntry.Text));  
+                await Navigation.PushAsync(new Home());
+            }
+            else
+            {
+                ErrorMessageLabel.Text = response.Message;
+            }
 
         }
     }
+
 }

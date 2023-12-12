@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AstroOfficeMobile8.Services.IServices;
+using AstroOfficeMobile8.Services;
+using Microsoft.Extensions.Logging;
 
 namespace AstroOfficeMobile8
 {
@@ -9,6 +11,7 @@ namespace AstroOfficeMobile8
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -17,7 +20,13 @@ namespace AstroOfficeMobile8
 
 #if DEBUG
     		builder.Logging.AddDebug();
+            //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://10.0.2.2:5004") });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://ec2-15-207-51-190.ap-south-1.compute.amazonaws.com") });
+#else
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://ec2-15-207-51-190.ap-south-1.compute.amazonaws.com") });
 #endif
+            builder.Services.AddScoped<ISwaggerApiService, SwaggerApiService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
 
             return builder.Build();
         }
