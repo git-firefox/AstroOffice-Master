@@ -181,6 +181,18 @@ namespace AstroOfficeWeb.Client.Services
             return response?.Data;
         }
 
+        public async Task<bool> UpdateShoppingCart(List<CartItemDTO>? cartItemDTOs)
+        {
+            var response = await _swagger.PutAsync<List<CartItemDTO>, ApiResponse<string>>(ProductApiConst.PUT_UpdateShoppingCart, cartItemDTOs!);
+            if (!response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                return false;
+            }
+            return response!.Success;
+        }
+
+
         public async Task<List<AddressDTO>?> GetUserAddresses()
         {
             var response = await _swagger.GetAsync<ApiResponse<List<AddressDTO>>>(ProductApiConst.GET_UserAddresses);
@@ -266,7 +278,7 @@ namespace AstroOfficeWeb.Client.Services
             return response.Data;
         }
 
-        public async Task<List<CategoryDialoge>> GetCategories()
+        public async Task<List<CategoryDialoge>?> GetCategories()
         {
             var response = await _swagger.GetAsync<ApiResponse<List<CategoryDialoge>>>(ProductApiConst.GET_Categories);
             if (!response!.Success)
@@ -276,8 +288,8 @@ namespace AstroOfficeWeb.Client.Services
             }
             return response.Data;
         }
-        
-        
+
+
         public async Task<List<PCategoryDTO>?> GetShopCategories()
         {
             var response = await _swagger.GetAsync<ApiResponse<List<PCategoryDTO>>>(ProductApiConst.GET_ShopCategories);

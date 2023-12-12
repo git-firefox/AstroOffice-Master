@@ -802,6 +802,40 @@ namespace AstroOfficeWeb.Server.Controllers
         }
 
         [Authorize(Roles = "User")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateShoppingCart(List<CartItemDTO> cartItemDTOs)
+        {
+            var response = new ApiResponse<string>();
+
+            var shoppingCart = await _context.ShoppingCarts.FirstOrDefaultAsync(a => a.AUsersSno == User.GetUserSno());
+
+            if (shoppingCart == null)
+            {
+                shoppingCart = new ShoppingCart() { AUsersSno = User.GetUserSno() };
+                await _context.ShoppingCarts.AddAsync(shoppingCart);
+                await _context.SaveChangesAsync();
+            }
+
+            var cartItems = await _context.CartItems.Where(ci => ci.ShoppingCartsSno == shoppingCart.Sno).ToListAsync();
+
+            cartItems.ForEach(ci =>
+            {
+                var cartItem = cartItemDTOs.First(cid => cid.ProductSno == ci.AProductsSno);
+                ci.Quantity = cartItem.ProductQuantity;
+            });
+
+            if (cartItems.Any())
+            {
+
+                _context.CartItems.UpdateRange(cartItems);
+                await _context.SaveChangesAsync();
+            }
+
+            response.Data = "Cart Updated";
+            return Ok(response);
+        }
+
+        [Authorize(Roles = "User")]
         [HttpPost]
         public async Task<IActionResult> CreateCheckoutSession()
         {

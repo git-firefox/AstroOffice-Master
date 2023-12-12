@@ -1,5 +1,6 @@
 ﻿using AstroOfficeWeb.Server.Services.IServices;
 using AstroShared.DTOs;
+using AstroShared.Utilities;
 using Stripe;
 using Stripe.Checkout;
 
@@ -16,6 +17,9 @@ namespace AstroOfficeWeb.Server.Services
         {
             try
             {
+                var totalPlusExpress = cartItems.Sum(ci => ci.ProductQuantity * ci.ProductPrice);
+                var orderSummary = new CalculateOrderSummary(totalPlusExpress);
+
                 var lineItems = new List<SessionLineItemOptions>();
                 cartItems!.ForEach(product => lineItems.Add(new SessionLineItemOptions
                 {
@@ -29,8 +33,9 @@ namespace AstroOfficeWeb.Server.Services
                             //Images = new List<string> { product!.ProductImageSrc! }
                         }
                     },
-                    Quantity = product.ProductQuantity
+                    Quantity = product.ProductQuantity,
                 }));
+
 
                 var options = new SessionCreateOptions
                 {
@@ -41,6 +46,7 @@ namespace AstroOfficeWeb.Server.Services
                     },
                     PaymentMethodTypes = new List<string> { "card" },
                     LineItems = lineItems,
+                    
                     Mode = "payment",
                     SuccessUrl = "https://localhost:5004/order-success?session_id={CHECKOUT_SESSION_ID}",
                     CancelUrl = "https://localhost:5004/shopping-cart"

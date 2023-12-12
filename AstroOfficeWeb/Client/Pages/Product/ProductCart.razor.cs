@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace AstroOfficeWeb.Client.Pages.Product
 {
-    
+
     public partial class ProductCart
     {
         private List<CartItemDTO>? CartItems { get; set; }
@@ -33,9 +33,11 @@ namespace AstroOfficeWeb.Client.Pages.Product
             UpdateOrderSummary();
         }
 
-        private void OnClik_BtnCheckout(MouseEventArgs e)
+        private async Task OnClik_BtnCheckout(MouseEventArgs e)
         {
-            NavigationManager.NavigateTo("checkout");
+            var isCartUpdated = await ProductService.UpdateShoppingCart(CartItems);
+            if (isCartUpdated)
+                NavigationManager.NavigateTo("checkout");
         }
 
         private void UpdateOrderSummary()

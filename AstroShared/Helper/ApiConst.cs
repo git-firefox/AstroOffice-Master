@@ -143,6 +143,7 @@
         public static string POST_SaveProductImages = Base + "SaveProductImages";
         public static string POST_PlaceOrder = Base + "PlaceOrder";
         public static string PUT_UpdateProduct = Base + "UpdateProduct";
+        public static string PUT_UpdateShoppingCart = Base + "UpdateShoppingCart";
         public static string PUT_AddToWishList = Base + "AddToWishList";
         public static string POST_CreateCheckoutSession = Base + "CreateCheckoutSession";
         public static string DELETE_Product = Base + "DeleteProduct";
