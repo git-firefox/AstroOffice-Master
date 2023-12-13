@@ -1,6 +1,7 @@
 ﻿using AstroOfficeMobile8.Services.IServices;
 using AstroOfficeMobile8.Services;
 using Microsoft.Extensions.Logging;
+using CommunityToolkit.Maui;
 
 namespace AstroOfficeMobile8
 {
@@ -11,7 +12,9 @@ namespace AstroOfficeMobile8
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                
+                .UseMauiCommunityToolkit()
+
+
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

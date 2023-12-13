@@ -5,5 +5,6 @@ public partial class Home : ContentPage
 	public Home()
 	{
 		InitializeComponent();
-	}
+        BindingContext = new SavedKundali();
+    }
 }

@@ -26,6 +26,11 @@
     Title="Saved Kundali"
     ContentTemplate="{DataTemplate local:SavedKundali}"
     Route="savedKundali" />
+    
+    <ShellContent
+    Title="Kundali"
+    ContentTemplate="{DataTemplate local:Kundali}"
+    Route="Kundali" />
 
 </Shell>
 
