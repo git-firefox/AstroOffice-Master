@@ -142,7 +142,7 @@ namespace AstroOfficeWeb.Client.Services
         {
             var queryParams = new Dictionary<string, string>()
             {
-                { "sno", sno.ToString()}
+                { "sno", sno.ToString() }
             };
             var response = await _swagger.DeleteAsync<ApiResponse<CategoryDTO>>(ProductApiConst.DELETE_Category, queryParams);
             if (response!.Success)
@@ -216,6 +216,17 @@ namespace AstroOfficeWeb.Client.Services
             {
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
             }
+        }
+
+        public async Task<bool> IsDeletedSelectdAddress(long addressSno)
+        {
+            var response = await _swagger.DeleteAsync<ApiResponse<string>>(ProductApiConst.DELETE_UserAddress, new Dictionary<string, string> { { "addressSno", addressSno.ToString() } });
+            if (response!.Success)
+            {
+                return true;
+            }
+            await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+            return false;
         }
 
         public async Task SaveAndUpdateCategory(CategoryDialoge categoryDTO)

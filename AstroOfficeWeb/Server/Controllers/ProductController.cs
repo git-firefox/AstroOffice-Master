@@ -816,22 +816,69 @@ namespace AstroOfficeWeb.Server.Controllers
                 await _context.SaveChangesAsync();
             }
 
+            var needToBeDelete = new List<CartItem>();
+            var needToBeUpdate = new List<CartItem>();
+
             var cartItems = await _context.CartItems.Where(ci => ci.ShoppingCartsSno == shoppingCart.Sno).ToListAsync();
 
             cartItems.ForEach(ci =>
             {
-                var cartItem = cartItemDTOs.First(cid => cid.ProductSno == ci.AProductsSno);
-                ci.Quantity = cartItem.ProductQuantity;
+                var cartItem = cartItemDTOs.FirstOrDefault(cid => cid.ProductSno == ci.AProductsSno);
+
+                if (cartItem == null)
+                {
+                    needToBeDelete.Add(ci);
+                }
+                else
+                {
+                    ci.Quantity = cartItem.ProductQuantity;
+                    needToBeUpdate.Add(ci);
+                }
             });
 
-            if (cartItems.Any())
+            if (needToBeUpdate.Any())
             {
-
-                _context.CartItems.UpdateRange(cartItems);
-                await _context.SaveChangesAsync();
+                _context.CartItems.UpdateRange(needToBeUpdate);
             }
 
+            if (needToBeDelete.Any())
+            {
+                _context.CartItems.RemoveRange(needToBeDelete);
+            }
+
+            await _context.SaveChangesAsync();
+
             response.Data = "Cart Updated";
+            return Ok(response);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUserAddress(long addressSno)
+        {
+            var response = new ApiResponse<string>() { };
+            try
+            {
+                var address = await _context.Addresses.FirstOrDefaultAsync(a => a.AUsersSno == User.GetUserSno() && a.Sno == addressSno);
+                if (address == null)
+                {
+                    response.ErrorNo = 1;
+                    response.Success = false;
+                    response.Message = "Address not exists";
+                }
+                else
+                {
+                    address.IsActive = false;
+                    _context.Addresses.Update(address);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                response.ErrorNo = 2;
+                response.Success = false;
+                response.Message = ex.Message;
+            }
             return Ok(response);
         }
 

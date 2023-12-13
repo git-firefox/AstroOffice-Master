@@ -111,6 +111,11 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         private async Task OnClick_BtnProceed(ProceedStatus status)
         {
+            if (!BillingInfoContext.Validate())
+            {
+                await JSRuntime.ShowTabAsync(ER_ABillingInfo);
+            }
+
             if (status == ProceedStatus.Billing)
             {
                 await JSRuntime.ShowTabAsync(ER_ABillingInfo);
@@ -135,7 +140,6 @@ namespace AstroOfficeWeb.Client.Pages.Product
                 {
                     await ProductService.CreateCheckoutSession();
                 }
-
             }
         }
 
@@ -180,6 +184,40 @@ namespace AstroOfficeWeb.Client.Pages.Product
             await Modal_ViewAddress.ShowAsync();
         }
 
+        private async Task ProceedCheckoutNavPills(ProceedStatus type)
+        {
+            if (!BillingInfoContext.Validate())
+            {
+                await JSRuntime.ShowTabAsync(ER_ABillingInfo);
+                //switch (type)
+                //{
+                //    case ProceedStatus.Billing:
+                //        {
+                //            await JSRuntime.ShowTabAsync(ER_ABillingInfo);
+                //            break;
+                //        }
+
+                //    case ProceedStatus.Shipping:
+                //        {
+                //            await JSRuntime.ShowTabAsync(ER_AShippingInfo);
+                //            break;
+                //        }
+
+                //    case ProceedStatus.Payment:
+                //        {
+                //            await JSRuntime.ShowTabAsync(ER_APaymentInfo);
+                //            break;
+                //        }
+
+                //    case ProceedStatus.Placed:
+                //        {
+
+                //            break;
+                //        }
+                //}
+            }
+        }
+
         private void OnSelect_Address(AddressDTO address)
         {
             BillingInfo.Sno = address.Sno;
@@ -196,6 +234,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
             BillingInfo.Email = address.Email;
             BillingInfo.Country = address.Country;
             BillingInfo.PhoneNumber = address.PhoneNumber;
+            BillingInfoContext.Validate();
         }
     }
 }

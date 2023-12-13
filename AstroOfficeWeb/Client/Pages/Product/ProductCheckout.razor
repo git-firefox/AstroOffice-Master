@@ -27,7 +27,7 @@
                                 <div id="checkout-nav-pills-wizard" class="twitter-bs-wizard form-wizard-header">
                                     <ul class="twitter-bs-wizard-nav mb-2 nav nav-pills nav-justified">
                                         <li class="nav-item">
-                                            <a @ref="ER_ABillingInfo" href="#billing-info" class="nav-link active" data-toggle="tab">
+                                            <a @ref="ER_ABillingInfo" href="#billing-info" class="nav-link active" data-toggle="tab" @onclick="()=>ProceedCheckoutNavPills(ProceedStatus.Billing)">
                                                 <span class="number">01</span>
                                                 <span class="d-none d-sm-inline">Billing Info</span>
                                             </a>
@@ -36,7 +36,7 @@
                                         @if (BillingInfo.ShipToDifferentAddress)
                                         {
                                             <li class="nav-item">
-                                                <a @ref="ER_AShippingInfo" href="#shipping-info" class="nav-link" data-toggle="tab">
+                                                <a @ref="ER_AShippingInfo" href="#shipping-info" class="nav-link" data-toggle="tab" @onclick="()=>ProceedCheckoutNavPills(ProceedStatus.Shipping)">
                                                     <span class="number">02</span>
                                                     <span class="d-none d-sm-inline">Shipping Info</span>
                                                 </a>
@@ -44,7 +44,7 @@
                                         }
 
                                         <li class="nav-item">
-                                            <a @ref="ER_APaymentInfo" href="#payment-info" class="nav-link" data-bs-toggle="tab" data-toggle="tab">
+                                            <a @ref="ER_APaymentInfo" href="#payment-info" class="nav-link" data-bs-toggle="tab" data-toggle="tab" @onclick="()=>ProceedCheckoutNavPills(ProceedStatus.Payment)">
                                                 <span class="number"> @(BillingInfo.ShipToDifferentAddress ? "03" : "02")</span>
                                                 <span class="d-none d-sm-inline">Payment Info</span>
                                             </a>
@@ -53,7 +53,7 @@
 
                                     <div class="tab-content twitter-bs-wizard-tab-content">
                                         <div class="tab-pane active" id="billing-info">
-                                            <EditForm Model="BillingInfo" OnValidSubmit="OnSubmit_BillingInfo">
+                                            <EditForm EditContext="BillingInfoContext" OnValidSubmit="OnSubmit_BillingInfo">
                                                 <DataAnnotationsValidator />
                                                 <div>
                                                     <h4 class="header-title d-inline">Billing Information</h4>

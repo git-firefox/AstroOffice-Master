@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using AstroOfficeWeb.Client.Services.IService;
 using AstroOfficeWeb.Shared.Models;
+using AstroShared.Helper;
 using Blazored.LocalStorage;
 using Newtonsoft.Json;
 
@@ -61,15 +62,7 @@ namespace AstroOfficeWeb.Client.Services
 
         public async Task<TResponse?> GetAsync<TResponse>(string url, Dictionary<string, string>? queryParams = null)
         {
-            var uriBuilder = new UriBuilder(_client.BaseAddress + url);
-
-            if (queryParams != null && queryParams.Count > 0)
-            {
-                string query = string.Join("&", queryParams.Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"));
-                uriBuilder.Query = query;
-            }
-
-            HttpResponseMessage response = await _client.GetAsync(uriBuilder.Uri);
+            HttpResponseMessage response = await _client.GetAsync(GetUriBuilder(url, queryParams).Uri);
             if (response.IsSuccessStatusCode)
             {
                 var contentTemp = await response.Content.ReadAsStringAsync();
@@ -81,15 +74,7 @@ namespace AstroOfficeWeb.Client.Services
 
         public async Task<TResponse?> DeleteAsync<TResponse>(string url, Dictionary<string, string>? queryParams = null)
         {
-            var uriBuilder = new UriBuilder(_client.BaseAddress + url);
-
-            if (queryParams != null && queryParams.Count > 0)
-            {
-                string query = string.Join("&", queryParams.Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"));
-                uriBuilder.Query = query;
-            }
-
-            HttpResponseMessage response = await _client.DeleteAsync(uriBuilder.Uri);
+            HttpResponseMessage response = await _client.DeleteAsync(GetUriBuilder(url, queryParams).Uri);
             if (response.IsSuccessStatusCode)
             {
                 var contentTemp = await response.Content.ReadAsStringAsync();
@@ -97,6 +82,18 @@ namespace AstroOfficeWeb.Client.Services
                 return result;
             }
             return default;
+        }
+
+        private UriBuilder GetUriBuilder(string url, Dictionary<string, string>? queryParams = null)
+        {
+            var uriBuilder = new UriBuilder(_client.BaseAddress + url);
+
+            if (queryParams != null && queryParams.Count > 0)
+            {
+                string query = string.Join("&", queryParams.Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value.ToStringX())}"));
+                uriBuilder.Query = query;
+            }
+            return uriBuilder;
         }
     }
 }

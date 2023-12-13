@@ -95,6 +95,7 @@ namespace AstroOfficeWeb.Client.Shared
             if (Mode == AddressMode.Add && BillingInfo!.Sno != 0)
             {
                 Addresses!.Add(BillingInfo!);
+                Mode = AddressMode.Edit;
             }
         }
 
@@ -107,16 +108,40 @@ namespace AstroOfficeWeb.Client.Shared
             }
         }
 
-        private void OnClick_BtnAddAddress(MouseEventArgs e)
+        private async Task OnClick_BtnAddAddress(MouseEventArgs e)
         {
-            Mode = AddressMode.Add;
-            BillingInfo = new();
+            if (!Addresses.HasCount(4))
+            {
+                Mode = AddressMode.Add;
+                BillingInfo = new();
+            }
+            else
+            {
+                await JSRuntime.ShowToastAsync("You've reached the maximum number of allowed addresses. No more can be added.", SwalIcon.Error);
+            }
         }
 
         private void OnClick_BtnEditAddress(AddressDTO address)
         {
             Mode = AddressMode.Edit;
             BillingInfo = address;
+        }
+
+        private async Task OnClick_BtnDeleteAddress(AddressDTO address)
+        {
+            Mode = AddressMode.Delete;
+
+            bool? result = await Dialog.ShowMessageBox("Warning", "Deleting can not be undone!", yesText: "Delete!", cancelText: "Cancel");
+
+            if (result.GetValueOrDefault())
+            {
+                var isDeleteSelectedAddress = await ProductService.IsDeletedSelectdAddress(address.Sno);
+                if (isDeleteSelectedAddress)
+                {
+                    Addresses!.Remove(address);
+                }
+            }
+            StateHasChanged();
         }
 
         private void OnClick_BtnCancel()
