@@ -61,11 +61,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\delete.png" />
+	  <None Remove="Resources\Images\edit_icon.png" />
 	  <None Remove="Resources\Images\logo.png" />
 	  <None Remove="Resources\Images\logo.svg" />
+	  <None Remove="Resources\Images\user.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
@@ -89,7 +93,13 @@
 	  <MauiXaml Update="Pages\Dashboard.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\EditKundali.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Home.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Kundali.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\SavedKundali.xaml">
