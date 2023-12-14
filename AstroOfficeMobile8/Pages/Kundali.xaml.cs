@@ -3,14 +3,17 @@ namespace AstroOfficeMobile8.Pages;
 public partial class Kundali : ContentPage
 {
 
-
-
     public Kundali()
     {
         InitializeComponent();
-        if (SavedKundali.SelectedFruit?.FruitName != null)
-        {
-            labels.Text = SavedKundali.SelectedFruit.FruitName;
-        }
+    }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        // Add the CustomeShell when the Kundali page appears
+        var customeShell = new CustomeShell();
+        NavigationPage.SetHasNavigationBar(customeShell, true); // Optional: Hide navigation bar
+        Navigation.PushAsync(customeShell);
     }
 }

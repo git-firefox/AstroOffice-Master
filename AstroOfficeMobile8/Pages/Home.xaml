@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AstroOfficeMobile8.Pages.Home"
              Title="Home"
+             xmlns:local="clr-namespace:AstroOfficeMobile8.Pages"
              BackgroundColor="WhiteSmoke">
     <VerticalStackLayout>
         <Label 

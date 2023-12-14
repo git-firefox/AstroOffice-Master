@@ -38,6 +38,10 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
+	  <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<!--<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />-->
@@ -61,8 +65,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\calender.svg" />
+	  <None Remove="Resources\Images\clock.svg" />
 	  <None Remove="Resources\Images\delete.png" />
-	  <None Remove="Resources\Images\edit_icon.png" />
+	  <None Remove="Resources\Images\edit.png" />
+	  <None Remove="Resources\Images\gender.svg" />
+	  <None Remove="Resources\Images\location.svg" />
 	  <None Remove="Resources\Images\logo.png" />
 	  <None Remove="Resources\Images\logo.svg" />
 	  <None Remove="Resources\Images\user.svg" />
@@ -90,6 +98,9 @@
 	  <MauiXaml Update="MenuPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\CustomeShell.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Dashboard.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -102,6 +113,9 @@
 	  <MauiXaml Update="Pages\Kundali.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\PlaceOfBirth.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\SavedKundali.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -111,6 +125,16 @@
 	  <MauiXaml Update="Resources\Styles\Styles7.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\Images\Icons\calender.svg" />
+	  <MauiImage Include="Resources\Images\Icons\clock.svg" />
+	  <MauiImage Include="Resources\Images\Icons\delete.png" />
+	  <MauiImage Include="Resources\Images\Icons\edit.png" />
+	  <MauiImage Include="Resources\Images\Icons\gender.svg" />
+	  <MauiImage Include="Resources\Images\Icons\location.svg" />
+	  <MauiImage Include="Resources\Images\Icons\user.svg" />
 	</ItemGroup>
 
 </Project>

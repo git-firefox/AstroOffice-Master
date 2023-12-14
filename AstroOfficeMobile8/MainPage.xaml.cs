@@ -8,6 +8,7 @@ namespace AstroOfficeMobile8
 
         private readonly string _userName;
 
+        public MainPage() { _userName = string.Empty; }
         public MainPage(string userName)
         {
             InitializeComponent();
