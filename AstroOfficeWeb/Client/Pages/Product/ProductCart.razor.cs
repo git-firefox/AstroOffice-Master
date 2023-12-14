@@ -27,10 +27,14 @@ namespace AstroOfficeWeb.Client.Pages.Product
             UpdateOrderSummary();
         }
 
-        private void OnClick_ARemoveItem(CartItemDTO cartItem)
+        private async Task OnClick_ARemoveItem(CartItemDTO cartItem)
         {
             CartItems!.Remove(cartItem);
             UpdateOrderSummary();
+            if (CartItems.Count == 0)
+            {
+                await ProductService.UpdateShoppingCart(CartItems);
+            }
         }
 
         private async Task OnClik_BtnCheckout(MouseEventArgs e)

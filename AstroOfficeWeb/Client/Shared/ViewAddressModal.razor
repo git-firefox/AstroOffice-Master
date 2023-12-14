@@ -6,6 +6,8 @@
 @inject IJSRuntime JSRuntime
 @inject ProductService ProductService
 @inject StateContainerService StateContainerService
+@inject IDialogService Dialog
+
 
 <div @ref="ER_ViewAddressModal" class="modal fade confirmation-modal" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -122,7 +124,7 @@
                                         @foreach (AddressType addressType in Enum.GetValues(typeof(AddressType)))
                                         {
                                             <div class="form-check form-check-inline">
-                                                <InputRadio Value="addressType.ToString()" class="form-check-input" id="@("InputRadio" + addressType)" />
+                                                <InputRadio Value="addressType" class="form-check-input" id="@("InputRadio" + addressType)" />
                                                 <label class="form-check-label" for="@("InputRadio" + addressType)">
                                                     @addressType
                                                 </label>
@@ -181,7 +183,8 @@
                                                     </div>
 
                                                     <div class="float-end d-inline">
-                                                        <a href="javascript:void(0)" @onclick="() => OnClick_BtnEditAddress(address)"><i class="fas fa-edit text-muted font-20"></i></a>
+                                                        <a href="javascript:void(0)" @onclick="() => OnClick_BtnEditAddress(address)"><i class="fas fa-edit text-muted font-20 mx-3"></i></a>
+                                                        <a href="javascript:void(0)" @onclick="() => OnClick_BtnDeleteAddress(address)"><i class="fas fa-trash-alt font-20 text-danger"></i></a>
                                                     </div>
 
                                                     <h5 class="mt-3">@(address.FullName)</h5>
