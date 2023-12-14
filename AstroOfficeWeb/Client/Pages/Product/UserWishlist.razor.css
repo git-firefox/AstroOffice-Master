@@ -3,6 +3,12 @@
     font-size: 1.1rem;
     font-weight: 400;
     margin: 0.75rem;
+    width: 149px;
+     color: #000;
+     display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
@@ -13,4 +19,10 @@
     font-weight: 400;
     font-size: 3.8em;
     line-height: 1;
+}
+
+.content .row{
+    align-items:center;
+    justify-content:center;
+    text-align:center;
 }

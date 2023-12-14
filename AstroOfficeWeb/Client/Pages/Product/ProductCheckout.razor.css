@@ -108,3 +108,10 @@
 .bg-summary {
     background: rgb(253, 238, 192);
 }
+
+.middle-product{
+    vertical-align:middle !important;
+}
+.table td, .table th {
+     vertical-align: middle !important;
+}

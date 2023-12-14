@@ -1,5 +1,6 @@
 ﻿.carousel-indicators button.thumbnail {
     width: 100px;
+    padding-left: 6px;
 }
 
     .carousel-indicators button.thumbnail:not(.active) {
@@ -14,5 +15,11 @@
     .carousel {
         max-width: 70%;
         margin: 0 auto;
+    }
+}
+
+@media (max-width:824px){
+    .btn.btn-flat {
+        margin-bottom: 10px;
     }
 }

@@ -23,7 +23,7 @@
                 for (int i = 0; i < 3; i++)
                 {
 
-                    <div class="col-12 col-sm-2 col-md-6 col-xl-4">
+                    <div class="col-12 col-sm-6 col-md-4 col-xl-2">
                         <div class="card bg-transparent">
                             <MudSkeleton Class="card-img-top" SkeletonType="SkeletonType.Rectangle" Height="150px" />
                             <div class="card-body text-center">
@@ -39,7 +39,7 @@
                 {
                     foreach (var product in ViewProductDTOs)
                     {
-                        <div class="col-12 col-sm-2 col-md-6 col-xl-4">
+                        <div class="col-12 col-sm-6 col-md-4 col-xl-2">
                             <div class="card bg-transparent">
                                 <img class="card-img-top" src="@product.ImageUrl" alt="@product.Name" title="@product.Name">
                                 <div class="card-body text-center">

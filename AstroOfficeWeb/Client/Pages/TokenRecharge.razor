@@ -25,12 +25,17 @@
             </div>
 
             <EditForm Model="Token" OnInvalidSubmit="OnInvalidSubmit" OnValidSubmit="OnValidSubmit">
+                
                 <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-md-4 col-sm-12 col-xs-12 ">
                     <div class="form-group">
                         <label for="inputEmail">Email address Or User Name</label>
                         <input type="text" class="form-control" id="inputEmail" @bind="Token.UserName" disabled />
                     </div>
-
+                     </div>
+                        <div class="col-md-4 col-sm-12 col-xs-12 ">
                     <div class="form-group">
                         <label for="inputToken">Token(s)</label>
                         <div class="input-group">
@@ -42,7 +47,8 @@
                             <input type="text" class="form-control" id="inputToken" @bind="Token.TokenAmount" @bind:event="oninput" />
                         </div>
                     </div>
-
+                    </div>
+                        <div class="col-md-4 col-sm-12 col-xs-12 ">
                     <div class="form-group">
                         <label for="inputAmount">Amount(s)</label>
                         <div class="input-group">
@@ -57,26 +63,32 @@
                             </div>
                         </div>
                     </div>
+                    </div>
+                      
+                    </div>
+                    
 
                     <div class="form-row">
-                        <div class="col">
-                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> Token.TokenAmount += 100">100</button>
+                       
+                        <div class="col-lg-1 col-md-12  col-sm-6 col-xs-6 col-6">
+                            <button type="button" class="btn btn-block btn-outline-custom mb-3" @onclick="()=> Token.TokenAmount += 100">100</button>
                         </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> Token.TokenAmount += 200">200</button>
+                        <div class="col-lg-1  col-md-12  col-sm-6 col-xs-6 col-6">
+                            <button type="button" class="btn btn-block btn-outline-custom mb-3" @onclick="()=> Token.TokenAmount += 200">200</button>
                         </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> Token.TokenAmount += 500">500</button>
+                        <div class="col-lg-1 col-md-12  col-sm-6 col-xs-6 col-6">
+                            <button type="button" class="btn btn-block btn-outline-custom mb-3" @onclick="()=> Token.TokenAmount += 500">500</button>
                         </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-block btn-outline-custom" @onclick="()=> Token.TokenAmount += 1000">1000</button>
+                        <div class="col-lg-1  col-md-12  col-sm-6 col-xs-6 col-6">
+                            <button type="button" class="btn btn-block btn-outline-custom mb-3" @onclick="()=> Token.TokenAmount += 1000">1000</button>
                         </div>
                     </div>
-
+              
                     <div class="card-footer">
                         <button type="submit" class="btn btn-custom">Recharge</button>
                     </div>
-                </div>
+                    </div>
+                    
             </EditForm>
 
             <div class="card-header bg-da-dark-red">

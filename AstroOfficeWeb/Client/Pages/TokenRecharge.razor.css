@@ -1,0 +1,15 @@
+﻿
+.card-footer {
+    text-align: center;
+    background: transparent;
+}
+.form-row {
+    text-align: right;
+    align-items: end;
+    justify-content: end;
+}
+@media (max-width:767px) {
+    ..btn-outline-custom {
+        margin-bottom: 20px;
+    }
+}

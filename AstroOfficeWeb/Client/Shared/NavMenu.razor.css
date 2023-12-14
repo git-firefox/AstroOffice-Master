@@ -134,10 +134,16 @@
         display: block !important;
     }
 .navbar-nav a {
-    font-size: 14px;
+    font-size: 15px;
     text-align: center;
 }
-@media(min-width:992px) and (max-width:1199px){
+@media (max-width:991px){
+    .navbar-nav li a i {
+        padding-right: 10px;
+    }
+}
+
+@media(min-width:992px) and (max-width:1199px) {
     .brand-text{
         display:none;
     }
