@@ -151,6 +151,7 @@ public partial class SavedKundali : ContentPage
             string message = $"Hello, you selected {fruitToShow.FruitName}!";
             Toast.Make(message, ToastDuration.Long, 16).Show(cancellationTokenSource.Token);
             Navigation.PushAsync(new Kundali());
+            
         }
     }
 }

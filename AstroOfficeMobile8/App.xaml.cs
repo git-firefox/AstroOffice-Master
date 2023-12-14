@@ -11,12 +11,19 @@ namespace AstroOfficeMobile8
         {
             InitializeComponent();
 
-            //MainPage = new AppShell();   
+            //MainPage = new AppShell();
+            //MainPage = new CustomeShell();
             MainPage = new Dashboard("");
+
+
+            
+
 
             //var loginPage = new LoginPage(accountService);
             //NavigationPage.SetHasNavigationBar(loginPage, false);
             //MainPage = new NavigationPage(loginPage);
         }
+
+
     }
 }

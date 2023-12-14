@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AstroOfficeMobile8.Pages.PlaceOfBirth"
+             Title="PlaceOfBirth">
+    <StackLayout>
+
+        <TabbedPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            BackgroundColor="White">
+
+            <!-- First tab -->
+            <ContentPage Title="Tab 1">
+                <StackLayout>
+                    <Label Text="Content for Tab 1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+                </StackLayout>
+            </ContentPage>
+
+            <!-- Second tab -->
+            <ContentPage Title="Tab 2">
+                <StackLayout>
+                    <Label Text="Content for Tab 2" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+                </StackLayout>
+            </ContentPage>
+
+        </TabbedPage>
+
+    </StackLayout>
+</ContentPage>  

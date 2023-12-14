@@ -1,0 +1,14 @@
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AstroOfficeMobile8.Pages.CustomeShell"
+             xmlns:local="clr-namespace:AstroOfficeMobile8.Pages"
+             Title="custom shell">
+    <TabBar>
+        <ShellContent Title="Cats" ContentTemplate="{DataTemplate local:Shop}" Route="Shop" />
+        <ShellContent Title="Dogs" ContentTemplate="{DataTemplate local:Home}" Route="Home"/>
+    </TabBar>
+
+</Shell>
+
+    
+    
