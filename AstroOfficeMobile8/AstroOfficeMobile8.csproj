@@ -98,6 +98,9 @@
 	  <MauiXaml Update="MenuPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\BasicDetails.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\CustomeShell.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -133,6 +136,7 @@
 	  <MauiImage Include="Resources\Images\Icons\delete.png" />
 	  <MauiImage Include="Resources\Images\Icons\edit.png" />
 	  <MauiImage Include="Resources\Images\Icons\gender.svg" />
+	  <MauiImage Include="Resources\Images\Icons\language.svg" />
 	  <MauiImage Include="Resources\Images\Icons\location.svg" />
 	  <MauiImage Include="Resources\Images\Icons\user.svg" />
 	</ItemGroup>
