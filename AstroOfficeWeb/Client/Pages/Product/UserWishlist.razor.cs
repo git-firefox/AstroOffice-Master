@@ -32,5 +32,13 @@ namespace AstroOfficeWeb.Client.Pages.Product
                 ViewProductDTOs?.Remove(productDTO);
             }
         }
+        private async Task OnCLick_BtnAddToCart(ViewProductDTO productDTO)
+        {
+            var result = await ProductService.IsAddToCart(productDTO.Sno);
+            if (result)
+            {
+                await JSRuntime.ShowToastAsync($"{productDTO.Name} Added to your cart.", SwalIcon.Success);
+            }
+        }
     }
 }

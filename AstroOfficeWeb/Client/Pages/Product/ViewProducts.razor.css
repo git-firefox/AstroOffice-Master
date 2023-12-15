@@ -364,11 +364,11 @@ a {
     display:inline-block;
     padding-top:10px;
 }
-.shop-search{
-    background:#fff;
-    border-radius:10px;
-    margin-bottom:20px;
-    padding:0 30px;
+.shop-search {
+    background: #fff;
+    border-radius: 10px;
+    margin: 13px 0px 20px 0px;
+    padding: 0 30px;
 }
     .shop-search .shop-search-input{
         margin-top:6.4px !important;

@@ -38,8 +38,13 @@ namespace AstroOfficeWeb.Server.Controllers
 
         // GET: api/<ProductController>
         [HttpGet]
-        public IActionResult GetProducts(long? categorySno = null)
+        [Authorize]
+        public async Task<IActionResult> GetProducts(long? categorySno = null)
         {
+            var shoppingCart = await _context.ShoppingCarts.Include(i => i.CartItems).FirstOrDefaultAsync(a => a.AUsersSno == User.GetUserSno());
+            var cartItems = shoppingCart?.CartItems.ToList();
+
+
             List<AProduct>? aProducts = null;
             if (categorySno != null)
             {
@@ -52,6 +57,12 @@ namespace AstroOfficeWeb.Server.Controllers
             }
 
             var productDTOs = _mapper.Map<List<ViewProductDTO>>(aProducts);
+
+            productDTOs.ForEach(pd =>
+            {
+               pd.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == pd.Sno)?.Quantity ?? 0;
+            });
+
             return Ok(productDTOs);
         }
 
@@ -66,12 +77,14 @@ namespace AstroOfficeWeb.Server.Controllers
 
         // GET api/<ProductController>/5
         [HttpGet]
-        public IActionResult GetProductBySno(long sno)
+        public async Task<IActionResult> GetProductBySno(long sno)
         {
             var apiResponse = new ApiResponse<ProductDTO> { Data = null };
 
-            var aProduct = _context.AProducts.Include(a => a.ProductImages).Include(a => a.ProductMetaData).Include(a => a.ProductCategoriesSnoNavigation).FirstOrDefault(p => p.Sno == sno && p.IsActive == true);
+            var aProduct = await _context.AProducts.Include(a => a.ProductImages).Include(a => a.ProductMetaData).Include(a => a.ProductCategoriesSnoNavigation).FirstOrDefaultAsync(p => p.Sno == sno && p.IsActive == true);
 
+            var shoppingCart = await _context.ShoppingCarts.Include(i => i.CartItems).FirstOrDefaultAsync(a => a.AUsersSno == User.GetUserSno());
+            var cartItems = shoppingCart?.CartItems.ToList();
 
             if (aProduct == null)
             {
@@ -89,6 +102,7 @@ namespace AstroOfficeWeb.Server.Controllers
             productDTO.ProductImages = imagesDTOs;
             productDTO.MetaDatas = metaDataDTOs;
             productDTO.ProductCategory = aProduct.ProductCategoriesSnoNavigation?.Title ?? string.Empty;
+            productDTO.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == aProduct.Sno)?.Quantity ?? 0; ;
             apiResponse.Data = productDTO;
 
             return Ok(apiResponse);

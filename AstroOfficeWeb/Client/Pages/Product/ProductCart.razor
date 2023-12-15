@@ -12,7 +12,7 @@
     <div class="d-flex justify-content-between">
         <h1 class="pt-4 pb-2 font-weight-bold"> Shopping cart </h1>
 
-        @if (CartItems != null && CartItems.Any())
+        @if (ProductCartViewModel.CartItems != null && ProductCartViewModel.CartItems.Any())
         {
             <div class="pt-4 pb-2 ">
                 <a href="products" class="btn btn-custom fw-semibold"><i class="fas fa-arrow-left px-2"></i> Continue Shopping</a>
@@ -21,7 +21,7 @@
     </div>
 
     <section class="content">
-        @if (CartItems == null)
+        @if (ProductCartViewModel.CartItems == null)
         {
             <div class="row">
                 <div class="col-lg-12">
@@ -46,7 +46,7 @@
                 </div>
             </div>
         }
-        else if (CartItems.Any())
+        else if (ProductCartViewModel.CartItems.Any())
         {
             <div class="row">
                 <div class="col-lg-12">
@@ -56,53 +56,57 @@
                                 <div class="col-lg-8">
                                     <div>
                                         <div class="table-responsive">
-                                            <table class="table table-centered mb-0 table-nowrap">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th style="width: 80px;">Product</th>
-                                                        <th>Product Desc</th>
-                                                        <th>Price</th>
-                                                        <th>Quantity</th>
-                                                        <th colspan="2">Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (var cartItem in CartItems)
-                                                    {
+                                            <EditForm Model="ProductCartViewModel" >
+                                                <table class="table table-centered mb-0 table-nowrap">
+                                                    <thead class="table-light">
                                                         <tr>
-                                                            <td>
-                                                                <img src="@cartItem.ProductImageSrc" alt="@cartItem.ProductName" title="@cartItem.ProductName" class="avatar-lg" />
-                                                            </td>
-                                                            <td>
-                                                                <h5 class="mt-0 mb-1 text-truncate"><a href="view-product/@cartItem.ProductSno" class="text-body">@cartItem.ProductName</a></h5>
-                                                                <p class="mb-0">Category : <span class="fw-medium">Astro Products</span></p>
-                                                            </td>
-                                                            <td>
-                                                                <i class="fas fa-rupee-sign"></i> @cartItem.ProductPrice.ToString("F2")
-                                                            </td>
-                                                            <td>
-                                                                <div style="width: 120px;">
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-btn input-group-prepend">
-                                                                            <button class="btn btn-custom" type="button" @onclick="() => OnClick_UpdateQuantity(cartItem, -1)">-</button>
-                                                                        </span>
-                                                                        <input type="text" class="form-control" @bind="cartItem.ProductQuantity" />
-                                                                        <span class="input-group-btn input-group-append">
-                                                                            <button class="btn btn-custom" type="button" @onclick="() => OnClick_UpdateQuantity(cartItem, +1)">+</button>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <i class="fas fa-rupee-sign"></i> @((cartItem.ProductPrice * cartItem.ProductQuantity).ToString("F2"))
-                                                            </td>
-                                                            <td>
-                                                                <a href="javascript:void(0);" class="action-icon text-danger" @onclick="() =>OnClick_ARemoveItem(cartItem)" title="@("Remove \"" + cartItem.ProductName + "\"")"> <i class="fas fa-trash-alt"></i></a>
-                                                            </td>
+                                                            <th style="width: 80px;">Product</th>
+                                                            <th>Product Desc</th>
+                                                            <th>Price</th>
+                                                            <th>Quantity</th>
+                                                            <th colspan="2">Total</th>
                                                         </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        @foreach (var cartItem in ProductCartViewModel.CartItems)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    <img src="@cartItem.ProductImageSrc" alt="@cartItem.ProductName" title="@cartItem.ProductName" class="avatar-lg" />
+                                                                </td>
+                                                                <td>
+                                                                    <h5 class="mt-0 mb-1 text-truncate"><a href="view-product/@cartItem.ProductSno" class="text-body">@cartItem.ProductName</a></h5>
+                                                                    <p class="mb-0">Category : <span class="fw-medium">Astro Products</span></p>
+                                                                </td>
+                                                                <td>
+                                                                    <i class="fas fa-rupee-sign"></i> @cartItem.ProductPrice.ToString("F2")
+                                                                </td>
+                                                                <td>
+                                                                    <div style="width: 120px;">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-btn input-group-prepend">
+                                                                                <button class="btn btn-custom" type="button" @onclick="() => OnClick_UpdateQuantity(cartItem, -1)">-</button>
+                                                                            </span>
+                                                                            @* <input type="text" class="form-control" @bind="cartItem.ProductQuantity" /> *@
+                                                                            <InputMask2 class="form-control" @bind-Value="cartItem.ProductQuantity" disabled />
+                                                                            <span class="input-group-btn input-group-append">
+                                                                                <button class="btn btn-custom" type="button" @onclick="() => OnClick_UpdateQuantity(cartItem, +1)">+</button>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <i class="fas fa-rupee-sign"></i> @((cartItem.ProductPrice * cartItem.ProductQuantity).ToString("F2"))
+                                                                </td>
+                                                                <td>
+                                                                    <a href="javascript:void(0);" class="action-icon text-danger" @onclick="() =>OnClick_ARemoveItem(cartItem)" title="@("Remove \"" + cartItem.ProductName + "\"")"> <i class="fas fa-trash-alt"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </EditForm>
                                         </div>
 
                                         <!-- Add note input-->

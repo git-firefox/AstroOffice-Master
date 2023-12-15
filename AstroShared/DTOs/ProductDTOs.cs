@@ -23,6 +23,7 @@ namespace AstroShared.DTOs
         [Required]
         [Range(1, 100, ErrorMessage = "{0} must be between {1} and {2}.")]
         public int StockQuantity { get; set; }
+        public int ProductQuantity { get; set; }
 
         public string? ImageUrl { get; set; }
         public long ProductCategoriesSno { get; set; }

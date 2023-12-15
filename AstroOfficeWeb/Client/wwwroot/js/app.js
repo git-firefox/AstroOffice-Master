@@ -124,6 +124,25 @@ window.InputMaskInterop = {
     },
 };
 
+window.InputMaskInterop2 = {
+    fnInitialize: function (element) {
+        if (element instanceof HTMLInputElement) {
+            $(element).mask('Z#', {
+                translation: {
+                    'Z': { pattern: /[1-9]/ }
+                }
+            });
+        }
+    },
+
+    fnAddChangeEvent: function (element, dotnetObject) {
+        $(element).on("change", function () {
+            var inputValue = $(this).val();
+            dotnetObject.invokeMethodAsync("OnInputMaskChange", inputValue);
+        });
+    },
+};
+
 window.InputSelect2Interop = {
     fnInitialize: function (element, dropdownParent = null) {
 

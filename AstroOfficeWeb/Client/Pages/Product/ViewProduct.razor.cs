@@ -41,7 +41,15 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         private async Task OnClick_BtnAddToCart(MouseEventArgs e)
         {
+            var tempQuantity = ViewProductDTO!.ProductQuantity + 1;
+            if (tempQuantity < 1 || tempQuantity > 5)
+            {
+                await JSRuntime.ShowToastAsync($"Unable to add more products to your cart. Limit exceeded.", SwalIcon.Error);
+                return;
+            }
+
             bool isAddedToCart = await ProductService.IsAddToCart(Sno);
+
             if (isAddedToCart)
             {
                 await JSRuntime.ShowToastAsync($"\"{ViewProductDTO!.Name}\" added to your cart.", SwalIcon.Success);

@@ -46,8 +46,9 @@
                                     <h5 class="card-title">@product.Name</h5>
 
                                     <MudStack Justify="Justify.SpaceBetween" Row="true">
-                                        <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye" OnClick="()=>OnCLick_ALickViewProdcut(product)" aria-label="view product" Title="View Product"></MudIconButton>
-                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" OnClick="()=>OnCLick_ALickVRemoveWishlist(product)" aria-label="delete to wishlist" Title="Delete To Wishlist"></MudIconButton>
+                                        <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye" OnClick="()=>OnCLick_ALickViewProdcut(product)" aria-label="Quick view" Title="Quick view"></MudIconButton>
+                                        <MudIconButton Icon="@Icons.Material.Filled.AddShoppingCart" OnClick="()=>OnCLick_BtnAddToCart(product)" aria-label="Add to cart" Title="Add to cart"></MudIconButton>
+                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" OnClick="()=>OnCLick_ALickVRemoveWishlist(product)" aria-label="Remove from wishlist" Title="Remove from wishlist"></MudIconButton>
                                     </MudStack>
 
                                 </div>
