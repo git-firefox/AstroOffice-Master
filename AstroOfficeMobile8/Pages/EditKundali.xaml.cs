@@ -30,6 +30,7 @@ public partial class EditKundali : ContentPage
 
     private void LocationLabel_Tapped(object sender, TappedEventArgs e)
     {
+        
         Navigation.PushAsync(new PlaceOfBirth());
     }
 }

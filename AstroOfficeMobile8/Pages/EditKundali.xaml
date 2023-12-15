@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AstroOfficeMobile8.Pages.EditKundali"
-             Title="EditKundali">
+<ContentPage
+    x:Class="AstroOfficeMobile8.Pages.EditKundali"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="EditKundali">
     <!--<VerticalStackLayout>
-        <Label 
+        <Label
             Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
+            VerticalOptions="Center"
             HorizontalOptions="Center" />
     </VerticalStackLayout>-->
 
 
     <!--<StackLayout>
 
-        
+
         <Image Source="user" WidthRequest="20" HeightRequest="20" Margin="5,5,0,0" />
         <Entry  x:Name="editFruitName" Text="{Binding SelectedFruit.FruitName}" />
 
@@ -26,8 +27,6 @@
         <Button Text="Save Changes" Clicked="SaveChangesButton_Clicked" />
     </StackLayout>-->
 
-
-
     <Grid Grid.Row="0" Margin="15">
 
         <Grid.RowDefinitions>
@@ -37,36 +36,168 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+
+
         </Grid.RowDefinitions>
-        
+
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400*" />
             <ColumnDefinition Width="380*" />
         </Grid.ColumnDefinitions>
 
-        <Image Grid.Row="0" Grid.Column="0" Source="user" WidthRequest="20" HeightRequest="20" HorizontalOptions="Start" Margin="2"/>
-        <Entry Grid.Row="0" Grid.Column="0"  Text="{Binding SelectedFruit.FruitName}" Margin="28,0,0,8" />
+        <Image
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="2"
+            HeightRequest="20"
+            HorizontalOptions="Start"
+            Source="user"
+            WidthRequest="20" />
+        <Entry
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="28,0,0,8"
+            Text="{Binding SelectedFruit.FruitName}" />
 
-        <Image Grid.Row="1" Grid.Column="0" Source="gender" WidthRequest="20" HeightRequest="20" HorizontalOptions="Start" Margin="2"/>
-        <RadioButton Grid.Row="1" Content="Male" HorizontalOptions="Start" Margin="25,0,0,0"/>
-        <RadioButton Grid.Row="1" Content="Female" HorizontalOptions="Center"/>
-        <RadioButton Grid.Row="1" Content="Other" HorizontalOptions="End"/>
+        <Image
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="2"
+            HeightRequest="20"
+            HorizontalOptions="Start"
+            Source="gender"
+            WidthRequest="20" />
+        <RadioButton
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Margin="25,0,0,0"
+            Content="Male"
+            HorizontalOptions="Start" />
+        <RadioButton
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Content="Female"
+            HorizontalOptions="Center" />
+        <RadioButton
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Content="Other"
+            HorizontalOptions="End" />
 
-        <Image Grid.Row="2" Grid.Column="0" Source="calender" WidthRequest="20" HeightRequest="20" HorizontalOptions="Start" Margin="2"/>
-        <DatePicker   Grid.Row="2" Grid.Column="0"  MaximumDate="12/31/2022" MinimumDate="01/01/2022"  Date="06/21/2022" Margin="28,0,0,8" />
-        
-        <Image Grid.Row="3" Grid.Column="0" Source="clock" WidthRequest="20" HeightRequest="20" HorizontalOptions="Start" Margin="2"/>
-        <TimePicker   Grid.Row="3" Grid.Column="0" Time="4:15:26" Margin="28,0,0,8" />
+        <Image
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="2"
+            HeightRequest="20"
+            HorizontalOptions="Start"
+            Source="calender"
+            WidthRequest="20" />
+        <DatePicker
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="28,0,0,8"
+            Date="06/21/2022"
+            MaximumDate="12/31/2022"
+            MinimumDate="01/01/2022" />
 
-        <Image Grid.Row="4" Grid.Column="0" Source="location" WidthRequest="20" HeightRequest="20" HorizontalOptions="Start" Margin="2"/>
-        <Entry Text="Location" Grid.Row="4"  Margin="28,0,0,8">
+        <Image
+            Grid.Row="3"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="2"
+            HeightRequest="20"
+            HorizontalOptions="Start"
+            Source="clock"
+            WidthRequest="20" />
+        <TimePicker
+            Grid.Row="3"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="28,0,0,8"
+            Time="4:15:26" />
+
+        <Image
+            Grid.Row="4"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="2"
+            HeightRequest="20"
+            HorizontalOptions="Start"
+            Source="location"
+            WidthRequest="20" />
+
+        <Entry
+            Grid.Row="4"
+            Grid.ColumnSpan="2"
+            Margin="28,0,0,8"
+            Text="Location">
             <Entry.GestureRecognizers>
                 <TapGestureRecognizer Tapped="LocationLabel_Tapped" />
             </Entry.GestureRecognizers>
         </Entry>
 
+        <Image
+            Grid.Row="5"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="2"
+            HeightRequest="20"
+            HorizontalOptions="Start"
+            Source="language"
+            WidthRequest="20" />
 
+        <Picker
+            x:Name="picker"
+            Title="Language"
+            Grid.Row="5"
+            Grid.ColumnSpan="2"
+            Margin="28,0,0,8">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Hindi</x:String>
+                    <x:String>English</x:String>
+                    <x:String>Telugu</x:String>
+                    <x:String>Tamil</x:String>
+                    <x:String>Bangla</x:String>
+                    <x:String>Marathi</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
 
+        <Label
+            Grid.Row="6"
+            Grid.Column="0"
+            Margin="30,0,0,8"
+            HeightRequest="20"
+            HorizontalOptions="Start"
+            Text="Longtitude"
+            WidthRequest="100" />
+        <Entry
+            Grid.Row="6"
+            Grid.Column="0"
+            Margin="110,0,0,8"
+            Text="Langtitude" />
 
+        <Label
+            Grid.Row="6"
+            Grid.Column="1"
+            Margin="20,0,0,8"
+            HeightRequest="20"
+            HorizontalOptions="Start"
+            Text="Latitude"
+            WidthRequest="80" />
+        <Entry
+            Grid.Row="6"
+            Grid.Column="1"
+            Margin="85,0,0,8"
+            Text="Latitude" />
     </Grid>
 
 </ContentPage>

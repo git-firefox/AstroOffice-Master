@@ -15,8 +15,8 @@ namespace AstroOfficeMobile8
             //MainPage = new CustomeShell();
             MainPage = new Dashboard("");
 
+            //MainPage = new PlaceOfBirth();
 
-            
 
 
             //var loginPage = new LoginPage(accountService);
