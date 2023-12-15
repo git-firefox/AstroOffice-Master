@@ -27,8 +27,6 @@
         <Button Text="Save Changes" Clicked="SaveChangesButton_Clicked" />
     </StackLayout>-->
 
-
-
     <Grid Grid.Row="0" Margin="15">
 
         <Grid.RowDefinitions>

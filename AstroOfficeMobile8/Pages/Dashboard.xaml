@@ -1,40 +1,46 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:AstroOfficeMobile8.Pages"
-             x:Class="AstroOfficeMobile8.Pages.Dashboard"
-             Shell.FlyoutBehavior="Flyout"
-             xmlns:account="clr-namespace:AstroOfficeMobile8.Account"
-             Title="Dashboard"
-       FlyoutBackgroundColor="#eeeeee">
+<Shell
+    x:Class="AstroOfficeMobile8.Pages.Dashboard"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:account="clr-namespace:AstroOfficeMobile8.Account"
+    xmlns:local="clr-namespace:AstroOfficeMobile8.Pages"
+    Title="Dashboard"
+    FlyoutBackgroundColor="#eeeeee"
+    Shell.FlyoutBehavior="Flyout">
     <ShellContent
-    Title="Home"
-    ContentTemplate="{DataTemplate local:Home}"    
-    Route="Home" /> 
-    
+        Title="Home"
+        ContentTemplate="{DataTemplate local:Home}"
+        Route="Home" />
+
     <ShellContent
-    Title="Shop"
-    ContentTemplate="{DataTemplate local:Shop}"
-    Route="Shop" /> 
-    
+        Title="Shop"
+        ContentTemplate="{DataTemplate local:Shop}"
+        Route="Shop" />
+
     <ShellContent
-    Title="Account"
-    ContentTemplate="{DataTemplate account:LoginPage}"
-    Route="login" /> 
-    
+        Title="Account"
+        ContentTemplate="{DataTemplate account:LoginPage}"
+        Route="login" />
+
     <ShellContent
-    Title="Saved Kundali"
-    ContentTemplate="{DataTemplate local:SavedKundali}"
-    Route="savedKundali" />
-    
+        Title="Saved Kundali"
+        ContentTemplate="{DataTemplate local:SavedKundali}"
+        Route="savedKundali" />
+
     <ShellContent
-    Title="Kundali"
-    ContentTemplate="{DataTemplate local:Kundali}"
-    Route="Kundali" />
+        Title="Kundali"
+        ContentTemplate="{DataTemplate local:Kundali}"
+        Route="Kundali" />
+
+    <ShellContent
+        Title="Basic Details"
+        ContentTemplate="{DataTemplate local:BasicDetails}"
+        Route="Basicdetails" />
 
 </Shell>
 
-    <!--<VerticalStackLayout>
+<!--<VerticalStackLayout>
 
         <Image
          Source="dotnet_bot.png"
@@ -42,9 +48,9 @@
          Aspect="AspectFit"
          SemanticProperties.Description="dot net bot in a race car number eight" />
 
-        <Label 
-            x:Name="WelcomeLabel" 
-            VerticalOptions="Center" 
+        <Label
+            x:Name="WelcomeLabel"
+            VerticalOptions="Center"
             HorizontalOptions="Center" />
 
         <Label
@@ -53,7 +59,7 @@
           SemanticProperties.HeadingLevel="Level2"
           SemanticProperties.Description="Welcome to Astro Office app" />
 
-       
+
     </VerticalStackLayout>-->
 
 

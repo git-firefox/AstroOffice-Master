@@ -13,9 +13,9 @@ namespace AstroOfficeMobile8
 
             //MainPage = new AppShell();
             //MainPage = new CustomeShell();
-            //MainPage = new Dashboard("");
+            MainPage = new Dashboard("");
 
-            MainPage = new PlaceOfBirth();
+            //MainPage = new PlaceOfBirth();
 
 
 
