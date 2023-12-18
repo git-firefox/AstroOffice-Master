@@ -10,13 +10,19 @@
 @inject IJSRuntime JSRuntime
 @inject ILocalStorageService LocalStorage
 
-<ContainerFluid HeaderTitle="Shop">
+<style>
+    body {
+        background: #fff !important;
+    }
+</style>
+<Container Name="Shop">
     <Header>
         <MudButton OnClick="OnClick_BtnClear" Class="btn-custom">Clear Filter</MudButton>
     </Header>
     <ChildContent>
+
         <div class="row">
-            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4 col-12 mb-3">
+            <div class="col-xl-3 col-lg-2 col-md-4 col-sm-12 col-12 mb-3">
                 <div class="categories">
 
                     <h2 class="category-title">Shop Categories</h2>
@@ -52,7 +58,7 @@
                     </MudNavMenu>
                 </div>
             </div>
-            <div class="col-xl-10 col-lg-9 col-md-8 col-sm-8 col-12 mb-3">
+            <div class="col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12 mb-3">
                 <div class="shop-search">
                     <MudGrid>
                         <MudItem xs="12" sm="4" Style="padding-top:0;padding-bottom:25px">
@@ -115,7 +121,22 @@
                                     <div class="card-body" style="transform: rotate(0);">
                                         <div class="card-img-actions">
                                             <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="card-img img-fluid" width="96" height="350">
+
+                                            <img src="https://www.astromantra.com/wp-content/uploads/2022/03/IMG_3212-555x555.jpg" alt="@product.Name" title="@product.Name" class="hover-img" width="96" height="350" />
                                         </div>
+
+                                        <div class="card-icon">
+                                            <div class="quick-view wd-action-btn wd-style-icon wd-quick-view-icon">
+
+                                                <a> <i class="fas fa-search"></i></a>
+                                            </div>
+                                            <div class="wd-wishlist-btn wd-action-btn wd-style-icon wd-wishlist-icon">
+                                                <a> <i class="far fa-heart"></i></a>
+
+                                            </div>
+
+                                        </div>
+
                                         <a href="javascript:void(0);" class="text-default mb-2 stretched-link" data-abc="true" @onclick="() => OnClick_ALinkView(product)"></a>
                                     </div>
 
@@ -149,13 +170,25 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-12 d-flex justify-content-end">
-                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Error" @onclick="PreviousPage" disabled="@IsFirstPage"></MudButton>
+                    <div class="col-12 d-flex justify-content-center scrolling-product">
+                        @*  <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Error" @onclick="PreviousPage" disabled="@IsFirstPage" Class="arrow-btn"></MudButton>
                         <span>Page @CurrentPage of @TotalPages</span>
-                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowForward" Color="Color.Error" @onclick="NextPage" disabled="@IsLastPage"></MudButton>
+                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowForward" Color="Color.Error" @onclick="NextPage" disabled="@IsLastPage" Class="arrow-btn"></MudButton> *@
+
+                        <nav>
+                            <ul>
+                                <li><i class="fas fa-chevron-left"></i></li>
+                                <li><a href="javascript:void(0);">1</a></li>
+                                <li><a href="javascript:void(0);">2</a></li>
+                                <li><a href="javascript:void(0);">3</a></li>
+                                <li><a href="javascript:void(0);">4</a></li>
+                                <li><i class="fas fa-chevron-right"></i></li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
         </div>
+
     </ChildContent>
-</ContainerFluid>
+</Container>

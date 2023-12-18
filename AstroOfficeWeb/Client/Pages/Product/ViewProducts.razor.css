@@ -1,4 +1,5 @@
-﻿.mt-50 {
+﻿ 
+.mt-50 {
     margin-top: 50px;
 }
 
@@ -42,10 +43,16 @@
 .bg-cart {
     background-color: orange;
     color: #fff;
+    margin-top: 10px;
 }
 
     .bg-cart:hover {
         color: #fff;
+        background: #910d0d;
+        -webkit-transition: all 0.5s;
+        -moz-transition: all 0.5s;
+        -o-transition: all 0.5s;
+        transition: all 0.5s;
     }
 
 .bg-buy {
@@ -113,9 +120,7 @@ a {
         padding: 0;
     }
 
-        .shop-card .card-body .card-img-actions {
-            height: 190px;
-        }
+        
 
             .shop-card .card-body .card-img-actions img {
                 width: 100%;
@@ -139,3 +144,86 @@ a {
     .shop-card h3 {
         font-size: 16px;
     }
+
+.card-img-actions[b-6pt8dzqd51] {
+    overflow:hidden;
+    border-radius:25px;
+    position:relative;
+ 
+}
+.card-body .card-img-actions img {
+   transition: opacity 0.2s ease,transform 2s cubic-bezier(0, 0, 0.50,1.18)
+}
+
+.card-body:hover .card-img-actions img {
+    opacity: 0;
+    transform: scale(1.09);
+}
+.hover-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.2s ease,transform 2s cubic-bezier(0, 0, 0.50,1.18);
+    transform: scale(1);
+}
+.card-body:hover .card-img-actions img.hover-img {
+    opacity: 1;
+    transform: scale(1.09);
+}
+.card-icon {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+    background-color: #fff;
+    transition: all .3s ease;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    opacity: 0;
+    transform: translateX(20px) translateZ(0);
+    width: 40px;
+}
+    .card-icon .quick-view span:before {
+        content: "\f106";
+    }
+    .card-icon .quick-view a, .card-icon .wd-wishlist-btn a {
+        position: relative;
+        flex-direction: column;
+        height: 38px;
+        width: 41px;
+        font-weight: 400;
+        line-height: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--action-btn-color);
+        cursor: pointer;
+    }
+.card-body:hover .card-icon {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+}
+.scrolling-product ul {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+    .scrolling-product ul li {
+        align-items: center;
+        justify-content: center;
+        padding-right: 5px;
+        padding-left: 5px;
+        min-width: 24px;
+        display: flex;
+        height: 20px;
+        font-weight: 600;
+        font-size: 18px;
+        border-radius: calc(var(--wd-brd-radius) / 1.5);
+        transition: all .2s ease;
+    }
+
+
