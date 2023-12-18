@@ -1,10 +1,34 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:AstroOfficeMobile8.Pages"
-             x:Class="AstroOfficeMobile8.Pages.Kundali"
-             Title="Kundali">
-    <StackLayout>
-        <local:CustomeShell />
-    </StackLayout>
+<ContentPage
+    x:Class="AstroOfficeMobile8.Pages.Kundali"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:AstroOfficeMobile8.Pages"
+    Title="Kundali">
+
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Clicked="ToolbarItem_Clicked"
+            Order="Secondary"
+            Text="Basic " />
+        <ToolbarItem
+            Clicked="ToolbarItem_Clicked"
+            Order="Secondary"
+            Text="Charts " />
+        <ToolbarItem
+            Clicked="ToolbarItem_Clicked"
+            Order="Secondary"
+            Text="KP " />
+        <ToolbarItem
+            Clicked="ToolbarItem_Clicked"
+            Order="Secondary"
+            Text="Dasha " />
+        <ToolbarItem
+            Clicked="ToolbarItem_Clicked"
+            Order="Secondary"
+            Text="Report " />
+    </ContentPage.ToolbarItems>
+
+
 </ContentPage>
