@@ -34,7 +34,7 @@
                                     <!-- Add note input-->
                                     <div class="mt-3">
 
-                                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="250px" />
+                                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="200px" />
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -76,7 +76,7 @@
                                                                     <img src="@cartItem.ProductImageSrc" alt="@cartItem.ProductName" title="@cartItem.ProductName" class="avatar-lg" />
                                                                 </td>
                                                                 <td>
-                                                                    <h5 class="mt-0 mb-1 text-truncate"><a href="view-product/@cartItem.ProductSno" class="text-body">@cartItem.ProductName</a></h5>
+                                                                    <h5 class="mt-0 mb-1 text-truncate"><a href=@($"product/{cartItem.ProductSno}/{cartItem.ProductName.Replace(" ", "-")}") class="text-body">@cartItem.ProductName</a></h5>
                                                                     <p class="mb-0">Category : <span class="fw-medium">Astro Products</span></p>
                                                                 </td>
                                                                 <td>

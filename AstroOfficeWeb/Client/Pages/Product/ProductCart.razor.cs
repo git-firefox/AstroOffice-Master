@@ -29,7 +29,8 @@ namespace AstroOfficeWeb.Client.Pages.Product
         {
             //CartItems = await ProductService.GetCartItems();
             ProductCartViewModel.CartItems = await ProductService.GetCartItems();
-            UpdateOrderSummary();
+            if (ProductCartViewModel.CartItems != null)
+                UpdateOrderSummary();
         }
 
         private void OnClick_UpdateQuantity(CartItemDTO cartItem, int quantity)

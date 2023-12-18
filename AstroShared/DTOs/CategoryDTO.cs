@@ -31,20 +31,20 @@ namespace AstroShared.DTOs
         public int TotalProducts { get; set; } = 0;
     }
 
-    public class PCategoryDTO
+    public abstract class BaseCategoryDTO
     {
         public long Sno { get; set; }
         public string? Title { get; set; }
-        public string? ImageUrl { get; set; }
         public string? Descriptions { get; set; }
-
+        public string? ImageUrl { get; set; }
+    }
+    public class PCategoryDTO : BaseCategoryDTO
+    {
         public List<SCategoryDTO>? SubCategories { get; set; }
     }
 
-    public class SCategoryDTO
+    public class SCategoryDTO : BaseCategoryDTO
     {
-        public long Sno { get; set; }
-        public string? Title { get; set; }
-        public string? Descriptions { get; set; }
+
     }
 }

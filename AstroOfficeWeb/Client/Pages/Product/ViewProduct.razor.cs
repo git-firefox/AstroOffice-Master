@@ -10,7 +10,10 @@ namespace AstroOfficeWeb.Client.Pages.Product
     {
 
         [Parameter]
-        public long Sno { get; set; }
+        public long ProductSno { get; set; }
+
+        [Parameter]
+        public string? ProductName { get; set; }
 
         public ImagesDTO? SelectedImage { get; set; } = new ImagesDTO();
 
@@ -23,12 +26,12 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         protected override void OnInitialized()
         {
-            base.OnInitialized();   
+            base.OnInitialized();
         }
 
         protected override async Task OnInitializedAsync()
         {
-            ViewProductDTO = await ProductService.GetProductBySno(Sno) ?? new();
+            ViewProductDTO = await ProductService.GetProductBySno(ProductSno) ?? new();
             BrowserFiles = ViewProductDTO.ProductImages ??= new();
             MetaDataList = ViewProductDTO.MetaDatas ??= new();
             SelectedImage = new ImagesDTO { ImageName = ViewProductDTO?.Name ?? "", ImageURL = ViewProductDTO?.ImageUrl ?? "" };
@@ -36,7 +39,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
         private async Task OnClick_BtnAddToWishlist(MouseEventArgs e)
         {
-            await ProductService.AddToWishList(Sno);
+            await ProductService.AddToWishList(ProductSno);
         }
 
         private async Task OnClick_BtnAddToCart(MouseEventArgs e)
@@ -48,10 +51,11 @@ namespace AstroOfficeWeb.Client.Pages.Product
                 return;
             }
 
-            bool isAddedToCart = await ProductService.IsAddToCart(Sno);
+            bool isAddedToCart = await ProductService.IsAddToCart(ProductSno);
 
             if (isAddedToCart)
             {
+                ViewProductDTO!.ProductQuantity += 1;
                 await JSRuntime.ShowToastAsync($"\"{ViewProductDTO!.Name}\" added to your cart.", SwalIcon.Success);
             }
         }

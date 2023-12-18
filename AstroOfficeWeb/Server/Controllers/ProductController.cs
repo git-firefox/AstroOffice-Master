@@ -60,7 +60,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
             productDTOs.ForEach(pd =>
             {
-               pd.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == pd.Sno)?.Quantity ?? 0;
+                pd.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == pd.Sno)?.Quantity ?? 0;
             });
 
             return Ok(productDTOs);
@@ -173,26 +173,6 @@ namespace AstroOfficeWeb.Server.Controllers
             apiResponse.Data = tmp;
             return Ok(apiResponse);
         }
-
-        //[HttpGet]
-        //public IActionResult GetMetaDataBySno(long sno)
-        //{
-        //    var apiResponse = new ApiResponse<MetaDataDTO> { Data = null };
-        //    var aProduct = _context.AProducts.Where(p => p.Sno == sno).ToList();
-        //    if (aProduct == null)
-        //    {
-        //        apiResponse.ErrorNo = 1;
-        //        apiResponse.Success = false;
-        //        apiResponse.Message = ProductMessageConst.NotFoundProduct;
-        //        return Ok(apiResponse);
-        //    }
-
-        //    apiResponse.Success = true;
-        //    var metaDataDTOs = _mapper.Map<MetaDataDTO>(aProduct);
-        //    apiResponse.Data = metaDataDTOs;
-
-        //    return Ok(apiResponse);
-        //}
 
         [HttpGet]
 
@@ -513,13 +493,9 @@ namespace AstroOfficeWeb.Server.Controllers
             }
             else
             {
-                // Update the existing entity with data from addressDTO
                 _mapper.Map(addressDTO, existingAddress);
-
-                // Make sure to set any additional properties that should not be updated
                 existingAddress.AUsersSno = User.GetUserSno();
 
-                // No need to attach or update, the context is already tracking the entity
                 _context.SaveChanges();
 
                 response.Data = addressDTO;
@@ -739,6 +715,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
             productWishlist = await _context.ProductWishlists.FirstOrDefaultAsync(pw => pw.AProductsSno == request.ProductSno && pw.AUsersSno == User.GetUserSno());
 
+
             if (productWishlist == null)
             {
                 productWishlist = new ProductWishlist();
@@ -807,10 +784,16 @@ namespace AstroOfficeWeb.Server.Controllers
         public async Task<IActionResult> GetUserWishList()
         {
             var response = new ApiResponse<List<ViewProductDTO>>();
+            var shoppingCart = await _context.ShoppingCarts.Include(i => i.CartItems).FirstOrDefaultAsync(a => a.AUsersSno == User.GetUserSno());
+            var cartItems = shoppingCart?.CartItems.ToList();
+
             var productWishlists = await _context.ProductWishlists.Include(pw => pw.AProductsSnoNavigation).Where(pw => pw.AUsersSno == User.GetUserSno()).ToListAsync();
             var aProducts = productWishlists.Select(wi => wi.AProductsSnoNavigation).Where(p => p!.IsActive == true).OrderByDescending(p => p!.Sno).ToList();
             var productDTOs = _mapper.Map<List<ViewProductDTO>>(aProducts);
-
+            productDTOs.ForEach(pd =>
+            {
+                pd.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == pd.Sno)?.Quantity ?? 0;
+            });
             response.Data = productDTOs;
             return Ok(response);
         }

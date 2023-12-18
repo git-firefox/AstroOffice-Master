@@ -33,7 +33,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
             SelectedProduct = productDTO;
             StateContainerService.SetSelectedProduct(productDTO);
             await LocalStorage.SetItemAsync<ViewProductDTO>(ApplicationConst.Local_SelectedProduct, productDTO);
-            NavigationManager.NavigateTo($"/view-product/{productDTO.Sno}");
+            NavigationManager.NavigateTo($"/product/{productDTO.Sno}/{productDTO.Name.Replace(" ", "-").ToLower()}");
         }
 
         private async Task OnClick_BtnDelete(ViewProductDTO productDTO)

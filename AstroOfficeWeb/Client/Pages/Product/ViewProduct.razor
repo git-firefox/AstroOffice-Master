@@ -1,4 +1,4 @@
-﻿@page "/view-product/{Sno:long}"
+﻿@page "/product/{ProductSno:long}/{ProductName}"
 
 @using AstroOfficeWeb.Client.Services
 
@@ -10,12 +10,9 @@
 
 <div class="container-fluid p-3">
 
-    <h1 class="pt-4 pb-2 font-weight-bold "> View Product </h1>
+    <h1 class="pt-4 pb-2 font-weight-bold "> @ViewProductDTO!.Name </h1>
 
     <section class="content">
-
-
-
         <!-- Default box -->
         <div class="card card-solid">
             <div class="card-body">
