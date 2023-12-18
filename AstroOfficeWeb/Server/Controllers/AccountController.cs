@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 //using AstroOfficeWeb.Client.Helper;
 using Microsoft.AspNetCore.Authorization;
 using AstroShared.DTOs;
+using AstroShared.Helper;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -350,13 +351,27 @@ namespace AstroOfficeWeb.Server.Controllers
                 new Claim("canAdd", user.CanAdd?.ToString() ?? "false"),
                 new Claim("canEdit", user.CanEdit?.ToString() ?? "false"),
                 new Claim("canReport", user.CanReport?.ToString() ?? "false"),
-                //new Claim(ClaimTypes.Role, user.Adminuser == true ? "Admin" : "User")
-
             };
-            //new Claim(ClaimTypes.Role, user.Adminuser == true ? "Admin" : "User"),
-            if (user.Username == "productmanager")
+
+            if (user.Username!.Equals(ApplicationConst.Role_Member, StringComparison.CurrentCultureIgnoreCase))
             {
-                claims.Add(new Claim(ClaimTypes.Role, "ManageProduct"));
+                claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_Member));
+            }
+            else if (user.Username!.Equals(ApplicationConst.Role_Astrologer, StringComparison.CurrentCultureIgnoreCase))
+            {
+                claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_Astrologer));
+            }
+            else if (user.Username!.Equals(ApplicationConst.Role_Administrator, StringComparison.CurrentCultureIgnoreCase))
+            {
+                claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_Administrator));
+            }
+            else if (user.Username!.Equals(ApplicationConst.Role_OrderManager, StringComparison.CurrentCultureIgnoreCase))
+            {
+                claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_OrderManager));
+            }
+            else if (user.Username!.Equals("productmanager", StringComparison.CurrentCultureIgnoreCase))
+            {
+                claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_ProductManager));
             }
             else
             {

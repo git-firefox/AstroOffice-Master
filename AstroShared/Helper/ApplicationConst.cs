@@ -4,7 +4,11 @@
     {
         public const string Role_Admin = "Admin";
         public const string Role_User = "User";
-        public const string Role_ManageProductUser = "ManageProduct";
+        public const string Role_Member = "Member";
+        public const string Role_Astrologer = "Astrologer";
+        public const string Role_Administrator = "Administrator";
+        public const string Role_OrderManager = "OrderManager";
+        public const string Role_ProductManager = "ManageProduct";
 
         public const string Role_AdminUser = "Admin, User";
 

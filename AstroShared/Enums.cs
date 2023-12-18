@@ -78,19 +78,19 @@ namespace AstroShared
     public enum ProductStatus
     {
         Draft,
-        PendingApproval,
-        Approved,
-        Rejected,
-        Active,
-        Discontinued,
-        OnSale,
+        //PendingApproval,
+        //Approved,
+        //Rejected,
+        Published,
+        //Discontinued,
+        //OnSale,
         Archived,
 
-        [Display(Name = "Out of Stock")]
-        OutOfStock,
+        //[Display(Name = "Out of Stock")]
+        //OutOfStock,
 
-        [Display(Name = "In Stock")]
-        InStock,
+        //[Display(Name = "In Stock")]
+        //InStock,
     }
 
     //[JsonConverter(typeof(StringEnumConverter))]

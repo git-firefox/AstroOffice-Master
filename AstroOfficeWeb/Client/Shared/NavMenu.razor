@@ -11,7 +11,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
 
-                    <AuthorizeView Roles="@(ApplicationConst.Role_AdminUser)">
+                    <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser + "," + ApplicationConst.Role_Astrologer)>
                         <Authorized>
 
                             @* Dashboard *@
@@ -45,7 +45,11 @@
                                     Saved Kundalis
                                 </a>
                             </li>
+                        </Authorized>
+                    </AuthorizeView>
 
+                    <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser)>
+                        <Authorized>
                             @* Transactions *@
                             <li>
                                 <a href="/transactions" class="nav-link">
@@ -82,7 +86,7 @@
                                     Cart
                                 </a>
                             </li>
-                            
+
                             @* Wishlist *@
                             <li>
                                 <a href="/user-wishlist" title="Wishlist" class="nav-link">
@@ -90,7 +94,7 @@
                                     Wishlist
                                 </a>
                             </li>
-                            
+
                             @* Orders *@
                             <li>
                                 <a href="/my-orders" title="Orders" class="nav-link">
@@ -141,7 +145,7 @@
                     </AuthorizeView>
 
 
-                    <AuthorizeView Roles="@(ApplicationConst.Role_ManageProductUser)">
+                    <AuthorizeView Roles="@(ApplicationConst.Role_ProductManager)">
                         <Authorized>
                             @* Manage Product *@
                             <li>
@@ -164,7 +168,11 @@
                                     Manage Categories
                                 </a>
                             </li>
+                        </Authorized>
+                    </AuthorizeView>
 
+                    <AuthorizeView>
+                        <Authorized>
                             @* Logout *@
                             <li>
                                 <a href="/logout" class="nav-link">
@@ -172,10 +180,8 @@
                                     Logout
                                 </a>
                             </li>
-
                         </Authorized>
                     </AuthorizeView>
-
 
                 </ul>
             </div>

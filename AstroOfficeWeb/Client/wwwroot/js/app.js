@@ -318,6 +318,9 @@ window.getPageSizeValue = function () {
 }
 
 
+window.fnClearFilter = function () {
+    $("#searchShopBox").val();;
+}
 // JavaScript Document
 //function isDevice() {
 //    return ((/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase())))

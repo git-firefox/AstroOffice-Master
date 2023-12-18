@@ -21,7 +21,7 @@ namespace AstroShared.DTOs
         public string Description { get; set; } = null!;
 
         [Required]
-        [Range(1, 100, ErrorMessage = "{0} must be between {1} and {2}.")]
+        [Range(1, 9999, ErrorMessage = "{0} must be between {1} and {2}.")]
         public int StockQuantity { get; set; }
         public int ProductQuantity { get; set; }
 

@@ -5,7 +5,7 @@
 <AuthorizeView Roles="ManageProduct">
     <AstroOfficeWeb.Client.Pages.Product.ManageProducts></AstroOfficeWeb.Client.Pages.Product.ManageProducts>
 </AuthorizeView>
-<AuthorizeView Roles="User, Admin">
+<AuthorizeView Roles=@("User, Admin" + ',' + ApplicationConst.Role_Astrologer)>
     <Dashboard></Dashboard>
 </AuthorizeView>
 

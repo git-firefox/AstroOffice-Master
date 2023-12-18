@@ -92,7 +92,7 @@
                                                                     <div class="mb-3">
                                                                         <label for="product-price" class="form-label">Price <span class="text-danger">*</span></label>
                                                                         <ValidationMessage For=@(()=>ProductModel.Price) style="position: revert;" />
-                                                                        <InputNumberMask @bind-Value="ProductModel!.Price" Mask="9999999" class="form-control" id="product-price" placeholder="Enter amount" />
+                                                                        <InputNumber @bind-Value="ProductModel!.Price" class="form-control" id="product-price" placeholder="Enter amount" />
                                                                     </div>
                                                                 </div>
 

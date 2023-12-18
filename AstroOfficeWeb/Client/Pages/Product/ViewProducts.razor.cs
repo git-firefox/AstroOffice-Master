@@ -69,6 +69,10 @@ namespace AstroOfficeWeb.Client.Pages.Product
             await LocalStorage.SetItemAsync<ViewProductDTO>(ApplicationConst.Local_SelectedProduct, product);
             NavigationManager.NavigateTo($"/product/{product.Sno}/{product.Name.Replace("'", "-").ToLower()}");
         }
+        private async Task OnClick_BtnClear()
+        {
+            await ApplyFilter();
+        }
 
         private async Task ApplyFilter()
         {

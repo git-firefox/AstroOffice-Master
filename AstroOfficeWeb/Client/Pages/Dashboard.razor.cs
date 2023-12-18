@@ -1529,12 +1529,15 @@ namespace AstroOfficeWeb.Client.Pages
         bool OnClick_BtnSaveKundali_IsComplated = true;
         private async Task OnClick_BtnSaveKundali(MouseEventArgs e)
         {
-            var balance = await TokenWallet.GetBalance();
-
-            if (balance == 0)
+            if (!User!.IsInRole(ApplicationConst.Role_Astrologer))
             {
-                await JSRuntime.ShowToastAsync("Your balance is currently 0.00 Please recharge token.", SwalIcon.Error);
-                return;
+                var balance = await TokenWallet.GetBalance();
+
+                if (balance == 0)
+                {
+                    await JSRuntime.ShowToastAsync("Your balance is currently 0.00 Please recharge token.", SwalIcon.Error);
+                    return;
+                }
             }
 
             if (!OnClick_BtnSaveKundali_IsComplated) return;
@@ -1984,7 +1987,7 @@ namespace AstroOfficeWeb.Client.Pages
                 BirthDetails.KundaliUdvYear = 120;
             }
 
-            
+
 
             List<KPPlanetMappingVO> kPPlanetMappingVOs = new List<KPPlanetMappingVO>();
             KundliBLL kundliBLL = new KundliBLL();
@@ -3129,26 +3132,33 @@ namespace AstroOfficeWeb.Client.Pages
                     lower.Product = "firstpage";
                 }
 
-                var balance = await TokenWallet.GetBalance();
+                if (!User!.IsInRole(ApplicationConst.Role_Astrologer))
+                {
+                    var balance = await TokenWallet.GetBalance();
 
-                if (balance == 0)
-                {
-                    await JSRuntime.ShowToastAsync("Your balance is currently 0.00 Please recharge token.", SwalIcon.Error);
-                    return;
+                    if (balance == 0)
+                    {
+                        await JSRuntime.ShowToastAsync("Your balance is currently 0.00 Please recharge token.", SwalIcon.Error);
+                        return;
+                    }
+                    else if (balance < 250)
+                    {
+                        await JSRuntime.ShowToastAsync("Your balance is less than 250 rs. Please recharge token for view the Kundali.", SwalIcon.Error);
+                        return;
+                    }
                 }
-                else if(balance < 250)
-                {
-                    await JSRuntime.ShowToastAsync("Your balance is less than 250 rs. Please recharge token for view the Kundali.", SwalIcon.Error);
-                    return;
-                }
+
                 var htmlString = await KPBLL.Get_New_Products(lower);
                 if (htmlString != null)
                 {
                     await Show_Falla(htmlString);
                     BirthDetails.PlaceOfBirthID = SelectedBirthCity?.Sno;
                     await KundaliHistroy.SaveKundaliLog(BirthDetails);
-                    await TokenWallet.UpdateTokenBalance(TransactionType.Purchase, 1M, "1 rupee has been deducted from your token balance.", "FALADESH [VIEW]", "Charged 1 rupee for viewing \"FALADESH.\"");
 
+                    if (!User!.IsInRole(ApplicationConst.Role_Astrologer))
+                    {
+                        await TokenWallet.UpdateTokenBalance(TransactionType.Purchase, 1M, "1 rupee has been deducted from your token balance.", "FALADESH [VIEW]", "Charged 1 rupee for viewing \"FALADESH.\"");
+                    }
                 }
                 //Loader.Close();
 
