@@ -257,12 +257,12 @@
 
 
                                                     <div class="row">
-                                                        <div class="col-6 mb-2">
+                                                        <div class="col-12 mb-2">
 
                                                             <select value="@BirthDetails!.CmbCategory" @onchange="OnChange_CmbCategory" class="form-control form-control-sm" title="Category">
-                                                                @foreach (var item in BirthDetailsLookups.BirthCategoryItems)
+                                                                @foreach (var item in BirthDetailsLookups.BirthCategoryItems.Where(a => !a.Disabled))
                                                                 {
-                                                                    <option value="@item.Text">@item.Text</option>
+                                                                    <option value="@item.Value">@item.Text</option>
                                                                 }
                                                             </select>
 
@@ -276,7 +276,7 @@
                                                                 }
                                                             </select>
                                                         </div>
-                                                        <div class="col-12 mb-2">
+                                                        <div class="col-6 mb-2">
                                                             <select value="@BirthDetails.CmbRotate" @onchange="OnChange_CmbRotate" class="form-control form-control-sm" title="Rotate">
                                                                 @foreach (var item in BirthDetailsLookups.CmbRotateItems)
                                                                 {
@@ -321,10 +321,10 @@
                                         </div>
                                     </div>
                                     <div class="p-2 bd-highlight">
-                                        <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnFaladesh"> Faladesh </button>
+                                        <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnFaladesh"> Show Kundali </button>
                                     </div>
                                     <div class="p-2 bd-highlight">
-                                        <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnChart"> Chart </button>
+                                        <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnChart"> Vivran </button>
                                     </div>
                                     <div class="p-2 bd-highlight">
                                         @if (OnInitialized_IsComplatedSuccessfully)
@@ -418,19 +418,19 @@
 
                                 <div class="row">
                                     <div class="col">
-                                        <button type="button" class="btn btn-block btn-custom btn-sm" title="Bhav Chalit" @onclick="OnClick_BhavChalit"> Bhav </button>
+                                        <button type="button" class="btn btn-block btn-custom btn-sm" title="Cusp" @onclick="OnClick_BhavChalit"> Cusp </button>
                                     </div>
                                     <div class="col">
-                                        <button type="button" class="btn btn-block btn-custom btn-sm" title="Lagan" @onclick="OnClick_Lagan"> Lagan </button>
+                                        <button type="button" class="btn btn-block btn-custom btn-sm" title="Kundali" @onclick="OnClick_Lagan"> Kundali </button>
                                     </div>
                                     <div class="col">
-                                        <button type="button" class="btn btn-block btn-custom btn-sm" title="Chandra" @onclick="OnClick_Chandra"> Chandra </button>
+                                        <button type="button" class="btn btn-block btn-custom btn-sm" title="Chandra Kundali" @onclick="OnClick_Chandra"> Chandra Kundali </button>
                                     </div>
                                     <div class="col">
-                                        <button type="button" class="btn btn-block btn-custom btn-sm btn-gochar" title="Gochar" @onclick="OnClick_Gochar"> Gochar </button>
+                                        <button type="button" class="btn btn-block btn-custom btn-sm btn-gochar" title="Vartmaan" @onclick="OnClick_Gochar"> Vartmaan </button>
                                     </div>
                                     <div class="col">
-                                        <button type="button" class="btn btn-block btn-custom btn-smbtn btn-block btn-custom btn-sm btn-varsh" title="Varsh" @onclick="OnClick_Varsh"> Varsh </button>
+                                        <button type="button" class="btn btn-block btn-custom btn-smbtn btn-block btn-custom btn-sm btn-varsh" title="Varshphal" @onclick="OnClick_Varsh"> Varshphal </button>
                                     </div>
                                 </div>
 
@@ -508,8 +508,8 @@
                                                     <tr>
                                                         <th>House</th>
                                                         <th>RL-NL-SL-SSL</th>
-                                                        <th>Nak Signi</th>
-                                                        <th>Sub Signi</th>
+                                                        <th>Nakshatra</th>
+                                                        <th>Sub Lord Nakshatra</th>
                                                     </tr>
                                                 </thead>
                                                 @if (ListView_House == null)
