@@ -4,7 +4,7 @@ using AstroOfficeHybrid8.Services.IServices;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
-
+using MudExtensions.Services;
 namespace AstroOfficeHybrid8
 {
     public static class MauiProgram
@@ -20,6 +20,7 @@ namespace AstroOfficeHybrid8
                 });
             builder.Services.AddMudServices();
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddMudExtensions();
             builder.Services.AddAuthorizationCore();
             
 

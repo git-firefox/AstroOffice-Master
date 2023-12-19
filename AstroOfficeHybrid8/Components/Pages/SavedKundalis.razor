@@ -1,0 +1,75 @@
+﻿@page "/saved-kundalis"
+@using AstroShared.ViewModels
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
+
+@* <MudContainer Class="content mt-3">
+    <MudContainerFluid>
+        <MudRow>
+            <MudCol Size="12">
+
+                <div class="overlay-wrapper">
+                    @if (personKundaliTableTRs == null)
+                    {
+                        <div class="overlay dark">
+                            <i class="fas fa-2x fa-sync fa-spin"></i>
+                        </div>
+                    }
+                    else
+                    {
+                        @if (personKundaliTableTRs.Any())
+                        {
+                            foreach (var row in personKundaliTableTRs)
+                            {
+                                <MudCard Class="mt-3">
+
+                                    <MudRow>
+
+                                        <MudCol Size="2" Class="d-flex align-items-center position-relative">
+                                            <div class="image">
+                                                <MudImage Src="@AstroShared.Helper.AvatarGenerator.GenerateUserAvatar(row.Name)" Class="img-circle" Alt="User Image" Height="45" Width="45" />
+
+                                            </div>
+                                            <MudLink Class="stretched-link" OnClick="()=>OnClick_BtnShow(row)"></MudLink>
+                                        </MudCol>
+
+                                        <MudCol Size="8" Class="position-relative">
+                                            <MudRow>
+                                                <div class="info">
+                                                    <MudLink Class="d-block active">@row.Name</MudLink>
+                                                </div>
+                                            </MudRow>
+                                            <MudRow>
+                                                <h6 style="color: #888; font-size: 14px;">@row.DateOfBirth.ToString("dd MMM yyyy"), @row.TimeOfBirth.ToString("c") <br />@row.PlaceOfBirth</h6>
+                                            </MudRow>
+                                            <MudLink Class="stretched-link" OnClick="()=>OnClick_BtnShow(row)"></MudLink>
+                                        </MudCol>
+
+                                        <MudCol Size="2">
+                                            <MudRow>
+                                                <MudCol>
+                                                    <MudButton OnClick="()=>OnClick_EditBtnShow(row)" Variant="Variant.Outlined" Size="Size.Small">
+                                                        <i class="fas fa-edit"></i>
+                                                    </MudButton>
+                                                </MudCol>
+
+                                                <MudCol>
+                                                    <MudButton OnClick="()=>OnClick_BtnDelete(row)" Variant="Variant.Outlined" Size="Size.Small">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </MudButton>
+                                                </MudCol>
+                                            </MudRow>
+                                        </MudCol>
+
+                                    </MudRow>
+                                </MudCard>
+
+                            }
+                        }
+                    }
+                </div>
+            </MudCol>
+        </MudRow>
+    </MudContainerFluid>
+</MudContainer> *@
