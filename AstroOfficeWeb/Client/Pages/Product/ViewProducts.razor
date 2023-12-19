@@ -1,5 +1,6 @@
 ﻿@page "/products"
 @page "/products/{CategorySno}/{CategoryName}"
+@* @page "/products/{CurrentPage:int}" *@
 
 @using AstroOfficeWeb.Client.Services
 @using AstroShared.DTOs
@@ -171,20 +172,40 @@
 
                 <div class="row">
                     <div class="col-12 d-flex justify-content-center scrolling-product">
-                        @*  <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Error" @onclick="PreviousPage" disabled="@IsFirstPage" Class="arrow-btn"></MudButton>
-                        <span>Page @CurrentPage of @TotalPages</span>
-                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowForward" Color="Color.Error" @onclick="NextPage" disabled="@IsLastPage" Class="arrow-btn"></MudButton> *@
+                        @* <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Error" @onclick="PreviousPage" disabled="@IsFirstPage" Class="arrow-btn"></MudButton> *@
+                        @* <span>Page @CurrentPage of @TotalPages</span> *@
+                        @* <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowForward" Color="Color.Error" @onclick="NextPage" disabled="@IsLastPage" Class="arrow-btn"></MudButton> *@
+
+
+
 
                         <nav>
                             <ul>
-                                <li><i class="fas fa-chevron-left"></i></li>
-                                <li><a href="javascript:void(0);">1</a></li>
-                                <li><a href="javascript:void(0);">2</a></li>
-                                <li><a href="javascript:void(0);">3</a></li>
-                                <li><a href="javascript:void(0);">4</a></li>
-                                <li><i class="fas fa-chevron-right"></i></li>
+                                <li>
+                                    <MudIconButton Icon="@Icons.Material.Filled.ArrowBackIos" aria-label="delete" @onclick="PreviousPage" disabled="@IsFirstPage"></MudIconButton>
+                                </li>
+
+                                @for (int pageNo = 1; pageNo <= TotalPages; pageNo++)
+                                {
+                                    <li><a href="javascript:void(0);">@pageNo</a></li>
+                                }
+                                <li>
+                                    <MudIconButton Icon="@Icons.Material.Filled.ArrowForwardIos" aria-label="delete" @onclick="NextPage" disabled="@IsLastPage"></MudIconButton>
+                                </li>
                             </ul>
                         </nav>
+
+
+                        @* <nav>
+                        <ul>
+                        <li><i class="fas fa-chevron-left"></i></li>
+                        <li><a href="javascript:void(0);">1</a></li>
+                        <li><a href="javascript:void(0);">2</a></li>
+                        <li><a href="javascript:void(0);">3</a></li>
+                        <li><a href="javascript:void(0);">4</a></li>
+                        <li><i class="fas fa-chevron-right"></i></li>
+                        </ul>
+                        </nav> *@
                     </div>
                 </div>
             </div>

@@ -12,6 +12,9 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public string? CategorySno { get; set; } = null;
         [Parameter]
         public string? CategoryName { get; set; } = null;
+        
+        [Parameter]
+        public int CurrentPage { get; set; } = 1;
 
         public List<ViewProductDTO>? Products { get; set; }
         private List<ViewProductDTO> FilteredProducts = new List<ViewProductDTO>();
@@ -19,7 +22,6 @@ namespace AstroOfficeWeb.Client.Pages.Product
         private List<PCategoryDTO>? CategoryDTOs { get; set; }
 
         private int PageSize { get; set; } = 40;
-        private int CurrentPage { get; set; } = 1;
         private int TotalPages => (int)Math.Ceiling((double)FilteredProducts.Count / PageSize);
 
         private bool IsFirstPage { get; set; }

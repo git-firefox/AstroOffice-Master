@@ -219,7 +219,6 @@ a {
         padding-left: 5px;
         min-width: 24px;
         display: flex;
-        height: 20px;
         font-weight: 600;
         font-size: 18px;
         border-radius: calc(var(--wd-brd-radius) / 1.5);

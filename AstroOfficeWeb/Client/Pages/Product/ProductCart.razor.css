@@ -11,6 +11,10 @@
 .fw-semibold {
     font-weight: 600;
 }
+.card {
+     box-shadow: none; 
+    margin-bottom: 1rem;
+}
 
 @media screen and (min-width: 576px) {
     .text-sm-end {
