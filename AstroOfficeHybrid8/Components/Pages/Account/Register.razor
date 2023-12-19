@@ -1,0 +1,101 @@
+﻿@page "/register"
+
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject IAuthenticationService AuthService
+@*
+<div class="login-page" style="min-height: 332.781px;">
+    <img src="images/loader-4.gif" class="astroOffice-logo-image mb-3" />
+    <div class="login-box card-frame">
+        <div style="position:relative;z-index:999!important;">
+            <div class="login-logo">
+                <h3>Registration Page</h3>
+            </div>
+            <div class="card">
+                <div class="card-body register-card-body">
+                    <p class="login-box-msg">Register a new membership</p>
+
+
+                    <EditForm Model="RegistrationModel" OnValidSubmit="OnValidSubmit_RegisterUser">
+                        <DataAnnotationsValidator />
+                        <div class="input-group mb-4">
+                            <InputText @bind-Value="RegistrationModel.UserName" class="form-control" placeholder="User Name" />
+                            <i class="fas fa-user"></i>
+                            <ValidationMessage For="@(() => RegistrationModel.UserName)" />
+                        </div>
+                        <div class="input-group mb-4">
+                            <InputText @ref="InputMobileNumber" @bind-Value="RegistrationModel.MobileNumber" class="form-control" placeholder="Mobile no." />
+                            <i class="fas fa-mobile"></i>
+                            <ValidationMessage For="@(() => RegistrationModel.MobileNumber)" />
+                        </div>
+                        <div class="input-group mb-4">
+                            <InputText @bind-Value="RegistrationModel.Password" type="@(PasswordIsClicked ? "text" : "password")" class="form-control" placeholder="Password" />
+                            <i class="fas @(PasswordIsClicked ? "fa-eye-slash" : "fa-eye")" @onclick="()=>{PasswordIsClicked = !PasswordIsClicked; }"></i>
+                            <ValidationMessage For="@(() => RegistrationModel.Password)" />
+                        </div>
+                        <div class="input-group">
+                            <InputText @bind-Value="RegistrationModel.RetypePassword" type="@(ConfirmPasswordIsClicked ? "text" : "password")" class="form-control" placeholder="Retype password" />
+                            <i class="fas @(ConfirmPasswordIsClicked ? "fa-eye-slash" : "fa-eye")" @onclick="()=>{ConfirmPasswordIsClicked = !ConfirmPasswordIsClicked; }"></i>
+                            <ValidationMessage For="@(() => RegistrationModel.RetypePassword)" />
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="icheck-primary">
+                                    <InputCheckbox @bind-Value="RegistrationModel.AgreeTerms" id="agreeTerms" />
+                                    <label for="agreeTerms">
+                                        I agree to the <a href="javascript:;">terms</a>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <button type="submit" class="btn btn-custom btn-block">Register</button>
+                            </div>
+                            <div class="col-12 mt-3 text-center">
+                                <a href="/login" class="text-center forgot-link">I already have a membership</a>
+                            </div>
+                        </div>
+                    </EditForm>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div> *@
+
+@using System.ComponentModel.DataAnnotations
+@using System.Text.RegularExpressions
+
+<div class="container-fluid">
+
+    <div class="row vertical-center">
+        <MudGrid Justify="Justify.Center">
+            <MudItem xs="12" sm="7">
+                <MudPaper Class="pa-4">
+
+
+                    <div class="text-center d-flex align-center justify-center mud-width-full">
+                        <h4 class="mb-4">Sign In</h4>
+                    </div>
+                    <div Class="d-flex align-center justify-center mud-width-full">
+                        <MudImage Src="images/loader-4.gif" Alt="Mony the dog" Class="rounded-lg" Height="100" />
+                    </div>
+
+                    <MudTextField T="string" Label="User Name" @bind-Value="RegistrationModel.UserName" Required="true" RequiredError="User name is required!" />
+                    <MudTextField T="string" Label="Mobile Number" @bind-Value="RegistrationModel.MobileNumber" Required="true" RequiredError="Mobile Number is required!" Mask="@(new PatternMask("00 0000 0000"))" />
+                    <MudTextField T="string" @bind-Value="RegistrationModel.Password" Required="true" RequiredError="Password is required!" @ref="passwordMatch" Label=" Password" Variant="Variant.Text" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonPasswordclick" AdornmentAriaLabel="Show Password" />
+                    <MudTextField T="string" @bind-Value="RegistrationModel.RetypePassword" Required="true" RequiredError="Retype password is required!" Validation="@(new Func<string, string>(PasswordMatch))" Label="Retype Password" Variant="Variant.Text" InputType="@RetypePasswordInput" Adornment="Adornment.End" AdornmentIcon="@RetypePasswordInputIcon" OnAdornmentClick="ButtonReTypePasswordclick" AdornmentAriaLabel="Retype Password" />
+
+                    <div class="d-flex align-center justify-space-between mt-5">
+                        <MudButton ButtonType="ButtonType.Submit" FullWidth="true" OnClick="OnValidSubmit_RegisterUser" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true">Sign Up</MudButton>
+                    </div>
+                    <div class="text-center mt-3">
+                        <NavLink Href="/login">Already have an account?</NavLink>                       
+                    </div>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </div>
+</div>
+
+

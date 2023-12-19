@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AstroOfficeMobile", "AstroO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AstroOfficeMobile8", "AstroOfficeMobile8\AstroOfficeMobile8.csproj", "{FD21D6EC-8A68-4EB1-803B-2DE9C35952BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AstroOfficeHybrid8", "AstroOfficeHybrid8\AstroOfficeHybrid8.csproj", "{29A7CAD9-3170-4929-BB03-FFD365C7EBC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AstroOfficeHybrid8", "AstroOfficeHybrid8\AstroOfficeHybrid8.csproj", "{29A7CAD9-3170-4929-BB03-FFD365C7EBC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,53 @@
 ﻿@page "/"
+@inject NavigationManager Navigation
 @attribute [Authorize]
+@* <MudAppBar Elevation="1">
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
+    <MudSpacer />
+</MudAppBar> *@
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<div class="container-fluid d-flex justify-content-center align-items-center">
+
+    <div class="row text-center d-flex align-items-center">
+        <MudContainer Fixed="true">
+            <div Class="d-flex align-center justify-center mud-width-full">
+                <MudImage Src="images/loader-4.gif"  Alt="Mony the dog" Class="rounded-lg" Height="250" />
+            </div>
+            <MudText Typo="Typo.h4">Welcome to Divya Astro Ashram</MudText>
+
+            <AuthorizeView>
+                <MudText Typo="Typo.subtitle1">Hello, <span class="badge rounded-pill bg-secondary">@context?.User?.Identity?.Name!</span> Explore the mystical world of astrology and discover insights into your life.</MudText>
+
+            </AuthorizeView>
+        </MudContainer>
+
+        <h2>Center This Text (Even if Wrapped) in all Viewport Sizes</h2>
+    </div>
+</div> <!-- Inner row -->
+@*
+
+<div class="container text-center text-light p-3">
+
+    <div class="welcome-content">
+
+
+        <img src="images/loader-4.gif" alt="Astrology">
+
+        <div class="astro-info">
+            <h2 class="mb-3">Who We Are?</h2>
+            <p>One of the top companies offering online astrology services is Divya Astro Ashram. We are committed to giving people who are looking for a better knowledge of themselves and their life path helpful insights, advice, and chances for personal progress.</p>
+            <p>Our platform offers a variety of features to help you explore and understand astrology, from personalized horoscopes to in-depth Kundali analysis.</p>
+        </div>
+
+        <button class="btn btn-primary btn-lg mt-4" @onclick="OnClick_BtnExplore">Explore Now</button>
+    </div>
+</div> *@
+
+@code
+{
+    private void OnClick_BtnExplore()
+    {
+        Navigation.NavigateTo("/", false, true);
+    }
+}

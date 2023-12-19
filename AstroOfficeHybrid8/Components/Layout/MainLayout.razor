@@ -2,31 +2,46 @@
 
 <MudThemeProvider />
 <MudDialogProvider />
-<MudSnackbarProvider />
+<MudSnackbarProvider  />
 
-<AuthorizeView>
-    <Authorized>
-        <CascadingValue Value="this">
-            <div class="page">
-                <div class="sidebar">
-                    <NavMenu />
-                </div>
 
-                <main>
-                    <article class="content px-4">
-                        @Body
-
-                    </article>
-                </main> 
-            </div>
-        </CascadingValue>
-    </Authorized>
-    <NotAuthorized>
-        @Body
-    </NotAuthorized>
-</AuthorizeView>
+<MudLayout>
+    <AuthorizeView>
+        <Authorized>
+            <MudAppBar Elevation="1">
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+            </MudAppBar>
+            <MudDrawer @bind-Open="@open" Breakpoint="@breakpoint" Elevation="1" Variant="@DrawerVariant.Responsive" PreserveOpenState="false">
+                <MudDrawerHeader>
+                    <MudText Typo="Typo.h6">My App</MudText>
+                </MudDrawerHeader>
+                <MudNavMenu>
+                    <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
+                    <MudNavLink Href="/weather" Match="NavLinkMatch.All">weather</MudNavLink>
+                    <MudNavLink Href="/counter" Match="NavLinkMatch.All">counter</MudNavLink>
+                    <MudNavLink Href="/logout" Match="NavLinkMatch.All">Logout</MudNavLink>
+                </MudNavMenu>
+            </MudDrawer>
+            <MudMainContent Class="px-2">
+                @Body
+            </MudMainContent>
+        </Authorized>
+        <NotAuthorized>
+            @Body
+        </NotAuthorized>
+    </AuthorizeView>
+</MudLayout>
 
 @code {
+
+    bool open = false;
+    bool preserveOpenState = false;
+    Breakpoint breakpoint = Breakpoint.Lg;
+
+    void ToggleDrawer()
+    {
+        open = !open;
+    }
     public string NavTitle { get; set; } = "Home";
     public async Task NotifyChangeAsync()
     {
