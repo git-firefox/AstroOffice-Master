@@ -2,23 +2,25 @@
     float: revert;
     font-size: 1.1rem;
     font-weight: 400;
-     width: 149px;
-     color: #000;
-     display: inline-block;
+    width: 149px;
+    color: #fab73a;
+    display: inline-block;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+    .card-title:hover{
+        color:#fff;
+    }
 
-
-.fa-heart:before {
-    display: block;
-    margin-bottom: 20px;
-    color: var(--color-gray-200);
-    font-weight: 400;
-    font-size: 3.8em;
-    line-height: 1;
-}
+    .fa-heart:before {
+        display: block;
+        margin-bottom: 20px;
+        color: var(--color-gray-200);
+        font-weight: 400;
+        font-size: 3.8em;
+        line-height: 1;
+    }
 .wd-wishlist-remove {
 padding: 0 !important;
 }
@@ -68,6 +70,10 @@ padding: 0 !important;
     vertical-align: middle;
     --action-btn-color: #333;
     --action-btn-hover-color: #777;
+    margin-left: 0;
+    margin-right: 0;
+    margin-inline-start: 0;
+    margin-inline-end: -12px;
 }
 .wd-action-btn.wd-style-text a {
      position: relative;
@@ -85,9 +91,53 @@ padding: 0 !important;
 .fa-cart-plus{
     text-align:center;
 }
+.card-icon {
+    display: flex;
+    flex-direction: column;
+    border-radius: 50%;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+    background-color: #fff;
+    transition: all .3s ease;
+    position: absolute;
+    top: 21px;
+    right: 10px;
+    opacity: 0;
+    transform: translateX(20px) translateZ(0);
+    width: 25px;
+    padding:8px 17px;
+    vertical-align: middle;
+    align-items: center;
+}
+
+    .card-icon .quick-view span:before {
+        content: "\f106";
+    }
+
+    .card-icon .quick-view a, .card-icon .wd-wishlist-btn a {
+        position: relative;
+        flex-direction: column;
+        height: 38px;
+        width: 41px;
+        font-weight: 400;
+        line-height: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--action-btn-color);
+        cursor: pointer;
+    }
+
+.card-body:hover .card-icon {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+}
+.card-icon .mud-button:hover, .card-icon .mud-button:focus-visible {
+    background-color: transparent;
+}
+
 /*.wd-action-btn.wd-style-text  a:before {
      margin-inline-end: 0.3em;
-     font-size: 110%;
+     font-size: 110%; 
      font-weight: 400;
 }
 

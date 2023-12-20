@@ -41,21 +41,22 @@
                     {
                         <div class="col-12 col-sm-6 col-md-4 col-xl-3">
                            @*  <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" OnClick="()=>OnCLick_ALickVRemoveWishlist(product)" aria-label="Remove from wishlist" Title="Remove from wishlist"></MudIconButton> *@
-                            <div class="wd-wishlist-product-actions">
-                                <div class="wd-wishlist-product-remove wd-action-btn wd-style-text wd-cross-icon">
-                                    @* <a href="javascript:void(0);" data-product-id="104162 " @onclick="()=>OnCLick_ALickVRemoveWishlist(product)">
-                                        <MudIconButton Icon="@Icons.Material.Filled.Close" Class="pa-0"></MudIconButton>Remove
-
-                                    </a> *@
-                                    <MudButton StartIcon="@Icons.Material.Filled.Close" OnClick="()=>OnCLick_ALickVRemoveWishlist(product)" Class="pa-0" >Remove</MudButton>
-                                   </div>
-                                 </div>
+                           
                         <div class="card-body" style="transform: rotate(0);">
                                 <div class="card card-img-actions bg-transparent " @onclick="()=>OnCLick_ALickViewProdcut(product)">
                                     <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="card-img img-fluid">
 
                                     <img src="https://www.astromantra.com/wp-content/uploads/2022/03/IMG_3212-555x555.jpg" alt="@product.Name" title="@product.Name" class="hover-img img-fluid" />
 
+                                </div>
+                                <div class=" card-icon wd-wishlist-product-actions">
+                                    <div class="wd-wishlist-product-remove wd-action-btn wd-style-text wd-cross-icon">
+                                                @* <a href="javascript:void(0);" data-product-id="104162 " @onclick="()=>OnCLick_ALickVRemoveWishlist(product)">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Close" Class="pa-0"></MudIconButton>Remove
+
+                                    </a> *@
+                                        <a><MudButton StartIcon="@Icons.Material.Filled.Close" OnClick="()=>OnCLick_ALickVRemoveWishlist(product)" Class="pa-0 p-0"></MudButton></a>
+                                    </div>
                                 </div>
                                 <div class=" text-center">
                                     <h5 class="card-title">@product.Name</h5>

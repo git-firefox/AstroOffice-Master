@@ -1,24 +1,23 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+ 
+
 /*html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }*/
-
-/*h1:focus {
+    /*h1:focus {
     outline: none;
 }*/
-
-/*a, .btn-link {
+    /*a, .btn-link {
     color: #0071c1;
 }*/
-
-/*.btn-primary {
+    /*.btn-primary {
     color: #fff;
     background-color: #1b6ec2;
     border-color: #1861ac;
 }*/
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+
+    input:: -webkit-outer-spin-button, input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
@@ -41,10 +40,12 @@ input[type=number] {
 }
 
 body {
-    background: #fdeec0;
-    /*background-color: rgb(145, 13, 13) !important;*/
+/*    background: #fdeec0;*/
+    background-color: rgb(145, 13, 13) !important;
 }
-
+h1{
+    color:#fff;
+}
 /*#blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -197,14 +198,15 @@ header {
 
 
 .btn-custom {
-    background: #17384e;
+    background: #fab73a;
     color: #fff;
-    border: 1px solid #17384e;
+    border: 1px solid #fab73a;
     box-shadow: none;
 }
 
     .btn-custom:hover {
-        color: #fff;
+        color: #fab73a;
+        background: #fff;
     }
 
     .btn-custom:not(:disabled):not(.disabled).active, .btn-custom:not(:disabled):not(.disabled):active, .show > .btn-custom.dropdown-toggle {
@@ -771,3 +773,12 @@ section .section-overlay {
     .confirmation-modal .modal-content .modal-footer {
         border-top: 1px solid #910d0d;
     }
+.mud-input:focus-within ~ label.mud-input-label.mud-input-label-inputcontrol {
+    color: #910d0d !important;
+}
+.mud-input.mud-input-underline:after {
+    border-bottom: 1px solid var(--mud-palette-lines-inputs) !important;
+}
+.mud-button:hover, .mud-button:focus-visible {
+    background-color:transparent;
+}
