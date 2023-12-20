@@ -1,6 +1,8 @@
-﻿using AstroOfficeHybrid8.Client.Services;
+﻿//using AstroOfficeHybrid8.Client.Services;
 using AstroOfficeHybrid8.Services;
 using AstroOfficeHybrid8.Services.IServices;
+using AstroOfficeServices;
+using AstroOfficeServices.IServices;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
@@ -35,7 +37,8 @@ namespace AstroOfficeHybrid8
             builder.Services.AddScoped<IAuthenticationStateService, AuthenticationStateService>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<ISwaggerApiService, SwaggerApiService>();
-
+            builder.Services.AddScoped<ProductService>();
+            builder.Services.AddScoped<KundaliHistroyService>();
             return builder.Build();
         }
     }

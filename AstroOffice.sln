@@ -31,6 +31,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AstroOfficeMobile8", "Astro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AstroOfficeHybrid8", "AstroOfficeHybrid8\AstroOfficeHybrid8.csproj", "{29A7CAD9-3170-4929-BB03-FFD365C7EBC0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AstroOfficeSharedComponents", "AstroOfficeSharedComponents\AstroOfficeSharedComponents.csproj", "{1F4DDA87-959D-4517-82D6-B87612750C4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AstroOfficeServices", "AstroOfficeServices\AstroOfficeServices.csproj", "{98F0A76C-3571-435C-9CC5-5B9303D47A9D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +103,14 @@ Global
 		{29A7CAD9-3170-4929-BB03-FFD365C7EBC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29A7CAD9-3170-4929-BB03-FFD365C7EBC0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{29A7CAD9-3170-4929-BB03-FFD365C7EBC0}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{1F4DDA87-959D-4517-82D6-B87612750C4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F4DDA87-959D-4517-82D6-B87612750C4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F4DDA87-959D-4517-82D6-B87612750C4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F4DDA87-959D-4517-82D6-B87612750C4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98F0A76C-3571-435C-9CC5-5B9303D47A9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98F0A76C-3571-435C-9CC5-5B9303D47A9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98F0A76C-3571-435C-9CC5-5B9303D47A9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98F0A76C-3571-435C-9CC5-5B9303D47A9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

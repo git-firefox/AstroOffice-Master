@@ -1,4 +1,5 @@
 ﻿using AstroOfficeHybrid8.Services.IServices;
+using AstroOfficeServices.IServices;
 using AstroOfficeWeb.Shared.Models;
 using AstroShared.Helper;
 using AstroShared.ViewModels;
@@ -49,8 +50,8 @@ namespace AstroOfficeHybrid8.Components.Pages.Account
         private async Task OnFocusOut_MobileNumber(FocusEventArgs e)
         {
 
-            var mobileNumberObj = await JSRuntime.GetInputMaskValueAsync(InputMobileNumber?.Element);
-            LoginModel.MobileNumber = mobileNumberObj.ToMobileNumber();
+            //var mobileNumberObj = await JSRuntime.GetInputMaskValueAsync(InputMobileNumber?.Element);
+            //LoginModel.MobileNumber = mobileNumberObj.ToMobileNumber();
         }
 
         //protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -71,12 +72,12 @@ namespace AstroOfficeHybrid8.Components.Pages.Account
 
             if (response.Success)
             {
-                await JSRuntime.ShowToastAsync(response?.Message ?? "Success!", SwalIcon.Success);
+                //await JSRuntime.ShowToastAsync(response?.Message ?? "Success!", SwalIcon.Success);
                // await MobileOtpModal!.ShowAsync();
             }
             else
             {
-                await JSRuntime.ShowToastAsync(response.Message ?? "Something is wrong please try again later.", SwalIcon.Error);
+                //await JSRuntime.ShowToastAsync(response.Message ?? "Something is wrong please try again later.", SwalIcon.Error);
             }
         }
     }
