@@ -1,17 +1,21 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
+@* <MudThemeProvider /> *@
 <MudDialogProvider />
-<MudSnackbarProvider  />
-
+<MudSnackbarProvider />
+<MudThemeProvider Theme="_themeManager.Theme" />
+@* <MudAppBar Elevation="_themeManager.AppBarElevation"></MudAppBar> *@
+@* <MudDrawer @bind-Open="_drawerOpen" ClipMode="_themeManager.DrawerClipMode" Elevation="_themeManager.DrawerElevation"></MudDrawer> *@
 
 <MudLayout>
+    <MudThemeManagerButton OnClick="@((e) => OpenThemeManager(true))" />
+    <MudThemeManager Open="_themeManagerOpen" OpenChanged="OpenThemeManager" Theme="_themeManager" ThemeChanged="UpdateTheme" />
     <AuthorizeView>
         <Authorized>
             <MudAppBar Elevation="1">
                 <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
             </MudAppBar>
-            <MudDrawer @bind-Open="@open" Breakpoint="@breakpoint" Elevation="1" Variant="@DrawerVariant.Responsive" PreserveOpenState="false">
+            <MudDrawer @bind-Open="@open" ClipMode="_themeManager.DrawerClipMode" Elevation="_themeManager.DrawerElevation" Breakpoint="@breakpoint" Variant="@DrawerVariant.Responsive" PreserveOpenState="false">
                 <MudDrawerHeader>
                     <MudText Typo="Typo.h6">My App</MudText>
                 </MudDrawerHeader>
@@ -19,7 +23,10 @@
                     <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
                     <MudNavLink Href="/weather" Match="NavLinkMatch.All">weather</MudNavLink>
                     <MudNavLink Href="/counter" Match="NavLinkMatch.All">counter</MudNavLink>
+                    <MudNavLink Href="/saved-kundalis" Match="NavLinkMatch.All">Saved Kundali</MudNavLink>
                     <MudNavLink Href="/logout" Match="NavLinkMatch.All">Logout</MudNavLink>
+                    <MudNavLink Href="/check" Match="NavLinkMatch.All">check</MudNavLink>
+                    
                 </MudNavMenu>
             </MudDrawer>
             <MudMainContent Class="px-2">
@@ -30,6 +37,14 @@
             @Body
         </NotAuthorized>
     </AuthorizeView>
+
+    @*  @if(DeviceInfo.Platform== DevicePlatform.Android)
+    {
+
+    } *@
+
+
+
 </MudLayout>
 
 @code {
@@ -47,4 +62,24 @@
     {
         await InvokeAsync(StateHasChanged);
     }
+
+    private ThemeManagerTheme _themeManager = new ThemeManagerTheme();
+    public bool _themeManagerOpen = false;
+
+    void OpenThemeManager(bool value)
+    {
+        _themeManagerOpen = value;
+    }
+
+    void UpdateTheme(ThemeManagerTheme value)
+    {
+        _themeManager = value;
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        StateHasChanged();
+    }
+
 }
