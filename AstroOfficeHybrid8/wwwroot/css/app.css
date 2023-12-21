@@ -2,6 +2,18 @@
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+/*html, body {
+
+    font-family: 'Philosopher', sans-serif;
+    background-color: rgb(145, 13, 13) !important;
+    color: yellow;
+}
+h1 {
+    font-family: 'Philosopher', sans-serif;
+    background-color: rgb(145, 13, 13) !important;
+    color: yellow;
+}
+*/
 a, .btn-link {
     color: #006bb7;
 }

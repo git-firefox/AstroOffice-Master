@@ -1,2 +1,15 @@
-﻿@page "/check"
-<ViewProducts></ViewProducts>
+﻿@page "/products"
+
+
+<AstroOfficeSharedComponents.ViewProducts CategoryName="CategoryName" CategorySno="CategorySno" CurrentPage="CurrentPage"></AstroOfficeSharedComponents.ViewProducts>
+
+@code{
+    [Parameter]
+    public string? CategorySno { get; set; } = null;
+    [Parameter]
+    public string? CategoryName { get; set; } = null;
+
+    [Parameter]
+    public int CurrentPage { get; set; } = 1;
+
+}

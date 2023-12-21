@@ -1,0 +1,30 @@
+﻿.table-centered td, .table-centered th {
+    vertical-align: middle !important;
+}
+
+.avatar-lg {
+    height: 4.5rem;
+    width: 4.5rem;
+}
+
+
+.fw-semibold {
+    font-weight: 600;
+}
+
+.card {
+    box-shadow: none;
+    margin-bottom: 1rem;
+}
+
+@media screen and (min-width: 576px) {
+    .text-sm-end {
+        text-align: right !important;
+    }
+}
+
+@media (min-width: 576px) {
+    .d-sm-inline-block {
+        display: inline-block !important;
+    }
+}

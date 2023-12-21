@@ -21,7 +21,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\AstroOfficeSharedComponents\AstroOfficeSharedComponents.csproj" />
 		<ProjectReference Include="..\..\AstroShared\AstroShared.csproj" />
 		<ProjectReference Include="..\Shared\AstroOfficeWeb.Shared.csproj" />
 	</ItemGroup>

@@ -1,0 +1,12 @@
+﻿@page "/product/{ProductSno:long}/{ProductName}"
+
+<AstroOfficeSharedComponents.ViewProduct ProductName="@ProductName" ProductSno="ProductSno"></AstroOfficeSharedComponents.ViewProduct>
+
+
+@code{
+    [Parameter]
+    public long ProductSno { get; set; }
+
+    [Parameter]
+    public string? ProductName { get; set; }
+}

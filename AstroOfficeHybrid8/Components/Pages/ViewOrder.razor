@@ -1,0 +1,8 @@
+﻿@page "/view-order/{OrderId:long}"
+
+<AstroOfficeSharedComponents.ViewOrder OrderId="OrderId"></AstroOfficeSharedComponents.ViewOrder>
+
+@code{
+    [Parameter]
+    public long OrderId { get; set; }
+}

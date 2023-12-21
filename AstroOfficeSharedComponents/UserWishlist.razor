@@ -1,0 +1,96 @@
+@page "/user-wishlist"
+@using AstroOfficeServices
+@using AstroShared.DTOs
+
+@inject ProductService ProductService
+@inject NavigationManager NavigationManager
+@* @inject StateContainerService StateContainerService *@
+@inject IJSRuntime JSRuntime
+@* @inject ILocalStorageService LocalStorage *@
+
+
+<Container Name="My Wishlist">
+    <Header>
+        @if (ViewProductDTOs != null && ViewProductDTOs.Any())
+        {
+            <button class="btn btn-custom">Add To Wishlist</button>
+        }
+    </Header>
+    <ChildContent>
+        <div class="row">
+            @if (ViewProductDTOs == null)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+
+                    <div class="col-12 col-sm-6 col-md-4 col-xl-2">
+                        <div class="card bg-transparent">
+                            <MudSkeleton Class="card-img-top" SkeletonType="SkeletonType.Rectangle" Height="150px" />
+                            <div class="card-body text-center">
+                                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="50px" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                if (ViewProductDTOs.Any())
+                {
+                    foreach (var product in ViewProductDTOs)
+                    {
+                        <div class="col-12 col-sm-6 col-md-4 col-xl-3">
+                            @*  <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" OnClick="()=>OnCLick_ALickVRemoveWishlist(product)" aria-label="Remove from wishlist" Title="Remove from wishlist"></MudIconButton> *@
+
+                            <div class="card-body" style="transform: rotate(0);">
+                                <div class="card card-img-actions bg-transparent " @onclick="()=>OnCLick_ALickViewProdcut(product)">
+                                    <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="card-img img-fluid">
+
+                                    <img src="https://www.astromantra.com/wp-content/uploads/2022/03/IMG_3212-555x555.jpg" alt="@product.Name" title="@product.Name" class="hover-img img-fluid" />
+
+                                </div>
+                                <div class=" card-icon wd-wishlist-product-actions">
+                                    <div class="wd-wishlist-product-remove wd-action-btn wd-style-text wd-cross-icon">
+                                        @* <a href="javascript:void(0);" data-product-id="104162 " @onclick="()=>OnCLick_ALickVRemoveWishlist(product)">
+                            <MudIconButton Icon="@Icons.Material.Filled.Close" Class="pa-0"></MudIconButton>Remove
+
+                            </a> *@
+                                        <a><MudButton StartIcon="@Icons.Material.Filled.Close" OnClick="()=>OnCLick_ALickVRemoveWishlist(product)" Class="pa-0 p-0"></MudButton></a>
+                                    </div>
+                                </div>
+                                <div class=" text-center">
+                                    <h5 class="card-title">@product.Name</h5>
+
+                                    <MudStack Justify="Justify.Center" Row="true">
+
+                                        <button type="button" class="btn bg-cart" b-6pt8dzqd51=""><!--!--><i class="fa fa-cart-plus mr-2" b-6pt8dzqd51=""></i> Add to cart</button>
+
+                                    </MudStack>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-md-12">
+                        <div class="card shadow-none bg-transparent">
+                            <div class="card-body">
+                                <div class="col-sm-12 text-center">
+                                    <h3 class="fas fa-heart"></h3>
+                                    <h3>This wishlist is empty.</h3>
+                                    <h4>You don't have any products in the wishlist yet.</h4>
+                                    <h4>You will find a lot of interesting products on our "Shop" page. :)</h4>
+                                    <a href="products" class="btn btn-custom fw-semibold"><i class="fas fa-arrow-left px-2"></i> Continue Shopping</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </ChildContent>
+</Container>
+
