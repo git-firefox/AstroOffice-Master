@@ -1,5 +1,6 @@
 ﻿using AstroShared.DTOs;
 using AstroShared.Helper;
+using MudBlazor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,17 +39,19 @@ namespace AstroOfficeSharedComponents
         }
         private async Task OnCLick_BtnAddToCart(ViewProductDTO productDTO)
         {
+
             var tempQuantity = productDTO!.ProductQuantity + 1;
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
             if (tempQuantity < 1 || tempQuantity > 5)
             {
-                await JSRuntime.ShowToastAsync($"Unable to add more products to your cart. Limit exceeded.", SwalIcon.Error);
+                Snackbar.Add($"Unable to add more products to your cart. Limit exceeded.", Severity.Error);
                 return;
             }
             var result = await ProductService.IsAddToCart(productDTO.Sno);
             if (result)
             {
                 productDTO!.ProductQuantity += 1;
-                await JSRuntime.ShowToastAsync($"{productDTO.Name} Added to your cart.", SwalIcon.Success);
+                Snackbar.Add($"{productDTO.Name} Added to your cart.", Severity.Success);                
             }
         }
     }
