@@ -39,6 +39,8 @@ namespace AstroOfficeHybrid8
             builder.Services.AddScoped<ISwaggerApiService, SwaggerApiService>();
             builder.Services.AddScoped<ProductService>();
             builder.Services.AddScoped<KundaliHistroyService>();
+            builder.Services.AddScoped<CountryService>();
+            builder.Services.AddScoped<StripePayment>();
             return builder.Build();
         }
     }

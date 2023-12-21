@@ -1,0 +1,182 @@
+﻿.card-title {
+    float: revert;
+    font-size: 1.1rem;
+    font-weight: 400;
+    width: 149px;
+    color: #fab73a;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+    .card-title:hover {
+        color: #fff;
+    }
+
+.fa-heart:before {
+    display: block;
+    margin-bottom: 20px;
+    color: var(--color-gray-200);
+    font-weight: 400;
+    font-size: 3.8em;
+    line-height: 1;
+}
+
+.wd-wishlist-remove {
+    padding: 0 !important;
+}
+
+.card {
+    box-shadow: none;
+}
+
+.card-body {
+    padding: 0 !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+.card-img-actions {
+    overflow: hidden;
+    border-radius: 25px;
+    position: relative;
+}
+
+.card-body .card-img-actions img {
+    transition: opacity 0.2s ease,transform 2s cubic-bezier(0, 0, 0.50,1.18)
+}
+
+.card-body:hover .card-img-actions img {
+    opacity: 0;
+    transform: scale(1.09);
+}
+
+.hover-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.2s ease,transform 2s cubic-bezier(0, 0, 0.50,1.18);
+    transform: scale(1);
+}
+
+.card-body:hover .card-img-actions img.hover-img {
+    opacity: 1;
+    transform: scale(1.09);
+}
+
+.wd-wishlist-product-remove {
+    font-size: 90%;
+}
+
+.wd-action-btn {
+    display: inline-flex;
+    vertical-align: middle;
+    --action-btn-color: #333;
+    --action-btn-hover-color: #777;
+    margin-left: 0;
+    margin-right: 0;
+    margin-inline-start: 0;
+    margin-inline-end: -12px;
+}
+
+    .wd-action-btn.wd-style-text a {
+        position: relative;
+        line-height: 1;
+        font-weight: 600;
+    }
+
+    .wd-action-btn a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #333;
+        cursor: pointer;
+    }
+
+.fa-cart-plus {
+    text-align: center;
+}
+
+.card-icon {
+    display: flex;
+    flex-direction: column;
+    border-radius: 50%;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+    background-color: #fff;
+    transition: all .3s ease;
+    position: absolute;
+    top: 21px;
+    right: 10px;
+    opacity: 0;
+    transform: translateX(20px) translateZ(0);
+    width: 25px;
+    padding: 8px 17px;
+    vertical-align: middle;
+    align-items: center;
+}
+
+    .card-icon .quick-view span:before {
+        content: "\f106";
+    }
+
+    .card-icon .quick-view a, .card-icon .wd-wishlist-btn a {
+        position: relative;
+        flex-direction: column;
+        height: 38px;
+        width: 41px;
+        font-weight: 400;
+        line-height: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--action-btn-color);
+        cursor: pointer;
+    }
+
+.card-body:hover .card-icon {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+}
+
+.card-icon .mud-button:hover, .card-icon .mud-button:focus-visible {
+    background-color: transparent;
+}
+
+/*.wd-action-btn.wd-style-text  a:before {
+     margin-inline-end: 0.3em;
+     font-size: 110%; 
+     font-weight: 400;
+}
+
+.wd-cross-icon a:before {
+    content: "\f112";
+}
+
+.wd-action-btn  a:before {
+    transition: opacity .15s ease;
+    font-family: "woodmart-font";
+}
+.wd-action-btn a:after {
+    position: absolute;
+    top: calc(50% - 0.5em);
+    left: 0;
+    opacity: 0;
+    border: 1px solid rgba(0,0,0,0);
+    border-left-color: var(--color-gray-900);
+    transition: opacity .2s ease;
+    border-radius: 50%;
+    vertical-align: middle;
+    content: "";
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+}*/
+/*.content .row{
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}*/

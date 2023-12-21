@@ -13,13 +13,12 @@ namespace AstroOfficeServices
     public class ProductService
     {
         private readonly ISwaggerApiService _swagger;
-        private readonly IJSRuntime _jsRuntime;
+        //private readonly IJSRuntime _jsRuntime;
         private readonly NavigationManager _navigation;
 
-        public ProductService(ISwaggerApiService swagger, IJSRuntime jsRuntime, NavigationManager navigation)
+        public ProductService(ISwaggerApiService swagger, NavigationManager navigation)
         {
             _swagger = swagger;
-            _jsRuntime = jsRuntime;
             _navigation = navigation;
         }
 
@@ -61,7 +60,7 @@ namespace AstroOfficeServices
             }; var response = await _swagger.GetAsync<ApiResponse<List<ImagesDTO>>>(ProductApiConst.GET_ProductImages, queryParams);
             if (!response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return null;
             }
             return response.Data;
@@ -96,12 +95,12 @@ namespace AstroOfficeServices
             var response = await _swagger.PostAsync<ProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.POST_AddProduct, saveProduct);
             if (response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message);
+               // await _jsRuntime.ShowToastAsync(response.Message);
                 _navigation.NavigateTo("/manage-products");
             }
             else
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
             }
         }
         public async Task UpdateProduct(ProductDTO saveProduct, long sno)
@@ -109,12 +108,12 @@ namespace AstroOfficeServices
             var response = await _swagger.PutAsync<ProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.PUT_UpdateProduct + "?sno=" + sno, saveProduct);
             if (response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message);
+               // await _jsRuntime.ShowToastAsync(response.Message);
                 _navigation.NavigateTo("/manage-products");
             }
             else
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
             }
         }
         public async Task<bool> IsDeletedSelectdProduct(long sno)
@@ -127,12 +126,12 @@ namespace AstroOfficeServices
             var response = await _swagger.DeleteAsync<ApiResponse<ViewProductDTO>>(ProductApiConst.DELETE_Product, queryParams);
             if (response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message);
+               // await _jsRuntime.ShowToastAsync(response.Message);
                 return true;
             }
             else
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return false;
             }
         }
@@ -146,12 +145,12 @@ namespace AstroOfficeServices
             var response = await _swagger.DeleteAsync<ApiResponse<CategoryDTO>>(ProductApiConst.DELETE_Category, queryParams);
             if (response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message);
+               // await _jsRuntime.ShowToastAsync(response.Message);
                 return true;
             }
             else
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return false;
             }
         }
@@ -163,7 +162,7 @@ namespace AstroOfficeServices
             var response = await _swagger.PostAsync<AddToCartRequest, ApiResponse<string>>(ProductApiConst.POST_AddToShoppingCart, request);
             if (!response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return false;
             }
             return true;
@@ -174,7 +173,7 @@ namespace AstroOfficeServices
             var response = await _swagger.GetAsync<ApiResponse<List<CartItemDTO>>>(ProductApiConst.GET_UserShoppingCart);
             if (!response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return null;
             }
             return response?.Data;
@@ -185,7 +184,7 @@ namespace AstroOfficeServices
             var response = await _swagger.PutAsync<List<CartItemDTO>, ApiResponse<string>>(ProductApiConst.PUT_UpdateShoppingCart, cartItemDTOs!);
             if (!response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return false;
             }
             return response!.Success;
@@ -197,7 +196,7 @@ namespace AstroOfficeServices
             var response = await _swagger.GetAsync<ApiResponse<List<AddressDTO>>>(ProductApiConst.GET_UserAddresses);
             if (!response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return null;
             }
             return response?.Data;
@@ -209,11 +208,11 @@ namespace AstroOfficeServices
             if (response!.Success)
             {
                 addressDTO.Sno = response!.Data!.Sno;
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
             }
             else
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
             }
         }
 
@@ -224,7 +223,7 @@ namespace AstroOfficeServices
             {
                 return true;
             }
-            await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+           // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
             return false;
         }
 
@@ -236,11 +235,11 @@ namespace AstroOfficeServices
         //        categoryDTO.AddedDate = response!.Data!.AddedDate;
         //        categoryDTO.LastModifiedDate = response!.Data!.LastModifiedDate;
         //        categoryDTO.Sno = response!.Data!.Sno;
-        //        await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
+        //       // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
         //    }
         //    else
         //    {
-        //        await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+        //       // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
         //    }
         //}
 
@@ -257,12 +256,12 @@ namespace AstroOfficeServices
             var response = await _swagger.PostAsync<PlaceOrderRequest, ApiResponse<string>>(ProductApiConst.POST_PlaceOrder, request);
             if (response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
                 _navigation.NavigateTo("/order-success", true, true);
             }
             else
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
             }
         }
 
@@ -271,7 +270,7 @@ namespace AstroOfficeServices
             var response = await _swagger.GetAsync<GetOrderResponse>(ProductApiConst.GET_UserOrder, new Dictionary<string, string> { { "orderSno", orderSno.ToStringX() } });
             if (!response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return default;
             }
             return response;
@@ -282,7 +281,7 @@ namespace AstroOfficeServices
 
             if (!response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return null;
             }
             return response.Data;
@@ -293,7 +292,7 @@ namespace AstroOfficeServices
         //    var response = await _swagger.GetAsync<ApiResponse<List<CategoryDialoge>>>(ProductApiConst.GET_Categories);
         //    if (!response!.Success)
         //    {
-        //        await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+        //       // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
         //        return null;
         //    }
         //    return response.Data;
@@ -305,7 +304,7 @@ namespace AstroOfficeServices
             var response = await _swagger.GetAsync<ApiResponse<List<PCategoryDTO>>>(ProductApiConst.GET_ShopCategories);
             if (!response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return null;
             }
             return response.Data;
@@ -317,7 +316,7 @@ namespace AstroOfficeServices
 
             if (!response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return null;
             }
             return response.Data;
@@ -329,7 +328,7 @@ namespace AstroOfficeServices
 
             if (!response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return null;
             }
             return response.Data;
@@ -340,7 +339,7 @@ namespace AstroOfficeServices
 
             if (!response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return false;
             }
             return response.Success;
@@ -352,11 +351,11 @@ namespace AstroOfficeServices
 
             if (!response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
             }
             else
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
             }
         }
 
@@ -366,7 +365,7 @@ namespace AstroOfficeServices
 
             if (!response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+               // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
             }
             else
             {

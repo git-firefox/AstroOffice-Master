@@ -2,6 +2,7 @@
 using AstroShared.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,9 +57,10 @@ namespace AstroOfficeSharedComponents
         private async Task OnClick_BtnAddToCart(ViewProductDTO product)
         {
             var tempQuantity = product!.ProductQuantity + 1;
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
             if (tempQuantity < 1 || tempQuantity > 5)
             {
-                await JSRuntime.ShowToastAsync($"Unable to add more products to your cart. Limit exceeded.", SwalIcon.Error);
+                Snackbar.Add($"Unable to add more products to your cart. Limit exceeded.", Severity.Error);                
                 return;
             }
 
@@ -66,7 +68,7 @@ namespace AstroOfficeSharedComponents
             if (isAddedToCart)
             {
                 product.ProductQuantity += 1;
-                await JSRuntime.ShowToastAsync($"\"{product.Name}\" added to your cart.", SwalIcon.Success);
+                Snackbar.Add($"\"{product.Name}\" added to your cart.", Severity.Success);                
             }
         }
 
@@ -96,7 +98,7 @@ namespace AstroOfficeSharedComponents
             {
                 FilteredProducts = FilteredProducts.OrderBy(x => x.Price).ToList();
             }
-            else if (filter == "Max-Low")
+            else if (filter == "Max-Low") 
             {
                 FilteredProducts = FilteredProducts.OrderByDescending(x => x.Price).ToList();
             }
