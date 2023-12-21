@@ -125,43 +125,42 @@ a {
 
 
 .shop-card {
-    background: transparent;
+    background: #fff;
     box-shadow: none;
-    padding: 0;
+    padding: 7px;
     border: none;
+    border-radius: 10px;
 }
 
-    .shop-card .card-body {
+.shop-card .card-body {
         padding: 0;
-    }
+}
 
         
 
-            .shop-card .card-body .card-img-actions img {
+.shop-card .card-body .card-img-actions img {
                 width: 100%;
                 height: 100%;
                 object-fit: contain;
                 border-radius: 15px;
-            }
+  }
 
-        .shop-card .card-body a {
-            font-size: 16px;
-            width: 200px;
-            font-weight: 600;
-            color: #e9af00;
-            margin: 0;
-            display: inline-block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-            .shop-card .card-body a:hover{
-                color:#fff;
-            }
-            .shop-card h3 {
-                font-size: 16px;
-                color:#fff;
-            }
+ .shop-card .card-body a {
+       font-size: 16px;
+       width: 173px;
+       font-weight: 600;
+       color: #e9af00;
+      margin: 0;
+       display: inline-block;
+       white-space: nowrap;
+       overflow: hidden;
+       text-overflow: ellipsis;
+}
+
+.shop-card h3 {
+          font-size: 16px;
+                
+}
 
 .card-img-actions[b-6pt8dzqd51] {
     overflow:hidden;
@@ -262,5 +261,10 @@ label {
 @media (max-width:767px){
     .categories{
         height:auto;
+    }
+}
+@media (max-width:1199px){
+    .shop-card .card-body a[b-6pt8dzqd51]{
+        width:122px
     }
 }

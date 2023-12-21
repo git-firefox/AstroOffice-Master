@@ -4,7 +4,9 @@ using System.Text;
 using AstroOfficeWeb.Client.Services.IService;
 using AstroOfficeWeb.Shared.Models;
 using AstroShared.Helper;
+using AstroShared.Utilities;
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Forms;
 using Newtonsoft.Json;
 
 namespace AstroOfficeWeb.Client.Services
@@ -26,6 +28,43 @@ namespace AstroOfficeWeb.Client.Services
             var content = JsonConvert.SerializeObject(request);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
             var response = await _client.PostAsync(_client.BaseAddress + url, bodyContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var contentTemp = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<TResponse>(contentTemp);
+                return result;
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized) { };
+
+            return default;
+        }
+
+        public async Task<TResponse?> PostWithMultipartFormDataContentAsync<TResponse>(string url, List<FileData> files)
+        {
+            var multipartContent = new MultipartFormDataContent();
+
+            //if (request != null)
+            //{
+            //    var content = JsonConvert.SerializeObject(request);
+            //    var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            //    multipartContent.Add(bodyContent, "json");
+            //}
+
+            foreach (var file in files)
+            {
+
+                var fileStreamContent = new StreamContent(file.File);
+                fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                {
+                    Name = "files",
+                    FileName = file.FileName,
+                };
+
+                multipartContent.Add(fileStreamContent);
+            }
+
+            var response = await _client.PostAsync(_client.BaseAddress + url, multipartContent);
 
             if (response.IsSuccessStatusCode)
             {

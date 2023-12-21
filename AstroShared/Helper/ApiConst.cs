@@ -118,6 +118,12 @@
         public static string POST_UpdateRechargeTokenBalance = Base + "UpdateRechargeTokenBalance";
     }
 
+    public static class FileApiConst
+    {
+        public static string Base = "api/File/";
+        public static string POST_SaveProductImages = Base + "SaveProductImages";
+    }
+
     public static class ProductApiConst
     {
         public static string Base = "api/Product/";

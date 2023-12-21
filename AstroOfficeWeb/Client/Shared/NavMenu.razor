@@ -14,11 +14,11 @@
                     <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser + "," + ApplicationConst.Role_Astrologer)>
                         <Authorized>
 
-                            @* Dashboard *@
+                            @* Home *@
                             <li>
                                 <a href="/" class="nav-link">
-                                    <i class="fas fa-tachometer-alt"></i>
-                                    Dashboard
+                                    <i class="fas fa-home"></i>
+                                    Home
                                 </a>
                             </li>
 
@@ -29,42 +29,78 @@
                                     Karan
                                 </a>
                             </li>
-
+                            <div class="dropdown">
+                                <button class="title-dropdown " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                     <i class="fas fa-history"></i>Kundalis
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="/viewed-kundalis"  ><i class="fas fa-history"> </i>
+                                        Viewed Kundalis
+                                    </a>
+                                    <a class="dropdown-item" href=" /saved-kundalis"  > <i class="fas fa-table"> </i>
+                                        Saved Kundalis
+                                    </a>
+                                    
+                                </div>
+                            </div>
                             @* Viewed Kundalis *@
-                            <li>
+                           @*  <li>
                                 <a href="/viewed-kundalis" class="nav-link">
                                     <i class="fas fa-history"></i>
                                     Viewed Kundalis
                                 </a>
                             </li>
-
+ *@
                             @* Saved Kundalis *@
-                            <li>
+                          @*   <li>
                                 <a href="/saved-kundalis" class="nav-link">
                                     <i class="fas fa-table"></i>
                                     Saved Kundalis
                                 </a>
-                            </li>
+                            </li> *@
                         </Authorized>
                     </AuthorizeView>
 
                     <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser)>
                         <Authorized>
                             @* Transactions *@
-                            <li>
+                            @* <li>
                                 <a href="/transactions" class="nav-link">
                                     <i class="fas fa-table"></i>
                                     Transactions
                                 </a>
-                            </li>
+                            </li> *@
 
                             @* Recharge *@
-                            <li>
+                           @*  <li>
                                 <a href="/token-recharge" class="nav-link">
                                     <i class="fas fa-circle"></i>
                                     Recharge
                                 </a>
-                            </li>
+                            </li> *@
+                            <div class="dropdown">
+                                <button class="title-dropdown " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-user"></i>profile
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="/transactions">
+                                        <i class="fas fa-table"></i>
+                                        Transactions
+                                    </a>
+                                    <a class="dropdown-item" href="/token-recharge">
+                                        <i class="fas fa-circle"></i>
+                                        Recharge
+                                    </a>
+                                    <a class="dropdown-item" href="/my-orders" title="Orders">
+                                        <i class="fas fa-clipboard-list"></i>
+                                        Orders
+                                    </a>
+                                     <a class="dropdown-item" href="/logout" s">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        Logout
+                                    </a>
+                                </div>
+                            </div>
 
                         </Authorized>
                     </AuthorizeView>
@@ -96,12 +132,12 @@
                             </li>
 
                             @* Orders *@
-                            <li>
+                           @*  <li>
                                 <a href="/my-orders" title="Orders" class="nav-link">
                                     <i class="fas fa-clipboard-list"></i>
                                     Orders
                                 </a>
-                            </li>
+                            </li> *@
 
                         </Authorized>
                     </AuthorizeView>
@@ -155,21 +191,22 @@
                                     Manage Categories
                                 </a>
                             </li>
+
                         </Authorized>
                     </AuthorizeView>
 
                     <AuthorizeView>
                         <Authorized>
                             @* Logout *@
-                            <li>
+                           @*  <li>
                                 <a href="/logout" class="nav-link">
                                     <i class="fas fa-sign-out-alt"></i>
                                     Logout
                                 </a>
-                            </li>
+                            </li> *@
                         </Authorized>
                     </AuthorizeView>
-
+                    
                 </ul>
             </div>
         </nav>

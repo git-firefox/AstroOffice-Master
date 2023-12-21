@@ -8,9 +8,9 @@
 @inject IJSRuntime JSRuntime
 @inject ILocalStorageService LocalStorage
 
-<div class="container-fluid p-3">
+<div class="container p-3">
 
-    <h1 class="pt-4 pb-2 font-weight-bold "> @ViewProductDTO!.Name </h1>
+
 
     <section class="content">
         <!-- Default box -->
@@ -90,7 +90,7 @@
                             <h4>Category : @ViewProductDTO.ProductCategory</h4>
                         }
 
-                        <div class="bg-gray py-2 px-3 mt-4">
+                        <div class="bg-white py-2 px-3 mt-4">
                             <h2 class="mb-0">
                                 <i class="fas fa-rupee-sign"></i> @ViewProductDTO!.Price.ToString("N2")
                             </h2>
@@ -151,7 +151,7 @@
                                 <div class="tab-content" id="custom-tabs-four-tabContent">
                                     <div class="tab-pane fade show active" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
                                         @* <div class="embed-responsive embed-responsive-16by9"> *@
-                                        <div class="embed-responsive">
+                                        <div class="embed-responsive ">
                                             @(new MarkupString(ViewProductDTO!.Description ?? ""))
                                         </div>
                                     </div>

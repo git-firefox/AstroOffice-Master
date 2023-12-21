@@ -2,6 +2,7 @@
 using AstroShared;
 using AstroShared.DTOs;
 using AstroShared.Helper;
+using AstroShared.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
@@ -117,6 +118,9 @@ namespace AstroOfficeWeb.Client.Pages.Product
             return base.OnAfterRenderAsync(firstRender);
         }
 
+
+        private List<FileData> FileData { get; set; } = new List<FileData>();
+
         private async Task OnChange_InputFile(InputFileChangeEventArgs e)
         {
             if (e.FileCount > 10)
@@ -137,11 +141,15 @@ namespace AstroOfficeWeb.Client.Pages.Product
             IsImageLoaded = false;
             foreach (IBrowserFile file in e.GetMultipleFiles(10))
             {
+
+
                 using (var memoryStream = new MemoryStream())
                 {
                     await file.OpenReadStream(file.Size).CopyToAsync(memoryStream);
 
                     var buffer = memoryStream.ToArray();
+
+                    FileData.Add(new AstroShared.Utilities.FileData { File = file.OpenReadStream(file.Size), FileName = file.Name });
 
                     var base64String = Convert.ToBase64String(buffer);
 
@@ -229,14 +237,15 @@ namespace AstroOfficeWeb.Client.Pages.Product
             ProductModel.ProductImages = BrowserFiles;
             ProductModel.MetaDatas = MetaDataList;
 
-            if (Sno == 0)
-            {
-                await ProductService.AddProduct(ProductModel);
-            }
-            else
-            {
-                await ProductService.UpdateProduct(ProductModel, Sno);
-            }
+            await ProductService.SaveProductImages(FileData);
+            //if (Sno == 0)
+            //{
+            //    await ProductService.AddProduct(ProductModel);
+            //}
+            //else
+            //{
+            //    await ProductService.UpdateProduct(ProductModel, Sno);
+            //}
         }
 
 

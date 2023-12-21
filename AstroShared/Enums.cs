@@ -104,4 +104,18 @@ namespace AstroShared
         Inactive,
         Archived
     }
+
+    public enum FileType
+    {
+        Text,
+        Image,
+        Audio,
+        Video,
+        PDF,
+        Spreadsheet,
+        Presentation,
+        Archive,
+        Other
+    }
+
 }

@@ -1,23 +1,11 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
- 
+html, body {
+    font-family: 'Philosopher', sans-serif;
+    background-color: rgb(145, 13, 13) !important;
+}
 
-/*html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}*/
-    /*h1:focus {
-    outline: none;
-}*/
-    /*a, .btn-link {
-    color: #0071c1;
-}*/
-    /*.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-}*/
-
-    input:: -webkit-outer-spin-button, input::-webkit-inner-spin-button {
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
@@ -39,13 +27,11 @@ input[type=number] {
     color: red;
 }
 
-body {
-/*    background: #fdeec0;*/
-    background-color: rgb(145, 13, 13) !important;
+h1 {
+    color: #fff;
+    /*color: rgb(233, 175, 0) !important;*/
 }
-h1{
-    color:#fff;
-}
+
 /*#blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -75,6 +61,7 @@ h1{
         content: "An error has occurred."
     }
 */
+
 /* Keyframes for rotation animation */
 @keyframes rotate-loader-img {
     0% {
@@ -773,12 +760,15 @@ section .section-overlay {
     .confirmation-modal .modal-content .modal-footer {
         border-top: 1px solid #910d0d;
     }
+
 .mud-input:focus-within ~ label.mud-input-label.mud-input-label-inputcontrol {
     color: #910d0d !important;
 }
+
 .mud-input.mud-input-underline:after {
     border-bottom: 1px solid var(--mud-palette-lines-inputs) !important;
 }
+
 .mud-button:hover, .mud-button:focus-visible {
-    background-color:transparent;
+    background-color: transparent;
 }

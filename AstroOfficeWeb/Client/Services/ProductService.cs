@@ -4,6 +4,7 @@ using AstroOfficeWeb.Shared.Models;
 using AstroShared;
 using AstroShared.DTOs;
 using AstroShared.Helper;
+using AstroShared.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Stripe;
@@ -105,6 +106,21 @@ namespace AstroOfficeWeb.Client.Services
                 await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
             }
         }
+        
+        public async Task SaveProductImages(List<FileData> saveProduct)
+        {
+            var response = await _swagger.PostWithMultipartFormDataContentAsync<ApiResponse<string>>(FileApiConst.POST_SaveProductImages, saveProduct);
+            if (response!.Success)
+            {
+                await _jsRuntime.ShowToastAsync(response.Message);
+            }
+            else
+            {
+                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+            }
+        }
+
+
         public async Task UpdateProduct(ProductDTO saveProduct, long sno)
         {
             var response = await _swagger.PutAsync<ProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.PUT_UpdateProduct + "?sno=" + sno, saveProduct);

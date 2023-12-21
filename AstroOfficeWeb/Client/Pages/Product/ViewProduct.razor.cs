@@ -3,6 +3,7 @@ using AstroShared.DTOs;
 using AstroShared.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 
 namespace AstroOfficeWeb.Client.Pages.Product
 {
@@ -35,6 +36,12 @@ namespace AstroOfficeWeb.Client.Pages.Product
             BrowserFiles = ViewProductDTO.ProductImages ??= new();
             MetaDataList = ViewProductDTO.MetaDatas ??= new();
             SelectedImage = new ImagesDTO { ImageName = ViewProductDTO?.Name ?? "", ImageURL = ViewProductDTO?.ImageUrl ?? "" };
+
+        }
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+                await JSRuntime.InvokeVoidAsync("fnRemoveStyle");
         }
 
         private async Task OnClick_BtnAddToWishlist(MouseEventArgs e)

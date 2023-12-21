@@ -10,7 +10,18 @@
 .carousel-indicators {
     position: static;
 }
-
+.card {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #fff;
+}
+.card-body .embed-responsive p {
+    color: #fff !important;
+}
+.embed-responsive blockquote p {
+    color: #000 !important;
+}
 @media screen and (min-width: 992px) {
     .carousel {
         max-width: 70%;

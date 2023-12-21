@@ -18,6 +18,9 @@ window.fnShowModal = function (element) {
     }
 
 }
+window.fnRemoveStyle = function (element) {
+    $('*', '.embed-responsive').attr('style', '')
+}
 window.fnCloseModal = function (element) {
     if (element instanceof HTMLDivElement) {
         $(element).modal('hide');
