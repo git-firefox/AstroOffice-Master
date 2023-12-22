@@ -1,22 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
+using AstroShared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace AstroOfficeWeb.Client.Shared.CustomInputs
 {
-    public class Option 
-    {
-        public string Text { get; set; } = null!;
-        public object Value { get; set; } = default!;
-
-        public Option() { }
-        public Option(string? text, object value)
-        {
-            Text = text ?? string.Empty;
-            Value = value;
-        }
-    }
 
     public partial class InputSelect2<TValue> where TValue : IConvertible
     {

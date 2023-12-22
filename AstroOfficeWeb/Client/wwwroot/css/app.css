@@ -98,6 +98,12 @@ h1 {
     color: white; /* Text color for the loader */
 }
 
+.note-editor.note-airframe .note-editing-area .note-editable, .note-editor.note-frame .note-editing-area .note-editable {
+    word-wrap: break-word;
+    overflow: auto;
+    padding: 30px;
+}
+
 .bg-da-dark-red {
     background-color: rgb(145, 13, 13) !important;
 }

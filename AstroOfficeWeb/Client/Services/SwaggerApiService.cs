@@ -57,11 +57,11 @@ namespace AstroOfficeWeb.Client.Services
                 var fileStreamContent = new StreamContent(file.File);
                 fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                 {
-                    Name = "files",
+                    Name = "Files",
                     FileName = file.FileName,
                 };
-
-                multipartContent.Add(fileStreamContent);
+                fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+                multipartContent.Add(fileStreamContent, file.Name, file.FileName);
             }
 
             var response = await _client.PostAsync(_client.BaseAddress + url, multipartContent);

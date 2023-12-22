@@ -14,13 +14,15 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpPost]
         public IActionResult SaveProductImages(List<IFormFile> files)
         {
-            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media", "images");
+            var test = Request.Form.Files;
+            var mediaImagesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media", "images");
+            var mediaVideosPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media", "videos");
 
             foreach (var file in files)
             {
                 var guid = Guid.NewGuid();
                 var extension = Path.GetExtension(file.FileName.ToLower());
-                var filePath = Path.Combine(uploadPath, guid + extension);
+                var filePath = Path.Combine(mediaImagesPath, guid + extension);
                 using var stream = new FileStream(filePath, FileMode.Create);
                 file.CopyTo(stream);
             }

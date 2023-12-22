@@ -8,9 +8,11 @@ namespace AstroShared.Utilities
 {
     public class FileData
     {
+        public string Name { get; set; } = null!;
         public Stream File { get; set; } = null!;
-        public FileType FileType { get; set; }
         public string FileName { get; set; } = null!;
+        public string ContentType { get; set; } = null!;
+        public FileType FileType { get; set; } 
 
         public FileType GetFileType(string fileName)
         {
