@@ -25,7 +25,7 @@
                                 <div id="checkout-nav-pills-wizard" class="twitter-bs-wizard form-wizard-header">
                                     <ul class="twitter-bs-wizard-nav mb-2 nav nav-pills nav-justified">
                                         <li class="nav-item">
-                                            <a @ref="ER_ABillingInfo" href="#billing-info" class="nav-link active" data-toggle="tab" @onclick="()=>ProceedCheckoutNavPills(ProceedStatus.Billing)">
+                                            <a @ref="ER_ABillingInfo" href="#billing-info" class="nav-link active" data-bs-toggle="tab" data-toggle="tab" @onclick="()=>ProceedCheckoutNavPills(ProceedStatus.Billing)">
                                                 <span class="number">01</span>
                                                 <span class="d-none d-sm-inline">Billing Info</span>
                                             </a>
@@ -34,7 +34,7 @@
                                         @if (BillingInfo.ShipToDifferentAddress)
                                         {
                                             <li class="nav-item">
-                                                <a @ref="ER_AShippingInfo" href="#shipping-info" class="nav-link" data-toggle="tab" @onclick="()=>ProceedCheckoutNavPills(ProceedStatus.Shipping)">
+                                                <a @ref="ER_AShippingInfo" href="#shipping-info" class="nav-link" data-bs-toggle="tab" data-toggle="tab" @onclick="()=>ProceedCheckoutNavPills(ProceedStatus.Shipping)">
                                                     <span class="number">02</span>
                                                     <span class="d-none d-sm-inline">Shipping Info</span>
                                                 </a>
@@ -56,7 +56,7 @@
                                                 <div>
                                                     <h4 class="header-title d-inline">Billing Information</h4>
                                                     <div class="float-end">
-                                                        <button class="btn btn-link" type="button" @onclick="()=>OnClick_BtnChangeAddress(0)">
+                                                        <button class="btn btn-secondary" type="button" @onclick="()=>OnClick_BtnChangeAddress(0)">
                                                             <i class="fa-regular fa-pen-to-square"></i> Change
                                                         </button>
                                                     </div>
@@ -92,9 +92,11 @@
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="mb-3">
-                                                                <label for="billing-phone" class="form-label">Phone <span class="text-danger">*</span></label>
+                                                                <label for="billing-phone" class="form-label mb-1">Phone <span class="text-danger">*</span></label>
                                                                 <ValidationMessage For=@(() => BillingInfo!.PhoneNumber) style="position:revert;" />
                                                                 @* <InputMask IType="string" Mask="999 999 9999" @bind-Value="BillingInfo!.PhoneNumber" class="form-control" id="billing-phone" /> *@
+
+                                                                <MudTextField @bind-Value="BillingInfo!.PhoneNumber" Variant="Variant.Outlined" Mask="@(new PatternMask("00 0000 0000"))" Class="form-control " Margin="Margin.Dense" Placeholder="Mobile No." />
                                                             </div>
                                                         </div>
                                                     </div> <!-- end row -->
@@ -134,8 +136,10 @@
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="mb-3">
-                                                                <label for="billing-zip-postal" class="form-label">Zip Code</label>
+                                                                <label for="billing-zip-postal" class="form-label mb-1">Zip Code</label>
                                                                 <ValidationMessage For=@(() => BillingInfo!.ZipCode) style="position:revert;" />
+                                                                @* <MudTextField T="string" @bind-Value="BillingInfo!.ZipCode" Required="true" RequiredError="Zip code is required!" Mask="@(new PatternMask("00 0000 0000"))" Placeholder="Enter zip code"/> *@
+                                                                <MudTextField @bind-Value="BillingInfo!.ZipCode" Variant="Variant.Outlined" Mask="@(new PatternMask("0000 000"))" Class="form-control " Margin="Margin.Dense" Placeholder="Enter zip code" />
                                                                 @* <InputMask IType="string" @bind-Value="BillingInfo!.ZipCode" Mask="999 999" class="form-control" placeholder="Enter your zip code" id="billing-zip-postal" /> *@
                                                             </div>
                                                         </div>

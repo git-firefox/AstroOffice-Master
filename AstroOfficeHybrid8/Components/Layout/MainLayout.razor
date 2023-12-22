@@ -7,50 +7,98 @@
 @* <MudAppBar Elevation="_themeManager.AppBarElevation"></MudAppBar> *@
 @* <MudDrawer @bind-Open="_drawerOpen" ClipMode="_themeManager.DrawerClipMode" Elevation="_themeManager.DrawerElevation"></MudDrawer> *@
 
-<MudLayout>
-    <MudThemeManagerButton OnClick="@((e) => OpenThemeManager(true))" />
-    <MudThemeManager Open="_themeManagerOpen" OpenChanged="OpenThemeManager" Theme="_themeManager" ThemeChanged="UpdateTheme" />
-    <AuthorizeView>
-        <Authorized>
-            <MudAppBar Elevation="1">
-                <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
-            </MudAppBar>
-            <MudDrawer @bind-Open="@open" ClipMode="_themeManager.DrawerClipMode" Elevation="_themeManager.DrawerElevation" Breakpoint="@breakpoint" Variant="@DrawerVariant.Responsive" PreserveOpenState="false">
-                <MudDrawerHeader>
-                    <MudText Typo="Typo.h6">My App</MudText>
-                </MudDrawerHeader>
-                <MudNavMenu>
-                    <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
-                    <MudNavLink Href="/weather" Match="NavLinkMatch.All">weather</MudNavLink>
-                    <MudNavLink Href="/counter" Match="NavLinkMatch.All">counter</MudNavLink>
-                    <MudNavLink Href="/saved-kundalis" Match="NavLinkMatch.All">Saved Kundali</MudNavLink>
-                    <MudNavLink Href="/logout" Match="NavLinkMatch.All">Logout</MudNavLink>
-                    <MudNavLink Href="/products" Match="NavLinkMatch.All">check</MudNavLink>
-                    <MudNavLink Href="/user-wishlist" Match="NavLinkMatch.All">User Wishlist</MudNavLink>
-                    <MudNavLink Href="/product-cart" Match="NavLinkMatch.All">Cart</MudNavLink>
-                    <MudNavLink Href="/my-orders" Match="NavLinkMatch.All">Orders</MudNavLink>
-                    @* <MudNavLink Href="/product-cart?parameterName=shopping-cart" Match="NavLinkMatch.All">Cart</MudNavLink> *@
-
-                    
-                </MudNavMenu>
-            </MudDrawer>
-            <MudMainContent Class="px-2">
-                @Body
-            </MudMainContent>
-        </Authorized>
-        <NotAuthorized>
-            @Body
-        </NotAuthorized>
-    </AuthorizeView>
-
-    @*  @if(DeviceInfo.Platform== DevicePlatform.Android)
-    {
-
-    } *@
+<ErrorBoundary>
+    <ChildContent>
+        <MudLayout>
+            <MudThemeManagerButton OnClick="@((e) => OpenThemeManager(true))" />
+            <MudThemeManager Open="_themeManagerOpen" OpenChanged="OpenThemeManager" Theme="_themeManager" ThemeChanged="UpdateTheme" />
+            <AuthorizeView>
+                <Authorized>
+                    <MudAppBar Elevation="1">
+                        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+                    </MudAppBar>
+                    <MudDrawer @bind-Open="@open" ClipMode="_themeManager.DrawerClipMode" Elevation="_themeManager.DrawerElevation" Breakpoint="@breakpoint" Variant="@DrawerVariant.Responsive" PreserveOpenState="false">
+                        <MudDrawerHeader>
+                            <MudText Typo="Typo.h6">My App</MudText>
+                        </MudDrawerHeader>
+                        <MudNavMenu>
+                            @*  <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink> *@
+                            <MudNavLink Class="fas fa-home" Href="/" Match="NavLinkMatch.All">
+                                <MudIcon Icon="@Icons.Material.Filled.Dashboard" /> Home
+                            </MudNavLink>
+                            @* <MudNavLink Href="/weather" Match="NavLinkMatch.All">weather</MudNavLink> *@
+                            <MudNavLink Href="/weather" Match="NavLinkMatch.All">
+                                <MudIcon Icon="@Icons.Material.Filled.Favorite" /> Weather
+                            </MudNavLink>
 
 
+                            <MudNavLink Href="/counter" Match="NavLinkMatch.All">
+                                counter
+                            </MudNavLink>
+                            <MudNavLink Href="/saved-kundalis" Match="NavLinkMatch.All">
+                                <MudIcon Icon="@Icons.Material.Filled.TableView" />
+                                Saved Kundali
+                            </MudNavLink>
+                            <MudNavLink Href="/products" Match="NavLinkMatch.All">
+                                <MudIcon Icon="@Icons.Material.Filled.Shop" />
+                                Shop
+                            </MudNavLink>
 
-</MudLayout>
+
+                            <MudNavLink Href="/user-wishlist" Match="NavLinkMatch.All">
+                                <MudIcon Icon="@Icons.Material.Filled.Favorite" />
+                                User Wishlist
+                            </MudNavLink>
+                            <MudNavLink Href="/product-cart" Match="NavLinkMatch.All">
+                                <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" /> Cart
+                            </MudNavLink>
+                            <MudNavLink Href="/my-orders" Match="NavLinkMatch.All">
+                                <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                Orders
+                            </MudNavLink>
+
+                            <MudNavLink Href="/manage-categories" Match="NavLinkMatch.All">
+                                <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                Manage category
+                            </MudNavLink>
+
+                            <MudNavLink Href="/manage-products" Match="NavLinkMatch.All">
+                                <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                Manage Product
+                            </MudNavLink>
+
+                            <MudNavLink Href="/manage-orders" Match="NavLinkMatch.All">
+                                <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                Manage Orders
+                            </MudNavLink>
+
+
+                            <MudNavLink Href="/logout" Match="NavLinkMatch.All">
+                                <MudIcon Icon="@Icons.Material.Filled.Logout" />
+                                Logout
+                            </MudNavLink>
+
+
+                        </MudNavMenu>
+                    </MudDrawer>
+                    <MudMainContent Class="px-2">
+                        @Body
+                    </MudMainContent>
+                </Authorized>
+                <NotAuthorized>
+                    @Body
+                </NotAuthorized>
+            </AuthorizeView>
+        </MudLayout>
+    </ChildContent>
+    <ErrorContent>
+        <AstroOfficeHybrid8.Components.Pages.NetworkLost></AstroOfficeHybrid8.Components.Pages.NetworkLost>
+
+    </ErrorContent>
+</ErrorBoundary>
+
+
+
 
 @code {
 

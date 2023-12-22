@@ -33,6 +33,7 @@ namespace AstroOfficeHybrid8
 #else
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://ec2-15-207-51-190.ap-south-1.compute.amazonaws.com") });
 #endif
+
             builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationStateService>();
             builder.Services.AddScoped<IAuthenticationStateService, AuthenticationStateService>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -41,6 +42,8 @@ namespace AstroOfficeHybrid8
             builder.Services.AddScoped<KundaliHistroyService>();
             builder.Services.AddScoped<CountryService>();
             builder.Services.AddScoped<StripePayment>();
+            builder.Services.AddScoped<StateContainerService>();
+            builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
             return builder.Build();
         }
     }

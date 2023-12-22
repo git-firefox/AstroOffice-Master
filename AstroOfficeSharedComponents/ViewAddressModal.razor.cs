@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AstroShared;
+using MudBlazor;
 
 namespace AstroOfficeSharedComponents
 {
@@ -41,6 +42,7 @@ namespace AstroOfficeSharedComponents
         private InputText Input_MobileNumber { get; set; } = new();
         private InputText Input_ZipCode { get; set; } = new();
         private InputSelect<long> Input_Country { get; set; } = new();
+
 
         protected override void OnInitialized()
         {
@@ -96,11 +98,13 @@ namespace AstroOfficeSharedComponents
         private async Task OnSubmit_UpdateAddress()
         {
             await ProductService.SaveUserAddress(BillingInfo!);
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
             if (Mode == AddressMode.Add && BillingInfo!.Sno != 0)
             {
                 Addresses!.Add(BillingInfo!);
                 Mode = AddressMode.Edit;
             }
+                Snackbar.Add("Address updated successfully",Severity.Success);
         }
 
         protected async Task OnConfirmationChange(bool isConfirm)
@@ -112,8 +116,9 @@ namespace AstroOfficeSharedComponents
             }
         }
 
-        private async Task OnClick_BtnAddAddress(MouseEventArgs e)
+        private void OnClick_BtnAddAddress(MouseEventArgs e)
         {
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
             if (!Addresses.HasCount(4))
             {
                 Mode = AddressMode.Add;
@@ -121,7 +126,8 @@ namespace AstroOfficeSharedComponents
             }
             else
             {
-                await JSRuntime.ShowToastAsync("You've reached the maximum number of allowed addresses. No more can be added.", SwalIcon.Error);
+                Snackbar.Add("You've reached the maximum number of allowed addresses.", Severity.Error);
+                //await JSRuntime.ShowToastAsync("You've reached the maximum number of allowed addresses. No more can be added.", SwalIcon.Error);
             }
         }
 
@@ -129,6 +135,7 @@ namespace AstroOfficeSharedComponents
         {
             Mode = AddressMode.Edit;
             BillingInfo = address;
+                     
         }
 
         private async Task OnClick_BtnDeleteAddress(AddressDTO address)
@@ -140,9 +147,12 @@ namespace AstroOfficeSharedComponents
             if (result.GetValueOrDefault())
             {
                 var isDeleteSelectedAddress = await ProductService.IsDeletedSelectdAddress(address.Sno);
+                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
                 if (isDeleteSelectedAddress)
                 {
                     Addresses!.Remove(address);
+                    Snackbar.Add("Address removed successfully!", Severity.Success);
+
                 }
             }
             StateHasChanged();

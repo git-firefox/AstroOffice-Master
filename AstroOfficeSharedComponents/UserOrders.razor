@@ -3,12 +3,13 @@
 @using AstroOfficeServices
 @using AstroShared.DTOs
 
+@inject IJSRuntime JSRuntime
 @inject ProductService ProductService
 @inject NavigationManager NavigationManager
 
 <ContainerFluid HeaderTitle="My Orders">
     <Header>
-        <button class="btn btn-custom">Back</button>
+        <button onclick="history.back()" class="btn btn-custom">Back</button>
     </Header>
     <ChildContent>
         <div class="row">

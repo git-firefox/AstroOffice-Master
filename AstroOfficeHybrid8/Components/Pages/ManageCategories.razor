@@ -1,0 +1,9 @@
+﻿@page "/manage-categories"
+@using AstroShared.ComponentModels
+
+<AstroOfficeSharedComponents.ManageCategories ></AstroOfficeSharedComponents.ManageCategories>
+
+@code{
+    [CascadingParameter]
+    public CategoryDialoge CategoryDialoge { get; set; } = new();
+}

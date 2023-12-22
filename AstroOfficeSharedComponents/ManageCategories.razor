@@ -1,10 +1,10 @@
 ﻿@page "/manage-categories"
-@using AstroOfficeWeb.Client.Services
+@using AstroOfficeServices
 @using AstroShared.DTOs
+@using AstroShared.ComponentModels;
 
 @inject ProductService ProductService
 @inject NavigationManager NavigationManager
-@inject StateContainerService StateContainerService
 @inject IDialogService DialogService
 @inject IJSRuntime JSRuntime
 
@@ -16,7 +16,7 @@
 
     </Header>
     <ChildContent>
-        <MudDataGrid T="CategoryDialog" Items="@categoryList" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter">
+        <MudDataGrid T="CategoryDialoge" Items="@categoryList" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter">
             <ToolBarContent>
                 <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
                               AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
@@ -32,7 +32,7 @@
                             <tr>
                                 <td>
                                     <img class="img-thumbnail" src="@context.Item.ImageUrl" height="50" width="50" />
-                                    @* <img class="img-thumbnail" src="@context.Item.BrowserFiles" height="50" width="50" /> *@
+                                    
                                 </td>
                                 <td>
                                     <MudText>

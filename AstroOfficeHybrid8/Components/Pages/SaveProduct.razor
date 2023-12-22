@@ -1,0 +1,9 @@
+﻿@page "/save-product"
+@page "/save-product/{Sno:long}"
+
+<AstroOfficeSharedComponents.SaveProduct Sno="Sno"></AstroOfficeSharedComponents.SaveProduct>
+
+@code{
+    [Parameter]
+    public long Sno { get; set; }
+}
