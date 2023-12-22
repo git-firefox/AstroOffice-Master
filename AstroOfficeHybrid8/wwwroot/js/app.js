@@ -147,7 +147,7 @@ window.InputSelect2Interop = {
     fnInitialize: function (element, dropdownParent = null) {
 
         var select2Config = {
-            theme: 'bootstrap4',
+            theme: 'bootstrap-5',
             width: '100%',
         };
 

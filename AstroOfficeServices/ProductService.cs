@@ -1,6 +1,7 @@
 ﻿using AstroOfficeServices.IServices;
 using AstroOfficeWeb.Shared.Models;
 using AstroShared;
+using AstroShared.ComponentModels;
 using AstroShared.DTOs;
 using AstroShared.Helper;
 using Microsoft.AspNetCore.Components;
@@ -227,26 +228,30 @@ namespace AstroOfficeServices
             return false;
         }
 
-        //public async Task SaveAndUpdateCategory(CategoryDialoge categoryDTO)
-        //{
-        //    var response = await _swagger.PostAsync<CategoryDTO, ApiResponse<CategoryDTO>>(ProductApiConst.POST_SaveAndUpdateCategory, categoryDTO);
-        //    if (response!.Success)
-        //    {
-        //        categoryDTO.AddedDate = response!.Data!.AddedDate;
-        //        categoryDTO.LastModifiedDate = response!.Data!.LastModifiedDate;
-        //        categoryDTO.Sno = response!.Data!.Sno;
-        //       // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
-        //    }
-        //    else
-        //    {
-        //       // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
-        //    }
-        //}
+        public async Task SaveAndUpdateCategory(CategoryDialoge categoryDTO)
+        {
+            var response = await _swagger.PostAsync<CategoryDTO, ApiResponse<CategoryDTO>>(ProductApiConst.POST_SaveAndUpdateCategory, categoryDTO);
+            if (response!.Success)
+            {
+                categoryDTO.AddedDate = response!.Data!.AddedDate;
+                categoryDTO.LastModifiedDate = response!.Data!.LastModifiedDate;
+                categoryDTO.Sno = response!.Data!.Sno;
+                // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Success);
+            }
+            else
+            {
+                // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+            }
+        }
 
         public async Task SaveProductImages(List<ImagesDTO> imagesDTO)
         {
             var response = await _swagger.PostAsync<List<ImagesDTO>, ApiResponse<List<ImagesDTO>>>(ProductApiConst.POST_SaveProductImages, imagesDTO);
         }
+
+
+
+
 
         public async Task PlaceOrder(PlaceOrderRequest request)
         {
@@ -287,16 +292,19 @@ namespace AstroOfficeServices
             return response.Data;
         }
 
-        //public async Task<List<CategoryDialoge>?> GetCategories()
-        //{
-        //    var response = await _swagger.GetAsync<ApiResponse<List<CategoryDialoge>>>(ProductApiConst.GET_Categories);
-        //    if (!response!.Success)
-        //    {
-        //       // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
-        //        return null;
-        //    }
-        //    return response.Data;
-        //}
+        public async Task<List<CategoryDialoge>?> GetCategories()
+        {
+            var response = await _swagger.GetAsync<ApiResponse<List<CategoryDialoge>>>(ProductApiConst.GET_Categories);
+            if (!response!.Success)
+            {
+                // await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                return null;
+            }
+            return response.Data;
+        }
+
+
+
 
 
         public async Task<List<PCategoryDTO>?> GetShopCategories()

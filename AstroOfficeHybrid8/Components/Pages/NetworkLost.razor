@@ -1,0 +1,19 @@
+﻿@inject IConnectivity Connectivity
+@inject NavigationManager Navigation
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        while (true)
+        {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                await Application.Current!.MainPage!.DisplayAlert("Network lost ?", "OOPS! NO INTERNET", "Try Again");
+            }
+            else
+            {
+                Navigation.NavigateTo("/");
+            }
+        }
+    }
+
+}
