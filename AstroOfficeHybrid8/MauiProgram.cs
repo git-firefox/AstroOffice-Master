@@ -43,6 +43,7 @@ namespace AstroOfficeHybrid8
             builder.Services.AddScoped<CountryService>();
             builder.Services.AddScoped<StripePayment>();
             builder.Services.AddScoped<StateContainerService>();
+            builder.Services.AddScoped<TokenWalletService>();
             builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
             return builder.Build();
         }

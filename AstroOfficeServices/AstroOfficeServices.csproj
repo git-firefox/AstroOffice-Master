@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="KundaliHistroyService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Stripe.net" Version="43.5.0" />
   </ItemGroup>
 

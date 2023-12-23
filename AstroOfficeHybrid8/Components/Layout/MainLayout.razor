@@ -3,7 +3,8 @@
 @* <MudThemeProvider /> *@
 <MudDialogProvider />
 <MudSnackbarProvider />
-<MudThemeProvider Theme="_themeManager.Theme" />
+@* <MudThemeProvider Theme="_themeManager.Theme" /> *@
+<MudThemeProvider Theme="MyCustomTheme" />
 @* <MudAppBar Elevation="_themeManager.AppBarElevation"></MudAppBar> *@
 @* <MudDrawer @bind-Open="_drawerOpen" ClipMode="_themeManager.DrawerClipMode" Elevation="_themeManager.DrawerElevation"></MudDrawer> *@
 
@@ -13,24 +14,44 @@
             <MudThemeManagerButton OnClick="@((e) => OpenThemeManager(true))" />
             <MudThemeManager Open="_themeManagerOpen" OpenChanged="OpenThemeManager" Theme="_themeManager" ThemeChanged="UpdateTheme" />
             <AuthorizeView>
-                <Authorized>
+                <Authorized >
                     <MudAppBar Elevation="1">
                         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
                     </MudAppBar>
                     <MudDrawer @bind-Open="@open" ClipMode="_themeManager.DrawerClipMode" Elevation="_themeManager.DrawerElevation" Breakpoint="@breakpoint" Variant="@DrawerVariant.Responsive" PreserveOpenState="false">
                         <MudDrawerHeader>
-                            <MudText Typo="Typo.h6">My App</MudText>
+                            <MudStack Row="true">
+                                <MudAvatar Size="Size.Medium"> @context?.User?.Identity?.Name?.Substring(0, 1)</MudAvatar>
+                                    <MudStack Justify="Justify.Center" Spacing="0">
+                                        <MudText Typo="Typo.body1">
+                                            @if (context?.User?.Identity?.Name != null)
+                                        {
+                                            @($"{context.User.Identity.Name.Substring(0, 1).ToUpper()}{context.User.Identity.Name.Substring(1).ToLower()}")
+                                        }
+                                    </MudText>
+                                </MudStack>
+                            </MudStack>
                         </MudDrawerHeader>
+
+
+                     @*    <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser + "," + ApplicationConst.Role_Astrologer)>
+                            <Authorized role="">
+                                <MudNavLink Href="/counter" Match="NavLinkMatch.All">
+                                    counter
+                                </MudNavLink>
+
+                            </Authorized>
+                        </AuthorizeView>
+ *@
                         <MudNavMenu>
                             @*  <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink> *@
-                            <MudNavLink Class="fas fa-home" Href="/" Match="NavLinkMatch.All">
+                            <MudNavLink Href="/" Match="NavLinkMatch.All">
                                 <MudIcon Icon="@Icons.Material.Filled.Dashboard" /> Home
                             </MudNavLink>
                             @* <MudNavLink Href="/weather" Match="NavLinkMatch.All">weather</MudNavLink> *@
                             <MudNavLink Href="/weather" Match="NavLinkMatch.All">
                                 <MudIcon Icon="@Icons.Material.Filled.Favorite" /> Weather
                             </MudNavLink>
-
 
                             <MudNavLink Href="/counter" Match="NavLinkMatch.All">
                                 counter
@@ -55,6 +76,16 @@
                             <MudNavLink Href="/my-orders" Match="NavLinkMatch.All">
                                 <MudIcon Icon="@Icons.Material.Filled.Assignment" />
                                 Orders
+                            </MudNavLink>
+
+                            <MudNavLink Href="/transactions" Match="NavLinkMatch.All">
+                                <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                Transaction
+                            </MudNavLink>
+
+                            <MudNavLink Href="/token-recharge" Match="NavLinkMatch.All">
+                                <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                Recharge
                             </MudNavLink>
 
                             <MudNavLink Href="/manage-categories" Match="NavLinkMatch.All">
@@ -116,7 +147,39 @@
         await InvokeAsync(StateHasChanged);
     }
 
+
+    MudTheme MyCustomTheme = new MudTheme()
+        {
+            Palette = new PaletteLight()
+            {
+                Primary = Colors.Red.Default,
+                Secondary = Colors.Green.Accent4,
+                AppbarBackground = Colors.Red.Default,
+            },
+            PaletteDark = new PaletteDark()
+            {
+                Primary = Colors.Blue.Lighten1
+            },
+
+            LayoutProperties = new LayoutProperties()
+            {
+                DrawerWidthLeft = "260px",
+                DrawerWidthRight = "300px"
+            },
+
+            Typography = new Typography()
+            {
+                Default = new Default()
+                {
+                    FontFamily = new[] { "Philosopher", "sans-serif" }
+                }
+            }
+
+        };
+
+
     private ThemeManagerTheme _themeManager = new ThemeManagerTheme();
+
     public bool _themeManagerOpen = false;
 
     void OpenThemeManager(bool value)
