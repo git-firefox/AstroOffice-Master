@@ -1,66 +1,50 @@
 ﻿@page "/users"
+@using System.ComponentModel.DataAnnotations
 
-
-<MudDrawer @bind-Open="@open" Width="@width" Height="@height" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
+<MudDrawer @bind-Open="IsDrawerOpen" Width="400px" Height="100%" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
     <MudDrawerHeader>
-        <MudText Typo="Typo.h6">My App</MudText>
+        <MudPaper>
+            <MudStack Justify="Justify.SpaceBetween" Row="true">
+                <MudText Typo="Typo.h6">Add New User</MudText>
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" />
+            </MudStack>
+        </MudPaper>
     </MudDrawerHeader>
-    <MudNavMenu>
-        <MudNavLink Match="NavLinkMatch.All">Store</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All">Library</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All">Community</MudNavLink>
-    </MudNavMenu>
+    <MudDrawerContainer>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudPaper Class="pa-4">
+                    <MudForm @ref="form" @bind-IsValid="@IsSaveUserFormValid" @bind-Errors="@errors">
+                        <MudTextField T="string" Label="Username" Required="true" RequiredError="User name is required!" />
+                        <MudTextField T="string" Label="Email" Required="true" RequiredError="Email is required!"
+                                      Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})" />
+                        <MudTextField T="string" Label="Password" HelperText="Choose a strong password" @ref="pwField1"
+                                      InputType="InputType.Password"
+                                      Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
+                                      RequiredError="Password is required!" />
+                        <MudTextField T="string"
+                                      Label="Password" HelperText="Repeat the password" InputType="InputType.Password"
+                                      Validation="@(new Func<string, string?>(PasswordMatch))" />
+                        <div class="d-flex">
+                            <MudRadioGroup T="string" Required="true" RequiredError="Account type is required!">
+                                <MudRadio Value="@("Personal")">Personal</MudRadio>
+                                <MudRadio Value="@("Professional")">Professional</MudRadio>
+                            </MudRadioGroup>
+                        </div>
+                        <div class="d-flex align-center justify-space-between">
+                            <MudCheckBox T="bool" Required="true" RequiredError="You must agree" Label="I agree!" />
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!IsSaveUserFormValid)" Class="ml-auto">Register</MudButton>
+                        </div>
+                    </MudForm>
+                </MudPaper>
+                @* <MudPaper Class="pa-4 mt-4">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(()=>form.Validate())">Validate</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="@(()=>form.ResetAsync())" Class="mx-2">Reset</MudButton>
+                <MudButton Variant="Variant.Filled" DisableElevation="true" OnClick="@(()=>form.ResetValidation())">Reset Validation</MudButton>
+                </MudPaper> *@
+            </MudItem>
+        </MudGrid>
+
+    </MudDrawerContainer>
 </MudDrawer>
 <MudButton Variant="Variant.Text" OnClick="@(() => OpenDrawer(Anchor.End))">End</MudButton>
-
-
-<MudDrawerContainer Class="mud-height-full">
-    <MudDrawer @bind-Open="@openEnd" Breakpoint="Breakpoint.Xl" Fixed="false" Anchor="Anchor.End" Elevation="0" Variant="@DrawerVariant.Persistent">
-        <MudDrawerHeader>
-            <MudText Typo="Typo.h6">Settings</MudText>
-        </MudDrawerHeader>
-        <MudNavMenu>
-            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.AccountBox">Profile</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.ShoppingCart">Orders</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.History">Order History</MudNavLink>
-        </MudNavMenu>
-    </MudDrawer>
-</MudDrawerContainer>
-<MudButton Color="Color.Inherit" OnClick="@ToggleStartDrawer" StartIcon="@Icons.Material.Filled.East" Class="mx-2">Toggle start</MudButton>
-
-@code {
-    bool openEnd = false;
-    bool open;
-    Anchor anchor;
-    string width, height;
-
-    void OpenDrawer(Anchor anchor)
-    {
-        open = true;
-        this.anchor = anchor;
-
-        switch (anchor)
-        {
-            case Anchor.Start:
-                width = "300px";
-                height = "100%";
-                break;
-            case Anchor.End:
-                width = "400px";
-                height = "100%";
-                break;
-            case Anchor.Bottom:
-                width = "100%";
-                height = "200px";
-                break;
-            case Anchor.Top:
-                width = "100%";
-                height = "350px";
-                break;
-        }
-    }
-    void ToggleStartDrawer()
-    {
-        openEnd = !openEnd;
-    }
-}
