@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 
 namespace AstroOfficeWeb.Client.Pages.User
@@ -12,7 +13,7 @@ namespace AstroOfficeWeb.Client.Pages.User
     {
         private bool IsDrawerOpen { get; set; }
         private bool IsSaveUserFormValid { get; set; }
-        void OpenDrawer(Anchor anchor)
+        void OnClick_ToggleDrawer(MouseEventArgs e)
         {
             IsDrawerOpen = !IsDrawerOpen;
         }
