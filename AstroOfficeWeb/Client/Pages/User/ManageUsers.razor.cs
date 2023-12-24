@@ -20,13 +20,13 @@ namespace AstroOfficeWeb.Client.Pages.User
         protected override void OnInitialized()
         {
             base.OnInitialized();
-
-            Users = new List<UserViewModel>();
         }
 
-        protected override Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
-            return base.OnInitializedAsync();
+            await base.OnInitializedAsync();
+
+            Users = await Account.GetUsers();
         }
 
         protected override void OnAfterRender(bool firstRender)

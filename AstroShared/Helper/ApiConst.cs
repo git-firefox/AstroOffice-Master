@@ -28,6 +28,7 @@
     {
         public static string Base = "api/Account/";
         public static string POST_SignIn = Base + "SignIn";
+        public static string GET_Users = Base + "GetAllUsers";
         public static string POST_SignUp = Base + "SignUp";
         public static string POST_SignInWithOtp = Base + "SignInWithOtp";
         public static string PUT_UpdateUserPasswordByOtp = Base + "UpdateUserPasswordByOtp";

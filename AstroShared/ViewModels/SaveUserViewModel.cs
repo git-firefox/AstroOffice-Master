@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AstroShared.ViewModels
 {
 
-    public abstract class BaseUserViewModel
+    public class BaseUserViewModel
     {
         public long Sno { get; set; }
 
@@ -17,6 +17,8 @@ namespace AstroShared.ViewModels
 
         [Display(Name = "Mobile Number")]
         public string MobileNumber { get; set; } = null!;
+
+        public string PasswordHash { get; set; } = null!;
 
         [Display(Name = "Role")]
         public UserRole Role { get; set; }
