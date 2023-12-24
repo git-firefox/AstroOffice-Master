@@ -118,4 +118,28 @@ namespace AstroShared
         Other
     }
 
+    public enum UserStatus
+    {
+        Active,
+        Inactive,
+        Suspended
+    }
+
+    public enum UserRole
+    {
+        Guest,
+        Member,
+        Astrologer,
+        ProductManager,
+        OrderManager,
+        Administrator
+    }
+
+    public enum FormMode
+    {
+        View,
+        Edit,
+        Delete,
+        Add
+    }
 }
