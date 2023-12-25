@@ -1,6 +1,7 @@
 using System;
 using System.Data;
-using AstroShared.Models;
+using AstroOfficeWeb.Shared.VOs;
+//using AstroShared.Models;
 namespace ASDLL.DataAccess.Core
 {
     public class UserManagement

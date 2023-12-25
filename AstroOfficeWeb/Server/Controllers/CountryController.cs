@@ -1,7 +1,7 @@
 ﻿using ASBAL;
 using ASModels;
 using AstroOfficeWeb.Shared.DTOs;
-using AstroShared.DTOs;
+using AstroOfficeWeb.Shared.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 

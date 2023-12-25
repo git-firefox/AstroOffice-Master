@@ -2,7 +2,7 @@
 using VO = ASDLL.ASDLL.ValueObjects;
 using AutoMapper;
 using AstroOfficeWeb.Shared.Models;
-using AstroShared.DTOs;
+using AstroOfficeWeb.Shared.DTOs;
 using System.Diagnostics.Eventing.Reader;
 using AstroOfficeWeb.Shared.DTOs;
 

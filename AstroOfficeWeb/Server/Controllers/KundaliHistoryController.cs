@@ -5,7 +5,7 @@ using ASModels.Astrooff;
 using AstroOfficeWeb.Server.Helper;
 using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Models;
-using AstroShared.DTOs;
+using AstroOfficeWeb.Shared.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

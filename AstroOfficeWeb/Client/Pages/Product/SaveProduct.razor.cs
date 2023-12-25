@@ -149,7 +149,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
                     var buffer = memoryStream.ToArray();
 
-                    FileData.Add(new AstroShared.Utilities.FileData { File = file.OpenReadStream(file.Size), FileName = file.Name, Name = Path.GetFileNameWithoutExtension(file.Name.ToLower()), ContentType = file.ContentType });
+                    FileData.Add(new FileData { File = file.OpenReadStream(file.Size), FileName = file.Name, Name = Path.GetFileNameWithoutExtension(file.Name.ToLower()), ContentType = file.ContentType });
 
                     var base64String = Convert.ToBase64String(buffer);
 

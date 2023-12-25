@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Runtime.CompilerServices;
-using AstroShared.Models;
+using AstroOfficeWeb.Shared.VOs;
+//using AstroShared.Models;
 namespace ASDLL.DataAccess.Core
 {
     public class Years35BLL

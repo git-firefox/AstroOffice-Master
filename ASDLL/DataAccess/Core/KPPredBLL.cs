@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using AstroShared.Models;
+using AstroOfficeWeb.Shared.VOs;
+//using AstroShared.Models;
+using Kunda;
 namespace ASDLL.DataAccess.Core
 {
     public class KPPredBLL

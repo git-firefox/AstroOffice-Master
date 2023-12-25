@@ -3,8 +3,6 @@ using AstroOfficeWeb.Server.Helper;
 using AstroOfficeWeb.Shared.Helper;
 using AstroOfficeWeb.Shared.Models;
 using AstroOfficeWeb.Shared.SSExpertSystem;
-using AstroShared.Helper;
-using AstroShared.Services.SSExpertSystem;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

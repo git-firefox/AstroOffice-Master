@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using AstroShared.Models;
+using AstroOfficeWeb.Shared.VOs;
+//using AstroShared.Models;
 
 namespace ASDLL.DataAccess.Core
 {

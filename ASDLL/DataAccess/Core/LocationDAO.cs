@@ -1,8 +1,9 @@
 using ASDLL;
+using AstroOfficeWeb.Shared.VOs;
 using System;
 using System.Data;
 using System.Data.Common;
-using AstroShared.Models;
+//using AstroShared.Models;
 namespace ASDLL.DataAccess.Core
 {
     public class LocationDAO

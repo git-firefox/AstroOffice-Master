@@ -3,7 +3,8 @@ using System.Data;
 using System.Data.Common;
 using System.Drawing;
 using System.Text;
-using AstroShared.Models;
+//using AstroShared.Models;
+using AstroOfficeWeb.Shared.VOs;
 
 namespace ASDLL.DataAccess.Core
 {
