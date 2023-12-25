@@ -1,5 +1,7 @@
 ﻿using AstroOfficeWeb.Client.Services.IService;
+using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Helper;
+using AstroOfficeWeb.Shared.Models;
 using AstroOfficeWeb.Shared.ViewModels;
 
 namespace AstroOfficeWeb.Client.Services
@@ -13,16 +15,15 @@ namespace AstroOfficeWeb.Client.Services
             _swagger = swagger;
         }
 
-        public async Task<List<UserViewModel>?> GetUsers()
+        public async Task<List<UserDTO>?> GetUsers()
         {
-            var response = await _swagger!.GetAsync<List<UserViewModel>>(AccountApiConst.GET_Users);
+            var response = await _swagger!.GetAsync<List<UserDTO>>(AccountApiConst.GET_Users);
             return response;
         }
 
-        public async Task<List<UserViewModel>?> SaveUsers()
+        public async Task SaveUsers(SignUpRequest request) 
         {
-            var response = await _swagger!.GetAsync<List<UserViewModel>>(AccountApiConst.GET_Users);
-            return response;
+            var response = await _swagger!.PostAsync<SignUpRequest, ApiResponse<int>>(AccountApiConst.POST_SignUp, request);
         }
     }
 }

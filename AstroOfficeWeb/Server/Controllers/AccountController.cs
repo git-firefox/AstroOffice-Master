@@ -268,7 +268,7 @@ namespace AstroOfficeWeb.Server.Controllers
         public IActionResult SignUp([FromBody] SignUpRequest request)
         {
             var response = new SignUpResponse();
-
+                                                                                    
             try
             {
 
@@ -299,7 +299,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
             if (ModelState.IsValid)
             {
-                var aUser = new AUser()
+                var aUser = new AUser()                                                      
                 {
                     Active = true,
                     Adminuser = false,

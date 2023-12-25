@@ -14,17 +14,19 @@
             <MudThemeManagerButton OnClick="@((e) => OpenThemeManager(true))" />
             <MudThemeManager Open="_themeManagerOpen" OpenChanged="OpenThemeManager" Theme="_themeManager" ThemeChanged="UpdateTheme" />
             <AuthorizeView>
-                <Authorized >
+                <Authorized>
                     <MudAppBar Elevation="1">
                         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
                     </MudAppBar>
                     <MudDrawer @bind-Open="@open" ClipMode="_themeManager.DrawerClipMode" Elevation="_themeManager.DrawerElevation" Breakpoint="@breakpoint" Variant="@DrawerVariant.Responsive" PreserveOpenState="false">
                         <MudDrawerHeader>
                             <MudStack Row="true">
-                                <MudAvatar Size="Size.Medium"> @context?.User?.Identity?.Name?.Substring(0, 1)</MudAvatar>
-                                    <MudStack Justify="Justify.Center" Spacing="0">
-                                        <MudText Typo="Typo.body1">
-                                            @if (context?.User?.Identity?.Name != null)
+                                <MudAvatar Size="Size.Medium">
+                                    @context?.User?.Identity?.Name?.Substring(0, 1)
+                                </MudAvatar>
+                                <MudStack Justify="Justify.Center" Spacing="0">
+                                    <MudText Typo="Typo.body1">
+                                        @if (context?.User?.Identity?.Name != null)
                                         {
                                             @($"{context.User.Identity.Name.Substring(0, 1).ToUpper()}{context.User.Identity.Name.Substring(1).ToLower()}")
                                         }
@@ -34,15 +36,14 @@
                         </MudDrawerHeader>
 
 
-                     @*    <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser + "," + ApplicationConst.Role_Astrologer)>
-                            <Authorized role="">
-                                <MudNavLink Href="/counter" Match="NavLinkMatch.All">
-                                    counter
-                                </MudNavLink>
+                        @* <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser + "," + ApplicationConst.Role_Astrologer)>
+                        <Authorized role="">
+                        <MudNavLink Href="/counter" Match="NavLinkMatch.All">
+                        counter
+                        </MudNavLink>
 
-                            </Authorized>
-                        </AuthorizeView>
- *@
+                        </Authorized>
+                        </AuthorizeView> *@
                         <MudNavMenu>
                             @*  <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink> *@
                             <MudNavLink Href="/" Match="NavLinkMatch.All">
@@ -108,8 +109,6 @@
                                 <MudIcon Icon="@Icons.Material.Filled.Logout" />
                                 Logout
                             </MudNavLink>
-
-
                         </MudNavMenu>
                     </MudDrawer>
                     <MudMainContent Class="px-2">
@@ -124,7 +123,6 @@
     </ChildContent>
     <ErrorContent>
         <AstroOfficeHybrid8.Components.Pages.NetworkLost></AstroOfficeHybrid8.Components.Pages.NetworkLost>
-
     </ErrorContent>
 </ErrorBoundary>
 

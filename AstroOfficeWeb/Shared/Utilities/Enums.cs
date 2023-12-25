@@ -140,4 +140,28 @@ namespace AstroOfficeWeb.Shared.Utilities
         Delete,
         Add
     }
+
+    public enum SnackbarPosition
+    {
+        TopStart,
+        TopLeft,
+        TopCenter,
+        TopRight,
+        TopEnd,
+
+        BottomStart,
+        BottomLeft,
+        BottomCenter,
+        BottomRight,
+        BottomEnd
+    }
+
+    public enum SnackbarType
+    {
+        Dark,
+        Info,
+        Success,
+        Warning,
+        Error
+    }
 }

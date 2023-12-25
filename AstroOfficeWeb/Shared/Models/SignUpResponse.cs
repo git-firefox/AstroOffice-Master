@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace AstroOfficeWeb.Shared.Models
 {
-    public class SignUpResponse
+    public class SignUpResponse : ApiResponse<int>
     {
         public bool IsRegisterationSuccessful { get; set; }
-
-        public string? Message { get; set; }
     }
 }

@@ -4,35 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Utilities;
 
 
 namespace AstroOfficeWeb.Shared.ViewModels
 {
 
-    public class BaseUserViewModel
-    {
-        public long Sno { get; set; }
-
-        [Display(Name = "Username")]
-        public string UserName { get; set; } = null!;
-
-        [Display(Name = "Mobile Number")]
-        public string MobileNumber { get; set; } = null!;
-
-        public string PasswordHash { get; set; } = null!;
-
-        [Display(Name = "Role")]
-        public UserRole Role { get; set; }
-
-        [Display(Name = "Status")]
-        public UserStatus Status { get; set; }
-        public bool CanReport { get; set; }
-        public bool CanEdit { get; set; }
-        public bool CanAdd { get; set; }
-    }
-
-    public class UserViewModel : BaseUserViewModel
+    public class UserViewModel : UserDTO
     {
         public string Password { get; set; } = null!;
         public string RetypePassword { get; set; } = null!;
