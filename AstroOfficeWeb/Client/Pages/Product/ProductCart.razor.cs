@@ -1,6 +1,8 @@
 ﻿
-using AstroShared.DTOs;
-using AstroShared.Utilities;
+using AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Shared.Utilities;
+
+
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 

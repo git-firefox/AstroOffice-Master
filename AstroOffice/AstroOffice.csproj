@@ -41,7 +41,6 @@
 		<ProjectReference Include="..\ASDAL\ASDAL.csproj" />
 		<ProjectReference Include="..\ASDLL\ASDLL.csproj" />
 		<ProjectReference Include="..\AstroOfficeWeb\Shared\AstroOfficeWeb.Shared.csproj" />
-		<ProjectReference Include="..\AstroShared\AstroShared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

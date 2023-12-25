@@ -1,4 +1,4 @@
-﻿using AstroShared.Models;
+﻿using AstroOfficeWeb.Shared.VOs;
 
 namespace AstroOfficeWeb.Shared.Models
 {

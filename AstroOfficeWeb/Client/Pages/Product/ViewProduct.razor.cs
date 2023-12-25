@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
-using AstroShared.DTOs;
-using AstroShared.Helper;
+using AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Shared.Helper;
+
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;

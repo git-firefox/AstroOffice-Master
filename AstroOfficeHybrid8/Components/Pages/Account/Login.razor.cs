@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using MudBlazor;
 using MudExtensions;
 using static MudBlazor.Defaults.Classes;
+using AstroOfficeWeb.Shared.ViewModels;
 
 namespace AstroOfficeHybrid8.Components.Pages.Account
 {

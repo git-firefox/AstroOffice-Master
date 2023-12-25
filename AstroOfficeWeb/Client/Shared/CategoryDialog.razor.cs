@@ -1,7 +1,7 @@
 ﻿using AstroOfficeWeb.Client.Pages.Product;
 using AstroOfficeWeb.Client.Services;
-using AstroShared.DTOs;
-using AstroShared.Helper;
+
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;

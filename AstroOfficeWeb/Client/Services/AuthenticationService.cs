@@ -8,7 +8,8 @@ using Newtonsoft.Json;
 using System.Text;
 using System.Net.Http.Headers;
 using AstroOfficeWeb.Shared.Models;
-using AstroShared.Helper;
+
+using AstroOfficeWeb.Shared.Helper;
 
 namespace AstroOfficeWeb.Client.Services
 {

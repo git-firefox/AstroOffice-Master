@@ -1,6 +1,8 @@
 ﻿
-using AstroShared.DTOs;
-using AstroShared.Helper;
+using AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Shared.Helper;
+
+
 
 namespace AstroOfficeWeb.Client.Pages.Product
 {

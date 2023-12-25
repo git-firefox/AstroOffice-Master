@@ -1,10 +1,12 @@
 ﻿using AstroOfficeWeb.Client.Services;
 using AstroOfficeWeb.Client.Services.IService;
+using AstroOfficeWeb.Shared.Helper;
+using AstroOfficeWeb.Shared.Methods;
 using AstroOfficeWeb.Shared.Models;
-using AstroShared.Helper;
-using AstroShared.Methods;
-using AstroShared.Models;
-using AstroShared.ViewModels;
+using AstroOfficeWeb.Shared.ViewModels;
+using AstroOfficeWeb.Shared.VOs;
+
+
 using Microsoft.AspNetCore.Components;
 
 namespace AstroOfficeWeb.Client.Pages

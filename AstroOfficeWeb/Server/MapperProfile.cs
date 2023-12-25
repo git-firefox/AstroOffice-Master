@@ -4,6 +4,7 @@ using AutoMapper;
 using AstroOfficeWeb.Shared.Models;
 using AstroShared.DTOs;
 using System.Diagnostics.Eventing.Reader;
+using AstroOfficeWeb.Shared.DTOs;
 
 namespace AstroOfficeWeb.Server
 {

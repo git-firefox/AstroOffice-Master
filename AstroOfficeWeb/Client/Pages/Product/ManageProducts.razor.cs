@@ -1,7 +1,9 @@
 ﻿
 using AstroOfficeWeb.Client.Shared;
-using AstroShared.DTOs;
-using AstroShared.Helper;
+using AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Shared.Helper;
+
+
 using static MudBlazor.CategoryTypes;
 
 namespace AstroOfficeWeb.Client.Pages.Product

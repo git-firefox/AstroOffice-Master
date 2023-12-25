@@ -1,0 +1,65 @@
+﻿@using AstroOfficeServices
+@inject ISnackbar Snackbar
+@inject IJSRuntime JSRuntime
+@inject ProductService S_Product
+
+<EditForm Model="@Category" OnValidSubmit="AddCategory">
+    <DataAnnotationsValidator />
+    <MudDialog>
+        <TitleContent>
+        </TitleContent>
+        <DialogContent>
+            <MudPaper Class="pa-2 ma-2" Elevation="0">
+                <label for="Category-Title">Title</label>
+                <MudTextField T="string" id="Category-Title" Variant="Variant.Filled" Placeholder=" Enter category title" @bind-Value="Category.Title" />
+            </MudPaper>
+            <MudPaper Class="pa-2 ma-2" Elevation="0">
+                <label for="Category-Slug">Slug</label>
+                <MudTextField T="string" id="Category-Slug" Variant="Variant.Filled" Placeholder=" Enter slug" @bind-Value="Category.Slug" />
+            </MudPaper>
+            <MudPaper Class="pa-2 ma-2" Elevation="0">
+
+
+                <label>Attachment File</label>
+                <div class="custom-file">
+                    <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png" OnChange="OnChange_InputFile" />
+                    <label class="custom-file-label" for="inputFile">  @(CategoryImage != null ? CategoryImage : "Choose file...") </label>
+                </div>
+                @if (Category.ImageUrl != null)
+                {
+                    <img alt="CategoryImage" class="img-thumbnail" src="@Category.ImageUrl" height="100" width="100" title="@CategoryImage" />
+
+                }
+            </MudPaper>
+
+
+            <MudPaper Class="pa-2 ma-2" Elevation="0">
+                <label for="Category-ParentCategory">Parent Category</label>
+                <MudSelect T="long?" @bind-Value="@Category.ParentCategorySno" For="@(() => Category.ParentCategorySno)" Placeholder="Select parent category" id="Category-ParentCategory" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+                    @foreach (var item in CategoryDTOs)
+                    {
+                        <MudSelectItem T="long?" Value="item.Sno">@item.Title</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudPaper>
+            <MudPaper Class="pa-2 ma-2" Elevation="0">
+                <label for="Category-Status">Status</label>
+                <MudSelect T="string" @bind-Value="@Category.Status" For="@(() => Category.Status)" Placeholder="Select category status" id="Category-Status" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+                    <MudSelectItem Value="@("Scheduled")" />
+                    <MudSelectItem Value="@("Publish")" />
+                    <MudSelectItem Value="@("Inactive")" />
+                </MudSelect>
+            </MudPaper>
+            <MudPaper Class="pa-2 ma-2" Elevation="0">
+                <label for="product-description">Description</label>
+                @* <InputTextEditor @bind-Value="@Category.Descriptions" id="product-description" ></InputTextEditor> *@
+                <AstroOfficeWeb.Components.CustomFormInputs.InputTextEditor @bind-Value="@Category.Descriptions" id="product-description"></AstroOfficeWeb.Components.CustomFormInputs.InputTextEditor>
+            </MudPaper>
+
+        </DialogContent>
+        <DialogActions>
+            <MudButton ButtonType="ButtonType.Submit" Color="Color.Success" Size="Size.Medium" Variant="Variant.Filled"> Save Category </MudButton>
+            <MudButton Class="mr-4" Color="Color.Primary" Size="Size.Medium" Variant="Variant.Filled" OnClick="Cancel">Cancel</MudButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>

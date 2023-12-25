@@ -1,7 +1,8 @@
 ﻿using AstroOfficeWeb.Client.Services.IService;
+using AstroOfficeWeb.Shared.Helper;
 using AstroOfficeWeb.Shared.Models;
-using AstroShared.Helper;
-using AstroShared.Models;
+using AstroOfficeWeb.Shared.VOs;
+
 
 namespace AstroOfficeWeb.Client.Services
 {

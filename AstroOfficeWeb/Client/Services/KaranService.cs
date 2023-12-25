@@ -1,7 +1,9 @@
 ﻿using System.Security.Cryptography.X509Certificates;
-using AstroShared.Helper;
-using AstroShared.Models;
-using AstroShared.ViewModels;
+using AstroOfficeWeb.Shared.Helper;
+using AstroOfficeWeb.Shared.ViewModels;
+using AstroOfficeWeb.Shared.VOs;
+
+
 using Blazored.LocalStorage;
 
 namespace AstroOfficeWeb.Client.Services

@@ -1,6 +1,7 @@
 ﻿using AstroOfficeWeb.Shared.Models;
-using AstroShared.DTOs;
-using AstroShared.Utilities;
+using AstroOfficeWeb.Shared.Utilities;
+
+
 using Microsoft.AspNetCore.Components;
 
 namespace AstroOfficeWeb.Client.Pages.Product

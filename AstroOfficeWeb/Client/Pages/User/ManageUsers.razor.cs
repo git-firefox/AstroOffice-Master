@@ -1,8 +1,10 @@
 ﻿using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
-using AstroShared.ViewModels;
-using AstroShared;
+
+
+using AstroOfficeWeb.Shared.ViewModels;
+using AstroOfficeWeb.Shared.Utilities;
 
 namespace AstroOfficeWeb.Client.Pages.User
 {

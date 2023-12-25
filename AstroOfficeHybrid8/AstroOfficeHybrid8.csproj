@@ -78,10 +78,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AstroOfficeServices\AstroOfficeServices.csproj" />
-      <ProjectReference Include="..\AstroOfficeSharedComponents\AstroOfficeSharedComponents.csproj" />
+      <ProjectReference Include="..\AstroOfficeServices\AstroOfficeWeb.Services.csproj" />
+      <ProjectReference Include="..\AstroOfficeSharedComponents\AstroOfficeWeb.Components.csproj" />
       <ProjectReference Include="..\AstroOfficeWeb\Shared\AstroOfficeWeb.Shared.csproj" />
-      <ProjectReference Include="..\AstroShared\AstroShared.csproj" />
     </ItemGroup>
 
 </Project>

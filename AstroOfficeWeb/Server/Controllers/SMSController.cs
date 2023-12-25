@@ -2,7 +2,10 @@
 using System.Net;
 using ASModels;
 using AstroOfficeWeb.Server.Helper;
+using AstroOfficeWeb.Shared.Helper;
 using AstroOfficeWeb.Shared.Models;
+using AstroOfficeWeb.Shared.SSExpertSystem;
+using AstroOfficeWeb.Shared.SSExpertSystem.Models;
 using AstroShared.Helper;
 using AstroShared.Services.SSExpertSystem;
 using AstroShared.Services.SSExpertSystem.Models;

@@ -1,11 +1,15 @@
-﻿using AstroShared.DTOs;
+﻿
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using AstroShared.Helper;
+
 using AstroOfficeWeb.Client.Pages.Product;
 using Microsoft.AspNetCore.Components.Forms;
-using AstroOfficeWeb.Client.Shared.CustomInputs;
-using AstroShared;
+
+
+using AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Shared.Utilities;
+using AstroOfficeWeb.Shared.Helper;
+using AstroOfficeWeb.Components;
 
 namespace AstroOfficeWeb.Client.Shared
 {

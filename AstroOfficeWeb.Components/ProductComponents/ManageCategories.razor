@@ -1,0 +1,68 @@
+﻿@page "/manage-categories"
+@using AstroOfficeServices
+@using AstroOfficeWeb.Shared.ComponentModels;
+
+@inject ProductService ProductService
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject IJSRuntime JSRuntime
+
+<ContainerFluid HeaderTitle="Manage Orders">
+    <Header>
+        @* <button @onclick="Onclick_AddMetaData" class="btn btn-custom">Add Category</button> *@
+        <MudButton OnClick="Onclick_AddMetaData" Class="btn-custom">Add Category</MudButton>
+
+
+    </Header>
+    <ChildContent>
+        <MudDataGrid T="CategoryDialoge" Items="@categoryList" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter">
+            <ToolBarContent>
+                <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            <NoRecordsContent>
+                <MudText Typo="Typo.h5" Class="mud-text-secondary mt-16 mb-16">No data to display</MudText>
+            </NoRecordsContent>
+            <Columns>
+                @* <SelectColumn T="CategoryDialoge" /> *@
+                <PropertyColumn Property="x=> x.Title" Title="Category">
+                    <CellTemplate>
+                        <table>
+                            <tr>
+                                <td>
+                                    <img class="img-thumbnail" src="@context.Item.ImageUrl" height="50" width="50" />
+                                    
+                                </td>
+                                <td>
+                                    <MudText>
+                                        @(context.Item.Title)
+                                    </MudText>
+                                    @if (!string.IsNullOrEmpty(context.Item.Descriptions))
+                                    {
+                                        <MudText>
+                                            @(new MarkupString(context.Item.Descriptions))
+                                        </MudText>
+                                    }
+                                </td>
+                            </tr>
+                        </table>
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.TotalProducts" Title="Total Products" />
+                <PropertyColumn Property="x => x.AddedDate" Title="Added Date" />
+                <PropertyColumn Property="x => x.LastModifiedDate" Title="Last Modified Date" />
+                <TemplateColumn Filterable="false" Sortable="false" CellClass="mud-table-cell">
+                    <CellTemplate>
+                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="()=> OnClick_CategoryEdit(context.Item)" />
+                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="() => OnClick_DeleteCategory(context.Item)" />
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+            <PagerContent>
+                <MudDataGridPager T="CategoryDialoge" />
+            </PagerContent>
+        </MudDataGrid>
+    </ChildContent>
+</ContainerFluid>
+
+

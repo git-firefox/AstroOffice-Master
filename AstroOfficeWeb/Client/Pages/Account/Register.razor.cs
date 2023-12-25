@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using AstroShared.ViewModels;
-using AstroShared.Helper;
+using AstroOfficeWeb.Shared.ViewModels;
+using AstroOfficeWeb.Shared.Helper;
+using AstroOfficeWeb.Components;
 
 namespace AstroOfficeWeb.Client.Pages.Account
 {
@@ -23,12 +24,12 @@ namespace AstroOfficeWeb.Client.Pages.Account
 
             if (response.IsRegisterationSuccessful)
             {
-                await JSRuntime.ShowToastAsync(response?.Message, SwalIcon.Success);      
+                await JSRuntime.ShowToastAsync(response?.Message, SwalIcon.Success);
                 NavigationManager!.NavigateTo("/login");
             }
             else
             {
-               await  JSRuntime.ShowToastAsync(response?.Message, SwalIcon.Error);
+                await JSRuntime.ShowToastAsync(response?.Message, SwalIcon.Error);
             }
 
 
@@ -40,7 +41,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
             RegistrationModel.MobileNumber = mobileNumberObj.ToMobileNumber();
         }
 
-      
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)

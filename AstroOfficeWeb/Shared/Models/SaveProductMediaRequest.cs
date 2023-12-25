@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AstroShared.Utilities;
+using AstroOfficeWeb.Shared.Utilities;
 
 namespace AstroOfficeWeb.Shared.Models
 {

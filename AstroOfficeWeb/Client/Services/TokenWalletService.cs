@@ -1,8 +1,12 @@
 ﻿using AstroOfficeWeb.Client.Services.IService;
+using AstroOfficeWeb.Components;
+using AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Shared.Helper;
 using AstroOfficeWeb.Shared.Models;
-using AstroShared.DTOs;
-using AstroShared.Helper;
-using AstroShared.ViewModels;
+using AstroOfficeWeb.Shared.ViewModels;
+
+
+
 using Microsoft.JSInterop;
 
 namespace AstroOfficeWeb.Client.Services

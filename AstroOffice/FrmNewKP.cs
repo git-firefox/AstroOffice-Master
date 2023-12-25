@@ -14,7 +14,7 @@ using AstroOffice.Helper;
 using System.Drawing.Printing;
 using ASBAL;
 using Microsoft.Extensions.DependencyInjection;
-using AstroShared.Models;
+using AstroOfficeWeb.Shared.VOs;
 
 namespace AstroOffice
 {

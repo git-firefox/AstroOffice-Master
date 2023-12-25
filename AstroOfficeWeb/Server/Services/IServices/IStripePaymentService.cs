@@ -1,4 +1,5 @@
-﻿using AstroShared.DTOs;
+﻿using AstroOfficeWeb.Shared.DTOs;
+using AstroShared.DTOs;
 using Stripe.Checkout;
 
 namespace AstroOfficeWeb.Server.Services.IServices

@@ -1,5 +1,7 @@
-﻿using AstroShared.DTOs;
-using AstroShared.Helper;
+﻿using AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Shared.Helper;
+
+using AstroOfficeWeb.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
@@ -12,7 +14,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         public string? CategorySno { get; set; } = null;
         [Parameter]
         public string? CategoryName { get; set; } = null;
-        
+
         [Parameter]
         public int CurrentPage { get; set; } = 1;
 

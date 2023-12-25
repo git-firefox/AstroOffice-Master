@@ -1,0 +1,218 @@
+
+@* @page "/products"
+@page "/products/{CategorySno}/{CategoryName}" *@
+@* @page "/products/{CurrentPage:int}" *@
+@* 
+@using AstroOfficeWeb.Client.Services
+
+
+@inject ProductService ProductService
+@inject NavigationManager NavigationManager
+@inject StateContainerService StateContainerService
+@inject IJSRuntime JSRuntime *@
+@inject ISnackbar Snackbar
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@inject ProductService ProductService
+<style>
+    body {
+        background: #fff !important;
+    }
+</style>
+<Container Name="Shop">
+    <Header>
+        <MudButton OnClick="OnClick_BtnClear" Class="btn-custom">Clear Filter</MudButton>
+    </Header>
+    <ChildContent>
+
+        <div class="row">
+            <div class="col-xl-3 col-lg-2 col-md-4 col-sm-12 col-12 mb-3">
+                <div class="categories">
+
+                    <h2 class="category-title">Shop Categories</h2>
+
+                    <MudNavMenu>
+                        @if (CategoryDTOs == null)
+                        {
+                            for (int i = 0; i < 10; i++)
+                            {
+                                <MudSkeleton Width="100%" Height="42px;" />
+                            }
+                        }
+                        else if (CategoryDTOs.Any())
+                        {
+                            foreach (var category in CategoryDTOs)
+                            {
+                                if (category.SubCategories != null && category.SubCategories.Any())
+                                {
+                                    <MudNavGroup Title="@category.Title">
+                                        @foreach (var subcategory in category.SubCategories)
+                                        {
+                                            <MudNavLink OnClick="(()=> OnClick_CategoryList(subcategory))">@subcategory.Title</MudNavLink>
+                                        }
+                                    </MudNavGroup>
+                                }
+                                else
+                                {
+                                    <MudNavLink OnClick="(()=> OnClick_CategoryList(category))">@category.Title</MudNavLink>
+                                }
+                            }
+                        }
+
+                    </MudNavMenu>
+                </div>
+            </div>
+            <div class="col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12 mb-3">
+                <div class="shop-search">
+                    <MudGrid>
+                        <MudItem xs="12" sm="4" Style="padding-top:0;padding-bottom:25px">
+                            <div class="shop-search-input">
+                                <div class="mud-input-control mud-input-input-control mt-0">
+                                    <div class="mud-input-control-input-container">
+                                        <div class="mud-input mud-input-text mud-input-adorned-start mud-input-underline mud-shrink">
+                                            <div class="mud-input-adornment mud-input-adornment-start">
+                                                <svg aria-label="Icon" tabindex="-1" class="mud-icon-root mud-icon-default mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><!--!--><path d="M0 0h24v24H0z" fill="none"></path><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+                                            </div>
+                                            <input class="mud-input-slot mud-input-root mud-input-root-text mud-input-root-adorned-start" type="text" @onchange="ApplyFilter" id="searchShopBox" placeholder="Search" inputmode="text" maxlength="524288" aria-invalid="false" _bl_23="">
+                                            <div class="mud-input-slot mud-input-root mud-input-root-text mud-input-root-adorned-start" style="display:none" tabindex="-1" _bl_24="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </MudItem>
+                        <MudItem xs="12" sm="4" Style="padding-top:0;padding-bottom:25px">
+                            <MudSelect T="string" Label="Sort by price" SelectedValuesChanged="(async (x)=> await ApplyFilter())" AnchorOrigin="Origin.BottomCenter" id="sortShopdropdown">
+                                <MudSelectItem Value="@("Default")" />
+                                <MudSelectItem Value="@("Low-Max")" />
+                                <MudSelectItem Value="@("Max-Low")" />
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" sm="4" Style="padding-top:0;padding-bottom:25px">
+                            <MudSelect T="string" Label="Page size" SelectedValuesChanged="(async (x)=> await ApplyFilter())" AnchorOrigin="Origin.BottomCenter" id="pageSizeShopdropdown">
+                                <MudSelectItem Value="@("24")" />
+                                <MudSelectItem Value="@("40")" />
+                                <MudSelectItem Value="@("80")" />
+                            </MudSelect>
+                        </MudItem>
+                    </MudGrid>
+                </div>
+
+                <div class="row">
+                    @if (Products == null)
+                    {
+                        for (int i = 0; i < 10; i++)
+                        {
+                            <div class="col-lg-3 col-md-4 col-6 mt-2">
+                                <div class="card shop-card">
+                                    <div class="card-body d-flex align-items-center flex-column">
+                                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="200px" Height="110px" />
+                                        <MudSkeleton Width="30%" Height="40px" />
+                                        <MudSkeleton Width="30%" Height="40px;" />
+                                        <MudSkeleton Width="30%" Height="50px;" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else if (Products.Any())
+                    {
+                        @* foreach (ViewProductDTO product in ListedProducts) *@
+                        foreach (ViewProductDTO product in Products)
+                        {
+
+                            <div class="col-lg-3 col-md-4 col-6 mt-2">
+                                <div class="card shop-card">
+                                    <div class="card-body" style="transform: rotate(0);">
+                                        <div class="card-img-actions">
+                                            <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="card-img img-fluid" width="96" height="350">
+                                            <img src="https://www.astromantra.com/wp-content/uploads/2022/03/IMG_3212-555x555.jpg" alt="@product.Name" title="@product.Name" class="hover-img" width="96" height="350" />
+                                        </div>
+
+                                        <div class="card-icon">
+                                            <div class="quick-view wd-action-btn wd-style-icon wd-quick-view-icon">
+
+                                                <a> <i class="fas fa-search"></i></a>
+                                            </div>
+                                            <div class="wd-wishlist-btn wd-action-btn wd-style-icon wd-wishlist-icon">
+                                                <a> <i class="far fa-heart"></i></a>
+
+                                            </div>
+
+                                        </div>
+
+                                        <a href="javascript:void(0);" class="text-default mb-2 stretched-link" data-abc="true" @onclick="() => OnClick_ALinkView(product)"></a>
+                                    </div>
+
+                                    <div class="card-body text-center">
+                                        <div class="mb-2 " style="transform: rotate(0);">
+                                            <h6 class="font-weight-semibold mb-0">
+                                                <a href="javascript:void(0);" class="text-default mb-0 stretched-link" title="@product.Name" data-abc="true" @onclick="() => OnClick_ALinkView(product)">@product.Name</a>
+                                            </h6>
+                                        </div>
+
+                                        <h3 class="mb-0">
+                                            &#8377; @product.Price.ToString("N2")
+                                        </h3>
+
+                                        @* <div>
+                                <i class="fa fa-star star"></i>
+                                <i class="fa fa-star star"></i>
+                                <i class="fa fa-star star"></i>
+                                <i class="fa fa-star star"></i>
+                                </div> *@
+
+                                        @* <div class="text-muted mb-3">34 reviews</div> *@
+
+                                        <button type="button" class="btn bg-cart" @onclick="() => OnClick_BtnAddToCart(product)"><i class="fa fa-cart-plus mr-2"></i> Add to cart</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center scrolling-product">
+                        @* <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Error" @onclick="PreviousPage" disabled="@IsFirstPage" Class="arrow-btn"></MudButton> *@
+                        @* <span>Page @CurrentPage of @TotalPages</span> *@
+                        @* <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowForward" Color="Color.Error" @onclick="NextPage" disabled="@IsLastPage" Class="arrow-btn"></MudButton> *@
+
+
+
+
+                        <nav>
+                            <ul>
+                                <li>
+                                    <MudIconButton Icon="@Icons.Material.Filled.ArrowBackIos" aria-label="delete" @onclick="PreviousPage" disabled="@IsFirstPage"></MudIconButton>
+                                </li>
+
+                                @for (int pageNo = 1; pageNo <= TotalPages; pageNo++)
+                                {
+                                    <li><a href="javascript:void(0);">@pageNo</a></li>
+                                }
+                                <li>
+                                    <MudIconButton Icon="@Icons.Material.Filled.ArrowForwardIos" aria-label="delete" @onclick="NextPage" disabled="@IsLastPage"></MudIconButton>
+                                </li>
+                            </ul>
+                        </nav>
+
+
+                        @* <nav>
+                        <ul>
+                        <li><i class="fas fa-chevron-left"></i></li>
+                        <li><a href="javascript:void(0);">1</a></li>
+                        <li><a href="javascript:void(0);">2</a></li>
+                        <li><a href="javascript:void(0);">3</a></li>
+                        <li><a href="javascript:void(0);">4</a></li>
+                        <li><i class="fas fa-chevron-right"></i></li>
+                        </ul>
+                        </nav> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ChildContent>
+</Container>

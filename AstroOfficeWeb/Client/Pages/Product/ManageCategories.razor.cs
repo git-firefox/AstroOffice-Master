@@ -1,5 +1,6 @@
 ﻿using AstroOfficeWeb.Client.Shared;
-using AstroShared.DTOs;
+using AstroOfficeWeb.Shared.DTOs;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;

@@ -1,7 +1,8 @@
 ﻿using System.Net.Http.Headers;
 using System.Security.Claims;
 using AstroOfficeWeb.Client.Services.IService;
-using AstroShared.Helper;
+using AstroOfficeWeb.Shared.Helper;
+
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 

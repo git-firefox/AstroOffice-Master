@@ -7,6 +7,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Components\**" />
+	  <Content Remove="Components\**" />
+	  <EmbeddedResource Remove="Components\**" />
+	  <None Remove="Components\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Content Remove="Shared\Container.razor" />
 	</ItemGroup>
 
@@ -21,7 +28,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\AstroShared\AstroShared.csproj" />
+		<ProjectReference Include="..\..\AstroOfficeWeb.Components\AstroOfficeWeb.Components.csproj" />
 		<ProjectReference Include="..\Shared\AstroOfficeWeb.Shared.csproj" />
 	</ItemGroup>
 

@@ -1,5 +1,6 @@
 ﻿using ASDLL.ASDLL.ValueObjects;
 using ASDLL.AstroScienceWeb.BLL;
+using AstroOfficeWeb.Shared.DTOs;
 using AstroShared.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;

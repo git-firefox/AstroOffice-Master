@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ASModels = AstroShared.Models;
+using AstroOfficeWeb.Shared.VOs;
 
 namespace AstroOfficeWeb.Shared.Models
 {
     public class GetFalDoubleMahadashaRequest
     {
         public short PlanetNo { get; set; }
-        public ASModels.KundliVO? PersonalKundli { get; set; }
+        public KundliVO? PersonalKundli { get; set; }
         public string? OnlineResult { get; set; }
-        public ASModels.ProductSettingsVO? TemporaryProduct { get; set; }
+        public ProductSettingsVO? TemporaryProduct { get; set; }
     }
 }
