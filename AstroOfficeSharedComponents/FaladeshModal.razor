@@ -1,4 +1,6 @@
-﻿@inherits BaseComponent
+﻿@using AstroOfficeSharedComponents.Components
+@using AstroShared.Helper
+@inherits BaseComponent
 @inject IJSRuntime JSRuntime
 
 <div @ref="ER_FaladeshModal" class="modal fade faladesh" data-keyboard="false" tabindex="-1" aria-hidden="true">
@@ -75,7 +77,8 @@
     public async Task ShowAsync()
     {
         IsShow = true;
-        await JSRuntime.ShowModalAsync(ER_FaladeshModal);       
+        await JSRuntime.ShowModalAsync(ER_FaladeshModal);
+       
         StateHasChanged();
     }
 

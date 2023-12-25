@@ -1,0 +1,28 @@
+﻿.report-content .card {
+    margin-bottom: 0;
+    height: 100%;
+}
+
+@media only screen and (max-width:1378px) and (min-width:1200px) {
+    .btn-varsh {
+        margin-top: 10px;
+    }
+}
+
+@media(max-width:767px) {
+    .card-body, .card-tabs .card-header {
+        padding: .25rem;
+    }
+}
+
+@media (max-width:379px) {
+    .btn-varsh {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width:324px) {
+    .btn-gochar {
+        margin-top: 10px;
+    }
+}

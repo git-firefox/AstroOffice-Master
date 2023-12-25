@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static MudBlazor.CategoryTypes;
 
 namespace AstroOfficeSharedComponents
 {
@@ -41,10 +42,17 @@ namespace AstroOfficeSharedComponents
             await base.OnInitializedAsync();
             CategoryDTOs = await ProductService.GetShopCategories();
             Products = await ProductService.GetProducts();
-            //if (Products is not null)
-            //{
-            //    await ApplyFilter();
-            //}
+            if (Products is not null)
+            {
+                await ApplyFilter();
+            }
+        }
+
+        private async Task PageChanged(int i)
+        {
+            CurrentPage = i;
+            UpdateVisibleItems();
+            //.NavigateTo(i - 1);
         }
 
         private async Task OnClick_CategoryList(BaseCategoryDTO category)
@@ -57,10 +65,9 @@ namespace AstroOfficeSharedComponents
         private async Task OnClick_BtnAddToCart(ViewProductDTO product)
         {
             var tempQuantity = product!.ProductQuantity + 1;
-            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
             if (tempQuantity < 1 || tempQuantity > 5)
             {
-                Snackbar.Add($"Unable to add more products to your cart. Limit exceeded.", Severity.Error);                
+                await JSRuntime.ShowToastAsync($"Unable to add more products to your cart. Limit exceeded.", SwalIcon.Error);
                 return;
             }
 
@@ -68,12 +75,13 @@ namespace AstroOfficeSharedComponents
             if (isAddedToCart)
             {
                 product.ProductQuantity += 1;
-                Snackbar.Add($"\"{product.Name}\" added to your cart.", Severity.Success);                
+                await JSRuntime.ShowToastAsync($"\"{product.Name}\" added to your cart.", SwalIcon.Success);
             }
         }
 
-        private void  OnClick_ALinkView(ViewProductDTO product)
+        private async Task OnClick_ALinkView(ViewProductDTO product)
         {
+            //await LocalStorage.SetItemAsync<ViewProductDTO>(ApplicationConst.Local_SelectedProduct, product);
             NavigationManager.NavigateTo($"/product/{product.Sno}/{product.Name.Replace("'", "-").ToLower()}");
         }
         private async Task OnClick_BtnClear()
@@ -98,7 +106,7 @@ namespace AstroOfficeSharedComponents
             {
                 FilteredProducts = FilteredProducts.OrderBy(x => x.Price).ToList();
             }
-            else if (filter == "Max-Low") 
+            else if (filter == "Max-Low")
             {
                 FilteredProducts = FilteredProducts.OrderByDescending(x => x.Price).ToList();
             }

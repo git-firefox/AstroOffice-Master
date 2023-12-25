@@ -17,6 +17,10 @@ h1 {
 a, .btn-link {
     color: #006bb7;
 }
+.active {
+    background-color: #f44336 !important;
+    color: white !important;
+}
 
 .btn-primary {
     color: #fff;

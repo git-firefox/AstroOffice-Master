@@ -194,12 +194,12 @@ namespace AstroOfficeServices
 
             if (response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message);
+               // await _jsRuntime.ShowToastAsync(response.Message);
                 return true;
             }
             else
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                //await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return false;
             }
         }

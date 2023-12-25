@@ -60,6 +60,7 @@ namespace AstroOfficeServices
 
         public async Task<decimal> UpdateTokenBalance(TransactionType type, decimal amount, string description, string action, string actionDescription)
         {
+        
             var request = new UpdateTokenBalanceRequest()
             {
                 TransactionType = type,
@@ -83,6 +84,7 @@ namespace AstroOfficeServices
 
         public async Task<decimal> UpdateRechargeTokenBalance(TransactionType type, decimal amount, string description)
         {
+           
             var request = new UpdateTokenBalanceRequest()
             {
                 TransactionType = type,
@@ -92,7 +94,7 @@ namespace AstroOfficeServices
             };
 
             var response = await _swagger!.PostAsync<UpdateTokenBalanceRequest, ApiResponse<decimal>>(TokenWalletApiConst.POST_UpdateRechargeTokenBalance, request);
-
+            
             if (response!.Success)
             {
                 await _jsRuntime.ShowToastAsync(description);

@@ -1,5 +1,6 @@
 ﻿@page "/save-product"
 @page "/save-product/{Sno:long}"
+@attribute [Authorize(Roles = "Admin,User,ManageProduct")]
 
 <AstroOfficeSharedComponents.SaveProduct Sno="Sno"></AstroOfficeSharedComponents.SaveProduct>
 
