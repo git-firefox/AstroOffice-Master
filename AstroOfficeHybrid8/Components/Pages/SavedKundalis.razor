@@ -1,13 +1,13 @@
 ﻿@page "/saved-kundalis"
-@    using AstroShared.ViewModels
+@using AstroOfficeServices
+@using AstroOfficeWeb.Shared.ViewModels
+@using AstroOfficeHybrid8.Components.Layout
 
 @* @inject IJSRuntime JSRuntime *@
 @inject NavigationManager NavigationManager
 @inject KundaliHistroyService KundaliHistroy
 
 
-@    using AstroOfficeHybrid8.Components.Layout;
-    using AstroOfficeWeb.Shared.ViewModels;
 
 @* <MudContainer Class="content mt-3">
 
@@ -188,6 +188,5 @@
         {
             return;
         }
-
     }
 }

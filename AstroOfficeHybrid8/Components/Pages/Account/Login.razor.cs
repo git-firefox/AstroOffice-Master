@@ -1,6 +1,4 @@
 ﻿using AstroOfficeWeb.Shared.Models;
-using AstroShared.Helper;
-using AstroShared.ViewModels;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;

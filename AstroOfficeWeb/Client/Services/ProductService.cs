@@ -5,13 +5,11 @@ using AstroOfficeWeb.Shared.Helper;
 using AstroOfficeWeb.Shared.Models;
 using AstroOfficeWeb.Shared.Utilities;
 using AstroOfficeWeb.Components;
-
-
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Stripe;
 using System.Collections.Generic;
+using AstroOfficeWeb.Shared.ComponentModels;
 
 namespace AstroOfficeWeb.Client.Services
 {

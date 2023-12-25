@@ -1,4 +1,5 @@
 ﻿using AstroOfficeWeb.Client.Shared;
+using AstroOfficeWeb.Shared.ComponentModels;
 using AstroOfficeWeb.Shared.DTOs;
 
 using Microsoft.AspNetCore.Components;
@@ -11,20 +12,6 @@ using static System.Formats.Asn1.AsnWriter;
 
 namespace AstroOfficeWeb.Client.Pages.Product
 {
-
-    public class CategoryDialoge : CategoryDTO
-    {
-
-        public string FileUpload { get; set; }
-
-        public string ParentCategory { get; set; } = string.Empty;
-
-
-
-        public int TotalEarning { get; set; } = 0;
-
-
-    }
 
     public partial class ManageCategories
     {

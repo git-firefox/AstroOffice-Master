@@ -1,8 +1,4 @@
 ﻿using AstroOfficeWeb.Shared.Models;
-using AstroShared.DTOs;
-using AstroShared.Helper;
-using AstroShared.ViewModels;
-using AstroShared;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
@@ -11,19 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AstroOfficeServices.IServices;
+using AstroOfficeWeb.Shared.ViewModels;
+using AstroOfficeWeb.Shared.Helper;
+using AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Shared.Utilities;
 
 namespace AstroOfficeServices
 {
     public class KundaliHistroyService
     {
         private readonly ISwaggerApiService _swagger;
-        private readonly IJSRuntime _jsRuntime;
+        //private readonly IJSRuntime _jsRuntime;
         public BirthDetails? SelectedSavedKundali;
 
-        public KundaliHistroyService(ISwaggerApiService swagger, IJSRuntime jsRuntime)
+        public KundaliHistroyService(ISwaggerApiService swagger)
         {
             _swagger = swagger;
-            _jsRuntime = jsRuntime;
         }
 
         public async Task SaveKundaliLog(BirthDetails bd)
@@ -86,7 +85,7 @@ namespace AstroOfficeServices
             };
 
             var response = await _swagger!.PostAsync<SaveKundaliRequest, ApiResponse<string>>(KundaliHistoryApiConst.POST_SaveKundali, request);
-            await _jsRuntime.ShowToastAsync("Kundali Saved!");
+            //await _jsRuntime.ShowToastAsync("Kundali Saved!");
         }
 
         public async Task<List<PersonKundaliTableTRModel>?> GetUserViewedKundalies()
@@ -194,12 +193,12 @@ namespace AstroOfficeServices
 
             if (response!.Success)
             {
-                await _jsRuntime.ShowToastAsync(response.Message);
+                //await _jsRuntime.ShowToastAsync(response.Message);
                 return true;
             }
             else
             {
-                await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                //await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
                 return false;
             }
         }

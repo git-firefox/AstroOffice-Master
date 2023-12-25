@@ -63,6 +63,7 @@
 
     <ItemGroup>
       <Compile Remove="Services\IServices\ISwaggerApiService.cs" />
+      <Compile Remove="Services\KundaliHistroyService.cs" />
       <Compile Remove="Services\SwaggerApiService.cs" />
     </ItemGroup>
 
@@ -78,8 +79,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AstroOfficeServices\AstroOfficeWeb.Services.csproj" />
-      <ProjectReference Include="..\AstroOfficeSharedComponents\AstroOfficeWeb.Components.csproj" />
+      <ProjectReference Include="..\AstroOfficeWeb.Components\AstroOfficeWeb.Components.csproj" />
+      <ProjectReference Include="..\AstroOfficeWeb.Services\AstroOfficeWeb.Services.csproj" />
       <ProjectReference Include="..\AstroOfficeWeb\Shared\AstroOfficeWeb.Shared.csproj" />
     </ItemGroup>
 

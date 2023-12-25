@@ -16,7 +16,7 @@ namespace AstroOfficeWeb.Components
         public ExampleJsInterop(IJSRuntime jsRuntime)
         {
             moduleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/AstroOfficeSharedComponents/exampleJsInterop.js").AsTask());
+                "import", "./_content/AstroOfficeWeb.Components/exampleJsInterop.js").AsTask());
         }
 
         public async ValueTask<string> Prompt(string message)
