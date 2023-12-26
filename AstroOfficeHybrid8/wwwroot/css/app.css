@@ -15,7 +15,7 @@ h1 {
 }
 */
 
-.active {
+a.active, .btn-link.active {
     background-color: #f44336 !important;
     color: white !important;
 }
