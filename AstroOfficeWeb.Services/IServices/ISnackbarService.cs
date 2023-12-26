@@ -11,10 +11,10 @@ namespace AstroOfficeWeb.Services.IServices
     {
         void ShowSnackbar(Snackbar snackbar);
         Task ShowSnackbarAsync(Snackbar snackbar);
-        void ShowDarkSnackbar(string message, SnackbarPosition position = SnackbarPosition.BottomLeft);
-        void ShowInfoSnackbar(string message, SnackbarPosition position = SnackbarPosition.BottomLeft);
-        void ShowSuccessSnackbar(string message, SnackbarPosition position = SnackbarPosition.BottomLeft);
-        void ShowWarningSnackbar(string message, SnackbarPosition position = SnackbarPosition.BottomLeft);
-        void ShowErrorSnackbar(string message, SnackbarPosition position = SnackbarPosition.BottomLeft);
+        void ShowDarkSnackbar(string? message);
+        void ShowInfoSnackbar(string? message);
+        void ShowSuccessSnackbar(string? message);
+        void ShowWarningSnackbar(string? message);
+        void ShowErrorSnackbar(string? message);
     }
 }

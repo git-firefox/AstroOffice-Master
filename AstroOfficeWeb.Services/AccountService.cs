@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AstroOfficeWeb.Services.IServices;
 using AstroOfficeWeb.Shared.Helper;
+using AstroOfficeWeb.Shared.Models;
 using AstroOfficeWeb.Shared.ViewModels;
 
 namespace AstroOfficeWeb.Services
@@ -24,10 +25,9 @@ namespace AstroOfficeWeb.Services
             return response;
         }
 
-        public async Task<List<UserViewModel>?> SaveUsers()
+        public async Task SaveUsers(SignUpRequest request)
         {
-            var response = await _swagger!.GetAsync<List<UserViewModel>>(AccountApiConst.GET_Users);
-            return response;
+            var response = await _swagger!.PostAsync<SignUpRequest, ApiResponse<int>>(AccountApiConst.POST_SignUp, request);
         }
     }
 }

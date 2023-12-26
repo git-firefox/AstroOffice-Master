@@ -15,10 +15,12 @@ namespace AstroOfficeWeb.Services
     public class TokenWalletService
     {
         private readonly ISwaggerApiService _swagger;
+        private readonly ISnackbarService? _snackbar;
 
-        public TokenWalletService(ISwaggerApiService swagger)
+        public TokenWalletService(ISwaggerApiService swagger, ISnackbarService? snackbar)
         {
             _swagger = swagger;
+            _snackbar = snackbar;
         }
 
         public async Task<decimal> GetBalance()
@@ -69,11 +71,11 @@ namespace AstroOfficeWeb.Services
             var response = await _swagger!.PostAsync<UpdateTokenBalanceRequest, ApiResponse<decimal>>(TokenWalletApiConst.POST_UpdateTokenBalance, request);
             if (response!.Success)
             {
-                // // await _jsRuntime.ShowToastAsync(description);
+                _snackbar?.ShowSuccessSnackbar(description);
             }
             else
             {
-                // // await _jsRuntime.ShowToastAsync(response!.Message, SwalIcon.Error);
+                _snackbar?.ShowErrorSnackbar(response!.Message);
             }
 
             return response!.Data;
@@ -93,11 +95,11 @@ namespace AstroOfficeWeb.Services
 
             if (response!.Success)
             {
-                // await _jsRuntime.ShowToastAsync(description);
+                _snackbar?.ShowSuccessSnackbar(description);
             }
             else
             {
-                // await _jsRuntime.ShowToastAsync(response!.Message, SwalIcon.Error);
+                _snackbar?.ShowErrorSnackbar(response!.Message);
             }
 
             return response!.Data;

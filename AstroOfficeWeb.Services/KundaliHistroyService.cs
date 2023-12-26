@@ -17,13 +17,14 @@ namespace AstroOfficeWeb.Services
     public class KundaliHistroyService
     {
         private readonly ISwaggerApiService _swagger;
-        private readonly IJSRuntime _jsRuntime;
+        private readonly ISnackbarService? _snackbar;
+
         public BirthDetails? SelectedSavedKundali;
 
-        public KundaliHistroyService(ISwaggerApiService swagger, IJSRuntime jsRuntime)
+        public KundaliHistroyService(ISwaggerApiService swagger, ISnackbarService? snackbar = null)
         {
             _swagger = swagger;
-            _jsRuntime = jsRuntime;
+            _snackbar = snackbar;
         }
 
         public async Task SaveKundaliLog(BirthDetails bd)
@@ -87,6 +88,7 @@ namespace AstroOfficeWeb.Services
 
             var response = await _swagger!.PostAsync<SaveKundaliRequest, ApiResponse<string>>(KundaliHistoryApiConst.POST_SaveKundali, request);
             //await _jsRuntime.ShowToastAsync("Kundali Saved!");
+            _snackbar?.ShowSuccessSnackbar(response?.Message);
         }
 
         public async Task<List<PersonKundaliTableTRModel>?> GetUserViewedKundalies()
@@ -194,12 +196,12 @@ namespace AstroOfficeWeb.Services
 
             if (response!.Success)
             {
-                // await _jsRuntime.ShowToastAsync(response.Message);
+                _snackbar?.ShowSuccessSnackbar(response?.Message);
                 return true;
             }
             else
             {
-                //await _jsRuntime.ShowToastAsync(response.Message, SwalIcon.Error);
+                _snackbar?.ShowErrorSnackbar(response?.Message);
                 return false;
             }
         }
