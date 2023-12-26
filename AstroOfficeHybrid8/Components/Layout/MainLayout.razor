@@ -12,7 +12,7 @@
 <ErrorBoundary>
     <ChildContent>
         <MudLayout>
-            <MudThemeManagerButton OnClick="@((e) => OpenThemeManager(true))" />
+          @*   <MudThemeManagerButton OnClick="@((e) => OpenThemeManager(true))" /> *@
             <MudThemeManager Open="_themeManagerOpen" OpenChanged="OpenThemeManager" Theme="_themeManager" ThemeChanged="UpdateTheme" />
             <AuthorizeView>
                 <Authorized>
