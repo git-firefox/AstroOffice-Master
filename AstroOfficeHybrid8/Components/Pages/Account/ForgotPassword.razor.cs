@@ -1,5 +1,6 @@
 ﻿using AstroOfficeHybrid8.Services.IServices;
-using AstroOfficeServices.IServices;
+using AstroOfficeWeb.Services.IServices;
+using AstroOfficeWeb.Services.IServices;
 using AstroOfficeWeb.Shared.Helper;
 using AstroOfficeWeb.Shared.Models;
 using AstroOfficeWeb.Shared.ViewModels;

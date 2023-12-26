@@ -1,12 +1,12 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
-using AstroOfficeServices.IServices;
+using AstroOfficeWeb.Services.IServices;
 using AstroOfficeWeb.Shared.Helper;
 using AstroOfficeWeb.Shared.Utilities;
 using Newtonsoft.Json;
 
-namespace AstroOfficeServices
+namespace AstroOfficeWeb.Services
 {
     public class SwaggerApiService : ISwaggerApiService
     {

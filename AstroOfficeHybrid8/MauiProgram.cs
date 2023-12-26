@@ -1,9 +1,8 @@
 ﻿//using AstroOfficeHybrid8.Client.Services;
 using AstroOfficeHybrid8.Services;
 using AstroOfficeHybrid8.Services.IServices;
-using AstroOfficeServices;
-using AstroOfficeServices.IServices;
 using AstroOfficeWeb.Services;
+using AstroOfficeWeb.Services.IServices;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 using MudBlazor.Services;

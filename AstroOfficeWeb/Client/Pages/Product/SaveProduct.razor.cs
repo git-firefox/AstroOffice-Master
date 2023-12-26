@@ -238,7 +238,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
             ProductModel.ProductImages = BrowserFiles;
             ProductModel.MetaDatas = MetaDataList;
 
-            await ProductService.SaveProductImages(FileData);
+            await ProductService.SaveProductImages(BrowserFiles);
             //if (Sno == 0)
             //{
             //    await ProductService.AddProduct(ProductModel);

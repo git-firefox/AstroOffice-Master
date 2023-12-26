@@ -172,7 +172,12 @@ h1 {
 
 
 header {
-    background: #910d0d;
+    background: #7f0505;
+}
+
+.dropdown-menu.show {
+    display: block;
+    background-color: brown;
 }
 
 .card-frame {

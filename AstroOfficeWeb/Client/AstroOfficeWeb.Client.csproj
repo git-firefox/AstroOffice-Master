@@ -15,12 +15,26 @@
 
 	<ItemGroup>
 	  <Compile Remove="Pages\Dashboard.razor.cs" />
+	  <Compile Remove="Services\AccountService.cs" />
+	  <Compile Remove="Services\BestBLLService.cs" />
+	  <Compile Remove="Services\IService\ISwaggerApiService.cs" />
+	  <Compile Remove="Services\KPBLLService.cs" />
+	  <Compile Remove="Services\KPDAOService.cs" />
+	  <Compile Remove="Services\KundaliHistroyService.cs" />
+	  <Compile Remove="Services\KundliBLLService.cs" />
+	  <Compile Remove="Services\PredictionBLLService.cs" />
+	  <Compile Remove="Services\ProductService.cs" />
+	  <Compile Remove="Services\StateContainerService.cs" />
+	  <Compile Remove="Services\StripePayment.cs" />
+	  <Compile Remove="Services\SwaggerApiService.cs" />
+	  <Compile Remove="Services\TokenWalletService.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Content Remove="Pages\Dashboard.razor" />
 	  <Content Remove="Shared\ConfirmationModal.razor" />
 	  <Content Remove="Shared\Container.razor" />
+	  <Content Remove="Shared\FaladeshModal.razor" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -39,6 +53,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\AstroOfficeWeb.Components\AstroOfficeWeb.Components.csproj" />
+		<ProjectReference Include="..\..\AstroOfficeWeb.Services\AstroOfficeWeb.Services.csproj" />
 		<ProjectReference Include="..\Shared\AstroOfficeWeb.Shared.csproj" />
 	</ItemGroup>
 

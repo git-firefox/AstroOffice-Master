@@ -1,4 +1,4 @@
-﻿using AstroOfficeServices.IServices;
+﻿using AstroOfficeWeb.Services.IServices;
 using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Helper;
 using AstroOfficeWeb.Shared.Models;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AstroOfficeServices
+namespace AstroOfficeWeb.Services
 {
     public class TokenWalletService
     {

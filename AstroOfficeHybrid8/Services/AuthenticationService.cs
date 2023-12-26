@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using System.Text;
 using System.Net.Http.Headers;
 using AstroOfficeWeb.Shared.Models;
-using AstroOfficeServices.IServices;
+using AstroOfficeWeb.Services.IServices;
 using AstroOfficeWeb.Shared.Helper;
 
 namespace AstroOfficeHybrid8.Services

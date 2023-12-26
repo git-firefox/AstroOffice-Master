@@ -1,7 +1,7 @@
 ﻿using AstroOfficeWeb.Shared.Models;
 using AstroOfficeWeb.Shared.Utilities;
 
-namespace AstroOfficeServices.IServices
+namespace AstroOfficeWeb.Services.IServices
 {
     public interface ISwaggerApiService
     {
