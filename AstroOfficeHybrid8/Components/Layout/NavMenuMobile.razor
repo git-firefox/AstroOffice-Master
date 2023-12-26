@@ -1,15 +1,13 @@
 ﻿<nav id="secondNav" class="bottom-0 position-fixed end-0 start-0">
     <div class="d-lg-none">
         <div class="container-fluid d-flex justify-content-between shadow pt-2">
-            <a href="#" class="text-center text-decoration-none textColor">
-                <div class="mb-1">
-                    <span class="bg-primary rounded-5 p-1 text-white">DB</span>
-                </div>
-                <div class="extraSmallFont active pb-1">Dbook</div>
-            </a>
-            <a href="#" class="text-decoration-none textColor  text-center">
+            <NavLink href="/" class="text-center text-decoration-none textColor">
+               
+                <div class="fas fa-home extraSmallFont active pb-1">Home</div>
+            </NavLink>
+            <a href="/products" class="text-decoration-none textColor  text-center">
                 <img class="iconHeight mb-1" src="/static_files/svgs2/book.svg" alt="book">
-                <div class="extraSmallFont pb-1">Book</div>
+                <div class="extraSmallFont pb-1">Shop</div>
             </a>
             <a href="#" class="text-decoration-none textColor  text-center">
                 <img class="iconHeight mb-1" src="/static_files/svgs2/dpad.svg" alt="dpad">
@@ -28,5 +26,26 @@
                 <div class="extraSmallFont pb-1">Career</div>
             </a>
         </div>
+
+
+      @*   <nav class="flex-column">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="counter">
+                    <span class="oi oi-plus" aria-hidden="true"></span> Counter
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="fetchdata">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+                </NavLink>
+            </div>
+        </nav>
+ *@
+
     </div>
 </nav>
