@@ -1,0 +1,159 @@
+﻿@page "/viewed-kundalis"
+@using AstroOfficeWeb.Shared.ViewModels
+
+@inject KundaliHistroyService KundaliHistroy
+
+@* <div class="container-fluid p-3">
+    <h1 class="pt-4 pb-2 font-weight-bold ">Viewed Kundalis</h1>
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="chart-table table-responsive">
+                    <table class="table">
+                        <thead class="p-0 bg-da-yellow">
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Name</th>
+                                <th>Product Name</th>
+                                <th>Gender</th>
+                                <th>Date of Birth</th>
+                                <th>Time of Birth</th>
+                                <th>Place of Birth</th>
+                                <th>Language</th>
+                                <th>View Date</th>
+                            </tr>
+                        </thead>
+
+                        @if (personKundaliTableTRs == null)
+                        {
+                            <tbody class="overlay-wrapper data-loader">
+                                <tr>
+                                    <td colspan="9"><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
+                                </tr>
+                                @for (int i = 0; i < 9; i++)
+                                {
+                                    <tr>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                        <td> - </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        }
+                        else
+                        {
+                            <tbody>
+                                @if (personKundaliTableTRs.Any())
+                                {
+                                    foreach (var row in personKundaliTableTRs)
+                                    {
+                                        <tr>
+                                            <td>@row.SrNo</td>
+                                            <td>@row.Name</td>
+                                            <td>@row.ProductName</td>
+                                            <td>@row.Gender</td>
+                                            <td>@row.DateOfBirth.ToString(format: "dd - MM - yyyy")</td>
+                                            <td>@row.TimeOfBirth.ToString(format: "c")</td>
+                                            <td>@row.PlaceOfBirth</td>
+                                            <td>@row.Language</td>
+                                            <td>@row.ViewDate</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="9" class="text-center">No records found.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div> *@
+
+@* @code {
+    private List<PersonKundaliTableTRModel>? personKundaliTableTRs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        personKundaliTableTRs = await KundaliHistroy.GetUserViewedKundalies();
+    }
+} *@
+
+
+<MudTable Items="@personKundaliTableTRs" Dense="false" Hover="true" ReadOnly="false" Filter="new Func<PersonKundaliTableTRModel,bool>(FilterFunc)"
+          SortLabel="Sort By">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Viewed Kundalis</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+
+    <HeaderContent>
+        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.SrNo)"><strong> Sr No </strong> </MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.Name!)"><strong>Name</strong></MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.ProductName!)"><strong> Product Name </strong></MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.Gender!)"><strong> Gender </strong></MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.DateOfBirth)"><strong> Date Of Birth </strong> </MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.TimeOfBirth)"> <strong>Time Of Birth </strong></MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.PlaceOfBirth!)"><strong> Place Of Birth </strong></MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.Language!)"> <strong>Language </strong> </MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.ViewDate!)"><strong>View Date </strong> </MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Sr No">@context.SrNo</MudTd>
+            <MudTd DataLabel="Sign">@context.Name</MudTd>
+            <MudTd DataLabel="Name">@context.ProductName</MudTd>
+            <MudTd DataLabel="Position">@context.Gender</MudTd>
+            <MudTd DataLabel="Molar mass">@context.DateOfBirth</MudTd>
+            <MudTd DataLabel="Molar mass">@context.TimeOfBirth</MudTd>
+            <MudTd DataLabel="Molar mass">@context.PlaceOfBirth</MudTd>
+            <MudTd DataLabel="Molar mass">@context.Language</MudTd>
+            <MudTd DataLabel="Molar mass">@context.ViewDate</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+
+    </MudTable>
+
+
+
+    @code {
+    private List<PersonKundaliTableTRModel>? personKundaliTableTRs;
+    private string searchString = "";
+    protected override async Task OnInitializedAsync()
+    {
+        personKundaliTableTRs = await KundaliHistroy.GetUserViewedKundalies();
+    }
+
+    private bool FilterFunc(PersonKundaliTableTRModel element)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Name!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.ProductName!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if (element.Language!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if (element.Gender!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if ($"{element.SrNo} {element.DateOfBirth} {element.TimeOfBirth} {element.PlaceOfBirth} {element.ViewDate}".Contains(searchString))
+            return true;
+        return false;
+    }
+
+}

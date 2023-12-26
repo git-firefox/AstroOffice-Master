@@ -1,13 +1,13 @@
 ﻿@page "/saved-kundalis"
 @using AstroOfficeServices
 @using AstroOfficeWeb.Shared.ViewModels
-@using AstroOfficeHybrid8.Components.Layout
 
 @* @inject IJSRuntime JSRuntime *@
 @inject NavigationManager NavigationManager
 @inject KundaliHistroyService KundaliHistroy
+@inject ISnackbar Snackbar
 
-
+@using AstroOfficeHybrid8.Components.Layout;
 
 @* <MudContainer Class="content mt-3">
 
@@ -113,10 +113,10 @@
                             </MudText>
                         </CardHeaderContent>
 
-                        <CardHeaderActions >
+                        <CardHeaderActions>
                             <div class="mt-6">
-                                <MudIconButton Class="py-3" Icon="@Icons.Material.Filled.Edit" Color="Color.Default"  />
-                                <MudIconButton Class="py-3" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+                                <MudIconButton Class="py-3" Icon="@Icons.Material.Filled.Edit" Color="Color.Default" />
+                                <MudIconButton Class="py-3" OnClick="()=>OnClick_BtnDelete(row)" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
                             </div>
                         </CardHeaderActions>
                     </MudCardHeader>
@@ -174,19 +174,27 @@
 
     private async Task OnClick_BtnDelete(PersonKundaliTableTRModel selectedRow)
     {
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
         bool confirm = await Application.Current.MainPage.DisplayAlert("Confirmation ?", "Are you sure you want to delete this Kundali?", "Yes", "No");
         if (confirm)
         {
             selectedPersonKundaliTableTR = selectedRow;
 
+            await InvokeAsync(async () =>
+        {
             if (await KundaliHistroy.IsDeletedSavedKundali(selectedPersonKundaliTableTR!.ID))
             {
                 personKundaliTableTRs?.Remove(selectedPersonKundaliTableTR);
+                Snackbar.Add("Kundali has been deleted successfully.", Severity.Success);
+                StateHasChanged(); // Trigger UI update
             }
+        });
         }
         else
         {
             return;
         }
+
     }
+
 }

@@ -3,6 +3,7 @@ using AstroOfficeHybrid8.Services;
 using AstroOfficeHybrid8.Services.IServices;
 using AstroOfficeServices;
 using AstroOfficeServices.IServices;
+using AstroOfficeWeb.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
@@ -44,6 +45,11 @@ namespace AstroOfficeHybrid8
             builder.Services.AddScoped<StripePayment>();
             builder.Services.AddScoped<StateContainerService>();
             builder.Services.AddScoped<TokenWalletService>();
+            builder.Services.AddScoped<BestBLLService>();
+            builder.Services.AddScoped<KPBLLService>();
+            builder.Services.AddScoped<PredictionBLLService>();
+            builder.Services.AddScoped<KundliBLLService>();
+            builder.Services.AddScoped<KPDAOService>();
             builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
             return builder.Build();
         }

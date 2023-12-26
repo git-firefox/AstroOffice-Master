@@ -1,0 +1,15 @@
+﻿@page "/products"
+@page "/products/{CategorySno}/{CategoryName}"
+
+<AstroOfficeWeb.Components.ProductComponents.ViewProducts CategoryName="@CategoryName" CategorySno="@CategorySno" CurrentPage="@CurrentPage"></AstroOfficeWeb.Components.ProductComponents.ViewProducts>
+
+@code{
+    [Parameter]
+    public string? CategorySno { get; set; } = null;
+    [Parameter]
+    public string? CategoryName { get; set; } = null;
+
+    [Parameter]
+    public int CurrentPage { get; set; } = 1;
+
+}
