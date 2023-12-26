@@ -5,6 +5,60 @@ html, body {
     background-color: rgb(145, 13, 13) !important;
 }
 
+.astro-container {
+    background-image: url('https://divyaastroashram.com/wp-content/uploads/2023/12/website_BG_new.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    animation: backgroundAnimation 20s infinite linear; /* Adjust the animation duration as needed */
+}
+
+@keyframes moveBackground {
+    0% {
+        transform: translateX(0%) translateY(0%);
+    }
+
+    25% {
+        transform: translateX(5%) translateY(-5%);
+    }
+
+    50% {
+        transform: translateX(0%) translateY(0%);
+    }
+
+    75% {
+        transform: translateX(-5%) translateY(5%);
+    }
+
+    100% {
+        transform: translateX(0%) translateY(0%);
+    }
+}
+
+@keyframes rotateBackground {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/*.display-container:hover {
+    animation: moveBackground 5s infinite alternate, rotateBackground 10s infinite linear;
+}*/
+
+@keyframes backgroundAnimation {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    100% {
+        background-position: 100% 100%;
+    }
+}
+
 .btn-custom {
     background: #fab73a;
     color: #fff;
