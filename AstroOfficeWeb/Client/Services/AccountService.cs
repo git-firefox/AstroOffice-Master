@@ -15,13 +15,13 @@ namespace AstroOfficeWeb.Client.Services
             _swagger = swagger;
         }
 
-        public async Task<List<UserDTO>?> GetUsers()
+        public async Task<List<UserViewModel>?> GetUsers()
         {
-            var response = await _swagger!.GetAsync<List<UserDTO>>(AccountApiConst.GET_Users);
+            var response = await _swagger!.GetAsync<List<UserViewModel>>(AccountApiConst.GET_Users);
             return response;
         }
 
-        public async Task SaveUsers(SignUpRequest request) 
+        public async Task SaveUsers(SignUpRequest request)
         {
             var response = await _swagger!.PostAsync<SignUpRequest, ApiResponse<int>>(AccountApiConst.POST_SignUp, request);
         }
