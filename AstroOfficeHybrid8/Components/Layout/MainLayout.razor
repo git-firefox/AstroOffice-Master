@@ -12,8 +12,8 @@
 <ErrorBoundary>
     <ChildContent>
         <MudLayout>
-            <MudThemeManagerButton OnClick="@((e) => OpenThemeManager(true))" />
-            <MudThemeManager Open="_themeManagerOpen" OpenChanged="OpenThemeManager" Theme="_themeManager" ThemeChanged="UpdateTheme" />
+          @*   <MudThemeManagerButton OnClick="@((e) => OpenThemeManager(true))" />
+            <MudThemeManager Open="_themeManagerOpen" OpenChanged="OpenThemeManager" Theme="_themeManager" ThemeChanged="UpdateTheme" /> *@
             <AuthorizeView>
                 <Authorized>
                     <MudAppBar Elevation="1">
@@ -281,6 +281,7 @@
                 Primary = Colors.Red.Default,
                 Secondary = Colors.Green.Accent4,
                 AppbarBackground = Colors.Red.Default,
+               
             },
             PaletteDark = new PaletteDark()
             {
