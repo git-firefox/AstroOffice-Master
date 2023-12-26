@@ -51,27 +51,26 @@
                                     }
                                 </div>
 
-                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev" data-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="sr-only">Previous</span>
                                 </a>
-                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next" data-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="sr-only">Next</span>
                                 </a>
 
                                 <div class="carousel-indicators">
 
-                                    <button data-target="#carouselExampleIndicators" data-slide-to="0" class="thumbnail active" aria-current="true" aria-label="Slide 1">
+                                    <button data-bs-target="#carouselExampleIndicators" data-target="#carouselExampleIndicators" data-bs-slide-to="0" data-slide-to="0" class="thumbnail active" aria-current="true" aria-label="Slide 1">
                                         <img src="@SelectedImage!.ImageURL" class="img-thumbnail" alt="@SelectedImage!.ImageName" title="@SelectedImage!.ImageName" />
                                     </button>
 
                                     @foreach (var (value, index) in BrowserFiles.Select((value, index) => (value, index)))
                                     {
-                                        <button data-target="#carouselExampleIndicators" data-slide-to="@(index+1)" class="thumbnail" aria-label="Slide @(index+2)">
+                                        <button data-bs-target="#carouselExampleIndicators" data-target="#carouselExampleIndicators" data-bs-slide-to="@(index+1)" data-slide-to="@(index+1)" class="thumbnail" aria-label="Slide @(index+2)">
                                             <img src="@value.ImageURL" class="img-thumbnail" alt="@value.ImageName" title="@value.ImageName" />
                                         </button>
-
                                     }
                                 </div>
 
