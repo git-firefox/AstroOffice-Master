@@ -2,54 +2,13 @@
 
 html, body {
     font-family: 'Philosopher', sans-serif;
-    background-color: rgb(145, 13, 13) !important;
-}
-
-.astro-container {
-    background-image: url('https://divyaastroashram.com/wp-content/uploads/2023/12/website_BG_new.webp');
+    background-image: url('/images/astro-container.webp');
     background-size: cover;
     background-repeat: no-repeat;
-    height: 100vh;
-    animation: backgroundAnimation 20s infinite linear; /* Adjust the animation duration as needed */
+    animation: background-animation 20s infinite linear;
 }
 
-@keyframes moveBackground {
-    0% {
-        transform: translateX(0%) translateY(0%);
-    }
-
-    25% {
-        transform: translateX(5%) translateY(-5%);
-    }
-
-    50% {
-        transform: translateX(0%) translateY(0%);
-    }
-
-    75% {
-        transform: translateX(-5%) translateY(5%);
-    }
-
-    100% {
-        transform: translateX(0%) translateY(0%);
-    }
-}
-
-@keyframes rotateBackground {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-/*.display-container:hover {
-    animation: moveBackground 5s infinite alternate, rotateBackground 10s infinite linear;
-}*/
-
-@keyframes backgroundAnimation {
+@keyframes background-animation {
     0% {
         background-position: 0% 0%;
     }
@@ -58,6 +17,7 @@ html, body {
         background-position: 100% 100%;
     }
 }
+
 
 .btn-custom {
     background: #fab73a;
@@ -141,13 +101,12 @@ html, body {
 
 .valid.modified:not([type="checkbox"]):not([type="radio"]) {
     outline: 1px solid #26b050;
-}
-
-.form-signin {
-    width: 100%;
-    max-width: 330px;
-    padding: 15px;
-    margin: auto;
+    border-color: #198754;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem)
 }
 
 .invalid {
@@ -160,20 +119,47 @@ html, body {
     background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 
+
 .validation-message {
-    color: red;
     width: 100%;
     margin-top: 0.25rem;
     font-size: .875em;
     color: #dc3545;
 }
 
-.astro-card {
+.custom-bg-card {
     background: hsla(38, 100%, 70%, 1);
     background: radial-gradient(circle, hsla(38, 100%, 70%, 1) 0%, hsla(37, 94%, 67%, 1) 21%, hsla(36, 93%, 67%, 1) 42%, hsla(36, 91%, 66%, 1) 62%, hsla(34, 84%, 64%, 1) 80%, hsla(31, 76%, 61%, 1) 100%, hsla(46, 100%, 77%, 1) 100%);
     background: -moz-radial-gradient(circle, hsla(38, 100%, 70%, 1) 0%, hsla(37, 94%, 67%, 1) 21%, hsla(36, 93%, 67%, 1) 42%, hsla(36, 91%, 66%, 1) 62%, hsla(34, 84%, 64%, 1) 80%, hsla(31, 76%, 61%, 1) 100%, hsla(46, 100%, 77%, 1) 100%);
     background: -webkit-radial-gradient(circle, hsla(38, 100%, 70%, 1) 0%, hsla(37, 94%, 67%, 1) 21%, hsla(36, 93%, 67%, 1) 42%, hsla(36, 91%, 66%, 1) 62%, hsla(34, 84%, 64%, 1) 80%, hsla(31, 76%, 61%, 1) 100%, hsla(46, 100%, 77%, 1) 100%);
 }
+
+
+.brand-logo-container {
+    position: absolute;
+    height: 170px;
+    width: 170px;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    /*background: #60a3bc;*/
+    /*padding: 10px;*/
+    /*text-align: center;*/
+}
+
+.brand-logo {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    /*border: 2px solid white;*/
+}
+
+.form-container {
+    margin-top: 6rem;
+}
+
+
 
 
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
@@ -224,7 +210,7 @@ h1 {
         content: "An error has occurred."
     }*/
 
-
+/*
 header {
     background: #7f0505;
 }
@@ -834,3 +820,4 @@ section .section-overlay {
 .mud-button:hover, .mud-button:focus-visible {
     background-color: transparent;
 }
+*/

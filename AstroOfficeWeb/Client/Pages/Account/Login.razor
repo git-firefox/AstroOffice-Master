@@ -4,58 +4,50 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@* @layout AccountLayout *@
+@layout AccountLayout
 
-@* <div class="form-signin">
-    <EditForm Model="LoginModel" OnInvalidSubmit="OnInvalidSubmit" OnValidSubmit="OnValidSubmitAsync">
-        <DataAnnotationsValidator />
-        <img src="images/loader-4.gif" alt="Astro Office" width="72" height="57" class="mb-4">
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-        <div class="card astro-card">
-            <div class="card-body">
+<EditForm Model="LoginModel" OnInvalidSubmit="OnInvalidSubmit" OnValidSubmit="OnValidSubmitAsync" class="mb-3 mt-md-4">
+    <DataAnnotationsValidator />
 
-                <div class="row">
-                    <div class="input-group mb-4">
-                        <span class="input-group-text"><i class="fa fa-user"></i></span>
-                        <InputText @bind-Value="LoginModel!.UserName" class="form-control" placeholder="User Name" />
-                    </div>
-                </div>
-                <ValidationMessage For="() => LoginModel!.UserName" />
+    @* <h2 class="fw-bold mb-2 text-uppercase ">Divya Astro Ashram</h2> *@
+    <p class=" mb-5">Please enter your login and password!</p> 
 
-                <div class="row">
-                    <div class="input-group mb-4">
-                        <span class="input-group-text"><i class="fa fa-lock"></i></span>
-                        <InputText type="@(PasswordIsClicked ? "text" : "password")" @bind-Value="LoginModel!.Password" class="form-control" placeholder="Password" />
-                        <span class="input-group-text"><i class="fas @(PasswordIsClicked ? "fa-eye-slash" : "fa-eye")" @onclick="()=>{PasswordIsClicked = !PasswordIsClicked; }"></i></span>
-                    </div>
-                    <ValidationMessage For="() => LoginModel.Password" />
-                </div>
+    <div class="input-group mt-2">
+        <span class="input-group-text"><i class="fa fa-user"></i></span>
+        <InputText @bind-Value="LoginModel!.UserName" class="form-control" placeholder="User Name" />
+    </div>
+    <ValidationMessage For="() => LoginModel!.UserName" />
 
-                <div class="row">
-                    <div class="col-6">
-                        <InputCheckbox id="ChkRememberMe" @bind-Value="LoginModel!.RememberMe" />
-                        <label for="ChkRememberMe">
-                            Remember Me
-                        </label>
-                    </div>
-                    <div class="col-6 text-right">
-                        <a href="/forgotpass" class="forgot-link">Forgot Password ?</a>
-                    </div>
-                    <div class="col-12 mt-3">
-                        <button type="submit" class="btn btn-custom btn-block">Sign In</button>
-                        <a class="btn btn-custom btn-custom-outline mt-2 btn-block" href="/login-with-mobile">Login with OTP</a>
-                    </div>
-                </div>
+    <div class="input-group mt-2">
+        <span class="input-group-text"><i class="fa fa-lock"></i></span>
+        <InputText type="@(PasswordIsClicked ? "text" : "password")" @bind-Value="LoginModel!.Password" class="form-control" placeholder="Password" />
+        <span class="input-group-text"><i class="fas @(PasswordIsClicked ? "fa-eye-slash" : "fa-eye")" @onclick="()=>{PasswordIsClicked = !PasswordIsClicked; }"></i></span>
+    </div>
+    <ValidationMessage For="() => LoginModel.Password" />
 
-                <div class="text-center">
-                    <p class="mb-0 mt-3"> Don't have an account?  <a class="forgot-link" href="/register"><u>Sign Up</u></a></p>
-                </div>
-            </div>
-        </div>
-    </EditForm>
-</div> *@
-<div class="login-page">
+    <div class="form-check  mt-2">
+        <InputCheckbox @bind-Value="LoginModel!.RememberMe" id="ChkRememberMe" class="form-check-input" />
+        <label for="ChkRememberMe" class="form-check-label">Remember Me </label>
+    </div>
+
+    <div class="d-grid  mt-2">
+        <button class="btn btn-outline-dark" type="submit">Login</button>
+    </div>
+
+</EditForm>
+<div class="text-center mt-2">
+    <p>Don't have an account? <a href="/register" class="text-primary fw-bold"> Sign Up </a>        </p>
+    <p><a href="/forgotpass" class="text-primary">Forgot password?</a></p>
+</div>
+
+
+
+
+
+
+
+@* <div class="login-page">
     <img src="images/loader-4.gif" class="astroOffice-logo-image mb-3" />
 
     <div class="login-box card-frame">
@@ -103,4 +95,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> *@
