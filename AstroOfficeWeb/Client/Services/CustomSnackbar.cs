@@ -14,6 +14,7 @@ namespace AstroOfficeWeb.Client.Services
         public CustomSnackbar(ISnackbar snackbar)
         {
             _snackbar = snackbar;
+            _snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
         }
 
         public void ShowDarkSnackbar(string? message)
