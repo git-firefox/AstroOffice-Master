@@ -63,7 +63,7 @@
     color: #212529;
     text-align: left;
     list-style: none;
-    background-color: transparent;
+    /*background-color: transparent;*/
     background-clip: padding-box;
     border: none;
     border-radius: 0.25rem;
@@ -88,11 +88,13 @@
 /*.dropdown-menu:hover {
     color:#fff;
 }
+
 .dropdown:hover {
     visibility: visible;
     opacity: 1;
-   */ display: block;
-}
+   display: block;
+}*/
+
 @media (min-width:992px){
         .dropdown {
             padding-right: 1rem !important;
