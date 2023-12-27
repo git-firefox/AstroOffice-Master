@@ -8,9 +8,13 @@
 
 	<ItemGroup>
 	  <Compile Remove="AccountComponents\**" />
+	  <Compile Remove="CustomFormInputs\CustomInputs\**" />
 	  <Content Remove="AccountComponents\**" />
+	  <Content Remove="CustomFormInputs\CustomInputs\**" />
 	  <EmbeddedResource Remove="AccountComponents\**" />
+	  <EmbeddedResource Remove="CustomFormInputs\CustomInputs\**" />
 	  <None Remove="AccountComponents\**" />
+	  <None Remove="CustomFormInputs\CustomInputs\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -32,10 +36,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\AstroOfficeWeb.Services\AstroOfficeWeb.Services.csproj" />
 		<ProjectReference Include="..\AstroOfficeWeb\Shared\AstroOfficeWeb.Shared.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="CustomFormInputs\CustomInputs\" />
 	</ItemGroup>
 
 	<ItemGroup>

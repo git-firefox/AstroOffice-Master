@@ -5,10 +5,10 @@ html, body {
     background-image: url('/images/astro-container.webp');
     background-size: cover;
     background-repeat: no-repeat;
-    animation: background-animation 20s infinite linear;
+    /*animation: background-animation 20s infinite linear;*/
 }
 
-@keyframes background-animation {
+/*@keyframes background-animation {
     0% {
         background-position: 0% 0%;
     }
@@ -16,7 +16,7 @@ html, body {
     100% {
         background-position: 100% 100%;
     }
-}
+}*/
 
 
 .btn-custom {

@@ -14,7 +14,7 @@ namespace AstroOfficeHybrid8.Services
         public CustomSnackbar(ISnackbar snackbar)
         {
             _snackbar = snackbar;
-            _snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
+            _snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
 
         }
 
