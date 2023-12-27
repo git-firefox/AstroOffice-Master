@@ -5,7 +5,7 @@ html, body {
     background-image: url('/images/astro-container.webp');
     background-size: cover;
     background-repeat: no-repeat;
-    animation: background-animation 20s infinite linear;
+    /*animation: background-animation 20s infinite linear;*/
 }
 
 @keyframes background-animation {
@@ -155,12 +155,10 @@ html, body {
     /*border: 2px solid white;*/
 }
 
-.form-container {
-    margin-top: 6rem;
+
+input[type="password"]::-ms-reveal, input[type="password"]::-ms-clear {
+    display: none;
 }
-
-
-
 
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
     -webkit-appearance: none;

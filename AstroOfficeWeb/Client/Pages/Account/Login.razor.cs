@@ -57,7 +57,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
 
-            if (user.Identity.IsAuthenticated)
+            if (user?.Identity?.IsAuthenticated == true)
             {
                 // User is already authenticated, redirect to another page
                 NavigationManager.NavigateTo("/");
