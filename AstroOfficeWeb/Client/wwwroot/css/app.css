@@ -318,9 +318,10 @@ header {
 .card-tabs {
     margin-bottom: 0;
     box-shadow: none;
-    background: #910d0d;
+    /*background: #910d0d;*/
     padding: 10px;
     border-radius: 10px;
+    background: revert;
 }
 
     .card-tabs .nav-tabs {

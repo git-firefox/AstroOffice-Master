@@ -56,12 +56,26 @@
         <MudTh>Position</MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Problem">@context.Problem</MudTd>
-            <MudTd DataLabel="House">@context.House</MudTd>
-            <MudTd DataLabel="Significators">@context.Significators</MudTd>
-            <MudTd DataLabel="Good">@context.Good</MudTd>
-            <MudTd DataLabel="Bad">@context.Bad</MudTd>
-            <MudTd DataLabel="KaranPlanet">@context.KaranPlanet</MudTd>
-            <MudTd DataLabel="Position">@context.Position</MudTd>
-        </RowTemplate>
-    </MudTable>
+        <MudTd DataLabel="Problem">
+            @context.Problem
+        </MudTd>
+        <MudTd DataLabel="House">
+            @context.House
+        </MudTd>
+        <MudTd DataLabel="Significators">
+            @context.Significators
+        </MudTd>
+        <MudTd DataLabel="Good" Class=@(!string.IsNullOrEmpty(context.Good) ? "bg-success" : string.Empty)>
+            @context.Good
+        </MudTd>
+        <MudTd DataLabel="Bad" Class="text-danger">
+            @context.Bad
+        </MudTd>
+        <MudTd DataLabel="KaranPlanet">
+            @context.KaranPlanet
+        </MudTd>
+        <MudTd DataLabel="Position">
+            @context.Position
+        </MudTd>
+    </RowTemplate>
+</MudTable>

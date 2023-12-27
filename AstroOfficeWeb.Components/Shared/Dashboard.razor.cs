@@ -288,8 +288,11 @@ namespace AstroOfficeWeb.Components.Shared
             OnInitialized_IsComplatedSuccessfully = true;
 
             //await this.OnKeyDown_TxtBirthplace(new KeyboardEventArgs() { Key = "" });
+
+            KPUpays = await KPDAO.GetUpayLogic() ?? new List<KPUpay>();
         }
 
+        private static List<KPUpay> KPUpays { get; set; } = null!;
         private async Task<List<CountryDTO>?> GetCountry()
         {
             var countryMasters = await Swagger!.GetAsync<List<CountryDTO>>(CountryApiConst.GET_GetCountry);
@@ -1654,17 +1657,11 @@ namespace AstroOfficeWeb.Components.Shared
 
                 await this.Gen_Ruling_Planets(kpChart, cuspHouse, str4, dob.ToString("dddd"));
 
-                //this.Gen_Upay_Chart(this.kp_chart, this.cusp_house);  
-                SavedStateModel.ChkSahasaneLogic = BirthDetails.ChkSahasaneLogic;
-
-
-
-                //await KaranService!.SaveKPHouseMappingVOs(this.cusp_house);
-                //await KaranService!.SaveKPPlanetMappingVOs(this.kp_chart);
-                //await KaranService!.SaveStateModel(SavedStateModel);
-
-
-
+                /// Karan table
+                /// 
+                /// Gen_Upay_Chart(this.kp_chart, this.cusp_house, BirthDetails.ChkSahasaneLogic);  
+                /// 
+                Gen_Upay_Chart(this.kp_chart, this.cusp_house, BirthDetails.ChkSahasaneLogic);
 
                 this.main_mahadasha = this.kpbl.Get_Dasha(this.cusp_house, this.kp_chart, this.persKV, this.BirthDetails.ChkSahasaneLogic);
 
@@ -1677,6 +1674,7 @@ namespace AstroOfficeWeb.Components.Shared
                 //{
                 //    font = new Font("Arial", 13f, FontStyle.Regular);
                 //}
+
                 this.prod = productSettingsVO;
                 if (this.persKV.Current_Age <= 0)
                 {
@@ -1693,6 +1691,17 @@ namespace AstroOfficeWeb.Components.Shared
                 //this.TxtBirthplace.Focus();
             }
             OnClick_BtnChart_IsComplated = true;
+        }
+
+
+        private static List<KPPlanetMappingVO>? KPPlanetMappingVOs;
+        private static List<KPHouseMappingVO>? KPHouseMappingVOs;
+        private static bool ChkSahasaneLogic;
+        private void Gen_Upay_Chart(List<KPPlanetMappingVO> kp_chart, List<KPHouseMappingVO> cusp_house, bool chkSahasaneLogic)
+        {
+            KPPlanetMappingVOs = kp_chart;
+            KPHouseMappingVOs = cusp_house;
+            ChkSahasaneLogic = chkSahasaneLogic;
         }
 
         private async Task OnClick_BtnRefresh(MouseEventArgs e)

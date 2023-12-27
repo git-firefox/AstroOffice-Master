@@ -17,6 +17,48 @@
 @inject ISwaggerApiService Swagger
 @inject TokenWalletService TokenWallet
 
+@code{
+    private RenderFragment? KaranPanelContent;
+
+    private void ExpandedChanged(bool newVal)
+    {
+        if (newVal)
+        {
+            KaranPanelContent = KaranRenderFragment;
+        }
+        else
+        {
+             Task.Delay(350).ContinueWith(t => KaranPanelContent = null).AndForget();
+        }
+    }
+
+    private RenderFragment KaranRenderFragment = __builder =>
+    {
+        <AstroOfficeWeb.Components.KundaliComponents.Karan KPPlanetMappingVOs=KPPlanetMappingVOs KPHouseMappingVOs=KPHouseMappingVOs IsSahasaneLogic=ChkSahasaneLogic KPUpays=KPUpays></AstroOfficeWeb.Components.KundaliComponents.Karan>
+    };
+}
+
+<MudTabs Elevation="2" Rounded="true" Centered="true" Class="my-6" Color="Color.Dark">
+    <MudTabPanel Icon="@Icons.Material.Filled.Api" Text="API" BadgeData='"!"' BadgeColor="Color.Error" >
+
+    </MudTabPanel>>
+    <MudTabPanel Icon="@Icons.Material.Filled.Build" Text="Build" BadgeData="1" BadgeColor="Color.Success" >
+
+    </MudTabPanel>
+    <MudTabPanel Icon="@Icons.Material.Filled.BugReport" Text="Bugs" BadgeData="0" >
+    
+    </MudTabPanel>
+    <MudTabPanel Icon="@Icons.Material.Filled.AccessTime" Text="Timing" BadgeDot="true" BadgeColor="Color.Error" >
+
+    </MudTabPanel>
+</MudTabs>
+
+
+<MudExpansionPanels MultiExpansion="true" >
+    <MudExpansionPanel Text="Karan" IsExpandedChanged="ExpandedChanged">
+        @KaranPanelContent
+    </MudExpansionPanel>
+</MudExpansionPanels>
 
 <FaladeshModal @ref="FaladeshModal" Falla="@htmlStringFalla" ImgSrcLagan="@imgSrcLagan" ImgSrcBhavChalit="@imgSrcBhavChalit" ConfirmationChanged="ConfirmationChangedModel" />
 
@@ -475,8 +517,8 @@
 
         <div class="row mt-5 pt-2">
             <div class="col">
-                <div class="card card-tabs">
-                    <div class="card-header pb-0">
+                <div class="card card-tabs px-0">
+                    <div class="card-header p-0">
                         <ul class="nav nav-tabs" id="birthdetails-tabs" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="birthdetails-tabs-charts-tab" data-bs-toggle="pill" data-toggle="pill" href="#birthdetails-tabs-charts" role="tab" aria-controls="birthdetails-tabs-charts" aria-selected="true"> Charts </a>
@@ -492,7 +534,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body px-0">
                         <div class="tab-content" id="birthdetails-tabs-tabContent">
                             @* Charts *@
                             <div class="tab-pane fade active show" id="birthdetails-tabs-charts" role="tabpanel" aria-labelledby="birthdetails-tabs-charts-tab">

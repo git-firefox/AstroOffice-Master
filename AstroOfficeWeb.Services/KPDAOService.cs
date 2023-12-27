@@ -43,5 +43,11 @@ namespace AstroOfficeWeb.Services
                 return new();
             return response;
         }
+
+        public async Task<List<KPUpay>?> GetUpayLogic()
+        {
+            var kPs = await _swagger!.GetAsync<List<KPUpay>>(KPDAOApiConst.GET_GetUpayLogic);
+            return kPs;
+        }
     }
 }

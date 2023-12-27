@@ -1,16 +1,12 @@
-﻿using AstroOfficeWeb.Client.Services;
-using AstroOfficeWeb.Client.Services.IService;
-using AstroOfficeWeb.Services.IServices;
-using AstroOfficeWeb.Shared.Helper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using AstroOfficeWeb.Shared.Methods;
-using AstroOfficeWeb.Shared.Models;
 using AstroOfficeWeb.Shared.ViewModels;
 using AstroOfficeWeb.Shared.VOs;
-
-
 using Microsoft.AspNetCore.Components;
 
-namespace AstroOfficeWeb.Client.Pages
+namespace AstroOfficeWeb.Components.KundaliComponents
 {
     public partial class Karan
     {
@@ -23,8 +19,10 @@ namespace AstroOfficeWeb.Client.Pages
         [Parameter]
         public bool IsSahasaneLogic { get; set; }
 
+        [Parameter]
+        public List<KPUpay> KPUpays { get; set; } = new();
+
         private List<KaranTableModel>? KaranModelTableData { get; set; }
-        private List<KPUpay> KPUpays { get; set; } = new();
         private KPBLL KPBL { get; set; } = new();
 
         private List<KPPlanetsVO> PlanetList = new List<KPPlanetsVO>();
@@ -32,12 +30,6 @@ namespace AstroOfficeWeb.Client.Pages
         protected override void OnInitialized()
         {
             PlanetList = KPBL.Fill_Planets();
-        }
-
-        protected override async Task OnInitializedAsync()
-        {
-            KPUpays = await KPDAOService.GetUpayLogic() ?? new List<KPUpay>();
-
             Gen_Upay_Chart(KPPlanetMappingVOs, KPHouseMappingVOs);
         }
 
@@ -299,8 +291,8 @@ namespace AstroOfficeWeb.Client.Pages
                     Problem = upayLogic.Problem,
                     House = upayLogic.House,
                     Significators = str1,
-                    Good = darkSeaGreen, // Color.DarkSeaGreen;
-                    Bad = red, // ForeColor = Color.Red;
+                    Good = darkSeaGreen, // .BackColor = Color.DarkSeaGreen;
+                    Bad = red, // .ForeColor = Color.Red;
                     KaranPlanet = str2,
                     Position = upayLogic.Good
                 };
