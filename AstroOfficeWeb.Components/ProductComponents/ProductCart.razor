@@ -13,7 +13,7 @@
         @if (CartItems != null && CartItems.Any())
         {
             <div class="pt-4 pb-2 ">
-                <a href="products" class="btn btn-custom fw-semibold"><i class="fas fa-arrow-left px-2"></i> Continue Shopping</a>
+                <a href="products" class="btn btn-custom fw-semibold"> Continue Shopping</a>
             </div>
         }
     </div>
@@ -85,7 +85,7 @@
                                                                  <MudIconButton @onclick="() => OnClick_UpdateQuantity(cartItem, -1)" Icon="@Icons.Material.Filled.Remove" Title="Decrease">
 
                                                                  </MudIconButton>
-                                                                 <MudButton Disabled>
+                                                                 <MudButton >
                                                                      @cartItem.ProductQuantity
                                                                     </MudButton>
 

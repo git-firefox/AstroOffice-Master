@@ -1,12 +1,12 @@
 ﻿@inherits BaseComponent
 @inject IJSRuntime JSRuntime
 
-<div @ref="ER_FaladeshModal" class="modal fade faladesh" data-keyboard="false" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog modal-dialog-scrollable">
+<div @ref="ER_FaladeshModal" class="modal fade faladesh p-5" data-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">@Title</h4>
-                <button type="button" class="close" title="close Prediction" data-dismiss="modal" aria-label="Close" @onclick="() => OnConfirmationChange(false)">
+                <button type="button" class="close" title="close Prediction" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" @onclick="() => OnConfirmationChange(false)">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -15,20 +15,20 @@
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title ">Bhave Chalit</h3>
+                                <h3 class="card-title ">Cusp</h3>
                             </div>
                             <div class="card-body">
-                                <img class="img-fluid" title="भाव चालित" src="@ImgSrcBhavChalit" />
+                                <img class="img-fluid" title="Cusp" src="@ImgSrcBhavChalit" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Lagan</h3>
+                                <h3 class="card-title">Kundali</h3>
                             </div>
                             <div class="card-body">
-                                <img class="img-fluid" title="लगन " src="@ImgSrcLagan" />
+                                <img class="img-fluid" title="Kundali " src="@ImgSrcLagan" />
                             </div>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                @* <button type="button" class="btn btn-default"  data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">Close</button> *@
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" @onclick="() => OnConfirmationChange(false)">Cancel</button>
                 <button type="button" class="btn btn-custom" title="Print Prediction" @onclick="() => OnConfirmationChange(true)">Print</button>
             </div>
         </div>

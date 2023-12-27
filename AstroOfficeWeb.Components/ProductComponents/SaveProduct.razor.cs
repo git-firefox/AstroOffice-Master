@@ -33,6 +33,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         [Required(ErrorMessage = "Please select a file.")]
         //[MinLength(1, ErrorMessage = "Upload atleast 1 image.")]
         [MaxLength(10, ErrorMessage = "Can only upload max 10 images.")]
+        [MinLength(1)]
 
         public List<string> FileNames { get; set; } = new();
     }
@@ -56,17 +57,22 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
 
         public SaveProductDTO? SaveProductModel { get; set; }
+        [Parameter]
         public ProductDTO ProductModel { get; set; } = new();
 
-        public ProductImage? ProductImage { get; set; } = new();
+        public ProductImage ProductImage { get; set; } = new();
 
         public MetaDataDTO MetaData { get; set; } = new();
         public MetaDataDTO? SelectedMetaData { get; set; }
         private ActionMode MetaDataAction { get; set; }
-        private List<MetaDataDTO> MetaDataList { get; set; } = new List<MetaDataDTO>();
-        private List<CategoryDialoge> CategoryDTOs { get; set; } = new();
+        private List<MetaDataDTO>? MetaDataList { get; set; } = new List<MetaDataDTO>();
 
+        [Parameter]
+        public List<CategoryDialoge> CategoryDTOs { get; set; } = new();
 
+        private EditContext SaveProductInfoContext { get; set; } = null!;
+        private EditContext SaveProductImageInfoContext { get; set; } = null!;
+        private EditContext SaveProductMetadataInfoContext { get; set; } = null!;
 
         //public ProductDTO ViewProductDTO { get; set; } = new();
 
@@ -76,27 +82,31 @@ namespace AstroOfficeWeb.Components.ProductComponents
         public ImagesDTO? SelectedImage { get; set; }
         bool success;
         string[] errors = { };
-        MudForm form;
+        //MudForm form;
         string fileValidation = "none";
         private int CharacterCount { get; set; } = 0;
 
         protected override void OnInitialized()
         {
-            var d = Enum.GetNames<ProductStatus>();
+
+
+            SaveProductInfoContext = new EditContext(ProductModel);
+            SaveProductImageInfoContext = new EditContext(ProductImage);
+            SaveProductMetadataInfoContext = new EditContext(MetaData);
+
+            BrowserFiles = ProductModel.ProductImages ??= new();
+            MetaDataList = ProductModel.MetaDatas;
+            CharacterCount = Convert.ToInt32(ProductModel.Summary?.Length);
+
             base.OnInitialized();
         }
 
-        protected override async Task OnInitializedAsync()
-        {
-            CategoryDTOs = await ProductService.GetCategories();
-            if (Sno != 0)
-            {
-                ProductModel = await ProductService.GetProductBySno(Sno) ?? new();
-                BrowserFiles = ProductModel.ProductImages ??= new();
-                MetaDataList = ProductModel.MetaDatas ??= new();
-                CharacterCount = ProductModel.Summary?.Length ?? 0;
-            }
-        }
+        //protected override async Task OnInitializedAsync()
+        //{
+
+
+        //    //CategoryDTOs = await ProductService.GetCategories();
+        //}
 
 
 
@@ -154,6 +164,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
                 }
             }
             IsImageLoaded = true;
+
+            SaveProductImageInfoContext.Validate();
+
         }
 
         enum ProceedSaveProduct
@@ -183,8 +196,29 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
 
         //}
+
+
+
+
         private async Task OnClick_BtnProceed(ProceedSaveProduct mode)
         {
+
+            //if (!SaveProductInfoContext.Validate())
+            //{
+            //    await JSRuntime.ShowTabAsync(ER_AGeneralInfo);
+            //}
+            //if (!SaveProductImageInfoContext.Validate())
+            //{
+            //    await JSRuntime.ShowTabAsync(ER_AProductImage);
+            //}
+
+            //if (!SaveProductMetadataInfoContext.Validate())
+            //{
+            //    await JSRuntime.ShowTabAsync(ER_AMetaData);
+            //}
+
+
+
             if (mode == ProceedSaveProduct.General)
             {
                 await JSRuntime.ShowTabAsync(ER_AGeneralInfo);
@@ -200,47 +234,69 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         }
 
+
+
         private async Task OnSubmit_EditForm(EditContext context)
         {
             if (context.Validate())
                 await JSRuntime.ShowTabAsync(ER_AProductImage);
         }
-        private async Task OnInvalidSubmit_EditForm(EditContext context)
-        {
-            //await JSRuntime.ShowTabAsync(ER_AProductImage);
-        }
+        //private async Task OnInvalidSubmit_EditForm(EditContext context)
+        //{
+        //    //await JSRuntime.ShowTabAsync(ER_AProductImage);
+        //}
         private async Task OnSubmit_ProductImage(EditContext context)
         {
             await JSRuntime.ShowTabAsync(ER_AMetaData);
         }
-        private async Task OnInvalidSubmit_ProductImage(EditContext context)
-        {
-            //await JSRuntime.ShowTabAsync(ER_AProductImage);
-        }
+        //private async Task OnInvalidSubmit_ProductImage(EditContext context)
+        //{
+        //    //await JSRuntime.ShowTabAsync(ER_AProductImage);
+        //}
 
-        private async Task OnSubmit_MetaData(EditContext context)
-        {
+        //private async Task OnSubmit_MetaData(EditContext context)
+        //{
 
-        }
-        private async Task OnInvalidSubmit_MetaData(EditContext context)
-        {
+        //}
+        //private async Task OnInvalidSubmit_MetaData(EditContext context)
+        //{
 
-        }
+        //}
 
         private async Task OnClick_BtnPublished()
         {
+            if (!SaveProductInfoContext.Validate())
+            {
+                await JSRuntime.ShowTabAsync(ER_AGeneralInfo);
+                return;
+            }
+
+
+            if (!SaveProductImageInfoContext.Validate() && (ProductModel?.ProductImages?.Count == 0))
+            {
+                await JSRuntime.ShowTabAsync(ER_AProductImage);
+                return;
+            }
+
+            if (!SaveProductMetadataInfoContext.Validate() && (ProductModel?.MetaDatas?.Count == 0))
+            {
+                await JSRuntime.ShowTabAsync(ER_AMetaData);
+                return;
+            }
+
+
             ProductModel.ProductImages = BrowserFiles;
             ProductModel.MetaDatas = MetaDataList;
 
-            //  await ProductService.SaveProductImages(FileData);
-            //if (Sno == 0)
-            //{
-            //    await ProductService.AddProduct(ProductModel);
-            //}
-            //else
-            //{
-            //    await ProductService.UpdateProduct(ProductModel, Sno);
-            //}
+            //await ProductService.SaveProductImages(FileData);
+            if (Sno == 0)
+            {
+                await ProductService.AddProduct(ProductModel);
+            }
+            else
+            {
+                await ProductService.UpdateProduct(ProductModel, Sno);
+            }
         }
 
 
