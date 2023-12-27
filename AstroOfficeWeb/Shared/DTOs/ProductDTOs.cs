@@ -28,8 +28,12 @@ namespace AstroOfficeWeb.Shared.DTOs
         public int ProductQuantity { get; set; }
 
         public string? ImageUrl { get; set; }
-        public long ProductCategoriesSno { get; set; }
-        public string ProductCategory { get; set; } = null!;
+
+        [Required]
+        [Range(1, 1_000_000, ErrorMessage = "Select category")]
+        public long ProductCategoriesSno { get; set; } 
+    
+        public string? ProductCategory { get; set; } 
         public DateTime AddedDate { get; set; }
         public DateTime? LastModifiedDate { get; set; }
         public bool IsActive { get; set; } = true;
@@ -39,7 +43,7 @@ namespace AstroOfficeWeb.Shared.DTOs
         //  [MaxLength(10, ErrorMessage = "Can only upload max 10 images.")]
         public List<string> FileNames { get; set; } = new List<string>();
 
-
+        [Required]
         [StringLength(255, ErrorMessage = "Summary must be at most 255 characters.")]
         public string? Summary { get; set; }
 
@@ -52,9 +56,9 @@ namespace AstroOfficeWeb.Shared.DTOs
         public ProductStatus Status { get; set; }
 
         public long Sno { get; set; }
-        public List<ImagesDTO>? ProductImages { get; set; }
+        public List<ImagesDTO> ProductImages { get; set; } = new();
 
-        public List<MetaDataDTO> MetaDatas { get; set; }
+        public List<MetaDataDTO>? MetaDatas { get; set; }
 
     }
     public class ViewProductDTO : ProductDTO

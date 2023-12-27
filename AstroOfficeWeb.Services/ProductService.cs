@@ -247,10 +247,10 @@ namespace AstroOfficeWeb.Services
             }
         }
 
-        public async Task SaveProductImages(List<ImagesDTO> imagesDTO)
-        {
-            var response = await _swagger.PostAsync<List<ImagesDTO>, ApiResponse<List<ImagesDTO>>>(ProductApiConst.POST_SaveProductImages, imagesDTO);
-        }
+        //public async Task SaveProductImages(List<ImagesDTO> imagesDTO)
+        //{
+        //    var response = await _swagger.PostAsync<List<ImagesDTO>, ApiResponse<List<ImagesDTO>>>(ProductApiConst.POST_SaveProductImages, imagesDTO);
+        //}
 
         public async Task PlaceOrder(PlaceOrderRequest request)
         {

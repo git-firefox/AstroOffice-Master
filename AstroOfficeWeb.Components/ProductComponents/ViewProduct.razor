@@ -1,5 +1,5 @@
 @page "/product/{ProductSno:long}/{ProductName}"
-@using AstroOfficeWeb.Services
+
 
 @* @using AstroOfficeWeb.Client.Services *@
 
@@ -36,7 +36,7 @@
                     <div class="col-12 col-sm-6">
                         <h3 class="d-inline-block d-sm-none">@ViewProductDTO!.Name</h3>
                         <div class="col-12">
-                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-bs-ride="carousel">
 
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
@@ -60,6 +60,8 @@
                                     <span class="sr-only">Next</span>
                                 </a>
 
+
+
                                 <div class="carousel-indicators">
 
                                     <button data-bs-target="#carouselExampleIndicators" data-target="#carouselExampleIndicators" data-bs-slide-to="0" data-slide-to="0" class="thumbnail active" aria-current="true" aria-label="Slide 1">
@@ -74,7 +76,12 @@
                                     }
                                 </div>
 
+
                             </div>
+
+
+
+
                         </div>
                     </div>
                     <div class="col-12 col-sm-6">
@@ -97,17 +104,41 @@
                             </h4>
                         </div>
 
-                        <div class="mt-4">
-                            <button class="btn btn-primary btn-lg btn-flat" @onclick="OnClick_BtnAddToCart">
-                                <i class="fas fa-cart-plus fa-lg mr-2"></i>
-                                Add to Cart
-                            </button>
+                        <AuthorizeView Roles=@(ApplicationConst.Role_ProductManager + "," + ApplicationConst.Role_Admin) >
+                            <Authorized>
 
-                            <button class="btn btn-default btn-lg btn-flat" @onclick="OnClick_BtnAddToWishlist">
-                                <i class="fas fa-heart fa-lg mr-2"></i>
-                                Add to Wishlist
-                            </button>
-                        </div>
+                                <div class="mt-4">
+                                    <button class="btn btn-primary btn-lg btn-flat" >
+                                        <i class="fas fa-cart-plus fa-lg mr-2"></i>
+                                        Add to Cart
+                                    </button>
+
+                                    <button class="btn btn-default btn-lg btn-flat">
+                                        <i class="fas fa-heart fa-lg mr-2"></i>
+                                        Add to Wishlist
+                                    </button>
+                                </div>
+
+
+
+                            </Authorized>
+
+                            <NotAuthorized>
+                                <div class="mt-4">
+                                    <button class="btn btn-primary btn-lg btn-flat" @onclick="OnClick_BtnAddToCart">
+                                        <i class="fas fa-cart-plus fa-lg mr-2"></i>
+                                        Add to Cart
+                                    </button>
+
+                                    <button class="btn btn-default btn-lg btn-flat" @onclick="OnClick_BtnAddToWishlist">
+                                        <i class="fas fa-heart fa-lg mr-2"></i>
+                                        Add to Wishlist
+                                    </button>
+                                </div>
+                            </NotAuthorized>
+                        </AuthorizeView>
+
+
 
                         @* <div class="mt-4 product-share">
                         <a href="#" class="text-gray">

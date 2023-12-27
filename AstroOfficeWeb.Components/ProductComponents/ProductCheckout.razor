@@ -96,7 +96,7 @@
                                                                 <ValidationMessage For=@(() => BillingInfo!.PhoneNumber) style="position:revert;" />
                                                                 @* <InputMask IType="string" Mask="999 999 9999" @bind-Value="BillingInfo!.PhoneNumber" class="form-control" id="billing-phone" /> *@
 
-                                                                <MudTextField @bind-Value="BillingInfo!.PhoneNumber" Variant="Variant.Outlined" Mask="@(new PatternMask("00 0000 0000"))" Class="form-control " Margin="Margin.Dense" Placeholder="Mobile No." />
+                                                                <MudTextField @bind-Value="BillingInfo!.PhoneNumber" Variant="Variant.Outlined" Mask="@(new PatternMask("0000000000"))" Class="form-control " Margin="Margin.Dense" Placeholder="Mobile No." />
                                                             </div>
                                                         </div>
                                                     </div> <!-- end row -->
@@ -430,4 +430,4 @@
             </div>
         </div>
     </section>
-</div>
+</div>https://0.0.0.0/#payment-info

@@ -1,9 +1,36 @@
 ﻿@page "/save-product"
 @page "/save-product/{Sno:long}"
+@using AstroOfficeWeb.Shared.DTOs
 @attribute [Authorize(Roles = "Admin,User,ManageProduct")]
-<AstroOfficeWeb.Components.ProductComponents.SaveProduct Sno="@Sno"></AstroOfficeWeb.Components.ProductComponents.SaveProduct>
 
-@code{
+@inject ProductService ProductService
+
+<AstroOfficeWeb.Components.ProductComponents.SaveProduct Sno="@Sno" ProductModel="@ProductModel" CategoryDTOs="CategoryDTOs"></AstroOfficeWeb.Components.ProductComponents.SaveProduct>
+
+@code {
     [Parameter]
     public long Sno { get; set; }
-}
+
+
+    public ProductDTO ProductModel { get; set; } = new();
+
+    public List<CategoryDialoge> CategoryDTOs { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var categories = await ProductService.GetCategories();
+        if (categories != null)
+        {
+            CategoryDTOs = categories;
+        }
+        if (Sno != 0)
+        {
+            var productDTO = await ProductService.GetProductBySno(Sno);
+            if (productDTO != null)
+            {
+                ProductModel = productDTO;
+            }
+        }
+    }
+
+} 

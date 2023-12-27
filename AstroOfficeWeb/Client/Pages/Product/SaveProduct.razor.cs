@@ -51,6 +51,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
         [Parameter]
         public long Sno { get; set; }
 
+        
         private int Counter = 0;
 
         public ElementReference ER_AGeneralInfo { get; set; }
@@ -65,6 +66,8 @@ namespace AstroOfficeWeb.Client.Pages.Product
 
 
         public SaveProductDTO? SaveProductModel { get; set; }
+
+       
         public ProductDTO ProductModel { get; set; } = new();
 
         public ProductImage? ProductImage { get; set; } = new();
@@ -238,15 +241,15 @@ namespace AstroOfficeWeb.Client.Pages.Product
             ProductModel.ProductImages = BrowserFiles;
             ProductModel.MetaDatas = MetaDataList;
 
-            await ProductService.SaveProductImages(BrowserFiles);
-            //if (Sno == 0)
-            //{
-            //    await ProductService.AddProduct(ProductModel);
-            //}
-            //else
-            //{
-            //    await ProductService.UpdateProduct(ProductModel, Sno);
-            //}
+            //await ProductService.SaveProductImages(BrowserFiles);
+            if (Sno == 0)
+            {
+                await ProductService.AddProduct(ProductModel);
+            }
+            else
+            {
+                await ProductService.UpdateProduct(ProductModel, Sno);
+            }
         }
 
 
