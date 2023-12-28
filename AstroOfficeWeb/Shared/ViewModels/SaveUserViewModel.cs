@@ -28,6 +28,10 @@ namespace AstroOfficeWeb.Shared.ViewModels
             MobileNumber = original.MobileNumber;
             Role = original.Role;
             Status = original.Status;
+            CanAdd = original.CanAdd;
+            CanEdit = original.CanEdit;
+            CanReport = original.CanReport;
+            AdminUser = original.AdminUser;
         }
 
     }

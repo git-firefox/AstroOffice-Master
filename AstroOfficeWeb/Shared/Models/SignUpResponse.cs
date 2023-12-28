@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AstroOfficeWeb.Shared.Models
 {
-    public class SignUpResponse : ApiResponse<int>
+    public class SignUpResponse : ApiResponse<long>
     {
         public bool IsRegisterationSuccessful { get; set; }
     }

@@ -4,7 +4,7 @@
 @inject IDialogService Dialog
 @inject AccountService Account
 
-<MudDrawer @bind-Open="IsDrawerOpen" Width="500px" Height="100%" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
+<MudDrawer @bind-Open="IsDrawerOpen" Width="375px" Height="100%" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
     <MudDrawerHeader>
         <MudGrid>
             <MudItem xs="12">
@@ -12,7 +12,7 @@
                     <MudText Typo="Typo.h6">
                         @DrawerTitle
                     </MudText>
-                    <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Primary" Size="Size.Small" OnClick="()=>OnClick_BtnAction()" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Primary" Size="Size.Small" OnClick="OnClick_BtnClose" />
                 </MudStack>
             </MudItem>
         </MudGrid>
@@ -27,15 +27,17 @@
 
                         <MudTextField T="string" @bind-Value="SaveUserModel.Password" Label="Password" HelperText="Choose a strong password" InputType="InputType.Password" Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true" RequiredError="Password is required!"></MudTextField>
 
-                        <MudTextField T="string" @bind-Value="SaveUserModel.RetypePassword" Label="Password" HelperText="Repeat the password" InputType="InputType.Password" Validation="@(new Func<string, string?>(PasswordMatch))"></MudTextField>
+                        <MudTextField T="string" @bind-Value="SaveUserModel.RetypePassword" Label="Repeat Password" HelperText="Repeat the password" InputType="InputType.Password" Validation="@(new Func<string, string?>(PasswordMatch))"></MudTextField>
 
-                        <MudTextField T="string" @bind-Value="SaveUserModel.MobileNumber" Label="MobileNumber" HelperText="Repeat the MobileNumber"></MudTextField>
+                        <MudTextField T="string" @bind-Value="SaveUserModel.MobileNumber" Label="Mobile Number" HelperText="Repeat the MobileNumber"></MudTextField>
 
                         <MudCheckBox @bind-Value="SaveUserModel.CanAdd" Label="Can Add"></MudCheckBox>
 
                         <MudCheckBox @bind-Value="SaveUserModel.CanEdit" Label="Can Edit"></MudCheckBox>
 
                         <MudCheckBox @bind-Value="SaveUserModel.CanReport" Label="Can Report"></MudCheckBox>
+
+                        <MudCheckBox @bind-Value="SaveUserModel.AdminUser" Label="Admin User ?"></MudCheckBox>
 
                         <MudSelect T="UserRole" @bind-Value="SaveUserModel.Role" Label="Role">
                             @foreach (UserRole option in Enum.GetValues(typeof(UserRole)))
@@ -53,7 +55,8 @@
 
                         <MudStack Justify="Justify.SpaceBetween" Row="true" Class="py-4">
                             <MudPaper Elevation="0"><MudButton ButtonType=ButtonType.Button Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="OnClick_BtnClose">Cancel</MudButton></MudPaper>
-                            <MudPaper Elevation="0"><MudButton ButtonType=ButtonType.Button Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(()=>Form.ResetValidation())">Reset Validation</MudButton></MudPaper>
+                            <MudPaper Elevation="0"><MudButton ButtonType=ButtonType.Button Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(()=>Form.ResetAsync())">Reset</MudButton></MudPaper>
+                            @* <MudPaper Elevation="0"><MudButton ButtonType=ButtonType.Button Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(()=>Form.ResetValidation())">Reset</MudButton></MudPaper> *@
                             <MudPaper Elevation="0"><MudButton ButtonType=ButtonType.Button Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="OnClick_BtnSave" Disabled="@(!IsSaveUserFormValid)">Save</MudButton></MudPaper>
                         </MudStack>
                     </MudForm>
