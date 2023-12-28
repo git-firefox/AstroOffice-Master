@@ -1,0 +1,60 @@
+﻿
+
+<MudAppBar Elevation="1">
+    @if (LeftContainer == null)
+    {
+        @if (IsChild)
+        {
+            @* <MudIconButton OnClick="history.back()" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBackIos" Color="Color.Error"></MudIconButton> *@
+            <button onclick="history.back()"> <MudIcon Icon="@Icons.Material.Filled.ArrowBackIos" /> </button>
+        }
+        else
+        {
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="MainLayout.ToggleDrawer" />
+        }
+    }
+    else
+    {
+        @LeftContainer
+    }
+
+    @if (!String.IsNullOrEmpty(Title))
+    {
+        <MudText Typo="Typo.h6"> @Title </MudText>
+    }
+
+    <MudSpacer />
+
+    @if (RightContainer != null)
+    {
+        @RightContainer
+    }
+</MudAppBar>
+<MudMainContent Class="px-2">
+    @ChildContent
+</MudMainContent>
+
+@code {
+    [CascadingParameter]
+    private MainLayout MainLayout { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment? LeftContainer { get; set; }
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public RenderFragment? RightContainer { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    [Parameter]
+    public bool IsChild { get; set; } = false;
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     await MainLayout.NotifyChangeAsync();
+    // }
+}

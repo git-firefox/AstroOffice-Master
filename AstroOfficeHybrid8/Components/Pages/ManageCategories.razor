@@ -1,8 +1,13 @@
 ﻿@page "/manage-categories"
 
-<AstroOfficeWeb.Components.ProductComponents.ManageCategories></AstroOfficeWeb.Components.ProductComponents.ManageCategories>
 
-@code{
+<PageLayout Title="Manage category">
+    <ChildContent>
+        <AstroOfficeWeb.Components.ProductComponents.ManageCategories></AstroOfficeWeb.Components.ProductComponents.ManageCategories>
+    </ChildContent>
+</PageLayout>
+
+@code {
     [CascadingParameter]
     public CategoryDialoge CategoryDialoge { get; set; } = new();
 }

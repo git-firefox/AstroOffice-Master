@@ -5,7 +5,11 @@
 
 @inject ProductService ProductService
 
-<AstroOfficeWeb.Components.ProductComponents.SaveProduct Sno="@Sno" ProductModel="@ProductModel" CategoryDTOs="CategoryDTOs"></AstroOfficeWeb.Components.ProductComponents.SaveProduct>
+<PageLayout Title="Save Product">
+    <ChildContent>
+        <AstroOfficeWeb.Components.ProductComponents.SaveProduct Sno="@Sno" ProductModel="@ProductModel" CategoryDTOs="CategoryDTOs"></AstroOfficeWeb.Components.ProductComponents.SaveProduct>
+    </ChildContent>
+</PageLayout>
 
 @code {
     [Parameter]

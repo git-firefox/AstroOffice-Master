@@ -1,9 +1,13 @@
 ﻿@page "/product/{ProductSno:long}/{ProductName}"
 
-<AstroOfficeWeb.Components.ProductComponents.ViewProduct ProductName="@ProductName" ProductSno="ProductSno"></AstroOfficeWeb.Components.ProductComponents.ViewProduct>
 
+<PageLayout Title="View Product" IsChild="true">
+    <ChildContent>
+        <AstroOfficeWeb.Components.ProductComponents.ViewProduct ProductName="@ProductName" ProductSno="ProductSno"></AstroOfficeWeb.Components.ProductComponents.ViewProduct>
+    </ChildContent>
+</PageLayout>
 
-@code{
+@code {
     [Parameter]
     public long ProductSno { get; set; }
 

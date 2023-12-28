@@ -2,7 +2,7 @@
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background-image: url("../images/astro-container.webp");
     background-size: cover;
-    background-position: center;
+    /*background-position: center;*/
     background-repeat: no-repeat;
 }
 
@@ -108,7 +108,11 @@ h1:focus {
 }
 
 
-
+.kundali-search .mud-input-outlined-border {
+    display: none !important;
+    background-color: white !important;
+    
+}
 
 .btn-custom {
     background: #fab73a;
@@ -149,4 +153,3 @@ h1:focus {
     .btn-outline-custom.focus, .btn-outline-custom:focus {
         box-shadow: 0 0 0 0 rgba(0,123,255,.5);
     }
-
