@@ -161,6 +161,10 @@
         </MudDrawerContainer>
     </MudDrawer>
 }
+
+
+
+
 <MudContainer Class="content">
     @if (personKundaliTableTRs == null)
     {
@@ -172,7 +176,11 @@
     {
         @if (personKundaliTableTRs.Any())
         {
-            @foreach (var row in personKundaliTableTRs)
+
+            <MudTextField @bind-Value="searchString" TextChanged="FilterFunc" @OnBlur="@FilterFunc" InputType="InputType.Search" T="string" Placeholder="Search Kundali by name" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mud-theme-primary rounded-pill kundali-search" />
+
+
+            @foreach (var row in personKundaliTableTRs.Where(item => item.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)))
             {
                 <MudCard Class="mt-3 " Elevation="8">
                     <MudCardHeader Class="py-0">
@@ -199,9 +207,7 @@
                     </MudCardHeader>
                 </MudCard>
             }
-
         }
-
         else
         {
             <div colspan="10" class="text-center">
@@ -224,6 +230,7 @@
 {
     private bool IsDrawerOpen { get; set; }
     private List<PersonKundaliTableTRModel>? personKundaliTableTRs;
+    private IEnumerable<PersonKundaliTableTRModel> FilteredPersonKundaliTableTRs = Enumerable.Empty<PersonKundaliTableTRModel>();
     private PersonKundaliTableTRModel? SelectedRow { get; set; }
     private Dictionary<string, object?>? SelectedRowKeyValue { get; set; }
 
@@ -232,26 +239,22 @@
     protected override async Task OnInitializedAsync()
     {
         personKundaliTableTRs = await KundaliHistroy.GetUserViewedKundalies();
+        FilteredPersonKundaliTableTRs = personKundaliTableTRs;
     }
 
-    private bool FilterFunc(PersonKundaliTableTRModel element)
+    private void FilterFunc(string searchString)
     {
-        if (string.IsNullOrWhiteSpace(searchString))
-            return true;
-        if (element.Name!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-        if (element.ProductName!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
+        if (!string.IsNullOrWhiteSpace(searchString))
+        {
+            FilteredPersonKundaliTableTRs = personKundaliTableTRs.Where(item => item.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        else
+        {
+            FilteredPersonKundaliTableTRs = personKundaliTableTRs;
+        }
 
-        if (element.Language!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
 
-        if (element.Gender!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
 
-        if ($"{element.SrNo} {element.DateOfBirth} {element.TimeOfBirth} {element.PlaceOfBirth} {element.ViewDate}".Contains(searchString))
-            return true;
-        return false;
     }
 
     private void OnClick_BtnClose(MouseEventArgs e)
