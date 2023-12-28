@@ -1,8 +1,13 @@
 ﻿@page "/view-order/{OrderId:long}"
 
-<AstroOfficeWeb.Components.ProductComponents.ViewOrder OrderId="OrderId"></AstroOfficeWeb.Components.ProductComponents.ViewOrder>
 
-@code{
+<PageLayout Title="View Orders" IsChild="true">
+    <ChildContent>
+        <AstroOfficeWeb.Components.ProductComponents.ViewOrder OrderId="OrderId"></AstroOfficeWeb.Components.ProductComponents.ViewOrder>
+    </ChildContent>
+</PageLayout>
+
+@code {
     [Parameter]
     public long OrderId { get; set; }
 }

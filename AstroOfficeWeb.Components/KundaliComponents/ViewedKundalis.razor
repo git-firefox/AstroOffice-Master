@@ -3,7 +3,7 @@
 @using AstroOfficeWeb.Shared.ViewModels
 
 @inject KundaliHistroyService KundaliHistroy
-
+@*
 <MudTable Items="@personKundaliTableTRs" Dense="false" Hover="true" ReadOnly="false" Filter="new Func<PersonKundaliTableTRModel,bool>(FilterFunc)"
           SortLabel="Sort By">
     <ToolBarContent>
@@ -39,12 +39,195 @@
         </PagerContent>
 
     </MudTable>
-
-
-
-@code    
+ *@
+@if (SelectedRowKeyValue != null)
 {
+
+    <MudDrawer @bind-Open="IsDrawerOpen" Width="375px" Height="100%" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
+        <MudDrawerHeader>
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudStack Justify="Justify.SpaceBetween" Row="true">
+                        <MudText Typo="Typo.h6">
+                            Kundali details
+                        </MudText>
+                        <MudIconButton Icon="@Icons.Material.Filled.Close" OnClick="OnClick_BtnClose" Color="Color.Primary" Size="Size.Small" />
+                    </MudStack>
+                </MudItem>
+            </MudGrid>
+        </MudDrawerHeader>
+
+
+        <MudDrawerContainer>
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudPaper Elevation="0" Class="pa-4">
+                        @*  <MudCard Class="mt-3 " Elevation="0">
+                    <MudGrid>
+                    <MudItem xs="6" sm="6">
+
+                    <MudStack Spacing="2">
+                    <!-- Left side: Content -->
+                    <MudText Typo="Typo.h6">
+                    Sr No
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    Name
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    Product Name
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    Gender
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    Date Of Birth
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    Time Of Birth
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    Place Of Birth
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    Language
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    View Date
+                    </MudText>
+                    </MudStack>
+                    </MudItem>
+                    <MudItem xs="6" sm="6">
+                    <!-- Right side: Label -->
+                    @*      <MudCardHeader Class="py-0">
+                    <CardHeaderContent>
+                    <MudStack Spacing="2">
+
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.SrNo
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.Name
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.ProductName
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.Gender
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.DateOfBirth
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.TimeOfBirth
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.PlaceOfBirth
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.Language
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.ViewDate
+                    </MudText>
+                    </MudStack>
+                    </CardHeaderContent>
+                    </MudCardHeader>
+                    </MudItem>
+                    </MudGrid>
+
+                    </MudCard> *@
+
+
+                        <MudSimpleTable Hover="true" Dense="true">
+                            <tbody>
+                                @foreach (var item in SelectedRowKeyValue)
+                                {
+                                    <tr>
+                                        <th>@item.Key</th>
+                                        <td>@item.Value.ToStringX()</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </MudSimpleTable>
+
+                        <MudStack Justify="Justify.SpaceBetween" Row="true" Class="py-4">
+                            <MudPaper Elevation="0"><MudButton ButtonType=ButtonType.Button Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="OnClick_BtnClose">Cancel</MudButton></MudPaper>
+                        </MudStack>
+
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        </MudDrawerContainer>
+    </MudDrawer>
+}
+<MudContainer Class="content">
+    @if (personKundaliTableTRs == null)
+    {
+        <div class="overlay dark ">
+            <i class="fas fa-2x fa-sync fa-spin"></i>
+        </div>
+    }
+    else
+    {
+        @if (personKundaliTableTRs.Any())
+        {
+            @foreach (var row in personKundaliTableTRs)
+            {
+                <MudCard Class="mt-3 " Elevation="8">
+                    <MudCardHeader Class="py-0">
+                        <CardHeaderAvatar>
+                            <MudAvatar Color="Color.Secondary">@(!string.IsNullOrEmpty(row.Name) ? row.Name.ToUpper()[0] : 'U')</MudAvatar>
+                        </CardHeaderAvatar>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">
+                                @row.Name
+                            </MudText>
+                            <MudText Typo="Typo.subtitle1">
+                                @row.ProductName
+                            </MudText>
+                            <MudText Typo="Typo.subtitle1">
+                                @row.ViewDate
+                            </MudText>
+                        </CardHeaderContent>
+
+                        <CardHeaderActions>
+                            <div class="mt-6">
+                                <MudIconButton Class="py-3" OnClick="()=>OnClick_BtnAction(row)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Default" />
+                            </div>
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                </MudCard>
+            }
+
+        }
+
+        else
+        {
+            <div colspan="10" class="text-center">
+                <h3>No records found.</h3>
+            </div>
+        }
+    }
+
+
+</MudContainer>
+
+
+
+
+
+
+
+
+@code
+{
+    private bool IsDrawerOpen { get; set; }
     private List<PersonKundaliTableTRModel>? personKundaliTableTRs;
+    private PersonKundaliTableTRModel? SelectedRow { get; set; }
+    private Dictionary<string, object?>? SelectedRowKeyValue { get; set; }
+
+
     private string searchString = "";
     protected override async Task OnInitializedAsync()
     {
@@ -71,4 +254,26 @@
         return false;
     }
 
+    private void OnClick_BtnClose(MouseEventArgs e)
+    {
+        IsDrawerOpen = !IsDrawerOpen;
+    }
+
+    private void OnClick_BtnAction(PersonKundaliTableTRModel row)
+    {
+        SelectedRowKeyValue = new Dictionary<string, object?>()
+        {
+            { "Sr No", row.SrNo},
+            { "Name", row?.Name},
+            { "Product Name", row?.ProductName},
+            { "Gender", row?.Gender},
+            { "Date of Birth", row?.DateOfBirth},
+            { "Time of Birth", row?.TimeOfBirth},
+            { "Place of Birth", row?.PlaceOfBirth},
+            { "Language", row?.Language},
+            { "View Date", row?.ViewDate}
+        };
+        SelectedRow = row;
+        IsDrawerOpen = true;
+    }
 }
