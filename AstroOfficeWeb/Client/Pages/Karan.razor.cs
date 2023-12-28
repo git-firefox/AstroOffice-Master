@@ -38,6 +38,10 @@ namespace AstroOfficeWeb.Client.Pages
         {
             KPUpays = await KPDAOService.GetUpayLogic() ?? new List<KPUpay>();
 
+            KPHouseMappingVOs = await KaranService.GetKPHouseMappingVOs();
+            KPPlanetMappingVOs = await KaranService.GetKPPlanetMappingVOs();
+            IsSahasaneLogic = (await KaranService.GetSavedStateModel()).ChkSahasaneLogic;
+
             Gen_Upay_Chart(KPPlanetMappingVOs, KPHouseMappingVOs);
         }
 

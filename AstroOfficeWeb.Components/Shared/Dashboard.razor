@@ -38,6 +38,7 @@
     };
 }
 
+@*
 <MudTabs Elevation="2" Rounded="true" Centered="true" Class="my-6" Color="Color.Dark">
     <MudTabPanel Icon="@Icons.Material.Filled.Api" Text="API" BadgeData='"!"' BadgeColor="Color.Error" >
 
@@ -52,13 +53,15 @@
 
     </MudTabPanel>
 </MudTabs>
+*@
 
-
+@*
 <MudExpansionPanels MultiExpansion="true" >
     <MudExpansionPanel Text="Karan" IsExpandedChanged="ExpandedChanged">
         @KaranPanelContent
     </MudExpansionPanel>
 </MudExpansionPanels>
+*@
 
 <FaladeshModal @ref="FaladeshModal" Falla="@htmlStringFalla" ImgSrcLagan="@imgSrcLagan" ImgSrcBhavChalit="@imgSrcBhavChalit" ConfirmationChanged="ConfirmationChangedModel" />
 

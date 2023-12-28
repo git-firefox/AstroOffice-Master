@@ -1,8 +1,9 @@
 ﻿@page "/karan"
 @inject KPDAOService KPDAOService
+@inject KaranService KaranService
 @attribute [Authorize]
 
-@* <div class="container-fluid p-3">
+<div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold ">Karan</h1>
     <section class="content">
         <div class="row">
@@ -42,26 +43,4 @@
             </div>
         </div>
     </section>
-</div> *@
-
-
-<MudTable Items="KaranModelTableData" Hover="true" Breakpoint="Breakpoint.Sm" Loading=@(KaranModelTableData == null) LoadingProgressColor="Color.Info">
-    <HeaderContent>
-        <MudTh>Problem</MudTh>
-        <MudTh>House</MudTh>
-        <MudTh>Significators</MudTh>
-        <MudTh>Good</MudTh>
-        <MudTh>Bad</MudTh>
-        <MudTh>KaranPlanet</MudTh>
-        <MudTh>Position</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Problem">@context.Problem</MudTd>
-            <MudTd DataLabel="House">@context.House</MudTd>
-            <MudTd DataLabel="Significators">@context.Significators</MudTd>
-            <MudTd DataLabel="Good">@context.Good</MudTd>
-            <MudTd DataLabel="Bad">@context.Bad</MudTd>
-            <MudTd DataLabel="KaranPlanet">@context.KaranPlanet</MudTd>
-            <MudTd DataLabel="Position">@context.Position</MudTd>
-        </RowTemplate>
-    </MudTable>
+</div>
