@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using AstroOfficeWeb.Components.Shared
+@inherits LayoutComponentBase
 <MudThemeProvider />
 @* <MudDialogProvider /> *@
 <MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.ExtraSmall" CloseButton="true" DisableBackdropClick="true" Position="DialogPosition.Center" CloseOnEscapeKey="true" />
@@ -16,7 +17,9 @@
 </MudLayout> *@
 
 <MudLayout>
+
     <NavMenu />
+    <NavMenuMobile />
     <MudContainer>
         @Body
     </MudContainer>

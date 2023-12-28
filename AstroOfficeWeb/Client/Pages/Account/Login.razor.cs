@@ -43,12 +43,12 @@ namespace AstroOfficeWeb.Client.Pages.Account
             });
             if (response!.IsAuthSuccessful)
             {
-                await JSRuntime.ShowToastAsync(response?.Message ?? "Success!");
+                //await JSRuntime.ShowToastAsync(response?.Message ?? "Success!");
                 NavigationManager!.NavigateTo("/welcome");
             }
             else
             {
-                await JSRuntime.ShowToastAsync(response?.Message ?? "Error!", SwalIcon.Error);
+                //await JSRuntime.ShowToastAsync(response?.Message ?? "Error!", SwalIcon.Error);
             }
         }
 

@@ -35,10 +35,12 @@
 	  <Content Remove="Shared\ConfirmationModal.razor" />
 	  <Content Remove="Shared\Container.razor" />
 	  <Content Remove="Shared\FaladeshModal.razor" />
+	  <Content Remove="Shared\NavMenu.razor" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Remove="Pages\Dashboard.razor.css" />
+	  <None Remove="Shared\NavMenu.razor.css" />
 	</ItemGroup>
 
 	<ItemGroup>

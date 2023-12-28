@@ -15,6 +15,7 @@
 
 	<ItemGroup>
 		<Content Remove="SavedKundalis.razor" />
+		<Content Remove="Shared\NavMenuMobile.razor" />
 	</ItemGroup>
 
 
@@ -48,6 +49,18 @@
 	  <Content Update="CustomFormInputs\InputTextEditor.razor">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Shared\NavMenuMobile.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="Shared\NavMenuMobile.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Shared\NavMenuMobile.razor" />
 	</ItemGroup>
 
 </Project>
