@@ -1,6 +1,6 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
-html, body {
+body {
     font-family: 'Philosopher', sans-serif;
     background-image: url('/images/astro-container.webp');
     background-size: cover;
@@ -20,9 +20,9 @@ html, body {
 
 
 .btn-custom {
-    background: #fab73a;
+    background: #17384e;
     color: #fff;
-    border: 1px solid #fab73a;
+    border: 1px solid #17384e;
     box-shadow: none;
 }
 
@@ -664,6 +664,7 @@ a.forgot-link {
     .login-box, .register-box {
         width: 100%;
     }
+
 }
 
 .navbar-nav a {
@@ -746,9 +747,6 @@ a.forgot-link {
         height: 512px !important;
     }
 
-    .card-frame .card-header {
-        margin-top: 20px;
-    }
 
     .card-tabs .nav-tabs {
         justify-content: space-between;
@@ -820,4 +818,23 @@ section .section-overlay {
 
 .mud-button:hover, .mud-button:focus-visible {
     background-color: transparent;
+}
+.card-body::after, .card-footer::after, .card-header::after{
+    display:none !important;
+}
+@media(max-width:767px){
+    .dashboard-main h1{
+        font-size:26px;
+    }
+    .dashboard-main h2 {
+        font-size: 20px;
+    }
+    .dashboard-main .card-frame > div {
+        padding: 20px 35px!important;
+    }
+
+    .dashboard-main .card-frame .card-body {
+        padding: 0 !important;
+    }
+    
 }
