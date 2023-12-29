@@ -176,7 +176,7 @@
         {
             @* <MudTextField @bind-Value="searchString" TextChanged="FilterFunc" InputType="InputType.Search" T="string" Placeholder="Search Kundali by name" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mud-theme-primary rounded-pill kundali-search" /> *@
 
-            <input class="w-100 form-control mt-3 rounded-pill" type="search" @bind="searchString" @oninput="FilterFunc" placeholder="Search Kundlai by name" />
+            <input class="w-100 form-control mt-3 rounded-pill" type="search" @bind="searchString" @oninput="FilterFunc" placeholder="Search Kundali by name" />
             @foreach (var row in personKundaliTableTRs.Where(item => item.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)))
             {
                 <MudCard Class="mt-3 " Elevation="8">
