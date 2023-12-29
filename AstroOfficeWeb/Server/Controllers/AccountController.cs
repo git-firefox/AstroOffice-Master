@@ -69,11 +69,11 @@ namespace AstroOfficeWeb.Server.Controllers
                 var userDTO = new UserDTO()
                 {
                     UserName = aUser.Username ?? "",
-                    CanAddNew = aUser.CanAdd.GetValueOrDefault(),
-                    CanModify = aUser.CanEdit.GetValueOrDefault(),
+                    CanAdd = aUser.CanAdd.GetValueOrDefault(),
+                    CanEdit = aUser.CanEdit.GetValueOrDefault(),
                     CanReport = aUser.CanReport.GetValueOrDefault(),
                     ActiveUserId = aUser.Sno,
-                    IsAdmin = aUser.Adminuser.GetValueOrDefault()
+                    AdminUser = aUser.Adminuser.GetValueOrDefault()
                 };
 
                 var signinCredentials = GetSigningCredentials();
@@ -138,11 +138,11 @@ namespace AstroOfficeWeb.Server.Controllers
                 var userDTO = new UserDTO()
                 {
                     UserName = aUser.Username ?? "",
-                    CanAddNew = aUser.CanAdd.GetValueOrDefault(),
-                    CanModify = aUser.CanEdit.GetValueOrDefault(),
+                    CanAdd = aUser.CanAdd.GetValueOrDefault(),
+                    CanEdit = aUser.CanEdit.GetValueOrDefault(),
                     CanReport = aUser.CanReport.GetValueOrDefault(),
                     ActiveUserId = aUser.Sno,
-                    IsAdmin = aUser.Adminuser.GetValueOrDefault()
+                    AdminUser = aUser.Adminuser.GetValueOrDefault()
                 };
 
                 var signinCredentials = GetSigningCredentials();
@@ -265,10 +265,16 @@ namespace AstroOfficeWeb.Server.Controllers
         }
 
         [HttpPost]
-        public IActionResult SignUp([FromBody] SignUpRequest request)
+        public IActionResult SignUp([FromBody] SignUpMasterRequest request)
         {
+            //if (User.IsInRole(ApplicationConst.Role_Admin))
+            //{
+
+            //}
+
             var response = new SignUpResponse();
-                                                                                    
+            response.IsRegisterationSuccessful = false;
+            response.Success = false;
             try
             {
 
@@ -276,7 +282,6 @@ namespace AstroOfficeWeb.Server.Controllers
 
                 if (user != null)
                 {
-                    response.IsRegisterationSuccessful = false;
                     response.Message = AccountMessageConst.UserExist;
                     goto returnResponse;
                 }
@@ -285,49 +290,57 @@ namespace AstroOfficeWeb.Server.Controllers
 
                 if (mobileUserName != null)
                 {
-                    response.IsRegisterationSuccessful = false;
                     response.Message = AccountMessageConst.MobileNumberExist;
                     goto returnResponse;
                 }
             }
             catch
             {
-                response.IsRegisterationSuccessful = false;
                 response.Message = ApiMessageConst.ServerError;
                 goto returnResponse;
             }
 
             if (ModelState.IsValid)
             {
-                var aUser = new AUser()                                                      
+                var aUser = new AUser()
                 {
                     Active = true,
-                    Adminuser = false,
-                    CanAdd = false,
-                    CanEdit = false,
-                    CanReport = false,
+                    Adminuser = request.UserPermission?.AdminUser ?? false,
+                    CanAdd = request.UserPermission?.CanAdd ?? false,
+                    CanEdit = request.UserPermission?.CanEdit ?? false,
+                    CanReport = request.UserPermission?.CanReport ?? false,
                     Password = request.Password,
                     Username = request.UserName,
-                    MobileNumber = request.PhoneNumber
+                    MobileNumber = request.PhoneNumber,
+                    Sno = request.Sno
                 };
 
                 try
                 {
-                    _balUser.AddUser(aUser);
+                    if (aUser.Sno == 0)
+                    {
+                        _balUser.AddUser(aUser);
+                    }
+                    else
+                    {
+                        aUser.Password = ENCEK.ENCEK.CellGell_ENC(aUser.Password, "cellgell.com");
+                        _balUser.UpdateUser(aUser);
+                    }
                     response.IsRegisterationSuccessful = true;
+                    response.Success = true;
+
+                    response.Data = aUser.Sno;
                     response.Message = AccountMessageConst.SignUpSuccessful;
 
                 }
                 catch (Exception ex)
                 {
                     _ = ex;
-                    response.IsRegisterationSuccessful = false;
                     response.Message = ApiMessageConst.ServerError;
                 }
             }
             else
             {
-                response.IsRegisterationSuccessful = false;
                 response.Message = AccountMessageConst.SignUpFailed;
             }
 

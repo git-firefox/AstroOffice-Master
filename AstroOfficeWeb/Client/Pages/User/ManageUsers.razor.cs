@@ -58,6 +58,7 @@ namespace AstroOfficeWeb.Client.Pages.User
 
         private async Task OnClick_BtnAction(FormMode mode = FormMode.Add, UserViewModel? selectedUser = null)
         {
+            await Form.ResetAsync();
             switch (mode)
             {
                 case FormMode.Add:
@@ -104,24 +105,26 @@ namespace AstroOfficeWeb.Client.Pages.User
             await Form.Validate();
             if (Form.IsValid)
             {
-                switch (SaveUserFormMode)
+                if (await Account.IsUsedSavedAsync(SaveUserModel))
                 {
-                    case FormMode.Add:
-                        {
-                            SaveUserModel.Sno = Users!.Count + 1;
-                            Users!.Add(SaveUserModel);
-                            break;
-                        }
-                    case FormMode.Edit:
-                        {
-                            var existedUser = Users!.First(a => a.Sno == SaveUserModel.Sno);
-                            var index = Users!.IndexOf(existedUser);
-                            Users[index] = SaveUserModel;
-                            break;
-                        }
+                    switch (SaveUserFormMode)
+                    {
+                        case FormMode.Add:
+                            {
+                                Users!.Add(new(SaveUserModel));
+                                break;
+                            }
+                        case FormMode.Edit:
+                            {
+                                var existedUser = Users!.First(a => a.Sno == SaveUserModel.Sno);
+                                var index = Users!.IndexOf(existedUser);
+                                Users[index] = SaveUserModel;
+                                break;
+                            }
+                    }
+                    IsDrawerOpen = !IsDrawerOpen;
+                    StateHasChanged();
                 }
-                IsDrawerOpen = !IsDrawerOpen;
-                StateHasChanged();
             }
         }
 

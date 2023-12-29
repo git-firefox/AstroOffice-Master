@@ -8,15 +8,20 @@ using AstroOfficeWeb.Shared.Utilities;
 
 namespace AstroOfficeWeb.Shared.DTOs
 {
-    public class UserDTO
+    public class UserPermission
+    {
+        public bool AdminUser { get; set; }
+        public bool CanEdit { get; set; }
+        public bool CanReport { get; set; }
+        public bool CanAdd { get; set; }
+    }
+
+    public class UserDTO : UserPermission
     {
         [Display(Name = "Username")]
         public string? UserName { get; set; }
-        public bool CanAddNew { get; set; }
-        public bool CanModify { get; set; }
-        public bool CanReport { get; set; }
         public long ActiveUserId { get; set; }
-        public bool IsAdmin { get; set; }
+        
         public long Sno { get; set; }
 
         [Display(Name = "Mobile Number")]
@@ -29,7 +34,5 @@ namespace AstroOfficeWeb.Shared.DTOs
 
         [Display(Name = "Status")]
         public UserStatus Status { get; set; }
-        public bool CanEdit { get; set; }
-        public bool CanAdd { get; set; }
     }
 }

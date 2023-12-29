@@ -1,8 +1,10 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using AstroOfficeWeb.Services.IServices;
 using AstroOfficeWeb.Shared.Helper;
+using AstroOfficeWeb.Shared.Models;
 using AstroOfficeWeb.Shared.Utilities;
 using Newtonsoft.Json;
 
@@ -24,13 +26,17 @@ namespace AstroOfficeWeb.Services
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
             var response = await _client.PostAsync(_client.BaseAddress + url, bodyContent);
 
+            var contentTemp = await response.Content.ReadAsStringAsync();
+
             if (response.IsSuccessStatusCode)
             {
-                var contentTemp = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<TResponse>(contentTemp);
                 return result;
             }
-            else if (response.StatusCode == HttpStatusCode.Unauthorized) { };
+            else
+            {
+                var errorResponse = response.Content.ReadFromJsonAsync<ErrorResponse>();
+            }
 
             return default;
         }
