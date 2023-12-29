@@ -44,6 +44,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="wwwroot\backgrounds\astro-backgrond.webp" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.22" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.15" />

@@ -5,7 +5,7 @@
 <MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.ExtraSmall" CloseButton="true" DisableBackdropClick="true" Position="DialogPosition.Center" CloseOnEscapeKey="true" />
 <MudSnackbarProvider />
 
-@* <MudLayout>
+@* <MudLayout>                               0
     <div class="page">
         <main>
             <AuthorizeView>
@@ -16,10 +16,10 @@
     </div>
 </MudLayout> *@
 
-<MudLayout>
+<NavMenu />
+<NavMenuMobile />
 
-    <NavMenu />
-    <NavMenuMobile />
+<MudLayout>
     <MudContainer>
         @Body
     </MudContainer>
