@@ -177,8 +177,12 @@
         @if (personKundaliTableTRs.Any())
         {
 
-            <MudTextField @bind-Value="searchString" TextChanged="FilterFunc" @OnBlur="@FilterFunc" InputType="InputType.Search" T="string" Placeholder="Search Kundali by name" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mud-theme-primary rounded-pill kundali-search" />
+            @* <MudTextField @bind-Value="searchString" TextChanged="FilterFunc" InputType="InputType.Search" T="string" Placeholder="Search Kundali by name" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mud-theme-primary rounded-pill kundali-search" /> *@
 
+            @* <MudTextField @bind-Value="searchString"  @oninput="FilterFunc" InputType="InputType.Search" T="string" Placeholder="Search Kundali by name" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mud-theme-primary rounded-pill kundali-search" /> *@
+            <div col-12>
+                <input class="w-100 form-control " type="search" @bind="searchString" @oninput="FilterFunc" placeholder="Search Kundlai by name" />
+            </div>
 
             @foreach (var row in personKundaliTableTRs.Where(item => item.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)))
             {
@@ -242,19 +246,31 @@
         FilteredPersonKundaliTableTRs = personKundaliTableTRs;
     }
 
-    private void FilterFunc(string searchString)
+    // private void FilterFunc(string searchString)
+    // {
+    //     if (!string.IsNullOrWhiteSpace(searchString))
+    //     {
+    //         FilteredPersonKundaliTableTRs = personKundaliTableTRs.Where(item => item.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+    //     }
+    //     else
+    //     {
+    //         FilteredPersonKundaliTableTRs = personKundaliTableTRs;
+    //     }
+    // }
+
+    private void FilterFunc(ChangeEventArgs e)
     {
+        searchString = e.Value.ToString(); // Update the searchString
         if (!string.IsNullOrWhiteSpace(searchString))
         {
-            FilteredPersonKundaliTableTRs = personKundaliTableTRs.Where(item => item.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+            FilteredPersonKundaliTableTRs = personKundaliTableTRs
+                .Where(item => item.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                .ToList();
         }
         else
         {
             FilteredPersonKundaliTableTRs = personKundaliTableTRs;
         }
-
-
-
     }
 
     private void OnClick_BtnClose(MouseEventArgs e)
