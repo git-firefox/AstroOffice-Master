@@ -163,8 +163,6 @@
 }
 
 
-
-
 <MudContainer Class="content">
     @if (personKundaliTableTRs == null)
     {
@@ -176,20 +174,15 @@
     {
         @if (personKundaliTableTRs.Any())
         {
-
             @* <MudTextField @bind-Value="searchString" TextChanged="FilterFunc" InputType="InputType.Search" T="string" Placeholder="Search Kundali by name" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mud-theme-primary rounded-pill kundali-search" /> *@
 
-            @* <MudTextField @bind-Value="searchString"  @oninput="FilterFunc" InputType="InputType.Search" T="string" Placeholder="Search Kundali by name" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mud-theme-primary rounded-pill kundali-search" /> *@
-            <div col-12>
-                <input class="w-100 form-control " type="search" @bind="searchString" @oninput="FilterFunc" placeholder="Search Kundlai by name" />
-            </div>
-
+            <input class="w-100 form-control mt-3 rounded-pill" type="search" @bind="searchString" @oninput="FilterFunc" placeholder="Search Kundlai by name" />
             @foreach (var row in personKundaliTableTRs.Where(item => item.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)))
             {
                 <MudCard Class="mt-3 " Elevation="8">
                     <MudCardHeader Class="py-0">
                         <CardHeaderAvatar>
-                            <MudAvatar Color="Color.Secondary">@(!string.IsNullOrEmpty(row.Name) ? row.Name.ToUpper()[0] : 'U')</MudAvatar>
+                            <MudAvatar Color="Color.Primary">@(!string.IsNullOrEmpty(row.Name) ? row.Name.ToUpper()[0] : 'U')</MudAvatar>
                         </CardHeaderAvatar>
                         <CardHeaderContent>
                             <MudText Typo="Typo.h6">

@@ -121,46 +121,49 @@
 @using MudExtensions
 @inject ISnackbar Snackbar
 
+
 <div class="container-fluid">
     <div class="row vertical-center">
-        <EditForm Model="LoginModel" OnValidSubmit="OnValidSubmitAsync">
-            <DataAnnotationsValidator />
+       
+           
             <MudGrid Justify="Justify.Center">
-                <div class="text-center d-flex align-center justify-center mud-width-full">
+             @*    <div class="text-center d-flex align-center justify-center mud-width-full">
                     <h4 class="mb-4">Sign In</h4>
-                </div>
+                </div> *@
                 <MudItem xs="12" sm="7">
+                  @*   <div Class="d-flex align-center justify-center mud-width-full">
+                        <MudImage Src="images/loader-4.gif" Alt="Mony the dog" Class="rounded-lg" Height="100" />
+                    </div> *@
+                    <MudPaper Class="pa-4">
+                    <div class="text-center d-flex align-center justify-center mud-width-full">
+                        <h4 class="mb-4">Sign In</h4>
+                    </div>
                     <div Class="d-flex align-center justify-center mud-width-full">
                         <MudImage Src="images/loader-4.gif" Alt="Mony the dog" Class="rounded-lg" Height="100" />
                     </div>
-                    <MudPaper Class="pa-4">
 
-                        <MudTextField @bind-Value="LoginModel.UserName" For="@(() => LoginModel.UserName)" Label="Username" Required="true" />
+                        <MudTextField @bind-Value="LoginModel.UserName" For="@(() => LoginModel.UserName)" Label="Username"  />
 
-                        <MudTextField @bind-Value="LoginModel.Password" For="@(() => LoginModel.Password)" Label="Password" InputType="InputType.Password" Required="true" />
+                        <MudTextField @bind-Value="LoginModel.Password" For="@(() => LoginModel.Password)" Label="Password" InputType="InputType.Password"  />
 
                         @*     <MudTextField @bind-Value="LoginModel.Password" For="@(() => LoginModel.Password)" Label="Password" @ref="pwField1"
                         InputType="InputType.Password"
                         Validation=@(new Func<string, IEnumerable<string>>(PasswordStrength)) Required=true
                         RequiredError="Password is required!" /> *@
 
-
-
-
-
                         <div class="d-flex align-center justify-space-between mt-5">
-                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Class="ml-auto">Sign In</MudButton>
+                            <MudButton ButtonType="ButtonType.Submit" OnClick="OnValidSubmitAsync" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Class="ml-auto">Sign In</MudButton>
                         </div>
 
                         <div class="text-center mt-5">
                             <p class="mb-3">
-                                <a href="/forgotpass">Forgot password</a>
+                            <a href="/forgotpass" class="forgot-link">Forgot password</a>
                             </p>
                             <NavLink Href="/register" Class="forgot-link">Register a new membership</NavLink>
                         </div>
                     </MudPaper>
                 </MudItem>
             </MudGrid>
-        </EditForm>
+       
     </div>
 </div>

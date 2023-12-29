@@ -85,7 +85,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         }
         private async Task OnClick_BtnClear()
         {
-            await ApplyFilter();
+            await JSRuntime.InvokeVoidAsync("location.reload");
         }
 
         private async Task ApplyFilter()
