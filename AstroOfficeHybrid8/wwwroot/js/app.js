@@ -1,4 +1,4 @@
-window.fnFocusBlazorElement = function (element) {
+﻿window.fnFocusBlazorElement = function (element) {
     if (element instanceof HTMLInputElement) {
         element.focus();
     }
@@ -17,6 +17,9 @@ window.fnShowModal = function (element) {
         $(element).modal('show');
     }
 
+}
+window.fnRemoveStyle = function (element) {
+    $('*', '.embed-responsive').attr('style', '')
 }
 window.fnCloseModal = function (element) {
     if (element instanceof HTMLDivElement) {
@@ -147,10 +150,10 @@ window.InputSelect2Interop = {
     fnInitialize: function (element, dropdownParent = null) {
 
         var select2Config = {
-            theme: 'bootstrap-5',
+            theme: 'bootstrap4',
             width: '100%',
         };
-
+        
         if (dropdownParent != undefined || dropdownParent != null) {
             select2Config.dropdownParent = dropdownParent;
         }
@@ -172,14 +175,44 @@ window.InputSelect2Interop = {
 window.fnSummernoteInterop = function (element, height, dotnetObject) {
     if (element instanceof HTMLDivElement || element instanceof HTMLTextAreaElement) {
         $(element).summernote({
-            height: height,
+            height: height, 
             focus: true,
+            fontNames: ['Philosopher'],
+            fontNamesIgnoreCheck: ['Philosopher'],
             callbacks: {
                 onInit: function () {
                     console.log('Summernote is launched');
                 },
-                onChange: function (contents, $editable) {
-                    dotnetObject.invokeMethodAsync("OnInputSummernoteTextChange", contents);
+                onChange: function (contents, $editable) {       
+                    var cleanHtml = DOMPurify.sanitize(contents, {
+                        ALLOWED_ATTR: []
+                        //ALLOWED_ATTR: function (attr) {
+                        //    // Allow all attributes except style
+                        //    return attr.toLowerCase() !== 'style';
+                        //}
+                    });
+                    dotnetObject.invokeMethodAsync("OnInputSummernoteTextChange", cleanHtml);
+                },
+                onPaste: function (e) {
+                    e.preventDefault();
+                    var clipboardData = (e.originalEvent || e).clipboardData;
+                    console.log(clipboardData);
+                    var bufferText = clipboardData.getData('text/plain');
+                    console.log(bufferText);
+                    var cleanHtml = DOMPurify.sanitize(bufferText, {
+                        ALLOWED_ATTR: []
+                    });
+                    console.log(cleanHtml);
+
+                    //document.execCommand('insertText', false, cleanHtml);
+                    var selection = window.getSelection();
+                    var range = selection.getRangeAt(0);
+                    range.deleteContents();
+
+                    //range.insertNode(document.createTextNode(cleanHtml));
+
+                    var fragment = range.createContextualFragment(cleanHtml);
+                    range.insertNode(fragment);
                 }
             }
         });
