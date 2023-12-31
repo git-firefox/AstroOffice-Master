@@ -1,29 +1,14 @@
 ﻿@using AstroOfficeWeb.Components.Shared
 @inherits LayoutComponentBase
 <MudThemeProvider />
-@* <MudDialogProvider /> *@
 <MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.ExtraSmall" CloseButton="true" DisableBackdropClick="true" Position="DialogPosition.Center" CloseOnEscapeKey="true" />
 <MudSnackbarProvider />
-
-@* <MudLayout>                               0
-    <div class="page">
-        <main>
-            <AuthorizeView>
-                <NavMenu />
-            </AuthorizeView>
-            @Body
-        </main>
-    </div>
-</MudLayout> *@
 
 
 <AstroOfficeWeb.Components.Shared.NavMenu />
 <MudLayout>
-
     <MudContainer>
         @Body
     </MudContainer>
-    @* <MudMainContent>
-    </MudMainContent> *@
 </MudLayout>
 <AstroOfficeWeb.Components.Shared.NavMenuMobile />

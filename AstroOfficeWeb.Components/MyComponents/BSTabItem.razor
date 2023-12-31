@@ -1,0 +1,19 @@
+﻿<li class="nav-item" role="presentation">
+    <button id=@_tab class="nav-link @_active" data-bs-toggle="tab" data-bs-target=@_tabId type="button" role="tab" aria-controls=@_tab aria-selected=@_selected>@TabName</button>
+</li>
+
+@code {
+    private string _active { get => this.IsActive ? "active" : string.Empty; }
+
+    private string _selected { get => this.IsActive ? "true" : "false"; }
+
+    private string _tab { get => this.TabName.ToUrlFriendlyString() + "-tab"; }
+
+    private string _tabId { get => "#" + this.TabName.ToUrlFriendlyString() + "-tab-pane"; }
+
+    [Parameter]
+    public bool IsActive { get; set; } = false;
+
+    [Parameter]
+    public string TabName { get; set; } = null!;
+}

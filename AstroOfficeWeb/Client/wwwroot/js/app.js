@@ -1,4 +1,6 @@
-﻿window.fnFocusBlazorElement = function (element) {
+﻿const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+window.fnFocusBlazorElement = function (element) {
     if (element instanceof HTMLInputElement) {
         element.focus();
     }

@@ -1,0 +1,29 @@
+﻿<div class="card">
+    <div class="card-header d-none d-lg-flex">
+        <ul id=@_tab class="nav nav-tabs card-header-tabs" role="tablist">
+            @BSTabItems
+        </ul>
+    </div>
+
+    <div class="card-body">
+        <div id=@_accordion class="tab-content accordion">
+            @BSTabContent
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private string _accordion { get => this.BSTabName.ToUrlFriendlyString() + "-tab-accordion-content"; }
+
+    private string _tab { get => this.BSTabName.ToUrlFriendlyString() + "-nav-tabs"; }
+
+    [Parameter]
+    public string BSTabName { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment BSTabContent { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment BSTabItems { get; set; } = null!;
+}
