@@ -1,13 +1,12 @@
-﻿<div id=@_tabPan class="tab-pane fade accordion-item @_active" role="tabpanel" aria-labelledby=@TabPanelName tabindex="0">
+﻿<div id=@_tabPan class="tab-pane fade accordion-item @_show @_active" role="tabpanel" aria-labelledby=@_tabAria tabindex="0">
     <h2 id="@_accordionHeader" class="accordion-header d-lg-none">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target=@_accordionCollapseId aria-expanded=@_expanded aria-controls=@_accordionCollapse>
-            @TabPanelName Accordion Item #3
+            @TabPanelName
         </button>
     </h2>
-    <div id=@_accordionCollapse class="accordion-collapse collapse d-lg-block @_show @_active" aria-labelledby=@_accordionHeader data-bs-parent="#accordionExample">
+    <div id=@_accordionCollapse class="accordion-collapse collapse d-lg-block @_show @_active" aria-labelledby=@_accordionHeader>
         <div class="accordion-body">
             @TabPanelBody
-            <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
         </div>
     </div>
 </div>
@@ -24,6 +23,8 @@
     private string _accordionHeader { get => this.TabPanelName.ToUrlFriendlyString() + "-accordion-header"; }
 
     private string _tabPan { get => this.TabPanelName.ToUrlFriendlyString() + "-tab-pane"; }
+
+    private string _tabAria { get => this.TabPanelName.ToUrlFriendlyString() + "-tab"; }
 
     private string _active { get => this.IsActive ? "active" : string.Empty; }
 

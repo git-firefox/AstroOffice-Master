@@ -359,11 +359,11 @@ namespace AstroOfficeWeb.Components.Shared
 
                 if (!list.isbad)
                 {
-                    tr.ForeColor = "text-success";
+                    tr.ForeColor = "table-success";
                 }
                 else
                 {
-                    tr.ForeColor = "text-danger";
+                    tr.ForeColor = "table-danger";
                 }
 
                 //send column
@@ -453,7 +453,7 @@ namespace AstroOfficeWeb.Components.Shared
                 }
                 if ((this.last_cusp_house.Count <= 0 ? false : signiString != str))
                 {
-                    tr.ForeColor = "text-primary";
+                    tr.ForeColor = "table-primary";
                 }
                 //if (!this.LstVHouses.InvokeRequired)
                 //{
