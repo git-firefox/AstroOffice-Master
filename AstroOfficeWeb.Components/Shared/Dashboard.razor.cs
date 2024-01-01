@@ -1331,6 +1331,10 @@ namespace AstroOfficeWeb.Components.Shared
 
         #region Handle events
 
+        private void OnClick_BtnOccassionItem(SelectListItem item)
+        {
+            DateFinder!.Occassion = item.Text;
+        }
         private async Task OnChange_BrithDate(ChangeEventArgs e)
         {
             if (DateTime.TryParse(e.Value?.ToString(), out DateTime result))
