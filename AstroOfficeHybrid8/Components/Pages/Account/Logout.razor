@@ -5,6 +5,6 @@
     protected override void OnInitialized()
     {
         AuthSerivce.LogoutAsync();
-        NavigationManager.NavigateTo("/login");
+        NavigationManager.NavigateTo("/login",false, true);
     }
 }

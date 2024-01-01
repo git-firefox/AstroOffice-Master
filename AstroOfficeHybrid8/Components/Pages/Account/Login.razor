@@ -6,116 +6,6 @@
 @* @layout AccountLayout *@
 
 
-
-@* <div class="login-page">
-    <img src="images/loader-4.gif" class="astroOffice-logo-image mb-3" />
-
-    <div class="login-box card-frame">
-        <div style="position:relative;z-index:999!important;">
-            <div class="login-logo">
-                <h3>Login </h3>
-            </div>
-            <div class="card">
-                <div class="card-body login-card-body">
-                    <p class="login-box-msg">Sign in to start your session</p>
-                    <EditForm Model="LoginModel" OnInvalidSubmit="OnInvalidSubmit" OnValidSubmit="OnValidSubmitAsync">
-                        <DataAnnotationsValidator />
-
-                        <div class="input-group mb-4">
-                            <InputText @bind-Value="LoginModel!.UserName" class="form-control" placeholder="User Name" />
-                            <i class="fa fa-user"></i>
-                            <ValidationMessage For="() => LoginModel!.UserName" />
-
-                        </div>
-                        <div class="input-group mb-4">
-                            <InputText type="@(PasswordIsClicked ? "text" : "password")" @bind-Value="LoginModel!.Password" class="form-control" placeholder="Password" />
-                            <i class="fas @(PasswordIsClicked ? "fa-eye-slash" : "fa-eye")" @onclick="()=>{PasswordIsClicked = !PasswordIsClicked; }"></i>
-                            <ValidationMessage For="() => LoginModel.Password" />
-                        </div>
-                        <div class="row down-form">
-                            <div class="col-6">
-                                <InputCheckbox id="ChkRememberMe" @bind-Value="LoginModel!.RememberMe" />
-                                <label for="ChkRememberMe">
-                                    Remember Me
-                                </label>
-                            </div>
-                            <div class="col-6 text-right">
-                                <NavLink href="/forgotpass" class="forgot-link">Forgot Password ?</NavLink>
-                            </div>
-                            <div class="col-12 mt-3">
-                                <button type="submit" class="btn btn-custom btn-block">Sign In</button>
-                                <NavLink class="btn btn-custom btn-custom-outline mt-2 btn-block" href="/login-with-mobile">Login with OTP</NavLink>
-                            </div>
-                        </div>
-                    </EditForm>
-                    <div class="text-center">
-                        <p class="mb-0 mt-3 sign-up "> Don't have an account?  <NavLink class="forgot-link" href="/register"><u>Sign Up</u></NavLink> </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
- *@
-
-@*  <body class="">
-    <div class="container-fluid">
-      <div class="row vertical-center">
-          <form class="col-xs-8 col-xs-offset-2  col-sm-6 col-sm-offset-3 col-md-4 col-sm-offset-4 col-lg-2 col-lg-offset-5">
-            <h1>Sign In</h1>
-            <p>
-              <label class="sr-only" for="">Email Address</label>
-              <input class="form-control" type="email" placeholder="Email Address" required autofocus>
-            </p>
-            <p>
-              <label class="sr-only" for="">Password</label>
-              <input class="form-control" type="email" placeholder="Password" required>
-            </p>
-            <p class="checkbox">
-              <label><input type="checkbox">Remember Me</label>
-            </p>
-            <button class="btn btn-primary btn-block" type="sumbit">Sign In</button>
-          </form>
-      </div>
-    </div> *@
-
-
-
-@*     @using Microsoft.AspNetCore.Components
-@using MudBlazor.Extensions
-
-<MudGrid>
-    <MudItem xs="12" sm="8" Class="d-flex flex-column gap-8 align-center justify-center" Style="height: 500px">
-        <MudCodeInput @ref="_textFieldGroup" T="string" @bind-Value="@_value" Count="@_count" Spacing="_spacing" Variant="@_variant" Margin="_margin"
-            Disabled="@_disabled" ReadOnly="@_readonly" />
-    </MudItem>
-
-    <MudItem xs="12" sm="4">
-        <MudStack Spacing="4">
-            <MudText>Value: @_value</MudText>
-            <MudTextField @bind-Value="@_value" Immediate="true" Label="Two Way Bind Controller" />
-            <MudNumericField @bind-Value="_count" Label="Count" Variant="Variant.Outlined" />
-            <MudNumericField @bind-Value="_spacing" Label="Spacing" Variant="Variant.Outlined" />
-            <MudSelect @bind-Value="_variant" Variant="Variant.Outlined" Label="Variant">
-                @foreach (var item in Enum.GetValues<Variant>())
-                {
-                    <MudSelectItem Value="item">@item.ToDescriptionString()</MudSelectItem>
-                }
-            </MudSelect>
-            <MudSelect @bind-Value="_margin" Variant="Variant.Outlined" Label="Margin">
-                @foreach (var item in Enum.GetValues<Margin>())
-                {
-                    <MudSelectItem Value="item">@item.ToDescriptionString()</MudSelectItem>
-                }
-            </MudSelect>
-            <MudSwitchM3 @bind-Checked="@_disabled" Label="Disabled" Color="Color.Primary" />
-            <MudSwitchM3 @bind-Checked="@_readonly" Label="ReadOnly" Color="Color.Primary" />
-        </MudStack>
-    </MudItem>
-</MudGrid>
- *@
-
-
  @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 @using MudExtensions
@@ -123,42 +13,31 @@
 
 
 <div class="container-fluid">
-           <div class="d-flex justify-content-center align-items-center" style="height:100vh;">
-             @*    <div class="text-center d-flex align-center justify-center mud-width-full">
-                    <h4 class="mb-4">Sign In</h4>
-                </div> *@
-             
-                  @*   <div Class="d-flex align-center justify-center mud-width-full">
-                        <MudImage Src="images/loader-4.gif" Alt="Mony the dog" Class="rounded-lg" Height="100" />
-                    </div> *@
-                    <MudPaper Class="pa-4 w-100">
-                    <div class="text-center d-flex align-center justify-center mud-width-full">
-                        <h4 class="mb-4">Sign In</h4>
-                    </div>
-                    <div Class="d-flex align-center justify-center mud-width-full">
-                        <MudImage Src="images/loader-4.gif" Alt="Mony the dog" Class="rounded-lg" Height="100" />
-                    </div>
+    <div class="d-flex justify-content-center align-items-center" style="height:100vh;">
 
-                        <MudTextField @bind-Value="LoginModel.UserName" For="@(() => LoginModel.UserName)" Label="Username"  />
+        <MudPaper Class="pa-4 w-100">
+            <div class="text-center d-flex align-center justify-center mud-width-full">
+                <h4 class="mb-4">Sign In</h4>
+            </div>
+            <div Class="d-flex align-center justify-center mud-width-full">
+                <MudImage Src="images/loader-4.gif" Alt="Mony the dog" Class="rounded-lg" Height="100" />
+            </div>
 
-                        <MudTextField @bind-Value="LoginModel.Password" For="@(() => LoginModel.Password)" Label="Password" InputType="InputType.Password"  />
+            <MudTextField @bind-Value="LoginModel.UserName" For="@(() => LoginModel.UserName)" Label="Username" />
 
-                        @*     <MudTextField @bind-Value="LoginModel.Password" For="@(() => LoginModel.Password)" Label="Password" @ref="pwField1"
-                        InputType="InputType.Password"
-                        Validation=@(new Func<string, IEnumerable<string>>(PasswordStrength)) Required=true
-                        RequiredError="Password is required!" /> *@
+            <MudTextField @bind-Value="LoginModel.Password" For="@(() => LoginModel.Password)" Label="Password" InputType="InputType.Password" />
 
-                        <div class="d-flex align-center justify-space-between mt-5">
-                            <MudButton ButtonType="ButtonType.Submit" OnClick="OnValidSubmitAsync" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Class="ml-auto">Sign In</MudButton>
-                        </div>
+            <div class="d-flex align-center justify-space-between mt-5">
+                <MudButton ButtonType="ButtonType.Submit" OnClick="OnValidSubmitAsync" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Class="ml-auto">Sign In</MudButton>
+            </div>
 
-                        <div class="text-center mt-5">
-                            <p class="mb-3">
-                            <a href="/forgotpass" class="forgot-link">Forgot password</a>
-                            </p>
-                            <NavLink Href="/register" Class="forgot-link">Register a new membership</NavLink>
-                        </div>
-                    </MudPaper>
+            <div class="text-center mt-5">
+                <p class="mb-3">
+                    <a href="/forgotpass" class="forgot-link">Forgot password</a>
+                </p>
+                <NavLink Href="/register" Class="forgot-link">Don't have an account? Sign Up</NavLink>
+            </div>
+        </MudPaper>
     </div>
-   
+
 </div>

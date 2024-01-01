@@ -14,7 +14,7 @@
     <Header>
         @if (ViewProductDTOs != null && ViewProductDTOs.Any())
         {
-            <button class="btn btn-custom">Add To Wishlist</button>
+            <a href="/products" class="btn btn-custom"> Go to Shop</a>
         }
     </Header>
     <ChildContent>
@@ -64,7 +64,10 @@
 
                                     <MudStack Justify="Justify.Center" Row="true">
 
-                                        <button type="button" class="btn bg-cart" b-6pt8dzqd51=""><!--!--><i class="fa fa-cart-plus mr-2" b-6pt8dzqd51=""></i> Add to cart</button>
+                                        @* <button type="button"  class="btn bg-cart" b-6pt8dzqd51=""><i class="fa fa-cart-plus mr-2" b-6pt8dzqd51=""></i> Add to cart</button> *@
+
+                                        <MudButton Class="btn bg-cart" OnClick="()=>OnCLick_BtnAddToCart(product)"> Add to cart </MudButton>
+                                    
 
                                     </MudStack>
 

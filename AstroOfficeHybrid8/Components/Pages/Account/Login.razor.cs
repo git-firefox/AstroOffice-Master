@@ -60,6 +60,9 @@ namespace AstroOfficeHybrid8.Components.Pages.Account
 
         protected override async Task OnInitializedAsync()
         {
+
+            
+
             await CheckAuthenticationState();
         }
 
@@ -76,11 +79,14 @@ namespace AstroOfficeHybrid8.Components.Pages.Account
                 Password = LoginModel!.Password
             });
             Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
+
+
             if (response!.IsAuthSuccessful)
             {
                 Snackbar.Add(response.Message, Severity.Success);
 
-                NavigationManager!.NavigateTo("/");
+                //NavigationManager!.NavigateTo("/");
+                NavigationManager.NavigateTo("/", false, true);
             }
             else
             {
@@ -96,7 +102,7 @@ namespace AstroOfficeHybrid8.Components.Pages.Account
             if (user!.Identity!.IsAuthenticated)
             {
                 // User is already authenticated, redirect to another page
-                NavigationManager.NavigateTo("/");
+                NavigationManager.NavigateTo("/", false, true);
                 //await JSRuntime.ShowToastAsync("You don't have access to open this page", SwalIcon.Success);
             }
         }

@@ -19,214 +19,159 @@
                     <Authorized>
 
                         <MudDrawer @bind-Open="@open" ClipMode="_themeManager.DrawerClipMode" Elevation="_themeManager.DrawerElevation" Breakpoint="@breakpoint" Variant="@DrawerVariant.Responsive" PreserveOpenState="false">
-                            <MudDrawerHeader>
-                                <MudStack Row="true">
-                                    <MudAvatar Color="Color.Secondary" Size="Size.Medium">
-                                        @context?.User?.Identity?.Name?.Substring(0, 1).ToUpper()
-                                    </MudAvatar>
-                                    <MudStack Justify="Justify.Center" Spacing="0">
-                                        <MudText Typo="Typo.body1">
-                                            @if (context?.User?.Identity?.Name != null)
-                                            {
-                                                @($"{context.User.Identity.Name.Substring(0, 1).ToUpper()}{context.User.Identity.Name.Substring(1).ToLower()}")
-                                            }
-                                        </MudText>
+
+                            <MudSwipeArea  OnSwipe="@OnSwipe">
+
+                                <MudDrawerHeader>
+                                    <MudStack Row="true">
+                                        <MudAvatar Color="Color.Secondary" Size="Size.Medium">
+                                            @context?.User?.Identity?.Name?.Substring(0, 1).ToUpper()
+                                        </MudAvatar>
+                                        <MudStack Justify="Justify.Center" Spacing="0">
+                                            <MudText Typo="Typo.body1">
+                                                @if (context?.User?.Identity?.Name != null)
+                                                {
+                                                    @($"{context.User.Identity.Name.Substring(0, 1).ToUpper()}{context.User.Identity.Name.Substring(1).ToLower()}")
+                                                }
+                                            </MudText>
+                                        </MudStack>
                                     </MudStack>
-                                </MudStack>
-                            </MudDrawerHeader>
+                                </MudDrawerHeader>
 
-                            <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser + "," + ApplicationConst.Role_Astrologer) Context="check">
-                                <Authorized>
+                                <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser + "," + ApplicationConst.Role_Astrologer) Context="check">
+                                    <Authorized>
 
-                                    <MudNavLink Href="/" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.Dashboard" /> Home
-                                    </MudNavLink>
+                                        <MudNavLink Href="/" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.Dashboard" /> Home
+                                        </MudNavLink>
 
-                                    <MudNavLink Href="/dashboard" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.Dashboard" /> Dashboard
-                                    </MudNavLink>
+                                        <MudNavLink Href="/dashboard" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.Dashboard" /> Dashboard
+                                        </MudNavLink>
 
-                                    @*    <MudNavLink Href="/counter" Match="NavLinkMatch.All">
-                                    counter
-                                    </MudNavLink> *@
+                                        @*    <MudNavLink Href="/counter" Match="NavLinkMatch.All">
+                                        counter
+                                        </MudNavLink> *@
 
-                                    <MudNavLink Href="/saved-kundalis" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.TableView" />
-                                        Saved Kundali
-                                    </MudNavLink>
+                                        <MudNavLink Href="/saved-kundalis" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.TableView" />
+                                            Saved Kundali
+                                        </MudNavLink>
 
-                                    <MudNavLink Href="/viewed-kundalis" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.TableView" />
-                                        Viewed Kundali
-                                    </MudNavLink>
+                                        <MudNavLink Href="/viewed-kundalis" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.TableView" />
+                                            Viewed Kundali
+                                        </MudNavLink>
 
-                                </Authorized>
-                            </AuthorizeView>
-
-
-                            <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser) Context="check1">
-                                <Authorized>
-                                    <MudNavLink Href="/transactions" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.Assignment" />
-                                        Transaction
-                                    </MudNavLink>
-
-                                    <MudNavLink Href="/token-recharge" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.Assignment" />
-                                        Recharge
-                                    </MudNavLink>
-                                </Authorized>
-
-                            </AuthorizeView>
-
-                            <AuthorizeView Roles="@(ApplicationConst.Role_User)" Context="check2">
-                                <Authorized>
-                                    <MudNavLink Href="/products" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.Shop" />
-                                        Shop
-                                    </MudNavLink>
-
-                                    <MudNavLink Href="/product-cart" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" /> Cart
-                                    </MudNavLink>
-
-                                    <MudNavLink Href="/my-orders" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.Assignment" />
-                                        Orders
-                                    </MudNavLink>
-                                    <MudNavLink Href="/user-wishlist" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.Favorite" />
-                                        User Wishlist
-                                    </MudNavLink>
-                                </Authorized>
-
-                            </AuthorizeView>
+                                    </Authorized>
+                                </AuthorizeView>
 
 
-                            <AuthorizeView Roles="@(ApplicationConst.Role_Admin)" Context="check2">
-                                <Authorized>
-                                    <MudNavLink Href="/manage-products" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.Assignment" />
-                                        Manage Product
-                                    </MudNavLink>
+                                <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser) Context="check1">
+                                    <Authorized>
+                                        <MudNavLink Href="/transactions" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                            Transaction
+                                        </MudNavLink>
 
-                                    <MudNavLink Href="/manage-categories" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.Assignment" />
-                                        Manage category
-                                    </MudNavLink>
+                                        <MudNavLink Href="/token-recharge" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                            Recharge
+                                        </MudNavLink>
+                                    </Authorized>
 
-                                    <MudNavLink Href="/manage-orders" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.Assignment" />
-                                        Manage Orders
-                                    </MudNavLink>
+                                </AuthorizeView>
 
-                                </Authorized>
+                                <AuthorizeView Roles="@(ApplicationConst.Role_User)" Context="check2">
+                                    <Authorized>
+                                        <MudNavLink Href="/products" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.Shop" />
+                                            Shop
+                                        </MudNavLink>
 
-                            </AuthorizeView>
+                                        <MudNavLink Href="/product-cart" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" /> Cart
+                                        </MudNavLink>
 
+                                        <MudNavLink Href="/my-orders" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                            Orders
+                                        </MudNavLink>
+                                        <MudNavLink Href="/user-wishlist" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.Favorite" />
+                                            User Wishlist
+                                        </MudNavLink>
+                                    </Authorized>
 
-                            <AuthorizeView Roles="@(ApplicationConst.Role_ProductManager)" Context="check">
-                                <Authorized>
-
-                                    <MudNavLink Href="/manage-products" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.Assignment" />
-                                        Manage Product
-                                    </MudNavLink>
-
-                                    <MudNavLink Href="/manage-categories" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.Assignment" />
-                                        Manage category
-                                    </MudNavLink>
-
-                                    <MudNavLink Href="/manage-orders" Match="NavLinkMatch.All">
-                                        <MudIcon Icon="@Icons.Material.Filled.Assignment" />
-                                        Manage Orders
-                                    </MudNavLink>
-                                </Authorized>
-
-                            </AuthorizeView>
-
-                            @*   <MudNavMenu>
-
-                            <MudNavLink Href="/" Match="NavLinkMatch.All">
-                            <MudIcon Icon="@Icons.Material.Filled.Dashboard" /> Home
-                            </MudNavLink>
-
-                            <MudNavLink Href="/weather" Match="NavLinkMatch.All">
-                            <MudIcon Icon="@Icons.Material.Filled.Favorite" /> Weather
-                            </MudNavLink>
-
-                            <MudNavLink Href="/counter" Match="NavLinkMatch.All">
-                            counter
-                            </MudNavLink>
-                            <MudNavLink Href="/saved-kundalis" Match="NavLinkMatch.All">
-                            <MudIcon Icon="@Icons.Material.Filled.TableView" />
-                            Saved Kundali
-                            </MudNavLink>
-                            <MudNavLink Href="/products" Match="NavLinkMatch.All">
-                            <MudIcon Icon="@Icons.Material.Filled.Shop" />
-                            Shop
-                            </MudNavLink>
+                                </AuthorizeView>
 
 
-                            <MudNavLink Href="/user-wishlist" Match="NavLinkMatch.All">
-                            <MudIcon Icon="@Icons.Material.Filled.Favorite" />
-                            User Wishlist
-                            </MudNavLink>
-                            <MudNavLink Href="/product-cart" Match="NavLinkMatch.All">
-                            <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" /> Cart
-                            </MudNavLink>
-                            <MudNavLink Href="/my-orders" Match="NavLinkMatch.All">
-                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
-                            Orders
-                            </MudNavLink>
+                                <AuthorizeView Roles="@(ApplicationConst.Role_Admin)" Context="check2">
+                                    <Authorized>
+                                        <MudNavLink Href="/manage-products" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                            Manage Product
+                                        </MudNavLink>
 
-                            <MudNavLink Href="/transactions" Match="NavLinkMatch.All">
-                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
-                            Transaction
-                            </MudNavLink>
+                                        <MudNavLink Href="/manage-categories" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                            Manage category
+                                        </MudNavLink>
 
-                            <MudNavLink Href="/token-recharge" Match="NavLinkMatch.All">
-                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
-                            Recharge
-                            </MudNavLink>
+                                        <MudNavLink Href="/manage-orders" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                            Manage Orders
+                                        </MudNavLink>
+                                        
+                                        <MudNavLink Href="/manage-users" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                            Manage Users
+                                        </MudNavLink>
 
-                            <MudNavLink Href="/manage-categories" Match="NavLinkMatch.All">
-                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
-                            Manage category
-                            </MudNavLink>
+                                    </Authorized>
 
-                            <MudNavLink Href="/manage-products" Match="NavLinkMatch.All">
-                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
-                            Manage Product
-                            </MudNavLink>
-
-                            <MudNavLink Href="/manage-orders" Match="NavLinkMatch.All">
-                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
-                            Manage Orders
-                            </MudNavLink>
+                                </AuthorizeView>
 
 
-                            <MudNavLink Href="/logout" Match="NavLinkMatch.All">
-                            <MudIcon Icon="@Icons.Material.Filled.Logout" />
-                            Logout
-                            </MudNavLink>
+                                <AuthorizeView Roles="@(ApplicationConst.Role_ProductManager)" Context="check">
+                                    <Authorized>
+
+                                        <MudNavLink Href="/manage-products" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                            Manage Product
+                                        </MudNavLink>
+
+                                        <MudNavLink Href="/manage-categories" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                            Manage category
+                                        </MudNavLink>
+
+                                        <MudNavLink Href="/manage-orders" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                            <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                            Manage Orders
+                                        </MudNavLink>
+                                    </Authorized>
+
+                                </AuthorizeView>
 
 
-                            </MudNavMenu> *@
-                            <MudNavLink Href="/logout" Match="NavLinkMatch.All">
-                                <MudIcon Icon="@Icons.Material.Filled.Logout" />
-                                Logout
-                            </MudNavLink>
+                                <MudNavLink Href="/logout" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                    <MudIcon Icon="@Icons.Material.Filled.Logout" />
+                                    Logout
+                                </MudNavLink>
+
+
+                            </MudSwipeArea>
                         </MudDrawer>
 
-                        @Body
+                        @*  @body *@
 
                     </Authorized>
-                    <NotAuthorized>
-                        @Body
-                    </NotAuthorized>
+                    @*   <NotAuthorized>
+
+                    </NotAuthorized> *@
                 </AuthorizeView>
+                @Body
             </MudLayout>
         </ChildContent>
         <ErrorContent>
@@ -238,7 +183,7 @@
 
 <NavMenu></NavMenu>
 <NavMenuMobile></NavMenuMobile> *@
-
+@* @Body *@
 
 
 @code {
@@ -278,6 +223,8 @@
                 DrawerWidthRight = "300px"
             },
 
+
+
             Typography = new Typography()
             {
                 Default = new Default()
@@ -307,6 +254,16 @@
     protected override void OnInitialized()
     {
         StateHasChanged();
+    }
+
+
+    public void OnSwipe(SwipeDirection direction)
+    {
+        if (direction == SwipeDirection.RightToLeft)
+        {
+            open = false;
+            StateHasChanged();
+        }
     }
 
 }

@@ -22,6 +22,7 @@ namespace AstroOfficeWeb.Components.Shared
     {
         #region Define Variables
 
+
         private IList<Task> TaskList { get; set; } = new List<Task>();
 
         private string Online_Result = "";

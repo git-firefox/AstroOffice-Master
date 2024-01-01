@@ -54,7 +54,6 @@ namespace AstroOfficeWeb.Components.ProductComponents
             if (tempQuantity < 1 || tempQuantity > 5)
             {
                 Snackbar.Add("Unable to add more products to your cart. Limit exceeded.", Severity.Error);
-
                 return;
             }
 
@@ -64,7 +63,6 @@ namespace AstroOfficeWeb.Components.ProductComponents
             {
                 ViewProductDTO!.ProductQuantity += 1;
                 Snackbar.Add($"\"{ViewProductDTO!.Name}\" added to your cart.", Severity.Success);
-
             }
         }
     }

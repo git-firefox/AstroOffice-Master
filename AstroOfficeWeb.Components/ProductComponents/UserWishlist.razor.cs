@@ -55,5 +55,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
                 Snackbar.Add($"{productDTO.Name} Added to your cart.", Severity.Success);
             }
         }
+     
+
     }
 }

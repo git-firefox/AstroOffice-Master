@@ -17,7 +17,7 @@
         public const string CanReport_Rights = "canReport";
         public const string CanAdd_Rights = "canAdd";
 
-        public const string Local_Token = "JWT Token";
+        public const string Local_Token = "JWTToken";
         public const string Local_OrderDetails = "Local_OrderDetails";
         public const string Local_UserDetails = "UserDetails";
         public const string Local_KPHouseMappingVOs = "KPHouseMappingVOs";

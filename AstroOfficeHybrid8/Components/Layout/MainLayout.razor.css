@@ -70,8 +70,13 @@ input.searchInput::placeholder {
 }
 
 .smallFont {
-    font-size: 15px;
+    font-size: 17px;
 }
+
+.mediumFont {
+    font-size: 18px;
+}
+
 
 #hostBtn {
     background: #163A66;

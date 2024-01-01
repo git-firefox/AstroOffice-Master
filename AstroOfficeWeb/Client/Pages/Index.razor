@@ -7,6 +7,11 @@
     <AstroOfficeWeb.Client.Pages.Product.ManageProducts></AstroOfficeWeb.Client.Pages.Product.ManageProducts>
 </AuthorizeView>
 <AuthorizeView Roles=@("User, Admin" + ',' + ApplicationConst.Role_Astrologer)>
-    <Dashboard></Dashboard>
+
+    <ContainerFluid HeaderTitle="Reports">
+        <ChildContent>
+            <Dashboard></Dashboard>
+        </ChildContent>
+    </ContainerFluid>
 </AuthorizeView>
 
