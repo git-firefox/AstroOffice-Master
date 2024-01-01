@@ -139,5 +139,11 @@ namespace AstroOfficeWeb.Components.ProductComponents
                 UpdateVisibleItems();
             }
         }
+
+        private void OnClick_BtnFilter()
+        {
+
+        }
+
     }
 }

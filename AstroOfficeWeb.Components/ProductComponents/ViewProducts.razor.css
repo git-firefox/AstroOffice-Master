@@ -110,10 +110,11 @@ a {
 
 
 .shop-card {
-    background: transparent;
+    background: #fff;
     box-shadow: none;
-    padding: 0;
+    padding: 10px;
     border: none;
+    border-radius: 15px;
 }
 
     .shop-card .card-body {
@@ -131,7 +132,7 @@ a {
 
         .shop-card .card-body a {
             font-size: 16px;
-            width: 200px;
+            width: 170px;
             font-weight: 600;
             color: #000;
             margin: 0;
@@ -232,3 +233,44 @@ a {
         border-radius: calc(var(--wd-brd-radius) / 1.5);
         transition: all .2s ease;
     }
+.search-btn-group{
+    display:none;
+}
+@media(max-width:767px) {
+    .card-body:hover .card-img-actions img {
+        opacity:1;
+        transform: scale(1);
+    }
+        .card-body:hover .card-img-actions img.hover-img {
+            opacity: 0;
+            transform: scale(1);
+        }
+    .shop-card .card-body a {
+        width: auto;
+        white-space: unset;
+        overflow: unset;
+        text-overflow: unset;
+    }
+    .shop-card {
+        height: 100%;
+    }
+        .shop-card .card-body:nth-child(2) {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    .search-btn-group {
+        display: block;
+    }
+    .shop-search{
+        display:none;
+    }
+    .categories {
+        position: fixed;
+        top: 0;
+        left: -500px;
+        z-index:9999;
+        bottom:0;
+        border-radius:0;
+    }
+}
