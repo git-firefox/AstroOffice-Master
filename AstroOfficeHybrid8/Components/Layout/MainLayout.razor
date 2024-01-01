@@ -18,9 +18,9 @@
                 <AuthorizeView>
                     <Authorized>
 
-                        <MudDrawer @bind-Open="@open" ClipMode="_themeManager.DrawerClipMode" Elevation="_themeManager.DrawerElevation" Breakpoint="@breakpoint" Variant="@DrawerVariant.Responsive" PreserveOpenState="false">
+                        <MudDrawer @bind-Open="@open" ClipMode="_themeManager.DrawerClipMode"  Elevation="_themeManager.DrawerElevation" Breakpoint="@breakpoint" Variant="@DrawerVariant.Responsive" PreserveOpenState="false">
 
-                            <MudSwipeArea  OnSwipe="@OnSwipe">
+                            <MudSwipeArea  OnSwipeEnd="@OnSwipe" >
 
                                 <MudDrawerHeader>
                                     <MudStack Row="true">
@@ -257,9 +257,9 @@
     }
 
 
-    public void OnSwipe(SwipeDirection direction)
+    public void OnSwipe(SwipeEventArgs direction)
     {
-        if (direction == SwipeDirection.RightToLeft)
+        if (direction.SwipeDirection == SwipeDirection.RightToLeft)
         {
             open = false;
             StateHasChanged();

@@ -21,7 +21,7 @@
 		<Content Remove="SavedKundalis.razor" />
 	</ItemGroup>
 
-
+ 
 	<ItemGroup>
 		<SupportedPlatform Include="browser" />
 	</ItemGroup>
