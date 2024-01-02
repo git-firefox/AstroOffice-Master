@@ -4,7 +4,7 @@
 @using AstroOfficeWeb.Shared.ViewModels;
 
 @inject TokenWalletService TokenWallet
-
+@* 
 <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold ">Transactions</h1>
     <section class="content">
@@ -82,3 +82,13 @@
         TransactionTableTRs = await TokenWallet.GetTokenTransactionHistory();
     }
 }
+ *@
+
+
+
+
+<ContainerFluid HeaderTitle="Transactions">
+      <ChildContent>
+        <AstroOfficeWeb.Components.TokenComponents.Transactions></AstroOfficeWeb.Components.TokenComponents.Transactions>
+      </ChildContent>
+  </ContainerFluid>

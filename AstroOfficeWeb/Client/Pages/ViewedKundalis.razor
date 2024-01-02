@@ -1,5 +1,5 @@
 ﻿@page "/viewed-kundalis"
-@using AstroOfficeWeb.Client.Services;
+@* @using AstroOfficeWeb.Client.Services;
 
 @using AstroOfficeWeb.Shared.ViewModels;
 
@@ -90,3 +90,13 @@
         personKundaliTableTRs = await KundaliHistroy.GetUserViewedKundalies();
     }
 }
+ *@
+
+ @using AstroOfficeWeb.Components.Shared
+
+
+  <ContainerFluid HeaderTitle="Viewed Kundali">
+        <ChildContent>
+            <AstroOfficeWeb.Components.KundaliComponents.ViewedKundalis></AstroOfficeWeb.Components.KundaliComponents.ViewedKundalis>
+        </ChildContent>
+    </ContainerFluid>
