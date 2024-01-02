@@ -14,6 +14,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
     public partial class ViewProducts
     {
         [Parameter]
+        public EventCallback<bool> EventCallback { get; set; }
+
+        [Parameter]
         public string? CategorySno { get; set; } = null;
         [Parameter]
         public string? CategoryName { get; set; } = null;
@@ -140,10 +143,22 @@ namespace AstroOfficeWeb.Components.ProductComponents
             }
         }
 
-        private void OnClick_BtnFilter()
+        bool IsFilterOpened = false;
+
+        private async void OnClick_BtnFilter()
         {
-
+            //if (!IsFilterOpened)
+            //{
+            //    //await JSRuntime.InvokeVoidAsync("eval", "document.getElementsByClassName('categories')[0].style.left = '0px'");
+            //    //IsFilterOpened = true;
+            //}
+            //else
+            //{
+            //    //await JSRuntime.InvokeVoidAsync("eval", "document.getElementsByClassName('categories')[0].style.left = '-500px'");
+            //   // IsFilterOpened = false;
+            //}
+            await EventCallback.InvokeAsync(true);
         }
-
+            
     }
 }
