@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Routing
 @inject NavigationManager Navigation
 
-<header>
+<CascadingAuthenticationState>
     <nav class="border-bottom navbar navbar-expand-lg">
         <div class="container-fluid">
             <div class="d-flex align-items-center">
@@ -208,7 +208,8 @@
             </div>
         </div>
     </nav>
-</header>
+
+</CascadingAuthenticationState>
 @code {
     private void OnClick_BtnSignIn(MouseEventArgs args)
     {
