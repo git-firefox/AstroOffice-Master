@@ -1,6 +1,7 @@
 using AstroOfficeWeb.Client;
 using AstroOfficeWeb.Client.Services;
 using AstroOfficeWeb.Client.Services.IService;
+using AstroOfficeWeb.Components.Shared;
 using AstroOfficeWeb.Services;
 using AstroOfficeWeb.Services.IServices;
 
@@ -34,5 +35,7 @@ builder.Services.AddScoped<TokenWalletService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<StateContainerService>();
 builder.Services.AddScoped<StripePayment>();
+//builder.RootComponents.Add<NavMenu>("#nav-menu");
+//builder.RootComponents.Add<NavMenuMobile>("#nav-menu-mobile");
 
 await builder.Build().RunAsync();
