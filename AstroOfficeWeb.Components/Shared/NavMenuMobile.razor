@@ -1,57 +1,54 @@
 ﻿@using Microsoft.AspNetCore.Components.Routing
 @* <nav class="fixed-bottom bottom-0 position-fixed end-0 start-0 border-top"> *@
-<footer class="footer mt-auto bg-light">
-    <nav class="end-0 start-0 border-top">
-        <div class="d-lg-none">
-            <div class="mobile-nav-container container-fluid d-flex justify-content-between shadow">
-                <nav class="mobile-nav">
-                    <div class="m-nav-box">
-                        <ul class="m-nav-container">
-                            <li class="m-nav-item">
-                                <NavLink href="/token-recharge" class="m-nav-item-link">
-                                    <div class="m-nav-item-icon">
-                                        <img class="icon-height mx-2" src="icons/top-up-fill.png" alt="dpad" />
-                                    </div>
-                                    <span class="m-nav-item-text">Recharge</span>
-                                </NavLink>
-                            </li>
-                            <li class="m-nav-item">
-                                <NavLink href="/products" class="m-nav-item-link">
-                                    <div class="m-nav-item-icon">
-                                        <img class="icon-height mx-2" src="icons/online-shopping-fill.png" alt="bar-chart" />
-                                    </div>
-                                    <span class="m-nav-item-text">Shopping</span>
-                                </NavLink>
-                            </li>
-                            <li class="m-nav-item active">
-                                <NavLink href="/" class="m-nav-item-link">
-                                    <div class="m-nav-item-icon">
-                                        <img class="icon-height mx-2" src="icons/magic-ball-fill.png" alt="book" />
-                                    </div>
-                                    <span class="m-nav-item-text">Home</span>
-                                </NavLink>
-                            </li>
-                            <li class="m-nav-item">
-                                <NavLink href="/user-wishlist" class="m-nav-item-link">
-                                    <div class="m-nav-item-icon">
-                                        <img class="icon-height mx-2" src="icons/wishlist-fill.png" alt="briefcase" />
-                                    </div>
-                                    <span class="m-nav-item-text">Wishlist</span>
-                                </NavLink>
-                            </li>
-                            <li class="m-nav-item">
-                                <NavLink href="/product-cart" class="m-nav-item-link">
-                                    <div class="m-nav-item-icon">
-                                        <img class="icon-height mx-2" src="icons/shopping-cart-fill.png" alt="lightbulb" />
-                                    </div>
-                                    <span class="m-nav-item-text">Cart</span>
-                                </NavLink>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </nav>
 
-</footer>
+<nav class="end-0 start-0 border-top d-lg-none">
+    <div class="mobile-nav-container container-fluid d-flex justify-content-between shadow">
+        <nav class="mobile-nav">
+            <div class="m-nav-box">
+                <ul class="m-nav-container">
+                    <li class="m-nav-item">
+                        <NavLink href="/token-recharge" class="m-nav-item-link">
+                            <div class="m-nav-item-icon">
+                                <img class="icon-height mx-2" src="icons/top-up-fill.png" alt="dpad" />
+                            </div>
+                            <span class="m-nav-item-text">Recharge</span>
+                        </NavLink>
+                    </li>
+                    <li class="m-nav-item">
+                        <NavLink href="/products" class="m-nav-item-link">
+                            <div class="m-nav-item-icon">
+                                <img class="icon-height mx-2" src="icons/online-shopping-fill.png" alt="bar-chart" />
+                            </div>
+                            <span class="m-nav-item-text">Shopping</span>
+                        </NavLink>
+                    </li>
+                    <li class="m-nav-item active">
+                        <NavLink href="/" class="m-nav-item-link">
+                            <div class="m-nav-item-icon">
+                                <img class="icon-height mx-2" src="icons/magic-ball-fill.png" alt="book" />
+                            </div>
+                            <span class="m-nav-item-text">Home</span>
+                        </NavLink>
+                    </li>
+                    <li class="m-nav-item">
+                        <NavLink href="/user-wishlist" class="m-nav-item-link">
+                            <div class="m-nav-item-icon">
+                                <img class="icon-height mx-2" src="icons/wishlist-fill.png" alt="briefcase" />
+                            </div>
+                            <span class="m-nav-item-text">Wishlist</span>
+                        </NavLink>
+                    </li>
+                    <li class="m-nav-item">
+                        <NavLink href="/product-cart" class="m-nav-item-link">
+                            <div class="m-nav-item-icon">
+                                <img class="icon-height mx-2" src="icons/shopping-cart-fill.png" alt="lightbulb" />
+                            </div>
+                            <span class="m-nav-item-text">Cart</span>
+                        </NavLink>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</nav>
+
