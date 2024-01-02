@@ -9,12 +9,18 @@
     --a-text-primary-2: rgb(3, 26, 42);
 }
 
+
 body {
     font-family: 'Philosopher', sans-serif;
     background-image: url('/images/astro-container.webp');
     background-size: cover;
     background-repeat: no-repeat;
 }
+
+/*body.lazy {
+        background-image: none;
+        background-color: var(--a-bg-primary);
+    }*/
 
 header {
     background-color: #910d0d;

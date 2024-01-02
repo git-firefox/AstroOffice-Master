@@ -21,27 +21,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" />
 
     <link rel="stylesheet" href="_content/MudBlazor/MudBlazor.min.css" />
-    <link rel="stylesheet" href="css/app.css?v=5.1.0" />
+    <link rel="stylesheet" href="css/app.css?v=5.1.1" />
     <link rel="stylesheet" href="AstroOfficeWeb.Client.styles.css" />
 </head>
 
-<body>
+<body class="lazy">
+    <header id="nav-menu"></header>
     <div id="app">
         <div class="container-fluid">
             <div class="row justify-content-center align-items-center min-vh-100">
                 <div class="col-md-6 text-center">
-                    <img class="loader-img" alt="loading" src="images/loader-4.gif">
+                    <img class="loader-img" alt="loading" src="images/loader-4.gif" loading="lazy">
                 </div>
             </div>
         </div>
     </div>
-
     <div id="blazor-error-ui">
         Oops! Something went wrong.
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
-
+    <footer id="nav-menu-mobile" class="footer mt-auto bg-light"></footer>
     <!-- Page specific script -->
     <!-- jQuery -->
     <!--<script src="plugins/jquery/jquery.min.js"></script>-->
