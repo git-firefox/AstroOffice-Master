@@ -14,6 +14,8 @@ using MudBlazor.Services;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
+builder.RootComponents.Add<NavMenu>("#header-container");
+builder.RootComponents.Add<NavMenuMobile>("#footer-container");
 builder.Services.AddMudServices();
 builder.Services.AddScoped<ISnackbarService, CustomSnackbar>();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
@@ -35,7 +37,5 @@ builder.Services.AddScoped<TokenWalletService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<StateContainerService>();
 builder.Services.AddScoped<StripePayment>();
-//builder.RootComponents.Add<NavMenu>("#nav-menu");
-//builder.RootComponents.Add<NavMenuMobile>("#nav-menu-mobile");
 
 await builder.Build().RunAsync();
