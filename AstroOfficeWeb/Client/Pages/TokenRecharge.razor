@@ -1,13 +1,13 @@
 ﻿@page "/token-recharge"
-@using AstroOfficeWeb.Client.Services;
+@* @using AstroOfficeWeb.Client.Services;
 @using AstroOfficeWeb.Shared.ViewModels;
 @attribute [Authorize]
 
 @inherits BaseComponent
 @inject TokenWalletService TokenWallet
 @inject IJSRuntime JSRuntime
-
-
+ *@
+@*
 
 <div class="container-fluid p-3">
 
@@ -25,7 +25,7 @@
             </div>
 
             <EditForm Model="Token" OnInvalidSubmit="OnInvalidSubmit" OnValidSubmit="OnValidSubmit">
-                
+
                 <div class="card-body">
                     <div class="row">
 
@@ -64,12 +64,12 @@
                         </div>
                     </div>
                     </div>
-                      
+
                     </div>
-                    
+
 
                     <div class="form-row">
-                       
+
                         <div class="col-lg-1 col-md-12  col-sm-6 col-xs-6 col-6">
                             <button type="button" class="btn btn-block btn-outline-custom mb-3" @onclick="()=> Token.TokenAmount += 100">100</button>
                         </div>
@@ -83,12 +83,12 @@
                             <button type="button" class="btn btn-block btn-outline-custom mb-3" @onclick="()=> Token.TokenAmount += 1000">1000</button>
                         </div>
                     </div>
-              
+
                     <div class="card-footer">
                         <button type="submit" class="btn btn-custom">Recharge</button>
                     </div>
                     </div>
-                    
+
             </EditForm>
 
             <div class="card-header bg-da-dark-red">
@@ -194,7 +194,7 @@
         var totalBalance = 0;
         if (Token.TokenAmount >= minRechargeForBonusAmount)
         {
-            var AmountWithBonus= Token.TokenAmount + bonusAmount;         
+            var AmountWithBonus= Token.TokenAmount + bonusAmount;
             var balance = await TokenWallet.UpdateRechargeTokenBalance(AstroOfficeWeb.Shared.Models.TransactionType.Deposit, AmountWithBonus, $"Congratulations! You got the bonus of {bonusAmount}. And your total recharge of {AmountWithBonus} successfully completed.");
             totalBalance = (int)balance;
         }
@@ -213,3 +213,29 @@
 
 
 
+ *@
+
+@*
+<PageLayout Title="">
+    <ChildContent>
+        <AstroOfficeWeb.Components.TokenComponents.TokenRecharge></AstroOfficeWeb.Components.TokenComponents.TokenRecharge>
+    </ChildContent>
+</PageLayout> *@
+
+
+
+<ContainerFluid HeaderTitle="Recharge Token" UserToken="TotalBalance" >
+    
+    <ChildContent>
+        <AstroOfficeWeb.Components.TokenComponents.TokenRecharge OnTokenUpdated="OnTokenUpdated"></AstroOfficeWeb.Components.TokenComponents.TokenRecharge>
+    </ChildContent>
+</ContainerFluid>
+
+@code{
+    private decimal? TotalBalance;
+    private void OnTokenUpdated(decimal? userToken)
+    {
+        TotalBalance = userToken;
+        // StateHasChanged();
+    }
+}

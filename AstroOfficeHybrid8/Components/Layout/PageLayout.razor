@@ -25,10 +25,18 @@
 
     <MudSpacer />
 
-    @if (RightContainer != null)
+    @if (UserToken != null)
     {
-        @RightContainer
+        @* @RightContainer *@
+
+        @if (UserToken.HasValue)
+        {
+            @UserToken
+        }
     }
+
+    
+
 </MudAppBar>
 <MudMainContent Class="px-2">
     @ChildContent
@@ -57,4 +65,8 @@
     // {
     //     await MainLayout.NotifyChangeAsync();
     // }
+
+    [Parameter]
+    public decimal? UserToken { get; set; }
+
 }

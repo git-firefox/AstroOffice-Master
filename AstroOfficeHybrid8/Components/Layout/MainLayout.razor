@@ -10,7 +10,7 @@
 @* <MudDrawer @bind-Open="_drawerOpen" ClipMode="_themeManager.DrawerClipMode" Elevation="_themeManager.DrawerElevation"></MudDrawer> *@
 
 <CascadingValue Value="this">
-    <ErrorBoundary>
+    @* <ErrorBoundary> *@
         <ChildContent>
             <MudLayout>
                 @*   <MudThemeManagerButton OnClick="@((e) => OpenThemeManager(true))" /> *@
@@ -174,10 +174,10 @@
                 @Body
             </MudLayout>
         </ChildContent>
-        <ErrorContent>
+        @* <ErrorContent>
             <AstroOfficeHybrid8.Components.Pages.NetworkLost></AstroOfficeHybrid8.Components.Pages.NetworkLost>
-        </ErrorContent>
-    </ErrorBoundary>
+        </ErrorContent> *@
+    @* </ErrorBoundary> *@
 </CascadingValue>
 @*
 

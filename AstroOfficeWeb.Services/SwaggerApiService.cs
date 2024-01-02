@@ -102,12 +102,19 @@ namespace AstroOfficeWeb.Services
 
         public async Task<TResponse?> GetAsync<TResponse>(string url, Dictionary<string, string>? queryParams = null)
         {
-            HttpResponseMessage response = await _client.GetAsync(GetUriBuilder(url, queryParams).Uri);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var contentTemp = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<TResponse>(contentTemp);
-                return result;
+                HttpResponseMessage response = await _client.GetAsync(GetUriBuilder(url, queryParams).Uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    var contentTemp = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<TResponse>(contentTemp);
+                    return result;
+                }
+            }
+            catch (Exception e)
+            {
+
             }
             return default;
         }

@@ -4,11 +4,16 @@
         <div class="pt-4 pb-2 ">
             @Header
         </div>
+        @if (UserToken != null)
+        {
+            @UserToken
+        }
     </div>
 
     <section class="content">
         @ChildContent
     </section>
+  
 
     @if (Footer != null)
     {
@@ -30,4 +35,7 @@
 
     [Parameter]
     public RenderFragment ChildContent { get; set; } = null!;
+
+    [Parameter]
+    public decimal? UserToken { get; set; } 
 }

@@ -1,8 +1,25 @@
 ﻿@page "/token-recharge"
+@inject TokenWalletService TokenWallet
 
+<PageLayout Title="Recharge" UserToken="TotalBalance">
 
-<PageLayout Title="Recharge">
     <ChildContent>
-        <AstroOfficeWeb.Components.TokenComponents.TokenRecharge></AstroOfficeWeb.Components.TokenComponents.TokenRecharge>
+        <AstroOfficeWeb.Components.TokenComponents.TokenRecharge OnTokenUpdated="OnTokenUpdated"></AstroOfficeWeb.Components.TokenComponents.TokenRecharge>
     </ChildContent>
 </PageLayout>
+
+
+@code {
+
+    private decimal? TotalBalance;
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     TotalBalance = await TokenWallet.GetBalance();
+    // }
+
+    private void OnTokenUpdated(decimal? userToken)
+    {
+        TotalBalance = userToken;
+        // StateHasChanged();
+    }
+}
