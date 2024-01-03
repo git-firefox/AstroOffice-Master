@@ -36,6 +36,7 @@
 	  <Content Remove="Shared\Container.razor" />
 	  <Content Remove="Shared\FaladeshModal.razor" />
 	  <Content Remove="Shared\NavMenu.razor" />
+	  <Content Remove="Shared\NavMenuMobile.razor" />
 	</ItemGroup>
 
 	<ItemGroup>
