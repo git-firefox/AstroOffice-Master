@@ -1,8 +1,7 @@
 ﻿@page "/users"
 @using System.ComponentModel.DataAnnotations
+@*
 
-@inject IDialogService Dialog
-@inject AccountService Account
 
 <MudDrawer @bind-Open="IsDrawerOpen" Width="375px" Height="100%" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
     <MudDrawerHeader>
@@ -23,7 +22,7 @@
                 <MudPaper Elevation="0" Class="pa-4">
                     <MudForm @ref="Form" @bind-IsValid="@IsSaveUserFormValid">
                         <MudTextField T="string" @bind-Value="SaveUserModel.UserName" Label="Username" Required="true" RequiredError="User name is required!"></MudTextField>
-                        @* <MudTextField T="string" Label="Email" Required="true" RequiredError="Email is required!" Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})"></MudTextField> *@
+
 
                         <MudTextField T="string" @bind-Value="SaveUserModel.Password" Label="Password" HelperText="Choose a strong password" InputType="InputType.Password" Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true" RequiredError="Password is required!"></MudTextField>
 
@@ -56,7 +55,6 @@
                         <MudStack Justify="Justify.SpaceBetween" Row="true" Class="py-4">
                             <MudPaper Elevation="0"><MudButton ButtonType=ButtonType.Button Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="OnClick_BtnClose">Cancel</MudButton></MudPaper>
                             <MudPaper Elevation="0"><MudButton ButtonType=ButtonType.Button Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(()=>Form.ResetAsync())">Reset</MudButton></MudPaper>
-                            @* <MudPaper Elevation="0"><MudButton ButtonType=ButtonType.Button Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(()=>Form.ResetValidation())">Reset</MudButton></MudPaper> *@
                             <MudPaper Elevation="0"><MudButton ButtonType=ButtonType.Button Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="OnClick_BtnSave" Disabled="@(!IsSaveUserFormValid)">Save</MudButton></MudPaper>
                         </MudStack>
                     </MudForm>
@@ -95,4 +93,30 @@
     </ChildContent>
 </ContainerFluid>
 
+ *@
 
+
+
+<ContainerFluid HeaderTitle="Manage Users">
+    <Header>
+        @if (IsLoaded)
+        {
+            <MudButton Variant="Variant.Text" Class="btn-custom" OnClick="()=>MUsers.OnClick_BtnAction(FormMode.Add)">Add User</MudButton>
+        }
+    </Header>
+    <ChildContent>
+        <AstroOfficeWeb.Components.User.ManageUsers @ref=MUsers IsOrdersLoaded="UserLoaded"></AstroOfficeWeb.Components.User.ManageUsers>
+    </ChildContent>
+</ContainerFluid>
+
+
+
+
+@code {
+    AstroOfficeWeb.Components.User.ManageUsers MUsers = null!;
+    bool IsLoaded = false;
+    private void UserLoaded(bool isLoaded)
+    {
+        IsLoaded = isLoaded;
+    }
+}

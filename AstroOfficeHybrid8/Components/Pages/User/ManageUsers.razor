@@ -1,8 +1,24 @@
 ﻿@page "/manage-users"
-
+@using AstroOfficeWeb.Shared.Utilities
 
 <PageLayout Title="Manage Users">
+    <RightContainer>
+        @if (IsLoaded)
+        {
+            <MudButton Variant="Variant.Text" Class="btn-custom" OnClick="()=>MUsers.OnClick_BtnAction(FormMode.Add)">Add User</MudButton>
+        }
+    </RightContainer>
     <ChildContent>
-        <AstroOfficeWeb.Components.User.ManageUsers></AstroOfficeWeb.Components.User.ManageUsers>
+        <AstroOfficeWeb.Components.User.ManageUsers @ref=MUsers IsOrdersLoaded="UserLoaded"></AstroOfficeWeb.Components.User.ManageUsers>
     </ChildContent>
 </PageLayout>
+
+
+@code {
+    AstroOfficeWeb.Components.User.ManageUsers MUsers = null!;
+    bool IsLoaded = false;
+    private void UserLoaded(bool isLoaded)
+    {
+        IsLoaded = isLoaded;
+    }
+}

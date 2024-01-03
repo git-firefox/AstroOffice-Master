@@ -2,7 +2,7 @@
 
 @using AstroOfficeWeb.Client.Services
 
-
+@* 
 @inject ProductService ProductService
 @inject NavigationManager NavigationManager
 @inject StateContainerService StateContainerService
@@ -82,4 +82,14 @@
         </div>
     </ChildContent>
 
+</ContainerFluid> *@
+
+
+
+
+<ContainerFluid HeaderTitle="My Orders">
+    <ChildContent>
+        <AstroOfficeWeb.Components.ProductComponents.UserOrders></AstroOfficeWeb.Components.ProductComponents.UserOrders>
+    </ChildContent>
 </ContainerFluid>
+

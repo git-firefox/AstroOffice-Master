@@ -6,10 +6,10 @@
 @inject IJSRuntime JSRuntime
 @inject ProductService ProductService
 @inject NavigationManager NavigationManager
-
+@* 
 <ContainerFluid HeaderTitle="My Orders">
     
-    <ChildContent>
+    <ChildContent> *@
         <div class="row">
             @if (OrderDTOs == null)
             {
@@ -77,6 +77,6 @@
 
             }
         </div>
-    </ChildContent>
+ @*    </ChildContent>
 
-</ContainerFluid>
+</ContainerFluid> *@

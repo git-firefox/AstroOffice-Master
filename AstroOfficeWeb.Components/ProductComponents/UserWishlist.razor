@@ -10,14 +10,14 @@
 @* @inject ILocalStorageService LocalStorage *@
 
 
-<Container Name="My Wishlist">
+@* <Container Name="My Wishlist">
     <Header>
         @if (ViewProductDTOs != null && ViewProductDTOs.Any())
         {
             <a href="/products" class="btn btn-custom"> Go to Shop</a>
         }
     </Header>
-    <ChildContent>
+    <ChildContent> *@
         <div class="row">
             @if (ViewProductDTOs == null)
             {
@@ -95,6 +95,6 @@
                 }
             }
         </div>
-    </ChildContent>
+ @*    </ChildContent>
 </Container>
-
+ *@

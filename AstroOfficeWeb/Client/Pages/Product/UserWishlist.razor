@@ -1,6 +1,6 @@
 ﻿@page "/user-wishlist"
 @using AstroOfficeWeb.Client.Services
-
+@* 
 
 @inject ProductService ProductService
 @inject NavigationManager NavigationManager
@@ -40,7 +40,7 @@
                     foreach (var product in ViewProductDTOs)
                     {
                         <div class="col-12 col-sm-6 col-md-4 col-xl-3">
-                           @*  <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" OnClick="()=>OnCLick_ALickVRemoveWishlist(product)" aria-label="Remove from wishlist" Title="Remove from wishlist"></MudIconButton> *@
+                         
                            
                         <div class="card-body" style="transform: rotate(0);">
                                 <div class="card card-img-actions bg-transparent " @onclick="()=>OnCLick_ALickViewProdcut(product)">
@@ -51,10 +51,7 @@
                                 </div>
                                 <div class=" card-icon wd-wishlist-product-actions">
                                     <div class="wd-wishlist-product-remove wd-action-btn wd-style-text wd-cross-icon">
-                                                @* <a href="javascript:void(0);" data-product-id="104162 " @onclick="()=>OnCLick_ALickVRemoveWishlist(product)">
-                                    <MudIconButton Icon="@Icons.Material.Filled.Close" Class="pa-0"></MudIconButton>Remove
-
-                                    </a> *@
+                                            
                                         <a><MudButton StartIcon="@Icons.Material.Filled.Close" OnClick="()=>OnCLick_ALickVRemoveWishlist(product)" Class="pa-0 p-0"></MudButton></a>
                                     </div>
                                 </div>
@@ -63,7 +60,7 @@
 
                                     <MudStack Justify="Justify.Center" Row="true">
                                        
-                                        <button type="button" class="btn bg-cart" b-6pt8dzqd51=""><!--!--><i class="fa fa-cart-plus mr-2" b-6pt8dzqd51=""></i> Add to cart</button>
+                                        <button type="button" class="btn bg-cart" b-6pt8dzqd51=""><i class="fa fa-cart-plus mr-2" b-6pt8dzqd51=""></i> Add to cart</button>
                                         
                                     </MudStack>
 
@@ -94,3 +91,14 @@
     </ChildContent>
 </Container>
 
+ *@
+
+
+<Container Name="My Wishlist">
+    <Header>
+        <a href="/products" class="btn btn-custom"> Go to Shop</a>
+    </Header>
+    <ChildContent>
+        <AstroOfficeWeb.Components.ProductComponents.UserWishlist></AstroOfficeWeb.Components.ProductComponents.UserWishlist>
+    </ChildContent>
+</Container>

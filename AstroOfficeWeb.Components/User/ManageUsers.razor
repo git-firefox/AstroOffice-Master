@@ -66,11 +66,11 @@
     </MudDrawerContainer>
 </MudDrawer>
 
-<ContainerFluid HeaderTitle="Manage User">
+@* <ContainerFluid HeaderTitle="Manage User">
     <Header>
         <MudButton Variant="Variant.Text" Class="btn-custom" OnClick="()=>OnClick_BtnAction(FormMode.Add)">Add User</MudButton>
     </Header>
-    <ChildContent>
+    <ChildContent> *@
         <MudDataGrid T=UserViewModel Items=Users Filterable="true" FilterMode="DataGridFilterMode.ColumnFilterRow" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive">
             <Columns>
                 <PropertyColumn Property="x => x.Sno" Title="Sno" Filterable="false" Sortable="false" />
@@ -92,6 +92,6 @@
                 <MudDataGridPager T="UserViewModel" />
             </PagerContent>
         </MudDataGrid>
-    </ChildContent>
-</ContainerFluid>
+ @*    </ChildContent>
+</ContainerFluid> *@
 

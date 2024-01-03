@@ -1,6 +1,5 @@
 ﻿using AstroOfficeWeb.Shared.DTOs;
-
-
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,8 @@ namespace AstroOfficeWeb.Components.ProductComponents
 {
     public partial class UserWishlist
     {
+
+
         private List<ViewProductDTO>? ViewProductDTOs { get; set; }
         protected override void OnInitialized()
         {

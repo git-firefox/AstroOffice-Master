@@ -1,5 +1,6 @@
 ﻿using AstroOfficeWeb.Shared.Utilities;
 using AstroOfficeWeb.Shared.ViewModels;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using System;
@@ -13,6 +14,9 @@ namespace AstroOfficeWeb.Components.User
 {
     public partial class ManageUsers
     {
+        [Parameter]
+        public EventCallback<bool> IsOrdersLoaded { get; set; }
+
         private bool IsDrawerOpen { get; set; }
         private string DrawerTitle { get; set; } = null!;
         private bool IsSaveUserFormValid { get; set; }
@@ -32,6 +36,7 @@ namespace AstroOfficeWeb.Components.User
             await base.OnInitializedAsync();
 
             Users = await Account.GetUsers();
+            await IsOrdersLoaded.InvokeAsync(true);
         }
 
         protected override void OnAfterRender(bool firstRender)
@@ -59,7 +64,7 @@ namespace AstroOfficeWeb.Components.User
             IsDrawerOpen = !IsDrawerOpen;
         }
 
-        private async Task OnClick_BtnAction(FormMode mode = FormMode.Add, UserViewModel? selectedUser = null)
+        public async Task OnClick_BtnAction(FormMode mode = FormMode.Add, UserViewModel? selectedUser = null)
         {
             await Form.ResetAsync();
             switch (mode)
@@ -126,7 +131,7 @@ namespace AstroOfficeWeb.Components.User
                             }
                     }
                     IsDrawerOpen = !IsDrawerOpen;
-                    StateHasChanged();
+                    //StateHasChanged();
                 }
             }
         }
