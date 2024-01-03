@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AstroOfficeWeb.Components.ModalComponents;
 using AstroOfficeWeb.Components.MyComponents;
 using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Helper;
@@ -86,7 +87,7 @@ namespace AstroOfficeWeb.Components.Shared
         private ElementReference divDateOfBirth;
         private ElementReference inputDateOfBirth;
 
-        private FaladeshModal FaladeshModal = new();
+        //private FaladeshModal FaladeshModal = new();
 
         private string? imgSrc;
         private string? imgSrcLagan;
@@ -905,7 +906,12 @@ namespace AstroOfficeWeb.Components.Shared
             imgSrcLagan = await KundliBLL.Gen_Image(this.persKV.Lagna.ToString(), this.kp_chart, this.Online_Result, false, 1, this.persKV.Language);
             htmlStringFalla = falla;
 
-            await FaladeshModal.ShowAsync();
+            var parameters = new DialogParameters();
+            var dialogOptions = new DialogOptions { FullScreen = true, CloseButton = true, CloseOnEscapeKey = true, Position = DialogPosition.Center };
+            parameters.Add("BhavChalitSrc", imgSrcBhavChalit);
+            parameters.Add("LaganSrc", imgSrcLagan);
+            parameters.Add("Kundali", htmlStringFalla);
+            await DialogService.ShowAsync<FaladeshModal>("Kundali", parameters, dialogOptions);
         }
 
         private async Task Gen_Image(string lagna, List<KPPlanetMappingVO> lkmv, string Online_Result, bool bhav_chalit, short Kund_Size, string lang)
