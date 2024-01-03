@@ -1,5 +1,6 @@
 ﻿using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Helper;
+using AstroOfficeWeb.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
@@ -116,6 +117,22 @@ namespace AstroOfficeWeb.Components.ProductComponents
             CurrentPage = 1;
             UpdateVisibleItems();
         }
+        private string searchString = "";
+        private void FilterFunc(ChangeEventArgs e)
+        {
+            FilteredProducts = Products!.ToList();
+            searchString = e.Value.ToStringX(); // Update the searchString
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                FilteredProducts = Products!.Where(item => item.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            UpdateVisibleItems();
+            //else
+            //{
+            //    FilteredProducts = FilteredProducts ?? Enumerable.Empty<PersonKundaliTableTRModel>(); ;
+            //}
+        }
+
 
         private void UpdateVisibleItems()
         {
@@ -159,6 +176,11 @@ namespace AstroOfficeWeb.Components.ProductComponents
             //}
             await EventCallback.InvokeAsync(true);
         }
-            
+
+
+
+
+
+
     }
 }

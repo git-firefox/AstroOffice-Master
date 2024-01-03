@@ -4,8 +4,8 @@
 @inject IJSRuntime JSRuntime
 <PageLayout Title="Shop">
     <RightContainer>
-        <MudIconButton  Icon="@Icons.Material.Filled.Search"  Variant="Variant.Filled" Style="background-color: white"></MudIconButton>
-        <MudIconButton OnClick="()=>OnClick_BtnFilter(isOpened)" Icon="@Icons.Material.Filled.FilterAlt" Variant="Variant.Filled" Style="background-color: white"></MudIconButton>
+        @* <MudIconButton  Icon="@Icons.Material.Filled.Search"  Variant="Variant.Filled" Style="background-color: white"></MudIconButton> *@
+        <MudIconButton OnClick="()=>OnClick_BtnFilter(isOpened)" Icon="@Icons.Material.Filled.FilterAlt" Variant="Variant.Outlined" Color="Color.Default"></MudIconButton>
     </RightContainer>
     <ChildContent>
         <AstroOfficeWeb.Components.ProductComponents.ViewProducts EventCallback="OnClick_BtnFilter" CategoryName="@CategoryName" CategorySno="@CategorySno" CurrentPage="@CurrentPage"></AstroOfficeWeb.Components.ProductComponents.ViewProducts>

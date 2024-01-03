@@ -13,11 +13,13 @@
     </RightContainer>
 
     <ChildContent>
-        <AstroOfficeWeb.Components.ProductComponents.ProductCart HandleEmptyCart="OnEmptyCart"></AstroOfficeWeb.Components.ProductComponents.ProductCart>
+        <div class="mt-5">
+            <AstroOfficeWeb.Components.ProductComponents.ProductCart HandleEmptyCart="OnEmptyCart"></AstroOfficeWeb.Components.ProductComponents.ProductCart>
+        </div>
     </ChildContent>
 </PageLayout>
 
-@code{
+@code {
     public bool IsEmpty { get; set; } = false;
     private void OnEmptyCart(bool isEmpty)
     {

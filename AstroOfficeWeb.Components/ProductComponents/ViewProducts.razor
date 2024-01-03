@@ -19,10 +19,11 @@
     <ChildContent>
         <div class="search-btn-group">
             <div id="categories">
-                <MudIconButton OnClick="OnClick_BtnFilter" Icon="@Icons.Material.Filled.FilterAlt" Variant="Variant.Filled" Style="background-color: white"></MudIconButton>
+                @* <MudIconButton OnClick="OnClick_BtnFilter" Icon="@Icons.Material.Filled.FilterAlt" Variant="Variant.Filled" Style="background-color: white"></MudIconButton> *@
             </div>
             <div id="search">        
-                 <MudIconButton Icon="@Icons.Material.Filled.Search" Variant="Variant.Filled" Style="background-color: white"></MudIconButton>
+                 <input class="w-100 form-control mt-2 rounded-pill" @bind="searchString" @oninput="FilterFunc" type="search" placeholder="Search Products" />
+                 @* <MudIconButton Icon="@Icons.Material.Filled.Search" Variant="Variant.Filled" Style="background-color: white"></MudIconButton> *@
             </div>
         </div>
         <div class="row">
