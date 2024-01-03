@@ -1,5 +1,5 @@
 ﻿@page "/manage-products"
-
+@*
 @using AstroOfficeWeb.Client.Services;
 @using AstroOfficeWeb.Shared.DTOs;
 
@@ -58,97 +58,23 @@
     }
     else
     {
-        
+
     }
 
-
-    @* <section class="content">
-    <div class="row">
-    <div class="col-sm-12 col-md-12">
-
-    <div class="card">
-
-    <div class="card-body table-responsive p-0 manage-products-table">
-    <table class="table table-hover text-nowrap">
-    <thead class="p-0">
-    <tr>
-    <th class="sticky-top bg-da-yellow">SrNo</th>
-    <th class="sticky-top bg-da-yellow">Name</th>
-    <th class="sticky-top bg-da-yellow">Image</th>
-    <th class="sticky-top bg-da-yellow">Price</th>
-    <th class="sticky-top bg-da-yellow">Stock Quantity</th>
-    <th class="sticky-top bg-da-yellow">Added Date</th>
-    <th class="sticky-top bg-da-yellow">Last Modified Date</th>
-    <th class="sticky-top bg-da-yellow">Action</th>
-    </tr>
-    </thead>
-    @if (Products == null)
-    {
-    <tbody class="overlay-wrapper data-loader">
-    <tr>
-    <td colspan="7"><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
-    </tr>
-    @for (int i = 0; i < 9; i++)
-    {
-    <tr>
-    <td> - </td>
-    <td> - </td>
-    <td> - </td>
-    <td> - </td>
-    <td> - </td>
-    <td> - </td>
-    <td> - </td>
-    <td> - </td>
-    </tr>
-    }
-
-    </tbody>
-    }
-    else
-    {
-    <tbody>
-    @if (Products.Any())
-    {
-    foreach (var row in Products)
-    {
-    <tr>
-    <td>@row.Sno</td>
-    <td>@row.Name</td>
-    <td><img alt="@row.Name" class="img-thumbnail" src="@(row.ImageUrl ?? "images/image-not-found.png")" height="50" width="50" title="@row.Name" /></td>
-    <td>@row.Price</td>
-    <td>@row.StockQuantity</td>
-    <td>@row.AddedDate.ToString(format: "dd - MM - yyyy")</td>
-    <td>@row.LastModifiedDate?.ToString(format: "dd - MM - yyyy")</td>
-    <td>
-    <button type="button" class="btn btn-custom" title="View Product" @onclick="()=>OnClick_BtnShow(row)"><i class="fa fa-eye"></i></button>
-    <button type="button" class="btn btn-custom" title="Edit Product" @onclick="()=>OnClick_BtnEdit(row)"><i class="fa fa-edit"></i></button>
-    <button type="button" class="btn btn-danger" title="Delete Product" @onclick="()=>OnClick_BtnDelete(row)"><i class="fa fa-trash"></i></button>
-    </td>
-    </tr>
-    }
-    }
-    else
-    {
-    <tr>
-    <td colspan="7" class="text-center">No records found.</td>
-    </tr>
-    }
-    </tbody>
-    }
-    </table>
-    </div>
-
-    <div class="card-footer clearfix">
-    <ul class="pagination pagination-sm m-0 float-right">
-    <li class="page-item"><a class="page-link" href="#">«</a></li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item"><a class="page-link" href="#">»</a></li>
-    </ul>
-    </div>
-    </div>
-    </div>
-    </div>
-    </section> *@
 </div>
+ *@
+
+
+
+<ContainerFluid HeaderTitle="Manage Products">
+    <Header>
+        <div class="pt-4 pb-2 ">
+            <a href="products" class="btn btn-custom fw-semibold">Add Product</a>
+        </div>
+      
+    </Header>
+    <ChildContent>
+        <AstroOfficeWeb.Components.ProductComponents.ManageProducts></AstroOfficeWeb.Components.ProductComponents.ManageProducts>
+    </ChildContent>
+</ContainerFluid>
+

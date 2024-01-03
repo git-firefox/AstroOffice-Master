@@ -19,6 +19,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
     public partial class ManageCategories
     {
+        [Parameter]
+        public EventCallback<bool> IsCategoryLoaded { get; set; }
+
         [CascadingParameter]
         public CategoryDialoge CategoryDialoge { get; set; } = new();
         //[CascadingParameter] ManageCategories obj { get; set; } = this;
@@ -62,6 +65,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         protected override async Task OnInitializedAsync()
         {
             categoryList = await ProductService.GetCategories();
+            await IsCategoryLoaded.InvokeAsync(true);
         }
 
         private void OnClick_BtnViewOrder(OrderDTO order)
@@ -70,7 +74,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         }
 
 
-        public async Task Onclick_AddMetaData()
+        public async Task Onclick_AddMetaData() 
         {
             var parameters = new DialogParameters();
             parameters.Add("CategoryDTOs", categoryList);
@@ -86,6 +90,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
                 //Add code to add data in Database here
             }
+            //await EventCallback.InvokeAsync();
         }
 
         public async Task<string> CategoryImages(IBrowserFile file)

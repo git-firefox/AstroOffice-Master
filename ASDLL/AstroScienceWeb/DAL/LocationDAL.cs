@@ -47,7 +47,7 @@ namespace ASDLL.AstroScienceWeb.DAL
 
         public AStateMaster GetStateByCode(string code)
         {
-            AStateMaster state = _astroEntities.AStateMasters.FirstOrDefault(ss => ss.StateCode == code); ;
+            AStateMaster state = _astroEntities.AStateMasters.FirstOrDefault(ss => ss.StateCode == code);
             return state;
         }
     }
