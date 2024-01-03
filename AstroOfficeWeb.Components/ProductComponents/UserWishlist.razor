@@ -18,7 +18,7 @@
         }
     </Header>
     <ChildContent> *@
-        <div class="row">
+<div class="row wishlist-main">
             @if (ViewProductDTOs == null)
             {
                 for (int i = 0; i < 10; i++)
@@ -40,7 +40,7 @@
                 {
                     foreach (var product in ViewProductDTOs)
                     {
-                        <div class="col-12 col-sm-6 col-md-4 col-xl-3">
+                        <div class="col-6 col-sm-6 col-md-4 col-xl-3 wishlist-card">
                             @*  <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" OnClick="()=>OnCLick_ALickVRemoveWishlist(product)" aria-label="Remove from wishlist" Title="Remove from wishlist"></MudIconButton> *@
 
                             <div class="card-body" style="transform: rotate(0);">

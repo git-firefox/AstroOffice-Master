@@ -180,3 +180,25 @@
     justify-content:center;
     text-align:center;
 }*/
+.wishlist-main{
+    margin:25px;
+}
+.wishlist-card .card-body {
+    background: #fff;
+    padding: 10px !important;
+    border-radius: 35px;
+}
+@media(max-width:767px){
+    .card-body:hover .card-img-actions img {
+        opacity: 1;
+        transform: scale(1);
+    }
+        .card-body:hover .card-img-actions img.hover-img {
+            opacity: 0;
+            transform: scale(1);
+        }
+    .card-title {
+        width: 100%;
+        color: #fab73a !important;
+    }
+}

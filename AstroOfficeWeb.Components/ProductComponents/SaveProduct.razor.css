@@ -118,4 +118,10 @@
     top: 0;
     right: 0;
     cursor: pointer;
-}
+
+}@media(min-width:768px){
+
+    .w-md-auto {
+        width: auto !important;
+    }
+ }

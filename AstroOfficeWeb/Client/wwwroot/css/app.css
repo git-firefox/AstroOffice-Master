@@ -664,6 +664,7 @@ a.forgot-link {
     .login-box, .register-box {
         width: 100%;
     }
+
 }
 
 .navbar-nav a {
@@ -675,6 +676,7 @@ a.forgot-link {
 }
 
 @media(max-width:767px) {
+   
     .login-page {
         padding: 25px;
     }
