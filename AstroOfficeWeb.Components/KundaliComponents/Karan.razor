@@ -45,37 +45,66 @@
 </div> *@
 
 
-<MudTable Items="KaranModelTableData" Hover="true" Breakpoint="Breakpoint.Sm" Loading=@(KaranModelTableData == null) LoadingProgressColor="Color.Info">
-    <HeaderContent>
-        <MudTh>Problem</MudTh>
-        <MudTh>House</MudTh>
-        <MudTh>Significators</MudTh>
-        <MudTh>Good</MudTh>
-        <MudTh>Bad</MudTh>
-        <MudTh>KaranPlanet</MudTh>
-        <MudTh>Position</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Problem">
-            @context.Problem
-        </MudTd>
-        <MudTd DataLabel="House">
-            @context.House
-        </MudTd>
-        <MudTd DataLabel="Significators">
-            @context.Significators
-        </MudTd>
-        <MudTd DataLabel="Good" Class=@(!string.IsNullOrEmpty(context.Good) ? "bg-success" : string.Empty)>
-            @context.Good
-        </MudTd>
-        <MudTd DataLabel="Bad" Class="text-danger">
-            @context.Bad
-        </MudTd>
-        <MudTd DataLabel="KaranPlanet">
-            @context.KaranPlanet
-        </MudTd>
-        <MudTd DataLabel="Position">
-            @context.Position
-        </MudTd>
-    </RowTemplate>
-</MudTable>
+<div class="col-sm-12 col-md-12">
+    <div class="chart-table table-responsive p-0">
+        <table class="table table-sm">
+            <thead class="p-0 bg-da-yellow">
+                <tr>
+                    <th>Problem</th>
+                    <th>House</th>
+                    <th>Significators</th>
+                    <th>Good</th>
+                    <th>Bad</th>
+                    <th>KaranPlanet</th>
+                    <th>Position</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (KaranModelTableData == null)
+                {
+
+                }
+                else if (KaranModelTableData.Any())
+                {
+                    foreach (var context in KaranModelTableData)
+                    {
+                        <tr>
+                            <td DataLabel="Problem">
+                                @context.Problem
+                            </td>
+                            <td DataLabel="House">
+                                @context.House
+                            </td>
+                            <td DataLabel="Significators">
+                                @context.Significators
+                            </td>
+                            <td DataLabel="Good" Class=@(!string.IsNullOrEmpty(context.Good) ? "bg-success" : string.Empty)>
+                                @context.Good
+                            </td>
+                            <td DataLabel="Bad" Class="text-danger">
+                                @context.Bad
+                            </td>
+                            <td DataLabel="KaranPlanet">
+                                @context.KaranPlanet
+                            </td>
+                            <td DataLabel="Position">
+                                @context.Position
+                            </td>
+                        </tr>
+                    }
+
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            No records available!
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

@@ -2,10 +2,22 @@
 @attribute [Authorize(Roles = "Admin,User")]
 
 <PageLayout Title="Dashboard">
+    <RightContainer>
+        <MudButton Class="btn-custom" OnClick="OnClick_Karan">Karan</MudButton>
+    </RightContainer>
     <ChildContent>
         <div class="mt-5 px-3">
-            <AstroOfficeWeb.Components.Shared.Dashboard></AstroOfficeWeb.Components.Shared.Dashboard>
+            <AstroOfficeWeb.Components.Shared.Dashboard @ref="RKaran" IsKaranOpened="OnClick_Karan"></AstroOfficeWeb.Components.Shared.Dashboard>
         </div>
     </ChildContent>
 </PageLayout>
 
+@code{
+    AstroOfficeWeb.Components.Shared.Dashboard RKaran = null!;
+   
+    private void OnClick_Karan(){
+        // RKaran.KaranOpened = true;
+        RKaran.KaranOpened = !RKaran.KaranOpened;
+        StateHasChanged();
+    }
+}

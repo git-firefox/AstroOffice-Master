@@ -1707,9 +1707,11 @@ namespace AstroOfficeWeb.Components.Shared
 
         private async Task OnClick_BtnRefresh(MouseEventArgs e)
         {
+            KaranOpened = false;
             this.last_cusp_house = null;
-            this.last_kp_chart = null;
+            this.last_kp_chart = null;           
             await this.OnClick_BtnChart(new MouseEventArgs());
+
         }
 
         private async Task OnFocus_TxtBirthplace(FocusEventArgs e)

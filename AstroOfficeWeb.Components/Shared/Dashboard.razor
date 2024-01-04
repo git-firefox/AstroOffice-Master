@@ -17,7 +17,13 @@
 @inject ISwaggerApiService Swagger
 @inject TokenWalletService TokenWallet
 
-@code{
+@code {
+    public bool KaranOpened { get; set; } = false;
+
+   
+    [Parameter]
+    public EventCallback<bool> IsKaranOpened { get; set; }
+
     private RenderFragment? KaranPanelContent;
 
     private void ExpandedChanged(bool newVal)
@@ -28,7 +34,7 @@
         }
         else
         {
-             Task.Delay(350).ContinueWith(t => KaranPanelContent = null).AndForget();
+            Task.Delay(350).ContinueWith(t => KaranPanelContent = null).AndForget();
         }
     }
 
@@ -47,7 +53,7 @@
 
     </MudTabPanel>
     <MudTabPanel Icon="@Icons.Material.Filled.BugReport" Text="Bugs" BadgeData="0" >
-    
+
     </MudTabPanel>
     <MudTabPanel Icon="@Icons.Material.Filled.AccessTime" Text="Timing" BadgeDot="true" BadgeColor="Color.Error" >
 
@@ -55,613 +61,682 @@
 </MudTabs>
 *@
 
-@*
-<MudExpansionPanels MultiExpansion="true" >
-    <MudExpansionPanel Text="Karan" IsExpandedChanged="ExpandedChanged">
-        @KaranPanelContent
-    </MudExpansionPanel>
-</MudExpansionPanels>
-*@
+@if (KaranOpened)
+{
+    <MudExpansionPanels MultiExpansion="true">
+        <MudExpansionPanel Text="Karan" IsExpandedChanged="ExpandedChanged">
+            @KaranPanelContent
+        </MudExpansionPanel>
+    </MudExpansionPanels>
+   // IsKaranOpened.InvokeAsync(true);
+}
+
 
 <FaladeshModal @ref="FaladeshModal" Falla="@htmlStringFalla" ImgSrcLagan="@imgSrcLagan" ImgSrcBhavChalit="@imgSrcBhavChalit" ConfirmationChanged="ConfirmationChangedModel" />
 
-@* @User?.Identity?.Name 
+@* @User?.Identity?.Name
 <div class="container-fluid p-1 dashboard-main">
     <h1 class="py-4 font-weight-bold text-center text-md-left mb-0">Report</h1>
     <section class="content">*@
-        <div class="row report-content mb-3">
+<div class="row report-content mb-3 mt-3">
 
-            @* Birth Details *@
-            <div class="col-xl-4 mb-lg-3 mb-xl-0">
-                <div class="card card-primary card-frame">
+    @* Birth Details *@
+    <div class="col-xl-4 mb-lg-3 mb-xl-0">
+        <div class="card card-primary card-frame">
 
-                    <div style="position:relative;z-index:999;padding:15px;">
-                        <div class="card-header p-0 d-flex justify-content-between justify-content-md-center mb-2 px-4 px-md-0  ">
-                            <h2 class="font-weight-bold">Birth Details</h2>
-                            <button type="button" class="btn-custom btn-sm  d-inline-block d-md-none" @onclick="OnClick_BtnRefresh"><MudIcon Icon="@Icons.Material.Filled.Refresh"></MudIcon></button>
+            <div style="position:relative;z-index:999;padding:15px;">
+                <div class="card-header p-0 d-flex justify-content-between justify-content-md-center mb-2 px-4 px-md-0  ">
+                    <h2 class="font-weight-bold">Birth Details</h2>
+                    <button type="button" class="btn-custom btn-sm  d-inline-block d-md-none" @onclick="OnClick_BtnRefresh"><MudIcon Icon="@Icons.Material.Filled.Refresh"></MudIcon></button>
+                </div>
+                <EditForm Model="BirthDetails">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <select @onchange="OnChange_CmbSkipBad" value="@BirthDetails!.CmbSkipBad" class="form-control form-control-sm" aria-label="Selection of SkipBad" title="Skip Bad">
+                                    @foreach (var item in BirthDetailsLookups.SkipBadItems)
+                                    {
+                                        <option value="@item.Text">@item.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select @onchange="OnChange_CmbTime" value="@BirthDetails!.CmbTime" class="form-control form-control-sm" aria-label="Selection of Time" title="Time">
+                                    @foreach (var item in BirthDetailsLookups.CmbTimeItems)
+                                    {
+                                        <option value="@item.Text.ToLower()">@item.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnMinus">  <i class="fa fa-minus"></i> </button>
+                            </div>
+                            <div class="col-2">
+                                <InputNumber @bind-Value="BirthDetails.TimeValue" class="form-control form-control-sm" title="Number to modifying date" />
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnPlus"> <i class="fa fa-plus"></i> </button>
+                            </div>
+                            <div class="col-auto d-none d-md-inline-block">
+                                <button type="button" class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnRefresh">Refresh</button>
+                            </div>
                         </div>
-                        <EditForm Model="BirthDetails">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <select @onchange="OnChange_CmbSkipBad" value="@BirthDetails!.CmbSkipBad" class="form-control form-control-sm" aria-label="Selection of SkipBad" title="Skip Bad">
-                                            @foreach (var item in BirthDetailsLookups.SkipBadItems)
-                                            {
-                                                <option value="@item.Text">@item.Text</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="col">
-                                        <select @onchange="OnChange_CmbTime" value="@BirthDetails!.CmbTime" class="form-control form-control-sm" aria-label="Selection of Time" title="Time">
-                                            @foreach (var item in BirthDetailsLookups.CmbTimeItems)
-                                            {
-                                                <option value="@item.Text.ToLower()">@item.Text</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="col-auto">
-                                        <button type="button" class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnMinus">  <i class="fa fa-minus"></i> </button>
-                                    </div>
-                                    <div class="col-2">
-                                        <InputNumber @bind-Value="BirthDetails.TimeValue" class="form-control form-control-sm" title="Number to modifying date" />
-                                    </div>
-                                    <div class="col-auto">
-                                        <button type="button" class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnPlus"> <i class="fa fa-plus"></i> </button>
-                                    </div>
-                                    <div class="col-auto d-none d-md-inline-block">
-                                        <button type="button" class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnRefresh">Refresh</button>
-                                    </div>
-                                </div>
 
-                                <div class="row mt-2">
-                                    <div class="col-6">
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-12">
+                                        @if (IsAdmin || UserCanEdit)
+                                        {
+                                            <InputText @ref="inputTextName" @bind-Value="BirthDetails!.TxtName" class="form-control form-control-sm mb-2" />
+                                        }
+                                        else
+                                        {
+                                            <input value="@BirthDetails!.TxtName" class="form-control form-control-sm mb-2" readonly />
+                                        }
+
+                                        @if (CmbCountry != null)
+                                        {
+                                            <select @bind="BirthDetails!.CmbCountry" class="form-control form-control-sm mb-2" aria-label="Selection of brith country">
+                                                @foreach (var item in CmbCountry)
+                                                {
+                                                    <option value="@item.Value">@item.Text</option>
+                                                }
+                                            </select>
+                                        }
+                                        @if ((IsAdmin || UserCanEdit) && inputBirthPlaceEnabled)
+                                        {
+                                            @* <InputText @ref="inputTextBirthPlace" @bind-Value="BirthDetails!.TxtBirthPlace" class="form-control form-control-sm mb-2" @onkeydown="OnKeyDown_TxtBirthplace" @oninput="OnInput_TxtBirthplace" @onfocus="OnFocus_TxtBirthplace" /> *@
+                                            <input class="form-control form-control-sm mb-2" @bind="BirthDetails!.TxtBirthPlace" @bind:event="oninput" @onkeyup="OnKeyDown_TxtBirthplace" />
+                                        }
+                                        else
+                                        {
+                                            <input value="@BirthDetails!.TxtBirthPlace" class="form-control form-control-sm mb-2" readonly />
+                                        }
+                                        @if (ListBirthCities != null)
+                                        {
+
+                                            <select value="@selectedBirthCityIndex" class="form-control form-control-sm mb-2" aria-label="Selection of BirthCity" size="3" @onchange="OnChange_ListBirthCities">
+                                                <option value="0">-- Select --</option>
+
+                                                @*     ListBirthCities.Insert(0, "Select"); *@
+
+                                                @for (int i = 0; i < ListBirthCities.Count; i++)
+                                                {
+
+                                                    @* <option value="@i" @onclick="e => OnClick_ListBirthCity(e, i)">@ListBirthCities[i].Place</option> *@
+                                                    <option value="@(i + 1)">@ListBirthCities[i].Place</option>
+                                                }
+                                            </select>
+                                        }
+
                                         <div class="row">
-                                            <div class="col-12">
+                                            <div class="col-md-6">
+                                                <div class="form-group row align-items-center mb-2">
+                                                    <label for="IdLongtitude" class="col-12">Long</label>
+                                                    <div class="col-12">
+                                                        <InputText @bind-Value="BirthDetails!.Longtitude" id="IdLongtitude" class="form-control form-control-sm" title="Longtitude" />
+                                                    </div>
+                                                </div>
+                                                <select value="@BirthDetails!.CmbLanguage" class="form-control form-control-sm mb-2" aria-label="Selection of language" @onchange="OnChange_CmbLanguage" title="Language">
+                                                    @foreach (var item in BirthDetailsLookups.LanguageItems)
+                                                    {
+                                                        <option value="@item.Text">@item.Text</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row align-items-center mb-2">
+                                                    <label for="IdLatitude" class="col-12">Lat</label>
+                                                    <div class="col-12">
+
+                                                        <InputText @bind-Value="BirthDetails!.Latitude" id="IdLatitude" class="form-control form-control-sm" title="Latitude" />
+                                                    </div>
+                                                </div>
                                                 @if (IsAdmin || UserCanEdit)
                                                 {
-                                                    <InputText @ref="inputTextName" @bind-Value="BirthDetails!.TxtName" class="form-control form-control-sm mb-2" />
+                                                    <InputText @bind-Value="BirthDetails!.TxtTimezone" class="form-control form-control-sm mb-2" title="Timezone" />
                                                 }
                                                 else
                                                 {
-                                                    <input value="@BirthDetails!.TxtName" class="form-control form-control-sm mb-2" readonly />
+                                                    <input value="@BirthDetails!.TxtTimezone" class="form-control form-control-sm mb-2" title="Timezone" readonly />
                                                 }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-md-4 mb-2">
+                                        @if (inputBirthDateEnabled)
+                                        {
+                                            @* <input type="date" class="form-control form-control-sm" @onchange="OnChange_BrithDate" value="1999-09-20" title="Date of Birth" max="9999-12-31" /> *@
+                                            <input type="date" class="form-control form-control-sm" @onchange="OnChange_BrithDate" value="@BirthDetails.DateOfBirth.ToString(format: "yyyy-MM-dd")" title="Date of Birth" max="9999-12-31" />
+                                        }
+                                        else
+                                        {
+                                            <input type="date" class="form-control form-control-sm" value="@BirthDetails.DateOfBirth.ToString(format: "yyyy-MM-dd")" title="Date of Birth" max="9999-12-31" disabled />
+                                        }
+                                    </div>
 
-                                                @if (CmbCountry != null)
+                                    <div class="col-md-4 d-flex">
+                                        @if (tobhhEnabled)
+                                        {
+                                            @* <input @bind="inputHour" class="form-control form-control-sm" min="1" max="24" @onfocusout="OnFocusOut_InputBrithDate" title="Hour" /> *@
+
+                                            <select value="@BirthDetails!.Tobhh" class="form-control form-control-sm mb-2" title="Hour" @onchange="OnChange_Hour">
+                                                @for (int hour = 0; hour <= 23; hour++)
                                                 {
-                                                    <select @bind="BirthDetails!.CmbCountry" class="form-control form-control-sm mb-2" aria-label="Selection of brith country">
-                                                        @foreach (var item in CmbCountry)
+                                                    <option value="@hour">@hour.ToString("D2")</option>
+                                                }
+                                            </select>
+                                            <span> : </span>
+                                        }
+                                        else
+                                        {
+                                            <input value="@BirthDetails!.Tobhh.ToString("D2")" class="form-control form-control-sm" title="Hour" readonly />
+                                        }
+                                    </div>
+                                    <div class="col-md-4 d-flex">
+                                        @if (tobmmEnabled)
+                                        {
+                                            @* <input @bind="inputMinute" class="form-control form-control-sm" min="1" max="60" @onfocusout="OnFocusOut_InputBrithDate" title="Minute" /> *@
+
+                                            <select value="@BirthDetails!.Tobmm" class="form-control form-control-sm mb-2" title="Minute" @onchange="OnChange_Minute">
+                                                @for (int minute = 0; minute <= 59; minute++)
+                                                {
+                                                    <option value="@minute">@minute.ToString("D2")</option>
+                                                }
+                                            </select>
+                                            <span> : </span>
+                                        }
+                                        else
+                                        {
+                                            <input value="@BirthDetails!.Tobmm.ToString("D2")" class="form-control form-control-sm" title="Minute" readonly />
+                                        }
+                                    </div>
+                                    <div class="col-12 mb-2 ">
+                                        @if (tobssEnabled)
+                                        {
+                                            @* <input @bind="inputSecond" class="form-control form-control-sm" min="0" max="60" @onfocusout="OnFocusOut_InputBrithDate" title="Second" /> *@
+
+                                            <select value="@BirthDetails!.Tobss" class="form-control form-control-sm mb-2" title="Second" @onchange="OnChange_Second">
+                                                @for (int second = 0; second <= 59; second++)
+                                                {
+                                                    <option value="@second">@second.ToString("D2")</option>
+                                                }
+                                            </select>
+
+                                        }
+                                        else
+                                        {
+                                            <input value="@BirthDetails!.Tobss.ToString("D2")" class="form-control form-control-sm" title="Second" readonly />
+                                        }
+                                    </div>
+
+                                    <div class="col-12">
+
+                                        <fieldset>
+                                            @* <legend class="w-auto small mb-0">Options</legend> *@
+                                            <div class="row mb-2">
+                                                <InputRadioGroup Name="Gender" @bind-Value="BirthDetails!.Gender">
+
+                                                    <div class="col">
+                                                        <div class="form-check">
+                                                            <InputRadio Value="Gender.Male" class="form-check-input" id="RbMale" />
+                                                            <label class="form-check-label" for="RbMale">
+                                                                Male
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <div class="form-check">
+                                                            <InputRadio Value="Gender.Female" class="form-check-input" id="RbFemale" />
+                                                            <label class="form-check-label" for="RbFemale">
+                                                                Female
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    @*  <div class="col-3">
+                                                    <button type="button" class="btn btn-custom"> ✓ </button>
+                                                    </div> *@
+
+
+                                                </InputRadioGroup>
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-12 mb-2">
+
+                                                    <select value="@BirthDetails!.CmbCategory" @onchange="OnChange_CmbCategory" class="form-control form-control-sm" title="Category">
+                                                        @foreach (var item in BirthDetailsLookups.BirthCategoryItems.Where(a => !a.Disabled))
                                                         {
                                                             <option value="@item.Value">@item.Text</option>
                                                         }
                                                     </select>
-                                                }
-                                                @if ((IsAdmin || UserCanEdit) && inputBirthPlaceEnabled)
-                                                {
-                                                    @* <InputText @ref="inputTextBirthPlace" @bind-Value="BirthDetails!.TxtBirthPlace" class="form-control form-control-sm mb-2" @onkeydown="OnKeyDown_TxtBirthplace" @oninput="OnInput_TxtBirthplace" @onfocus="OnFocus_TxtBirthplace" /> *@
-                                                    <input class="form-control form-control-sm mb-2" @bind="BirthDetails!.TxtBirthPlace" @bind:event="oninput" @onkeyup="OnKeyDown_TxtBirthplace" />
-                                                }
-                                                else
-                                                {
-                                                    <input value="@BirthDetails!.TxtBirthPlace" class="form-control form-control-sm mb-2" readonly />
-                                                }
-                                                @if (ListBirthCities != null)
-                                                {
 
-                                                    <select value="@selectedBirthCityIndex" class="form-control form-control-sm mb-2" aria-label="Selection of BirthCity" size="3" @onchange="OnChange_ListBirthCities">
-                                                        <option value="0">-- Select --</option>
-
-                                                        @*     ListBirthCities.Insert(0, "Select"); *@
-
-                                                        @for (int i = 0; i < ListBirthCities.Count; i++)
+                                                </div>
+                                                <div class="col-6 mb-2">
+                                                    @* <InputSelect @bind-Value="BirthDetails!.CmbAyanansh" class="form-control form-control-sm" aria-label="Default select example"> *@
+                                                    <select value="@BirthDetails.CmbAyanansh" @onchange="OnChange_CmbAyanansh" class="form-control form-control-sm" aria-label="Selection of ayanansh" title="Ayanansh">
+                                                        @foreach (var item in BirthDetailsLookups.CmbAyananshItems)
                                                         {
-
-                                                            @* <option value="@i" @onclick="e => OnClick_ListBirthCity(e, i)">@ListBirthCities[i].Place</option> *@
-                                                            <option value="@(i + 1)">@ListBirthCities[i].Place</option>
+                                                            <option value="@item.Text">@item.Text</option>
                                                         }
                                                     </select>
-                                                }
-
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group row align-items-center mb-2">
-                                                            <label for="IdLongtitude" class="col-12">Long</label>
-                                                            <div class="col-12">
-                                                                <InputText @bind-Value="BirthDetails!.Longtitude" id="IdLongtitude" class="form-control form-control-sm" title="Longtitude" />
-                                                            </div>
-                                                        </div>
-                                                        <select value="@BirthDetails!.CmbLanguage" class="form-control form-control-sm mb-2" aria-label="Selection of language" @onchange="OnChange_CmbLanguage" title="Language">
-                                                            @foreach (var item in BirthDetailsLookups.LanguageItems)
-                                                            {
-                                                                <option value="@item.Text">@item.Text</option>
-                                                            }
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group row align-items-center mb-2">
-                                                            <label for="IdLatitude" class="col-12">Lat</label>
-                                                            <div class="col-12">
-
-                                                                <InputText @bind-Value="BirthDetails!.Latitude" id="IdLatitude" class="form-control form-control-sm" title="Latitude" />
-                                                            </div>
-                                                        </div>
-                                                        @if (IsAdmin || UserCanEdit)
+                                                </div>
+                                                <div class="col-6 mb-2">
+                                                    <select value="@BirthDetails.CmbRotate" @onchange="OnChange_CmbRotate" class="form-control form-control-sm" title="Rotate">
+                                                        @foreach (var item in BirthDetailsLookups.CmbRotateItems)
                                                         {
-                                                            <InputText @bind-Value="BirthDetails!.TxtTimezone" class="form-control form-control-sm mb-2" title="Timezone" />
+                                                            <option value="@item.Text">@item.Text</option>
                                                         }
-                                                        else
-                                                        {
-                                                            <input value="@BirthDetails!.TxtTimezone" class="form-control form-control-sm mb-2" title="Timezone" readonly />
-                                                        }
+                                                    </select>
+                                                </div>
+                                                <div class="col-12 mb-2">
+                                                    <div class="form-check">
+                                                        <InputCheckbox id="ChkSahasane" class="form-check-input" @bind-Value="BirthDetails!.ChkSahasaneLogic" />
+                                                        <label class="form-check-label" for="ChkSahasane">Sahasane Logic</label>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="row">
-                                            <div class="col-md-4 mb-2">
-                                                @if (inputBirthDateEnabled)
-                                                {
-                                                    @* <input type="date" class="form-control form-control-sm" @onchange="OnChange_BrithDate" value="1999-09-20" title="Date of Birth" max="9999-12-31" /> *@
-                                                    <input type="date" class="form-control form-control-sm" @onchange="OnChange_BrithDate" value="@BirthDetails.DateOfBirth.ToString(format: "yyyy-MM-dd")" title="Date of Birth" max="9999-12-31" />
-                                                }
-                                                else
-                                                {
-                                                    <input type="date" class="form-control form-control-sm" value="@BirthDetails.DateOfBirth.ToString(format: "yyyy-MM-dd")" title="Date of Birth" max="9999-12-31" disabled />
-                                                }
-                                            </div>
-
-                                        <div class="col-md-4 d-flex">
-                                                @if (tobhhEnabled)
-                                                {
-                                                    @* <input @bind="inputHour" class="form-control form-control-sm" min="1" max="24" @onfocusout="OnFocusOut_InputBrithDate" title="Hour" /> *@
-
-                                                    <select value="@BirthDetails!.Tobhh" class="form-control form-control-sm mb-2" title="Hour" @onchange="OnChange_Hour">
-                                                        @for (int hour = 0; hour <= 23; hour++)
-                                                        {
-                                                            <option value="@hour">@hour.ToString("D2")</option>
-                                                        }
-                                                    </select>
-                                                    <span> : </span>
-                                                }
-                                                else
-                                                {
-                                                    <input value="@BirthDetails!.Tobhh.ToString("D2")" class="form-control form-control-sm" title="Hour" readonly />
-                                                }
-                                            </div>
-                                        <div class="col-md-4 d-flex">
-                                                @if (tobmmEnabled)
-                                                {
-                                                    @* <input @bind="inputMinute" class="form-control form-control-sm" min="1" max="60" @onfocusout="OnFocusOut_InputBrithDate" title="Minute" /> *@
-
-                                                    <select value="@BirthDetails!.Tobmm" class="form-control form-control-sm mb-2" title="Minute" @onchange="OnChange_Minute">
-                                                        @for (int minute = 0; minute <= 59; minute++)
-                                                        {
-                                                            <option value="@minute">@minute.ToString("D2")</option>
-                                                        }
-                                                    </select>
-                                                    <span> : </span>
-                                                }
-                                                else
-                                                {
-                                                    <input value="@BirthDetails!.Tobmm.ToString("D2")" class="form-control form-control-sm" title="Minute" readonly />
-                                                }
-                                            </div>
-                                            <div class="col-12 mb-2 ">
-                                                @if (tobssEnabled)
-                                                {
-                                                    @* <input @bind="inputSecond" class="form-control form-control-sm" min="0" max="60" @onfocusout="OnFocusOut_InputBrithDate" title="Second" /> *@
-
-                                                    <select value="@BirthDetails!.Tobss" class="form-control form-control-sm mb-2" title="Second" @onchange="OnChange_Second">
-                                                        @for (int second = 0; second <= 59; second++)
-                                                        {
-                                                            <option value="@second">@second.ToString("D2")</option>
-                                                        }
-                                                    </select>
-
-                                                }
-                                                else
-                                                {
-                                                    <input value="@BirthDetails!.Tobss.ToString("D2")" class="form-control form-control-sm" title="Second" readonly />
-                                                }
-                                            </div>
-
-                                            <div class="col-12">
-
-                                                <fieldset>
-                                                    @* <legend class="w-auto small mb-0">Options</legend> *@
-                                                    <div class="row mb-2">
-                                                        <InputRadioGroup Name="Gender" @bind-Value="BirthDetails!.Gender">
-
-                                                            <div class="col">
-                                                                <div class="form-check">
-                                                                    <InputRadio Value="Gender.Male" class="form-check-input" id="RbMale" />
-                                                                    <label class="form-check-label" for="RbMale">
-                                                                        Male
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col">
-                                                                <div class="form-check">
-                                                                    <InputRadio Value="Gender.Female" class="form-check-input" id="RbFemale" />
-                                                                    <label class="form-check-label" for="RbFemale">
-                                                                        Female
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-
-                                                            @*  <div class="col-3">
-                                                            <button type="button" class="btn btn-custom"> ✓ </button>
-                                                            </div> *@
-
-
-                                                        </InputRadioGroup>
+                                                <div class="col-12 mb-2">
+                                                    <div class="form-check">
+                                                        <InputCheckbox id="ChkSalachakkar" class="form-check-input" @bind-Value="BirthDetails!.SalaChakkar" />
+                                                        <label class="form-check-label" for="ChkSalachakkar">35 Sala Chakkar</label>
                                                     </div>
+                                                </div>
 
-
-                                                    <div class="row">
-                                                        <div class="col-12 mb-2">
-
-                                                            <select value="@BirthDetails!.CmbCategory" @onchange="OnChange_CmbCategory" class="form-control form-control-sm" title="Category">
-                                                                @foreach (var item in BirthDetailsLookups.BirthCategoryItems.Where(a => !a.Disabled))
-                                                                {
-                                                                    <option value="@item.Value">@item.Text</option>
-                                                                }
-                                                            </select>
-
-                                                        </div>
-                                                        <div class="col-6 mb-2">
-                                                            @* <InputSelect @bind-Value="BirthDetails!.CmbAyanansh" class="form-control form-control-sm" aria-label="Default select example"> *@
-                                                            <select value="@BirthDetails.CmbAyanansh" @onchange="OnChange_CmbAyanansh" class="form-control form-control-sm" aria-label="Selection of ayanansh" title="Ayanansh">
-                                                                @foreach (var item in BirthDetailsLookups.CmbAyananshItems)
-                                                                {
-                                                                    <option value="@item.Text">@item.Text</option>
-                                                                }
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-6 mb-2">
-                                                            <select value="@BirthDetails.CmbRotate" @onchange="OnChange_CmbRotate" class="form-control form-control-sm" title="Rotate">
-                                                                @foreach (var item in BirthDetailsLookups.CmbRotateItems)
-                                                                {
-                                                                    <option value="@item.Text">@item.Text</option>
-                                                                }
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-12 mb-2">
-                                                            <div class="form-check">
-                                                                <InputCheckbox id="ChkSahasane" class="form-check-input" @bind-Value="BirthDetails!.ChkSahasaneLogic" />
-                                                                <label class="form-check-label" for="ChkSahasane">Sahasane Logic</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 mb-2">
-                                                            <div class="form-check">
-                                                                <InputCheckbox id="ChkSalachakkar" class="form-check-input" @bind-Value="BirthDetails!.SalaChakkar" />
-                                                                <label class="form-check-label" for="ChkSalachakkar">35 Sala Chakkar</label>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-12 mb-2">
-                                                            <div class="form-check">
-                                                                <InputCheckbox id="ChkMfal" class="form-check-input" @bind-Value="BirthDetails!.ChkMfal" />
-                                                                <label class="form-check-label" for="ChkMfal">Mfal</label>
-                                                            </div>
-                                                        </div>
-                                                        @*  <div class="col">
-                                                        <InputTextArea class="form-control mt-2" rows="4" Placeholder="Enter ..." @bind-Value="BirthDetails!.Brief" />
-                                                        </div> *@
+                                                <div class="col-12 mb-2">
+                                                    <div class="form-check">
+                                                        <InputCheckbox id="ChkMfal" class="form-check-input" @bind-Value="BirthDetails!.ChkMfal" />
+                                                        <label class="form-check-label" for="ChkMfal">Mfal</label>
                                                     </div>
-                                                </fieldset>
+                                                </div>
+                                                @*  <div class="col">
+                                                <InputTextArea class="form-control mt-2" rows="4" Placeholder="Enter ..." @bind-Value="BirthDetails!.Brief" />
+                                                </div> *@
                                             </div>
-                                        </div>
+                                        </fieldset>
                                     </div>
-
-                                </div>
-                                <div class="d-sm-flex bd-highlight align-items-center">
-                                    <div class="p-2 flex-grow-1 bd-highlight">
-                                        <div class="form-check form-check-inline">
-                                            <InputCheckbox id="ref" class="form-check-input" @bind-Value="BirthDetails!.ChkShowRef" />
-                                            <label class="form-check-label" for="ref">Show Ref. Code</label>
-                                        </div>
-                                    </div>
-                                        <div class="p-2 bd-highlight">
-                                            <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnFaladesh"> Show Kundali </button>
-                                        </div>
-                                        <div class="p-2 bd-highlight">
-                                            <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnChart"> Vivran </button>
-                                        </div>
-                                        <div class="p-2 bd-highlight">
-                                            @if (OnInitialized_IsComplatedSuccessfully)
-                                            {
-                                                <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnSaveKundali"> Save Kundali </button>
-                                            }
-                                            else
-                                            {
-                                                <button class="btn btn-custom btn-sm" type="button" disabled>
-                                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                    Loading...
-                                                </button>
-                                            }
-                                        </div>
-                                </div>        
-                                </div> 
-                        </EditForm>
-                    </div>
-                </div>
-            </div>
-
-            @* Kundali Table *@
-            <div class="col-lg-6 col-xl-4 my-3 my-md-0">
-                <div class="card card-success card-frame">
-
-                    <div style="position:relative;z-index:999;padding:15px;">
-                        <div class="card-header p-0 text-center mb-2">
-                            <h2 class="font-weight-bold">Kundali Table</h2>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <table class="table table-sm table-hover">
-
-                                        <thead class="p-0">
-                                            <tr>
-                                                <th>Desk</th>
-                                                <th>Value</th>
-                                            </tr>
-                                        </thead>
-
-                                        @if (ListView_Ruling_Planet == null)
-                                        {
-                                            <tbody class="data-loader">
-                                                <tr>
-                                                    <td><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
-                                                </tr>
-                                                @for (int i = 0; i < 12; i++)
-                                                {
-                                                    <tr>
-                                                        <td>महादशा</td>
-                                                        <td>गुरू 7 3 5 8</td>
-                                                    </tr>
-                                                }
-
-                                            </tbody>
-
-                                        }
-                                        else
-                                        {
-                                            <tbody>
-                                                @foreach (var row in ListView_Ruling_Planet ?? new List<KundaliTableTRModel>())
-                                                {
-                                                    <tr class="@row.SelectedClass">
-                                                        <td>@row.Item</td>
-                                                        <td>@row.SubItem</td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        }
-
-                                    </table>
                                 </div>
                             </div>
+
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            @* Kundali *@
-            <div class="col-lg-6 col-xl-4">
-                <div class="card card-primary card-frame">
-
-                    <div style="position:relative;z-index:999;padding:15px;">
-                        <div class="card-header p-0 text-center mb-2">
-                            <h2 class="font-weight-bold">Kundali</h2>
-                        </div>
-
-                        <EditForm Model="BirthDetails">
-                            <div class="card-body">
-
-                                <div class="row">
-                                    <div class="col-4 col-sm">
-                                        <button type="button" class="btn btn-block btn-custom btn-sm" title="Cusp" @onclick="OnClick_BhavChalit"> Cusp </button>
-                                    </div>
-                                    <div class="col-4 col-sm">
-                                        <button type="button" class="btn btn-block btn-custom btn-sm" title="Kundali" @onclick="OnClick_Lagan"> Kundali </button>
-                                    </div>
-                                    <div class="col-4 col-sm">
-                                        <button type="button" class="btn btn-block btn-custom btn-sm" title="Chandra Kundali" @onclick="OnClick_Chandra"> Chandra </button>
-                                    </div>
-                                    <div class="col-4 col-sm mt-2 mt-sm-0">
-                                        <button type="button" class="btn btn-block btn-custom btn-sm btn-gochar" title="Vartmaan" @onclick="OnClick_Gochar"> Vartmaan </button>
-                                    </div>
-                                    <div class="col-4 col-sm mt-2 mt-sm-0">
-                                        <button type="button" class="btn btn-block btn-custom btn-smbtn btn-block btn-custom btn-sm btn-varsh" title="Varshphal" @onclick="OnClick_Varsh"> Varshphal </button>
-                                    </div>
+                        <div class="d-sm-flex bd-highlight align-items-center">
+                            <div class="p-2 flex-grow-1 bd-highlight">
+                                <div class="form-check form-check-inline">
+                                    <InputCheckbox id="ref" class="form-check-input" @bind-Value="BirthDetails!.ChkShowRef" />
+                                    <label class="form-check-label" for="ref">Show Ref. Code</label>
                                 </div>
-
-                                <div class="row justify-content-end mt-2">
-                                    <div class="col-2">
-                                        @if (isNumVarshVisible)
-                                        {
-                                            <InputNumber id="1" @bind-Value="BirthDetails.KundaliUdvYear" class="form-control form-control-sm" min="1" max="120" />
-                                        }
-                                        else
-                                        {
-
-                                            <InputNumber @bind-Value="BirthDetails.KundaliUdvYear" class="form-control form-control-sm" style="opacity:0" min="1" max="120" />
-                                        }
-                                    </div>
-                                </div>
-
-
-
-                                @if (!string.IsNullOrEmpty(imgSrc))
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnFaladesh"> Show Kundali </button>
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnChart"> Vivran </button>
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                @if (OnInitialized_IsComplatedSuccessfully)
                                 {
-                                    <div class="row mt-2">
-                                        <div class="col-12 text-center">
-                                            <img src="@imgSrc" alt="" class="img-fluid text-center" />
-                                        </div>
-                                    </div>
+                                    <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnSaveKundali"> Save Kundali </button>
                                 }
                                 else
                                 {
-                                    <div class="data-loader mt-2">
-                                        <div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div>
-                                        <div>
-                                            <img class="img-fluid text-center" src="data:image/png;base64,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" />
-                                        </div>
+                                    <button class="btn btn-custom btn-sm" type="button" disabled>
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        Loading...
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
 
-                                    </div>
+    @* Kundali Table *@
+    <div class="col-lg-6 col-xl-4 my-3 my-md-0">
+        <div class="card card-success card-frame">
+
+            <div style="position:relative;z-index:999;padding:15px;">
+                <div class="card-header p-0 text-center mb-2">
+                    <h2 class="font-weight-bold">Kundali Table</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-sm table-hover">
+
+                                <thead class="p-0">
+                                    <tr>
+                                        <th>Desk</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+
+                                @if (ListView_Ruling_Planet == null)
+                                {
+                                    <tbody class="data-loader">
+                                        <tr>
+                                            <td><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
+                                        </tr>
+                                        @for (int i = 0; i < 12; i++)
+                                        {
+                                            <tr>
+                                                <td>महादशा</td>
+                                                <td>गुरू 7 3 5 8</td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+
+                                }
+                                else
+                                {
+                                    <tbody>
+                                        @foreach (var row in ListView_Ruling_Planet ?? new List<KundaliTableTRModel>())
+                                        {
+                                            <tr class="@row.SelectedClass">
+                                                <td>@row.Item</td>
+                                                <td>@row.SubItem</td>
+                                            </tr>
+                                        }
+                                    </tbody>
                                 }
 
-                            </div>
-                        </EditForm>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="row mt-5 pt-2">
-            <div class="col">
-                <div class="card card-tabs px-0">
-                    <div class="card-header p-0">
-                        <ul class="nav nav-tabs" id="birthdetails-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="birthdetails-tabs-charts-tab" data-bs-toggle="pill" data-toggle="pill" href="#birthdetails-tabs-charts" role="tab" aria-controls="birthdetails-tabs-charts" aria-selected="true"> Charts </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="birthdetails-tabs-mahadasha-tab" data-bs-toggle="pill" data-toggle="pill" href="#birthdetails-tabs-mahadasha" role="tab" aria-controls="birthdetails-tabs-mahadasha" aria-selected="false"> Mahadasha </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="birthdetails-tabs-date-finder-tab" data-bs-toggle="pill" data-toggle="pill" href="#birthdetails-tabs-date-finder" role="tab" aria-controls="birthdetails-tabs-date-finder" aria-selected="false"> Date Finder </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link " id="birthdetails-tabs-best-kundali-dates-tab" data-bs-toggle="pill" data-toggle="pill" href="#birthdetails-tabs-best-kundali-dates" role="tab" aria-controls="birthdetails-tabs-best-kundali-dates" aria-selected="false"> Best Kundali Dates </a>
-                            </li>
-                        </ul>
+    @* Kundali *@
+    <div class="col-lg-6 col-xl-4">
+        <div class="card card-primary card-frame">
+
+            <div style="position:relative;z-index:999;padding:15px;">
+                <div class="card-header p-0 text-center mb-2">
+                    <h2 class="font-weight-bold">Kundali</h2>
+                </div>
+
+                <EditForm Model="BirthDetails">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-4 col-sm">
+                                <button type="button" class="btn btn-block btn-custom btn-sm" title="Cusp" @onclick="OnClick_BhavChalit"> Cusp </button>
+                            </div>
+                            <div class="col-4 col-sm">
+                                <button type="button" class="btn btn-block btn-custom btn-sm" title="Kundali" @onclick="OnClick_Lagan"> Kundali </button>
+                            </div>
+                            <div class="col-4 col-sm">
+                                <button type="button" class="btn btn-block btn-custom btn-sm" title="Chandra Kundali" @onclick="OnClick_Chandra"> Chandra </button>
+                            </div>
+                            <div class="col-4 col-sm mt-2 mt-sm-0">
+                                <button type="button" class="btn btn-block btn-custom btn-sm btn-gochar" title="Vartmaan" @onclick="OnClick_Gochar"> Vartmaan </button>
+                            </div>
+                            <div class="col-4 col-sm mt-2 mt-sm-0">
+                                <button type="button" class="btn btn-block btn-custom btn-smbtn btn-block btn-custom btn-sm btn-varsh" title="Varshphal" @onclick="OnClick_Varsh"> Varshphal </button>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-end mt-2">
+                            <div class="col-2">
+                                @if (isNumVarshVisible)
+                                {
+                                    <InputNumber id="1" @bind-Value="BirthDetails.KundaliUdvYear" class="form-control form-control-sm" min="1" max="120" />
+                                }
+                                else
+                                {
+
+                                    <InputNumber @bind-Value="BirthDetails.KundaliUdvYear" class="form-control form-control-sm" style="opacity:0" min="1" max="120" />
+                                }
+                            </div>
+                        </div>
+
+
+
+                        @if (!string.IsNullOrEmpty(imgSrc))
+                        {
+                            <div class="row mt-2">
+                                <div class="col-12 text-center">
+                                    <img src="@imgSrc" alt="" class="img-fluid text-center" />
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="data-loader mt-2">
+                                <div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div>
+                                <div>
+                                    <img class="img-fluid text-center" src="data:image/png;base64,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" />
+                                </div>
+
+                            </div>
+                        }
+
                     </div>
-                    <div class="card-body px-0">
-                        <div class="tab-content" id="birthdetails-tabs-tabContent">
-                            @* Charts *@
-                            <div class="tab-pane fade active show" id="birthdetails-tabs-charts" role="tabpanel" aria-labelledby="birthdetails-tabs-charts-tab">
-                                <div class="row">
-                                    <div class="col-lg-7 mb-3 mb-lg-0">
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5 pt-2">
+    <div class="col">
+        <div class="card card-tabs px-0">
+            <div class="card-header p-0">
+                <ul class="nav nav-tabs" id="birthdetails-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="birthdetails-tabs-charts-tab" data-bs-toggle="pill" data-toggle="pill" href="#birthdetails-tabs-charts" role="tab" aria-controls="birthdetails-tabs-charts" aria-selected="true"> Charts </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="birthdetails-tabs-mahadasha-tab" data-bs-toggle="pill" data-toggle="pill" href="#birthdetails-tabs-mahadasha" role="tab" aria-controls="birthdetails-tabs-mahadasha" aria-selected="false"> Mahadasha </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="birthdetails-tabs-date-finder-tab" data-bs-toggle="pill" data-toggle="pill" href="#birthdetails-tabs-date-finder" role="tab" aria-controls="birthdetails-tabs-date-finder" aria-selected="false"> Date Finder </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " id="birthdetails-tabs-best-kundali-dates-tab" data-bs-toggle="pill" data-toggle="pill" href="#birthdetails-tabs-best-kundali-dates" role="tab" aria-controls="birthdetails-tabs-best-kundali-dates" aria-selected="false"> Best Kundali Dates </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body px-0">
+                <div class="tab-content" id="birthdetails-tabs-tabContent">
+                    @* Charts *@
+                    <div class="tab-pane fade active show" id="birthdetails-tabs-charts" role="tabpanel" aria-labelledby="birthdetails-tabs-charts-tab">
+                        <div class="row">
+                            <div class="col-lg-7 mb-3 mb-lg-0">
                                 <div class="chart-table">
-                                        <div class="table-responsive">
-                                            <table class="table">
+                                    <div class="table-responsive">
+                                        <table class="table">
 
-                                                <thead class="p-0 bg-da-yellow">
+                                            <thead class="p-0 bg-da-yellow">
+                                                <tr>
+                                                    <th>House</th>
+                                                    <th>RL-NL-SL-SSL</th>
+                                                    <th>Nakshatra</th>
+                                                    <th>Sub Lord Nakshatra</th>
+                                                </tr>
+                                            </thead>
+                                            @if (ListView_House == null)
+                                            {
+                                                <tbody class="data-loader">
                                                     <tr>
-                                                        <th>House</th>
-                                                        <th>RL-NL-SL-SSL</th>
-                                                        <th>Nakshatra</th>
-                                                        <th>Sub Lord Nakshatra</th>
+                                                        <td><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
                                                     </tr>
-                                                </thead>
-                                                @if (ListView_House == null)
-                                                {
-                                                    <tbody class="data-loader">
+                                                    @for (int i = 0; i < 12; i++)
+                                                    {
                                                         <tr>
-                                                            <td><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
+                                                            <td>1</td>
+                                                            <td>सूर्य--शुक्र--शुक्र--राहु</td>
+                                                            <td>| 11 | -6 7 | 11 | -6 7</td>
+                                                            <td>| 11 | -6 7 | -8 | +10 3</td>
                                                         </tr>
-                                                        @for (int i = 0; i < 12; i++)
-                                                        {
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>सूर्य--शुक्र--शुक्र--राहु</td>
-                                                                <td>| 11 | -6 7 | 11 | -6 7</td>
-                                                                <td>| 11 | -6 7 | -8 | +10 3</td>
-                                                            </tr>
-                                                        }
+                                                    }
 
-                                                    </tbody>
-                                                }
-                                                else
-                                                {
-                                                    <tbody>
-                                                        @foreach (var row in ListView_House ?? new List<ChartHouseTableTRModel>())
-                                                        {
-                                                            <tr class="@row.ForeColor @row.SelectedClass" @ondblclick="()=> OnDblClick_TR_ListView_House(row)" @onclick="()=> OnClick_TR_ListView_House(row)">
-                                                                <td>@row.House</td>
-                                                                <td>@row.RL_NL_SL_SSL</td>
-                                                                <td>@row.NakSigni</td>
-                                                                <td>@row.SubSigni</td>
-                                                            </tr>
-                                                        }
-                                                    </tbody>
-                                                }
-
-
-                                            </table>
-                                        </div>
-                                </div>
-                                    </div>
-
-                                    <div class="col-lg-5">
-                                <div class="chart-table">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead class="p-0 bg-da-yellow">
-                                                    <tr>
-                                                        <th>Planet</th>
-                                                        <th>RL-NL-SL-SSL</th>
-                                                        <th>Significators</th>
-                                                    </tr>
-                                                </thead>
-                                                @if (ListView_Planet == null)
-                                                {
-                                                    <tbody class="data-loader">
-                                                        <tr>
-                                                            <td><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
+                                                </tbody>
+                                            }
+                                            else
+                                            {
+                                                <tbody>
+                                                    @foreach (var row in ListView_House ?? new List<ChartHouseTableTRModel>())
+                                                    {
+                                                        <tr class="@row.ForeColor @row.SelectedClass" @ondblclick="()=> OnDblClick_TR_ListView_House(row)" @onclick="()=> OnClick_TR_ListView_House(row)">
+                                                            <td>@row.House</td>
+                                                            <td>@row.RL_NL_SL_SSL</td>
+                                                            <td>@row.NakSigni</td>
+                                                            <td>@row.SubSigni</td>
                                                         </tr>
-                                                        @for (int i = 0; i < 9; i++)
-                                                        {
-                                                            <tr>
-                                                                <td>सूर्य</td>
-                                                                <td>मंगल--सूर्य--चंद्र--केतु</td>
-                                                                <td>| 9 | 1 | 9 | 1</td>
-                                                            </tr>
-                                                        }
+                                                    }
+                                                </tbody>
+                                            }
 
-                                                    </tbody>
-                                                }
-                                                else
-                                                {
-                                                    <tbody>
-                                                        @foreach (var row in ListView_Planet ?? new List<ChartPlanetTableTRModel>())
-                                                        {
 
-                                                            <tr title="@row.ToolTipText" class="@row.ForeColor @row.SelectedClass" @onclick="() => OnClick_TR_ListView_Planet(row)">
-                                                                <td>@row.Planet</td>
-                                                                <td>@row.RL_NL_SL_SSL</td>
-                                                                <td>@row.Significators</td>
-                                                            </tr>
-                                                        }
-                                                    </tbody>
-                                                }
-
-                                            </table>
-                                        </div>
+                                        </table>
                                     </div>
-                            </div>
                                 </div>
                             </div>
 
-                            @* Mahadasha *@
-                            <div class="tab-pane fade" id="birthdetails-tabs-mahadasha" role="tabpanel" aria-labelledby="birthdetails-tabs-mahadasha-tab">
+                            <div class="col-lg-5">
+                                <div class="chart-table">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead class="p-0 bg-da-yellow">
+                                                <tr>
+                                                    <th>Planet</th>
+                                                    <th>RL-NL-SL-SSL</th>
+                                                    <th>Significators</th>
+                                                </tr>
+                                            </thead>
+                                            @if (ListView_Planet == null)
+                                            {
+                                                <tbody class="data-loader">
+                                                    <tr>
+                                                        <td><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
+                                                    </tr>
+                                                    @for (int i = 0; i < 9; i++)
+                                                    {
+                                                        <tr>
+                                                            <td>सूर्य</td>
+                                                            <td>मंगल--सूर्य--चंद्र--केतु</td>
+                                                            <td>| 9 | 1 | 9 | 1</td>
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+                                            }
+                                            else
+                                            {
+                                                <tbody>
+                                                    @foreach (var row in ListView_Planet ?? new List<ChartPlanetTableTRModel>())
+                                                    {
+
+                                                        <tr title="@row.ToolTipText" class="@row.ForeColor @row.SelectedClass" @onclick="() => OnClick_TR_ListView_Planet(row)">
+                                                            <td>@row.Planet</td>
+                                                            <td>@row.RL_NL_SL_SSL</td>
+                                                            <td>@row.Significators</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            }
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Mahadasha *@
+                    <div class="tab-pane fade" id="birthdetails-tabs-mahadasha" role="tabpanel" aria-labelledby="birthdetails-tabs-mahadasha-tab">
 
 
-                                <div class="row mt-2">
-                                    <div class="col-lg-6 col-xl-3">
-                                        <div class="mahadasha-name mb-3"><h5 class="font-weight-bold mb-0">महादशा </h5><label class="mt-3 d-block"> @(new MarkupString(LblMahadasha)) </label></div>
+                        <div class="row mt-2">
+                            <div class="col-lg-6 col-xl-3">
+                                <div class="mahadasha-name mb-3"><h5 class="font-weight-bold mb-0">महादशा </h5><label class="mt-3 d-block"> @(new MarkupString(LblMahadasha)) </label></div>
 
-                                        <div class="card mb-3 mb-xl-0">
+                                <div class="card mb-3 mb-xl-0">
 
                                     <div class="chart-table">
-                                            <div class="table-responsive">
-                                                <h4 class="text-center font-weight-bold">महादशा</h4>
-                                                <div style="height: 310px; overflow-y: auto;">
-                                                    <table class="table">
+                                        <div class="table-responsive">
+                                            <h4 class="text-center font-weight-bold">महादशा</h4>
+                                            <div style="height: 310px; overflow-y: auto;">
+                                                <table class="table">
 
+                                                    <thead class="p-0 bg-da-yellow">
+                                                        <tr>
+                                                            <th>Planet</th>
+                                                            <th>Period</th>
+                                                            <th>Signi(Self/Nak)</th>
+                                                        </tr>
+                                                    </thead>
+                                                    @if (ListView_Mahadasha == null)
+                                                    {
+                                                        <tbody class="data-loader">
+                                                            <tr>
+                                                                <td><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
+                                                            </tr>
+                                                            @for (int i = 0; i < 9; i++)
+                                                            {
+                                                                <tr>
+                                                                    <td>राहु</td>
+                                                                    <td>12 Jun 1993 - 11 Jun 2011	</td>
+                                                                    <td>
+                                                                        11 6 7 7 | 11 6 7 11 6 7
+                                                                    </td>
+                                                                </tr>
+                                                            }
+
+                                                        </tbody>
+                                                    }
+                                                    else
+                                                    {
+                                                        <tbody>
+                                                            @foreach (var row in ListView_Mahadasha ?? new List<MahadashaTableTRModel>())
+                                                            {
+                                                                <tr class="@row.SelectedClass" @onclick="()=>OnClick_TR_ListView_Mahadasha(row)" @ondblclick="() => OnDblClick_TR_ListView_Mahadasha(row)">
+                                                                    <td>@row.Planet</td>
+                                                                    <td>@row.Period</td>
+                                                                    <td>@row.Signi</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    }
+
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-xl-3">
+                                <div class="mahadasha-name mb-3">
+                                    <h5 class="font-weight-bold mb-0">अन्तर्दशा</h5>
+                                    @if (!BirthDetails.SalaChakkar)
+                                    {
+                                        <label class="mt-3 d-block">@(new MarkupString(LblAntar))</label>
+                                    }
+                                </div>
+                                <div class="card mb-3 mb-xl-0">
+
+                                    <div class="chart-table">
+                                        <div class="table-responsive">
+                                            <h4 class="text-center font-weight-bold">अन्तर्दशा</h4>
+                                            <div style="height: 310px; overflow-y: auto;">
+
+                                                <table class="table">
+                                                    @if (!BirthDetails.SalaChakkar)
+                                                    {
                                                         <thead class="p-0 bg-da-yellow">
                                                             <tr>
                                                                 <th>Planet</th>
@@ -669,20 +744,42 @@
                                                                 <th>Signi(Self/Nak)</th>
                                                             </tr>
                                                         </thead>
-                                                        @if (ListView_Mahadasha == null)
+                                                        <tbody>
+                                                            @foreach (var row in ListView_Antardasha ?? new List<AntardashaTableTRModel>())
+                                                            {
+                                                                <tr class="@row.SelectedClass" @onclick="()=> OnClick_TR_ListView_Antardasha(row)" @ondblclick="()=> OnDblClick_TR_ListView_Antardasha(row)">
+                                                                    <td>@row.Planet</td>
+                                                                    <td>@row.Period</td>
+                                                                    <td>@row.Signi</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    }
+                                                    else
+                                                    {
+                                                        <thead class="p-0 bg-da-yellow">
+                                                            <tr>
+                                                                <th>Planet</th>
+                                                                <th>Antar</th>
+                                                                <th>Period</th>
+                                                                <th>Age</th>
+                                                            </tr>
+                                                        </thead>
+                                                        @if (ListView_Years35 == null)
                                                         {
                                                             <tbody class="data-loader">
                                                                 <tr>
                                                                     <td><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
                                                                 </tr>
-                                                                @for (int i = 0; i < 9; i++)
+                                                                @for (int i = 0; i < 7; i++)
                                                                 {
                                                                     <tr>
-                                                                        <td>राहु</td>
-                                                                        <td>12 Jun 1993 - 11 Jun 2011	</td>
+                                                                        <td>शुक्र</td>
+                                                                        <td>मंगल</td>
                                                                         <td>
-                                                                            11 6 7 7 | 11 6 7 11 6 7
+                                                                            12 मई 2006 - 11 मई 2009
                                                                         </td>
+                                                                        <td>1-3</td>
                                                                     </tr>
                                                                 }
 
@@ -691,381 +788,123 @@
                                                         else
                                                         {
                                                             <tbody>
-                                                                @foreach (var row in ListView_Mahadasha ?? new List<MahadashaTableTRModel>())
+                                                                @foreach (var row in ListView_Years35 ?? new List<Years35TableTRModel>())
                                                                 {
-                                                                    <tr class="@row.SelectedClass" @onclick="()=>OnClick_TR_ListView_Mahadasha(row)" @ondblclick="() => OnDblClick_TR_ListView_Mahadasha(row)">
+                                                                    <tr class="@row.SelectedClass" @onclick="()=>OnClick_TR_ListView_Years35(row)" @ondblclick="()=> OnDblClick_TR_ListView_Years35(row)">
                                                                         <td>@row.Planet</td>
+                                                                        <td>@row.Antar</td>
                                                                         <td>@row.Period</td>
-                                                                        <td>@row.Signi</td>
+                                                                        <td>@row.Age</td>
                                                                     </tr>
                                                                 }
                                                             </tbody>
                                                         }
 
-
-                                                    </table>
-                                                </div>
+                                                    }
+                                                </table>
                                             </div>
                                         </div>
-                                        </div>
                                     </div>
+                                </div>
+                            </div>
 
-                                    <div class="col-lg-6 col-xl-3">
-                                        <div class="mahadasha-name mb-3">
-                                            <h5 class="font-weight-bold mb-0">अन्तर्दशा</h5>
-                                            @if (!BirthDetails.SalaChakkar)
-                                            {
-                                                <label class="mt-3 d-block">@(new MarkupString(LblAntar))</label>
-                                            }
-                                        </div>
-                                        <div class="card mb-3 mb-xl-0">
+                            @if (!BirthDetails.SalaChakkar)
+                            {
+                                <div class="col-lg-6 col-xl-3">
 
-                                    <div class="chart-table">
+                                    <div class="mahadasha-name mb-3">
+                                        <h5 class="font-weight-bold mb-0">प्र्यंतरदशा</h5>
+
+                                        <label class="mt-3 d-block">@(new MarkupString(LblParyan))</label>
+
+                                    </div>
+                                    <div class="card mb-3 mb-xl-0">
+                                        <div class="chart-table">
                                             <div class="table-responsive">
-                                                <h4 class="text-center font-weight-bold">अन्तर्दशा</h4>
+                                                <h4 class="text-center font-weight-bold">प्र्यंतरदशा</h4>
                                                 <div style="height: 310px; overflow-y: auto;">
-
                                                     <table class="table">
-                                                        @if (!BirthDetails.SalaChakkar)
-                                                        {
-                                                            <thead class="p-0 bg-da-yellow">
-                                                                <tr>
-                                                                    <th>Planet</th>
-                                                                    <th>Period</th>
-                                                                    <th>Signi(Self/Nak)</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach (var row in ListView_Antardasha ?? new List<AntardashaTableTRModel>())
-                                                                {
-                                                                    <tr class="@row.SelectedClass" @onclick="()=> OnClick_TR_ListView_Antardasha(row)" @ondblclick="()=> OnDblClick_TR_ListView_Antardasha(row)">
-                                                                        <td>@row.Planet</td>
-                                                                        <td>@row.Period</td>
-                                                                        <td>@row.Signi</td>
-                                                                    </tr>
-                                                                }
-                                                            </tbody>
-                                                        }
-                                                        else
-                                                        {
-                                                            <thead class="p-0 bg-da-yellow">
-                                                                <tr>
-                                                                    <th>Planet</th>
-                                                                    <th>Antar</th>
-                                                                    <th>Period</th>
-                                                                    <th>Age</th>
-                                                                </tr>
-                                                            </thead>
-                                                            @if (ListView_Years35 == null)
+                                                        <thead class="p-0 bg-da-yellow">
+                                                            <tr>
+                                                                <th>Planet</th>
+                                                                <th>Period</th>
+                                                                <th>Signi(Self/Nak)</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var row in ListView_Prayantardasha ?? new List<PrayantardashaTableTRModel>())
                                                             {
-                                                                <tbody class="data-loader">
-                                                                    <tr>
-                                                                        <td><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
-                                                                    </tr>
-                                                                    @for (int i = 0; i < 7; i++)
-                                                                    {
-                                                                        <tr>
-                                                                            <td>शुक्र</td>
-                                                                            <td>मंगल</td>
-                                                                            <td>
-                                                                                12 मई 2006 - 11 मई 2009
-                                                                            </td>
-                                                                            <td>1-3</td>
-                                                                        </tr>
-                                                                    }
-
-                                                                </tbody>
+                                                                <tr class="@row.SelectedClass" @onclick="()=> OnClick_TR_ListView_Prayantardasha(row)" @ondblclick="()=> OnDblClick_TR_ListView_Prayantardasha(row)">
+                                                                    <td>@row.Planet</td>
+                                                                    <td>@row.Period</td>
+                                                                    <td>@row.Signi</td>
+                                                                </tr>
                                                             }
-                                                            else
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-xl-3">
+                                    <div class="mahadasha-name mb-3">
+                                        <h5 class="font-weight-bold mb-0">सुक्ष्मदशा </h5>
+                                        <label class="mt-3 d-block"> @(new MarkupString(LblSukhsmadasha)) </label>
+                                    </div>
+                                    <div class="card mb-3 mb-xl-0">
+                                        <div class="chart-table">
+                                            <div class="table-responsive">
+                                                <h4 class="text-center font-weight-bold">सुक्ष्मदशा</h4>
+                                                <div style="height: 310px; overflow-y: auto;">
+                                                    <table class="table">
+                                                        <thead class="p-0 bg-da-yellow">
+                                                            <tr>
+                                                                <th>Planet</th>
+                                                                <th>Period</th>
+                                                                <th>Signi(Self/Nak)</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var row in ListView_Sukhsmadasha ?? new List<SukhsmadashaTableTRModel>())
                                                             {
-                                                                <tbody>
-                                                                    @foreach (var row in ListView_Years35 ?? new List<Years35TableTRModel>())
-                                                                    {
-                                                                        <tr class="@row.SelectedClass" @onclick="()=>OnClick_TR_ListView_Years35(row)" @ondblclick="()=> OnDblClick_TR_ListView_Years35(row)">
-                                                                            <td>@row.Planet</td>
-                                                                            <td>@row.Antar</td>
-                                                                            <td>@row.Period</td>
-                                                                            <td>@row.Age</td>
-                                                                        </tr>
-                                                                    }
-                                                                </tbody>
+                                                                <tr class="@row.SelectedClass" @onclick="()=>OnClick_TR_ListView_Sukhsmadasha(row)" @ondblclick="()=> OnDblClick_TR_ListView_Sukhsmadasha(row)">
+                                                                    <td>@row.Planet</td>
+                                                                    <td>@row.Period</td>
+                                                                    <td>@row.Signi</td>
+                                                                </tr>
                                                             }
-
-                                                        }
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
                                         </div>
-                                        </div>
-                                    </div>
-
-                                    @if (!BirthDetails.SalaChakkar)
-                                    {
-                                        <div class="col-lg-6 col-xl-3">
-
-                                            <div class="mahadasha-name mb-3">
-                                                <h5 class="font-weight-bold mb-0">प्र्यंतरदशा</h5>
-
-                                                <label class="mt-3 d-block">@(new MarkupString(LblParyan))</label>
-
-                                            </div>
-                                    <div class="card mb-3 mb-xl-0">
-                                        <div class="chart-table">
-                                                <div class="table-responsive">
-                                                    <h4 class="text-center font-weight-bold">प्र्यंतरदशा</h4>
-                                                    <div style="height: 310px; overflow-y: auto;">
-                                                        <table class="table">
-                                                            <thead class="p-0 bg-da-yellow">
-                                                                <tr>
-                                                                    <th>Planet</th>
-                                                                    <th>Period</th>
-                                                                    <th>Signi(Self/Nak)</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach (var row in ListView_Prayantardasha ?? new List<PrayantardashaTableTRModel>())
-                                                                {
-                                                                    <tr class="@row.SelectedClass" @onclick="()=> OnClick_TR_ListView_Prayantardasha(row)" @ondblclick="()=> OnDblClick_TR_ListView_Prayantardasha(row)">
-                                                                        <td>@row.Planet</td>
-                                                                        <td>@row.Period</td>
-                                                                        <td>@row.Signi</td>
-                                                                    </tr>
-                                                                }
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6 col-xl-3">
-                                            <div class="mahadasha-name mb-3">
-                                                <h5 class="font-weight-bold mb-0">सुक्ष्मदशा </h5>
-                                                <label class="mt-3 d-block"> @(new MarkupString(LblSukhsmadasha)) </label>
-                                            </div>
-                                    <div class="card mb-3 mb-xl-0">
-                                        <div class="chart-table">
-                                                <div class="table-responsive">
-                                                    <h4 class="text-center font-weight-bold">सुक्ष्मदशा</h4>
-                                                    <div style="height: 310px; overflow-y: auto;">
-                                                        <table class="table">
-                                                            <thead class="p-0 bg-da-yellow">
-                                                                <tr>
-                                                                    <th>Planet</th>
-                                                                    <th>Period</th>
-                                                                    <th>Signi(Self/Nak)</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach (var row in ListView_Sukhsmadasha ?? new List<SukhsmadashaTableTRModel>())
-                                                                {
-                                                                    <tr class="@row.SelectedClass" @onclick="()=>OnClick_TR_ListView_Sukhsmadasha(row)" @ondblclick="()=> OnDblClick_TR_ListView_Sukhsmadasha(row)">
-                                                                        <td>@row.Planet</td>
-                                                                        <td>@row.Period</td>
-                                                                        <td>@row.Signi</td>
-                                                                    </tr>
-                                                                }
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-
-                            @* Date Finder *@
-                            <div class="tab-pane fade" id="birthdetails-tabs-date-finder" role="tabpanel" aria-labelledby="birthdetails-tabs-date-finder-tab">
-                                <div class="row">
-                                    <div class="col-md-4 mb-3 mb-md-0">
-                                        <div class="date-finder">
-                                            <EditForm Model="DateFinder">
-                                                <div class="row mt-2">
-                                                    <div class="col">
-                                                        <div class="d-flex justify-content-between">
-                                                            <label> Choose Occassion</label>
-
-                                                            <div class="input-group occasion-selection">
-
-
-                                                                <input class="form-control" type="text" name="product" @bind="DateFinder!.Occassion" list="productName" />
-                                                                <div class="input-group-append">
-                                                                    <InputSelect @bind-Value="DateFinder!.Occassion" class="form-control custom-select" aria-label="Section of Occassion">
-                                                                        @foreach (var item in DateFinder.OccassionList)
-                                                                        {
-                                                                            <option value="@item.Text">@item.Text</option>
-                                                                        }
-                                                                    </InputSelect>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mt-2">
-                                                    <div class="col">
-                                                        <div class="d-flex justify-content-between">
-                                                            <div class="form-check">
-                                                                <InputCheckbox id="sahasane" class="form-check-input" @bind-Value="DateFinder!.Sahasane" />
-                                                                <label class="form-check-label" for="sahasane">Sahasane</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <InputCheckbox id="fullMatch" class="form-check-input" @bind-Value="DateFinder!.FullMatch" />
-                                                                <label class="form-check-label" for="fullMatch">Full match</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mt-3">
-                                                    <div class="col">
-                                                        <h6 class="font-weight-bold">Choose Period</h6>
-                                                        <div class="row">
-                                                            <InputRadioGroup Name="DateFinderChoosePeriod" @bind-Value="DateFinder!.Period">
-
-                                                                <div class="col">
-                                                                    <div class="form-check">
-                                                                        <InputRadio Value="Period.Maha" class="form-check-input" id="rbMaha" />
-                                                                        <label class="form-check-label" for="rbMaha">
-                                                                            Maha
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col">
-                                                                    <div class="form-check">
-                                                                        <InputRadio Value="Period.Antar" class="form-check-input" id="rbAntar" />
-                                                                        <label class="form-check-label" for="rbAntar">
-                                                                            Antar
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col">
-                                                                    <div class="form-check">
-                                                                        <InputRadio Value="Period.Pryan" class="form-check-input" id="rbPryan" />
-                                                                        <label class="form-check-label" for="rbPryan">
-                                                                            Pryan
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                            </InputRadioGroup>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mt-2">
-                                                    <div class="col">
-                                                        <div class="row">
-                                                            <InputRadioGroup Name="DateFinderDashaRadioButtons" @bind-Value="DateFinder!.Dasha">
-                                                                <div class="col">
-                                                                    <div class="form-check">
-                                                                        <InputRadio Value="Dasha.Dasha" class="form-check-input" id="rbDasha" />
-                                                                        <label class="form-check-label" for="rbDasha">
-                                                                            Dasha
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col">
-                                                                    <div class="form-check">
-                                                                        <InputRadio Value="Dasha.NakSwami" class="form-check-input" id="rbNakswami" />
-                                                                        <label class="form-check-label" for="rbNakswami">
-                                                                            Nak Swami
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col">
-                                                                    <div class="form-check">
-                                                                        <InputRadio Value="Dasha.Both" class="form-check-input" id="rbForBoth" />
-                                                                        <label class="form-check-label" for="rbForBoth">
-                                                                            Both
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                            </InputRadioGroup>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mt-3">
-                                                    <div class="col">
-                                                        <div class="d-flex flex-row-reverse">
-                                                            <button type="button" class="btn btn-custom" @onclick="OnClick_BtnShow_TabDateFinder">Show</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </EditForm>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-8">
-                                        <div class="date-finder">
-                                            <EditForm Model="DateFinder">
-                                                <InputTextArea class="form-control" rows="13" Placeholder="Date Lists ..." @bind-Value="DateFinder.DateList" />
-                                            </EditForm>
-                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
+                        </div>
+                    </div>
 
-                            @* Best Kundali Dates *@
-                            <div class="tab-pane fade " id="birthdetails-tabs-best-kundali-dates" role="tabpanel" aria-labelledby="birthdetails-tabs-best-kundali-dates-tab">
-                                <div class="row">
-                                    <div class="col-md-4 mb-3 mb-md-0">
+                    @* Date Finder *@
+                    <div class="tab-pane fade" id="birthdetails-tabs-date-finder" role="tabpanel" aria-labelledby="birthdetails-tabs-date-finder-tab">
+                        <div class="row">
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <div class="date-finder">
+                                    <EditForm Model="DateFinder">
+                                        <div class="row mt-2">
+                                            <div class="col">
+                                                <div class="d-flex justify-content-between">
+                                                    <label> Choose Occassion</label>
 
-                                        <div class="date-finder">
-                                            <EditForm Model="BestKundaliDates">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="row align-items-end mt-2">
-                                                            <div class="col-12">
-                                                                <h6 class="font-weight-bold">Starting Date and Time</h6>
-                                                            </div>
-                                                            <div class="col col-12 col-sm-6 col-md-12 col-lg-6 mb-2 mb-sm-0 mb-md-2 mb-lg-0">
-                                                                <div>
-                                                                    <InputDate @bind-Value="BestKundaliDates.Pick_start_date" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col col-12 col-sm-6 col-md-12 col-lg-6">
-                                                                <div>
-                                                                    <input type="time" @bind="BestKundaliDates.StartingTime" class="form-control" step="1" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-2">
-                                                    <div class="col">
-                                                        <div class="row align-items-end mt-2">
-                                                            <div class="col-12">
-                                                                <h6 class="font-weight-bold">Ending Date and Time</h6>
-                                                            </div>
-                                                            <div class="col col-12 col-sm-6 col-md-12 col-lg-6 mb-2 mb-sm-0 mb-md-2 mb-lg-0">
-                                                                <div>
-                                                                    <InputDate @bind-Value="BestKundaliDates.Pick_end_date" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col col-12 col-sm-6 col-md-12 col-lg-6">
-                                                                <div>
-                                                                    <input type="time" @bind="BestKundaliDates.EndingTime" class="form-control" step="1" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-3">
-                                                    <div class="col">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <label class="text-nowrap mr-3">Choose Rating</label>
-                                                            <InputSelect @bind-Value="BestKundaliDates.Comborating" class="form-control custom-select" aria-label="Selecttion of rating">
+                                                    <div class="input-group occasion-selection">
 
-                                                                @foreach (var item in BestKundaliDates.ComboratingSelect)
+
+                                                        <input class="form-control" type="text" name="product" @bind="DateFinder!.Occassion" list="productName" />
+                                                        <div class="input-group-append">
+                                                            <InputSelect @bind-Value="DateFinder!.Occassion" class="form-control custom-select" aria-label="Section of Occassion">
+                                                                @foreach (var item in DateFinder.OccassionList)
                                                                 {
                                                                     <option value="@item.Text">@item.Text</option>
                                                                 }
@@ -1073,55 +912,223 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
 
-                                                <div class="row mt-2 d-flex justify-content-between">
-                                                    <InputRadioGroup Name="KundaliDatesRadio" @bind-Value="BestKundaliDates!.KundaliDatesRadio">
+                                        <div class="row mt-2">
+                                            <div class="col">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="form-check">
+                                                        <InputCheckbox id="sahasane" class="form-check-input" @bind-Value="DateFinder!.Sahasane" />
+                                                        <label class="form-check-label" for="sahasane">Sahasane</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <InputCheckbox id="fullMatch" class="form-check-input" @bind-Value="DateFinder!.FullMatch" />
+                                                        <label class="form-check-label" for="fullMatch">Full match</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col">
+                                                <h6 class="font-weight-bold">Choose Period</h6>
+                                                <div class="row">
+                                                    <InputRadioGroup Name="DateFinderChoosePeriod" @bind-Value="DateFinder!.Period">
+
                                                         <div class="col">
                                                             <div class="form-check">
-                                                                <InputRadio Value="KundaliDatesRadio.Kp" class="form-check-input" id="rbKp" />
-                                                                <label class="form-check-label" for="rbKp">
-                                                                    KP
+                                                                <InputRadio Value="Period.Maha" class="form-check-input" id="rbMaha" />
+                                                                <label class="form-check-label" for="rbMaha">
+                                                                    Maha
                                                                 </label>
                                                             </div>
                                                         </div>
+
                                                         <div class="col">
                                                             <div class="form-check">
-                                                                <InputRadio Value="KundaliDatesRadio.RedBook" class="form-check-input" id="rbRedBook" />
-                                                                <label class="form-check-label" for="rbRedBook">
-                                                                    Red Book
+                                                                <InputRadio Value="Period.Antar" class="form-check-input" id="rbAntar" />
+                                                                <label class="form-check-label" for="rbAntar">
+                                                                    Antar
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col">
+                                                            <div class="form-check">
+                                                                <InputRadio Value="Period.Pryan" class="form-check-input" id="rbPryan" />
+                                                                <label class="form-check-label" for="rbPryan">
+                                                                    Pryan
                                                                 </label>
                                                             </div>
                                                         </div>
                                                     </InputRadioGroup>
                                                 </div>
-                                                <div class="row align-items-center">
+                                            </div>
+                                        </div>
 
-                                                    <div class="col">
-                                                        <label class="mb-0">
-                                                            @BestKundaliDates.countProcess
-                                                        </label>
+                                        <div class="row mt-2">
+                                            <div class="col">
+                                                <div class="row">
+                                                    <InputRadioGroup Name="DateFinderDashaRadioButtons" @bind-Value="DateFinder!.Dasha">
+                                                        <div class="col">
+                                                            <div class="form-check">
+                                                                <InputRadio Value="Dasha.Dasha" class="form-check-input" id="rbDasha" />
+                                                                <label class="form-check-label" for="rbDasha">
+                                                                    Dasha
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col">
+                                                            <div class="form-check">
+                                                                <InputRadio Value="Dasha.NakSwami" class="form-check-input" id="rbNakswami" />
+                                                                <label class="form-check-label" for="rbNakswami">
+                                                                    Nak Swami
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col">
+                                                            <div class="form-check">
+                                                                <InputRadio Value="Dasha.Both" class="form-check-input" id="rbForBoth" />
+                                                                <label class="form-check-label" for="rbForBoth">
+                                                                    Both
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </InputRadioGroup>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col">
+                                                <div class="d-flex flex-row-reverse">
+                                                    <button type="button" class="btn btn-custom" @onclick="OnClick_BtnShow_TabDateFinder">Show</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </EditForm>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+                                <div class="date-finder">
+                                    <EditForm Model="DateFinder">
+                                        <InputTextArea class="form-control" rows="13" Placeholder="Date Lists ..." @bind-Value="DateFinder.DateList" />
+                                    </EditForm>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Best Kundali Dates *@
+                    <div class="tab-pane fade " id="birthdetails-tabs-best-kundali-dates" role="tabpanel" aria-labelledby="birthdetails-tabs-best-kundali-dates-tab">
+                        <div class="row">
+                            <div class="col-md-4 mb-3 mb-md-0">
+
+                                <div class="date-finder">
+                                    <EditForm Model="BestKundaliDates">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="row align-items-end mt-2">
+                                                    <div class="col-12">
+                                                        <h6 class="font-weight-bold">Starting Date and Time</h6>
                                                     </div>
-
-                                                    <div class="col">
-
-                                                        <div class="d-flex flex-row-reverse">
-                                                            <button type="button" class="btn btn-custom" @onclick="OnClick_BtnShow_TabKundaliDates">Show</button>
+                                                    <div class="col col-12 col-sm-6 col-md-12 col-lg-6 mb-2 mb-sm-0 mb-md-2 mb-lg-0">
+                                                        <div>
+                                                            <InputDate @bind-Value="BestKundaliDates.Pick_start_date" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col col-12 col-sm-6 col-md-12 col-lg-6">
+                                                        <div>
+                                                            <input type="time" @bind="BestKundaliDates.StartingTime" class="form-control" step="1" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                            </EditForm>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-8">
-
-                                        <div class="date-finder">
-                                            <EditForm Model="BestKundaliDates">
-                                                <InputTextArea class="form-control" rows="13" Placeholder="Best Dates..." @bind-Value="BestKundaliDates.BestDate" />
-                                            </EditForm>
+                                        <div class="row mt-2">
+                                            <div class="col">
+                                                <div class="row align-items-end mt-2">
+                                                    <div class="col-12">
+                                                        <h6 class="font-weight-bold">Ending Date and Time</h6>
+                                                    </div>
+                                                    <div class="col col-12 col-sm-6 col-md-12 col-lg-6 mb-2 mb-sm-0 mb-md-2 mb-lg-0">
+                                                        <div>
+                                                            <InputDate @bind-Value="BestKundaliDates.Pick_end_date" class="form-control" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col col-12 col-sm-6 col-md-12 col-lg-6">
+                                                        <div>
+                                                            <input type="time" @bind="BestKundaliDates.EndingTime" class="form-control" step="1" style="border: 1px solid #ccc; padding: 2px; height: 30px;" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                        <div class="row mt-3">
+                                            <div class="col">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label class="text-nowrap mr-3">Choose Rating</label>
+                                                    <InputSelect @bind-Value="BestKundaliDates.Comborating" class="form-control custom-select" aria-label="Selecttion of rating">
+
+                                                        @foreach (var item in BestKundaliDates.ComboratingSelect)
+                                                        {
+                                                            <option value="@item.Text">@item.Text</option>
+                                                        }
+                                                    </InputSelect>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-2 d-flex justify-content-between">
+                                            <InputRadioGroup Name="KundaliDatesRadio" @bind-Value="BestKundaliDates!.KundaliDatesRadio">
+                                                <div class="col">
+                                                    <div class="form-check">
+                                                        <InputRadio Value="KundaliDatesRadio.Kp" class="form-check-input" id="rbKp" />
+                                                        <label class="form-check-label" for="rbKp">
+                                                            KP
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-check">
+                                                        <InputRadio Value="KundaliDatesRadio.RedBook" class="form-check-input" id="rbRedBook" />
+                                                        <label class="form-check-label" for="rbRedBook">
+                                                            Red Book
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </InputRadioGroup>
+                                        </div>
+                                        <div class="row align-items-center">
+
+                                            <div class="col">
+                                                <label class="mb-0">
+                                                    @BestKundaliDates.countProcess
+                                                </label>
+                                            </div>
+
+                                            <div class="col">
+
+                                                <div class="d-flex flex-row-reverse">
+                                                    <button type="button" class="btn btn-custom" @onclick="OnClick_BtnShow_TabKundaliDates">Show</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </EditForm>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+
+                                <div class="date-finder">
+                                    <EditForm Model="BestKundaliDates">
+                                        <InputTextArea class="form-control" rows="13" Placeholder="Best Dates..." @bind-Value="BestKundaliDates.BestDate" />
+                                    </EditForm>
                                 </div>
                             </div>
                         </div>
@@ -1129,6 +1136,8 @@
                 </div>
             </div>
         </div>
-   @* </section>
+    </div>
+</div>
+@* </section>
 </div>
    *@
