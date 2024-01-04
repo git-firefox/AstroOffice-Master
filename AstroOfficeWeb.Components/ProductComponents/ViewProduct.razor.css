@@ -23,6 +23,33 @@
         margin-bottom: 10px;
     }
 }
+@media (max-width:600px) {
+    .product-btn button {
+        font-size: 13px;
+    }
+    .product-maintitle{
+        font-size: 20px;
+    }
+    .product-mainsummary {
+        font-size: 20px;
+    }
+}
+@media (max-width:600px){
+    .product-size h2{
+        font-size:19px;
+    }
+    
+}
+@media (max-width:600px) {
+    .product-size h4 {
+        font-size: 17px;
+    }
+}
+@media (max-width:600px) {
+    .Category-tittle {
+        font-size: 17px;
+    }
+}
 
 
 /* .carousel-indicators button.thumbnail { */

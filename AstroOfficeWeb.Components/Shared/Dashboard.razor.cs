@@ -3206,9 +3206,9 @@ namespace AstroOfficeWeb.Components.Shared
             if (isConfirm)
             {
                 var base64Data = await GeneratePDF(htmlStringFalla, imgSrcBhavChalit, imgSrcLagan);
-                //string dataUrl = $"data:application/pdf;base64,{base64Data}";
-                await JSRuntime.OpenDocumentInNewTabAsync("falladesh.pdf", base64Data);
-                //NavigationManager!.NavigateTo($"/pdfdisplay?pdfData={Convert.ToBase64String(pdfBytes)}");
+                string dataUrl = $"data:application/pdf;base64,{base64Data}";
+                //await JSRuntime.OpenDocumentInNewTabAsync("falladesh.pdf", base64Data);
+                NavigationManager!.NavigateTo(dataUrl);
             }
         }
 
