@@ -1,5 +1,9 @@
-﻿const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+﻿document.addEventListener("DOMContentLoaded", (event) => {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    console.log("DOM fully loaded and parsed");
+});
+
 window.fnFocusBlazorElement = function (element) {
     if (element instanceof HTMLInputElement) {
         element.focus();
@@ -155,7 +159,7 @@ window.InputSelect2Interop = {
             theme: 'bootstrap4',
             width: '100%',
         };
-        
+
         if (dropdownParent != undefined || dropdownParent != null) {
             select2Config.dropdownParent = dropdownParent;
         }
@@ -177,7 +181,7 @@ window.InputSelect2Interop = {
 window.fnSummernoteInterop = function (element, height, dotnetObject) {
     if (element instanceof HTMLDivElement || element instanceof HTMLTextAreaElement) {
         $(element).summernote({
-            height: height, 
+            height: height,
             focus: true,
             fontNames: ['Philosopher'],
             fontNamesIgnoreCheck: ['Philosopher'],
@@ -185,7 +189,7 @@ window.fnSummernoteInterop = function (element, height, dotnetObject) {
                 onInit: function () {
                     console.log('Summernote is launched');
                 },
-                onChange: function (contents, $editable) {       
+                onChange: function (contents, $editable) {
                     var cleanHtml = DOMPurify.sanitize(contents, {
                         ALLOWED_ATTR: []
                         //ALLOWED_ATTR: function (attr) {

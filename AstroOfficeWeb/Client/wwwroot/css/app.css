@@ -192,10 +192,22 @@ input[type=number] {
     transition: transform 500ms ease-in-out;
 }
 
-.icon-change:has(a.active)::after {
-    width: 5px;
-    background: #f2aa36;
+.icon-change:has(a.active) {
+    position: relative;
+    display: inline-block;
 }
+
+    .icon-change:has(a.active)::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 8px;
+        height: 8px;
+        background-color: #f2aa36;
+        border-radius: 50%;
+        display: block;
+    }
 
 .icon-change:has(a.active) img {
     transform: translateX(-180%);
@@ -274,7 +286,7 @@ input[type=number] {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Varela Round", sans-serif;
+    /*font-family: "Varela Round", sans-serif;*/
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -287,14 +299,14 @@ input[type=number] {
     }
 
 .mobile-nav {
-    /* position: fixed; */
+    /*position: fixed;*/
     bottom: 0;
     width: 100%;
     /* padding: 24px; */
     /* max-width: 500px; */
     margin: 0 auto;
-    left: 0;
-    right: 0;
+    /*left: 0;*/
+    /*right: 0;*/
 }
 
 .m-nav-box {
@@ -514,18 +526,19 @@ input[type=number] {
         color: whitesmoke;
     }
 
+
+/* astro-report css */
 .astro-report .card {
     border: 0;
 }
+
 .astro-report .card-body, .astro-report .card-header {
     background: var(--a-bg-primary);
-    
 }
 
 /*.astro-report .card-header {
     color: whitesmoke;
 }*/
-
 
 .astro-report .nav-item:hover {
     background: none;
@@ -534,18 +547,21 @@ input[type=number] {
 .astro-report .card-header-tabs .nav-link:hover {
     color: whitesmoke;
     background-color: #6b0000;
+    border-bottom-width: medium;
 }
 
 
 .astro-report .card-header-tabs .nav-link {
     color: whitesmoke;
     width: 200px;
-    border: 1px;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
 }
 
     .astro-report .card-header-tabs .nav-link.active {
-        /*color: whitesmoke;*/
-        --bs-card-bg: var(--a-text-primary);
-        --bs-nav-tabs-link-active-border-color: var(--a-text-secondary);
-        border-bottom: whitesmoke solid 2px;
+        --bs-card-bg: transparent;
+        font-weight: bold;
+        border-bottom-width: medium;
+        border-bottom-color: whitesmoke;
     }

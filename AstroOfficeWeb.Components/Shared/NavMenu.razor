@@ -146,23 +146,26 @@
                 </AuthorizeView>
 
                 @* Mobile View Dropdown *@
-                <AuthorizeView Roles="@ApplicationConst.Role_User">
-                    <NotAuthorized>
+                <AuthorizeView>
+                    <Authorized>
                         <div class="dropdown d-block d-md-none nav-profile-menu-item">
                             <a class="" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img class="ms-2 icon-white" height="25" src="icons/dots.png" alt="grid-3x3" />
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                                <li><a class="dropdown-item" href="/viewed-kundalis">Viewed Kundalis</a></li>
-                                <li><a class="dropdown-item" href="/token-recharge">Token Recharge</a></li>
-                                <li><a class="dropdown-item" href="/saved-kundalis">Saved Kundalis</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Logout</a></li>
+                                @if (!context.User.IsInRole(ApplicationConst.Role_ProductManager))
+                                {
+                                    <li><a class="dropdown-item" href="/viewed-kundalis"><img class="icon-height mx-2" src="icons/tarot-fill.png" alt="Viewed Kundali" />Viewed Kundalis</a></li>
+                                    <li><a class="dropdown-item" href="/token-recharge"><img class="icon-height mx-2" src="icons/magic-ball-fill.png" alt="Saved Kundali" />Token Recharge</a></li>
+                                    <li><a class="dropdown-item" href="/saved-kundalis"><img class="icon-height mx-2" src="icons/transaction.png" alt="Transaction History" />Saved Kundalis</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                }
+                                <li><a class="dropdown-item" href="/logout"><img class="icon-height mx-2" src="icons/log-out.png" alt="Logout" />Logout</a></li>
                             </ul>
                         </div>
-                    </NotAuthorized>
+                    </Authorized>
                 </AuthorizeView>
 
                 @* Web View MD Dropdown *@
