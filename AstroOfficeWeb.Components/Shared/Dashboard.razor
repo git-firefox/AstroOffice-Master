@@ -33,7 +33,7 @@
                 <EditForm Model="BirthDetails">
                     <div class="row row-cols-sm-3 gy-2">
                         <!-- TxtName InputText -->
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-md-6">
                             @if (IsAdmin || UserCanEdit)
                             {
                                 <InputText @bind-Value="BirthDetails!.TxtName" class="form-control form-control-sm" />
@@ -149,7 +149,7 @@
                         </div>
 
                         <!-- SkipBad Select -->
-                        <div class="col-6 col-md-3">
+                        <div class="col-6 col-md-4">
                             <select class="form-select form-select-sm" aria-label="Select SkipBad " title="Skip Bad" @onchange="OnChange_CmbSkipBad" value="@BirthDetails!.CmbSkipBad">
                                 @foreach (var item in BirthDetailsLookups.SkipBadItems)
                                 {
@@ -159,7 +159,7 @@
                         </div>
 
                         <!-- CmbTime Select -->
-                        <div class="col-6 col-md-3">
+                        <div class="col-6 col-md-4">
                             <select class="form-select form-select-sm" aria-label="Select Time" title="Time" @onchange="OnChange_CmbTime" value="@BirthDetails!.CmbTime">
                                 @foreach (var item in BirthDetailsLookups.CmbTimeItems)
                                 {

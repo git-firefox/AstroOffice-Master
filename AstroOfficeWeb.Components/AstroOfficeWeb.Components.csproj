@@ -16,6 +16,7 @@
 	<ItemGroup>
 		<Content Remove="MyComponents\FaladeshModal.razor" />
 		<Content Remove="SavedKundalis.razor" />
+		<Content Remove="wwwroot\backgrounds\astro-background.webp" />
 	</ItemGroup>
 
 
@@ -37,6 +38,11 @@
 
 	<ItemGroup>
 		<Folder Include="CustomFormInputs\CustomInputs\" />
+		<Folder Include="wwwroot\loaders\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="wwwroot\backgrounds\astro-background.webp" />
 	</ItemGroup>
 
 	<ItemGroup>
