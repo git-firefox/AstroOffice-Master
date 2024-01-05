@@ -4,9 +4,15 @@
 @attribute [Authorize]
 
 <AuthorizeView Roles="ManageProduct">
-    <AstroOfficeWeb.Client.Pages.Product.ManageProducts></AstroOfficeWeb.Client.Pages.Product.ManageProducts>
+    <FluidPageLayout Title="Products">
+        <ChildContent>
+            <AstroOfficeWeb.Client.Pages.Product.ManageProducts></AstroOfficeWeb.Client.Pages.Product.ManageProducts>
+        </ChildContent>
+    </FluidPageLayout>
 </AuthorizeView>
 <AuthorizeView Roles=@("User, Admin" + ',' + ApplicationConst.Role_Astrologer)>
-    <Dashboard></Dashboard>
+    <FluidPageLayout Title="Report">
+        <Dashboard />
+    </FluidPageLayout>
 </AuthorizeView>
 

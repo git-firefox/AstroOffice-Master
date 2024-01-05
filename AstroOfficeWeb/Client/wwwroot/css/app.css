@@ -3,7 +3,7 @@
     --a-bg-secondary: linear-gradient(90deg, #e9af00, #cf9c00, #b58800);
     --a-bg-primary-2: hsla(38, 100%, 70%, 1);
     --a-bg-table-head: rgb(3, 26, 42);
-    --a-bg-btn-custom: rgb(3, 26, 42);
+    --a-bg-btn-custom: rgb(8, 73, 118);
     --a-text-primary: #910d0d;
     --a-text-secondary: rgb(233, 175, 0);
     --a-text-primary-2: rgb(3, 26, 42);
@@ -436,8 +436,8 @@ input[type=number] {
 .btn-custom {
     background: var(--a-bg-btn-custom);
     color: #fff;
-    border: 1px solid var(--a-bg-btn-custom);
-    box-shadow: none;
+    /*border: 1px solid var(--a-bg-btn-custom);
+    box-shadow: none;*/
 }
 
     .btn-custom:hover {
@@ -450,24 +450,24 @@ input[type=number] {
     .show > .btn-custom.dropdown-toggle {
         color: #fff;
         border-color: #17384e;
-        background-color: #17384ede;
+        background-color: rgb(3, 26, 42);
     }
 
 .btn-outline-custom {
     color: #17384e;
-    border-color: #17384e
+    border-color: var(--a-bg-btn-custom);
 }
 
     .btn-outline-custom:not(:disabled):not(.disabled).active,
     .btn-outline-custom:not(:disabled):not(.disabled):active {
         color: #fff;
         border-color: #17384e;
-        background-color: #17384ede;
+        background-color: #17384e;
     }
 
     .btn-outline-custom:hover {
         color: #fff;
-        background-color: #17384e;
+        background-color: var(--a-bg-btn-custom);
         border: 1px solid #17384e;
     }
 
@@ -522,7 +522,7 @@ input[type=number] {
 }
 
     .astro-report-kundali-table .table thead * {
-        background-color: var(--a-bg-table-head);
+        background-color: var(--a-bg-btn-custom);
         color: whitesmoke;
     }
 
