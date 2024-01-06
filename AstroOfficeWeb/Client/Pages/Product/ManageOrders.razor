@@ -3,45 +3,8 @@
 @inject NavigationManager NavigationManager
 @inject StateContainerService StateContainerService
 
-<ContainerFluid HeaderTitle="Manage Orders">
-    @* <Header>
-        <button class="btn btn-custom">Export</button>
-    </Header> *@
+  <FluidPageLayout Title="Manage Orders">
     <ChildContent>
-        @if (OrderDTOs == null)
-        {
-            for (int row = 0; row < 10; row++)
-            {
-                <MudSkeleton />
-            }
-        }
-        else
-        {
-            <MudDataGrid T="OrderDTO" Items="OrderDTOs" Filterable="true" FilterMode="DataGridFilterMode.ColumnFilterRow" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive">
-                <Columns>
-                    <PropertyColumn Property="x => x.OrderId" Title="Sr No" Filterable="false" />
-                    <PropertyColumn Property="x => x.BillingName" Title="Billing Name" />
-                    <PropertyColumn Property="x => x.Date" Format="MMM dd yyyy" />
-                    <PropertyColumn Property="x => x.PaymentStatus" Title="Payment Status" />
-                    <PropertyColumn Property="x => x.Total" />
-                    <PropertyColumn Property="x => x.PaymentMethod" Title="Payment Method" />
-                    <PropertyColumn Property="x => x.OrderStatus" Title="Order Status" />
-                    <TemplateColumn CellClass="d-flex justify-end" Filterable="false">
-                        <CellTemplate>
-                            <MudStack Row>
-                                <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye" aria-label="view" OnClick="()=>OnClick_BtnViewOrder(context.Item)" />
-                                @* <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="()=>OnClick_BtnViewOrder(context.Item)" /> *@
-                                @* <MudIconButton Icon="@Icons.Material.Filled.ModeEdit" aria-label="delete" OnClick="()=>OnClick_BtnViewOrder(context.Item)" /> *@
-                            </MudStack>
-                        </CellTemplate>
-                    </TemplateColumn>
-                </Columns>
-                <PagerContent>
-                    <MudDataGridPager T="OrderDTO" />
-                </PagerContent>
-            </MudDataGrid>
-        }
+        <AstroOfficeWeb.Components.ProductComponents.ManageOrders />
     </ChildContent>
-</ContainerFluid>
-
-
+</FluidPageLayout>

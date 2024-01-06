@@ -15,6 +15,13 @@
 
 	<ItemGroup>
 	  <Compile Remove="Pages\Dashboard.razor.cs" />
+	  <Compile Remove="Pages\Product\ProductCheckout.razor.cs" />
+	  <Compile Remove="Pages\Product\SaveProduct.razor.cs" />
+	  <Compile Remove="Pages\Product\UserOrders.razor.cs" />
+	  <Compile Remove="Pages\Product\UserWishlist.razor.cs" />
+	  <Compile Remove="Pages\Product\ViewOrder.razor.cs" />
+	  <Compile Remove="Pages\Product\ViewProduct.razor.cs" />
+	  <Compile Remove="Pages\Product\ViewProducts.razor.cs" />
 	  <Compile Remove="Services\AccountService.cs" />
 	  <Compile Remove="Services\BestBLLService.cs" />
 	  <Compile Remove="Services\IService\ISwaggerApiService.cs" />

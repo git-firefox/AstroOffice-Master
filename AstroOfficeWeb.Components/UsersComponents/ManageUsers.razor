@@ -1,0 +1,94 @@
+﻿@using System.ComponentModel.DataAnnotations
+
+@inject IDialogService Dialog
+@inject AccountService Account
+
+<MudDrawer @bind-Open="IsDrawerOpen" Width="500px" Height="100%" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
+    <MudDrawerHeader>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudStack Justify="Justify.SpaceBetween" Row="true">
+                    <MudText Typo="Typo.h6">
+                        @DrawerTitle
+                    </MudText>
+                    <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Primary" Size="Size.Small" OnClick="()=>OnClick_BtnAction()" />
+                </MudStack>
+            </MudItem>
+        </MudGrid>
+    </MudDrawerHeader>
+    <MudDrawerContainer>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudPaper Elevation="0" Class="pa-4">
+                    <MudForm @ref="Form" @bind-IsValid="@IsSaveUserFormValid">
+                        <MudTextField T="string" @bind-Value="SaveUserModel.UserName" Label="Username" Required="true" RequiredError="User name is required!"></MudTextField>
+                        @* <MudTextField T="string" Label="Email" Required="true" RequiredError="Email is required!" Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})"></MudTextField> *@
+
+                        <MudTextField T="string" @bind-Value="SaveUserModel.Password" Label="Password" HelperText="Choose a strong password" InputType="InputType.Password" Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true" RequiredError="Password is required!"></MudTextField>
+
+                        <MudTextField T="string" @bind-Value="SaveUserModel.RetypePassword" Label="Password" HelperText="Repeat the password" InputType="InputType.Password" Validation="@(new Func<string, string?>(PasswordMatch))"></MudTextField>
+
+                        <MudTextField T="string" @bind-Value="SaveUserModel.MobileNumber" Label="MobileNumber" HelperText="Repeat the MobileNumber"></MudTextField>
+
+                        <MudCheckBox @bind-Value="SaveUserModel.CanAdd" Label="Can Add"></MudCheckBox>
+
+                        <MudCheckBox @bind-Value="SaveUserModel.CanEdit" Label="Can Edit"></MudCheckBox>
+
+                        <MudCheckBox @bind-Value="SaveUserModel.CanReport" Label="Can Report"></MudCheckBox>
+
+                        <MudSelect T="UserRole" @bind-Value="SaveUserModel.Role" Label="Role">
+                            @foreach (UserRole option in Enum.GetValues(typeof(UserRole)))
+                            {
+                                <MudSelectItem Value="option">@option.ToString()</MudSelectItem>
+                            }
+                        </MudSelect>
+
+                        <MudSelect T="UserStatus" @bind-Value="SaveUserModel.Status" Label="Status">
+                            @foreach (UserStatus option in Enum.GetValues(typeof(UserStatus)))
+                            {
+                                <MudSelectItem Value="option">@option.ToString()</MudSelectItem>
+                            }
+                        </MudSelect>
+
+                        <MudStack Justify="Justify.SpaceBetween" Row="true" Class="py-4">
+                            <MudPaper Elevation="0"><MudButton ButtonType=ButtonType.Button Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="OnClick_BtnClose">Cancel</MudButton></MudPaper>
+                            <MudPaper Elevation="0"><MudButton ButtonType=ButtonType.Button Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(()=>Form.ResetValidation())">Reset Validation</MudButton></MudPaper>
+                            <MudPaper Elevation="0"><MudButton ButtonType=ButtonType.Button Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="OnClick_BtnSave" Disabled="@(!IsSaveUserFormValid)">Save</MudButton></MudPaper>
+                        </MudStack>
+                    </MudForm>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudDrawerContainer>
+</MudDrawer>
+
+<ContainerFluid HeaderTitle="Manage User">
+    <Header>
+        <MudButton Variant="Variant.Text" Class="btn-custom" OnClick="()=>OnClick_BtnAction(FormMode.Add)">Add User</MudButton>
+    </Header>
+    <ChildContent>
+        <MudDataGrid T=UserViewModel Items=Users Filterable="true" FilterMode="DataGridFilterMode.ColumnFilterRow" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive">
+            <Columns>
+                <PropertyColumn Property="x => x.Sno" Title="Sno" Filterable="false" Sortable="false" />
+                <PropertyColumn Property="x => x.UserName" Title="User Name" />
+                <PropertyColumn Property="x => x.Role" Title="Role" />
+                <PropertyColumn Property="x => x.MobileNumber" Title="Mobile Number" />
+                <PropertyColumn Property="x => x.Status" Title="Status" />
+                <TemplateColumn CellClass="d-flex justify-end" Filterable="false" Sortable="false">
+                    <CellTemplate>
+                        <MudStack Row=true>
+                            <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye" aria-label="View user info" OnClick="()=>OnClick_BtnAction(FormMode.View, context.Item )" />
+                            <MudIconButton Icon="@Icons.Material.Filled.ModeEdit" aria-label="Edit user info" OnClick="()=>OnClick_BtnAction(FormMode.Edit, context.Item )" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="Delete user" OnClick="()=>OnClick_BtnAction(FormMode.Delete, context.Item)" />
+                        </MudStack>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+            <PagerContent>
+                <MudDataGridPager T="UserViewModel" />
+            </PagerContent>
+        </MudDataGrid>
+    </ChildContent>
+</ContainerFluid>
+
+

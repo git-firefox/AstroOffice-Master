@@ -16,6 +16,9 @@ body {
     background-image: var(--a-bg-image);
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment:fixed;
+    /*width: 100vw;
+    height: 100vh;*/
 }
 
 header {
@@ -581,3 +584,35 @@ input[type=number] {
         border-bottom-width: medium;
         border-bottom-color: whitesmoke;
     }
+
+.hr-custom {
+    max-width: 200px;
+    height: 2px;
+    background: #f2c034;
+}
+
+.hr-dot {
+    position: relative;
+    height: 2px;
+    background: #f2c034;
+}
+
+    .hr-dot::before,
+    .hr-dot::after {
+        content: '';
+        position: absolute;
+        height: 10px;
+        width: 10px;
+        background: #f2c034;
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .hr-dot::before {
+        left: 0px;
+    }
+
+    .hr-dot::after {
+        right: 0px;
+    } 

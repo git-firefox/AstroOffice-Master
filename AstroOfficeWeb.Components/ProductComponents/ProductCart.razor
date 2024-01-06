@@ -1,204 +1,193 @@
-﻿@page "/product-cart"
-@page "/shopping-cart"
-@using AstroOfficeWeb.Services
-
-@inject ProductService ProductService
+﻿@inject ProductService ProductService
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
 
-<div class="container p-3">
-    <div class="d-flex justify-content-between">
-        <h1 class="pt-4 pb-2 font-weight-bold"> Shopping cart </h1>
 
-        @if (CartItems != null && CartItems.Any())
-        {
-            <div class="pt-4 pb-2 ">
-                <a href="products" class="btn btn-custom fw-semibold"><i class="fas fa-arrow-left px-2"></i> Continue Shopping</a>
-            </div>
-        }
+@if (CartItems != null && CartItems.Any())
+{
+    <div class="pt-4 pb-2 ">
+        <a href="products" class="btn btn-custom fw-semibold"><i class="fas fa-arrow-left px-2"></i> Continue Shopping</a>
     </div>
+}
 
-    <section class="content">
-        @if (CartItems == null)
-        {
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card bg-product-cart">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="500px" />
 
-                                    <!-- Add note input-->
-                                    <div class="mt-3">
+@if (CartItems == null)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card bg-product-cart">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="500px" />
 
-                                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="200px" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="500px" />
-                                </div>
+                            <!-- Add note input-->
+                            <div class="mt-3">
+
+                                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="200px" />
                             </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="500px" />
                         </div>
                     </div>
                 </div>
             </div>
-        }
-        else if (CartItems.Any())
-        {
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card bg-product-cart">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-lg-9">
-                                    <div>
-                                        <div class="table-responsive">
-                                            <table class="table table-centered mb-0 table-nowrap">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th style="width: 80px;">Product</th>
-                                                        <th>Product Desc</th>
-                                                        <th>Price</th>
-                                                        <th>Quantity</th>
-                                                        <th colspan="2">Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+        </div>
+    </div>
+}
+else if (CartItems.Any())
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card bg-product-cart">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div>
+                                <div class="table-responsive">
+                                    <table class="table table-centered mb-0 table-nowrap">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th style="width: 80px;">Product</th>
+                                                <th>Product Desc</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th colspan="2">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                                    @foreach (var cartItem in CartItems)
-                                                    {
-                                                        <tr>
-                                                            <td>
-                                                                <img src="@cartItem.ProductImageSrc" alt="@cartItem.ProductName" title="@cartItem.ProductName" class="avatar-lg" />
-                                                            </td>
-                                                            <td>
-                                                                <h5 class="mt-0 mb-1 text-truncate"><a href=@($"product/{cartItem.ProductSno}/{cartItem.ProductName.Replace(" ", "-")}") class="text-body">@cartItem.ProductName</a></h5>
-                                                                <p class="mb-0">Category : <span class="fw-medium">Astro Products</span></p>
-                                                            </td>
-                                                            <td>
-                                                                <i class="fas fa-rupee-sign"></i> @cartItem.ProductPrice.ToString("F2")
-                                                            </td>
-                                                            <td>
-                                                                <MudButtonGroup Size="Size.Small" Color="Color.Primary" Variant="Variant.Filled" Class="wi" DisableElevation>
+                                            @foreach (var cartItem in CartItems)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <img src="@cartItem.ProductImageSrc" alt="@cartItem.ProductName" title="@cartItem.ProductName" class="avatar-lg" />
+                                                    </td>
+                                                    <td>
+                                                        <h5 class="mt-0 mb-1 text-truncate"><a href=@($"product/{cartItem.ProductSno}/{cartItem.ProductName.Replace(" ", "-")}") class="text-body">@cartItem.ProductName</a></h5>
+                                                        <p class="mb-0">Category : <span class="fw-medium">Astro Products</span></p>
+                                                    </td>
+                                                    <td>
+                                                        <i class="fas fa-rupee-sign"></i> @cartItem.ProductPrice.ToString("F2")
+                                                    </td>
+                                                    <td>
+                                                        <MudButtonGroup Size="Size.Small" Color="Color.Primary" Variant="Variant.Filled" Class="wi" DisableElevation>
 
-                                                                 <MudIconButton @onclick="() => OnClick_UpdateQuantity(cartItem, -1)" Icon="@Icons.Material.Filled.Remove" Title="Decrease">
+                                                         <MudIconButton @onclick="() => OnClick_UpdateQuantity(cartItem, -1)" Icon="@Icons.Material.Filled.Remove" Title="Decrease">
 
-                                                                 </MudIconButton>
-                                                                 <MudButton Disabled>
-                                                                     @cartItem.ProductQuantity
-                                                                    </MudButton>
+                                                         </MudIconButton>
+                                                         <MudButton Disabled>
+                                                             @cartItem.ProductQuantity
+                                                            </MudButton>
 
-                                                                    <MudIconButton @onclick="() => OnClick_UpdateQuantity(cartItem, +1)" Icon="@Icons.Material.Filled.Add" Title="Increase">
+                                                            <MudIconButton @onclick="() => OnClick_UpdateQuantity(cartItem, +1)" Icon="@Icons.Material.Filled.Add" Title="Increase">
 
-                                                                    </MudIconButton>
-                                                                </MudButtonGroup>
+                                                            </MudIconButton>
+                                                        </MudButtonGroup>
 
-                                                            </td>
-                                                            <td>
-                                                                <i class="fas fa-rupee-sign"></i> @((cartItem.ProductPrice * cartItem.ProductQuantity).ToString("F2"))
-                                                            </td>
-                                                            <td>
-                                                                <MudIconButton Color="Color.Error" OnClick="() =>OnClick_ARemoveItem(cartItem)" Title="@("Remove \"" + cartItem.ProductName + "\"")" Icon="@Icons.Material.Filled.Delete" aria-label="delete"></MudIconButton>
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                        <!-- Add note input-->
-                                        <div class="mt-3">
-                                            <label for="example-textarea" class="form-label">Add a Note:</label>
-                                            <textarea class="form-control" id="example-textarea" rows="3" placeholder="Write some note.."></textarea>
-                                        </div>
-
-                                        <!-- action buttons-->
-                                        <div class="row mt-4">
-                                            <div class="col-sm-6"></div>
-                                            <div class="col-sm-6">
-                                                <div class="text-sm-end">
-                                                    <button class="btn btn-danger" @onclick="OnClik_BtnCheckout"><i class="fas fa-cart-plus"></i> Checkout </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                    </td>
+                                                    <td>
+                                                        <i class="fas fa-rupee-sign"></i> @((cartItem.ProductPrice * cartItem.ProductQuantity).ToString("F2"))
+                                                    </td>
+                                                    <td>
+                                                        <MudIconButton Color="Color.Error" OnClick="() =>OnClick_ARemoveItem(cartItem)" Title="@("Remove \"" + cartItem.ProductName + "\"")" Icon="@Icons.Material.Filled.Delete" aria-label="delete"></MudIconButton>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
                                 </div>
 
-                                <div class="col-lg-3">
-                                    <div class="border p-3 mt-4 mt-lg-0 rounded">
-                                        <h4 class="header-title mb-3">Order Summary</h4>
+                                <!-- Add note input-->
+                                <div class="mt-3">
+                                    <label for="example-textarea" class="form-label">Add a Note:</label>
+                                    <textarea class="form-control" id="example-textarea" rows="3" placeholder="Write some note.."></textarea>
+                                </div>
 
-                                        <div class="table-responsive">
-                                            <table class="table mb-0">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Grand Total :</td>
-                                                        <td><i class="fas fa-rupee-sign"></i> @OrderSummary.GrandTotal.ToString("F2")</td>
-                                                    </tr>
-
-                                                    @if (OrderSummary.Discount != 0)
-                                                    {
-                                                        <tr>
-                                                            <td>@OrderSummary.DiscountPercentage <i class="fas fa-percentage"></i> Discount  : </td>
-                                                            <td>- <i class="fas fa-rupee-sign"></i> @OrderSummary.Discount.ToString("F2")</td>
-                                                        </tr>
-                                                    }
-
-                                                    @if (OrderSummary.ShippingCharge != 0)
-                                                    {
-                                                        <tr>
-                                                            <td>@OrderSummary.ShippingChargePercentage <i class="fas fa-percentage"></i>  Shipping Charge :</td>
-                                                            <td><i class="fas fa-rupee-sign"></i> @OrderSummary.ShippingCharge.ToString("F2")</td>
-                                                        </tr>
-                                                    }
-
-                                                    <tr>
-                                                        <td>@OrderSummary.EstimatedTaxPercentage <i class="fas fa-percentage"></i> Estimated Tax : </td>
-                                                        <td><i class="fas fa-rupee-sign"></i> @OrderSummary.EstimatedTax.ToString("F2")</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Total :</th>
-                                                        <th><i class="fas fa-rupee-sign"></i> @OrderSummary.Total.ToString("F2")</th>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                <!-- action buttons-->
+                                <div class="row mt-4">
+                                    <div class="col-sm-6"></div>
+                                    <div class="col-sm-6">
+                                        <div class="text-sm-end">
+                                            <button class="btn btn-danger" @onclick="OnClik_BtnCheckout"><i class="fas fa-cart-plus"></i> Checkout </button>
                                         </div>
-                                        <!-- end table-responsive -->
                                     </div>
-
-                                    @* <div class="alert alert-warning mt-3" role="alert">
-                                Use coupon code <strong>MNTF25</strong> and get 25% discount !
-                                </div> *@
-
-                                    @* <div class="input-group mt-3">
-                                <input type="text" class="form-control form-control-light" placeholder="Coupon code" aria-label="Recipient's username">
-                                <button class="input-group-text btn btn-light" type="button">Apply</button>
-                                </div> *@
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="border p-3 mt-4 mt-lg-0 rounded">
+                                <h4 class="header-title mb-3">Order Summary</h4>
+
+                                <div class="table-responsive">
+                                    <table class="table mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td>Grand Total :</td>
+                                                <td><i class="fas fa-rupee-sign"></i> @OrderSummary.GrandTotal.ToString("F2")</td>
+                                            </tr>
+
+                                            @if (OrderSummary.Discount != 0)
+                                            {
+                                                <tr>
+                                                    <td>@OrderSummary.DiscountPercentage <i class="fas fa-percentage"></i> Discount  : </td>
+                                                    <td>- <i class="fas fa-rupee-sign"></i> @OrderSummary.Discount.ToString("F2")</td>
+                                                </tr>
+                                            }
+
+                                            @if (OrderSummary.ShippingCharge != 0)
+                                            {
+                                                <tr>
+                                                    <td>@OrderSummary.ShippingChargePercentage <i class="fas fa-percentage"></i>  Shipping Charge :</td>
+                                                    <td><i class="fas fa-rupee-sign"></i> @OrderSummary.ShippingCharge.ToString("F2")</td>
+                                                </tr>
+                                            }
+
+                                            <tr>
+                                                <td>@OrderSummary.EstimatedTaxPercentage <i class="fas fa-percentage"></i> Estimated Tax : </td>
+                                                <td><i class="fas fa-rupee-sign"></i> @OrderSummary.EstimatedTax.ToString("F2")</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Total :</th>
+                                                <th><i class="fas fa-rupee-sign"></i> @OrderSummary.Total.ToString("F2")</th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- end table-responsive -->
+                            </div>
+
+                            @* <div class="alert alert-warning mt-3" role="alert">
+                        Use coupon code <strong>MNTF25</strong> and get 25% discount !
+                        </div> *@
+
+                            @* <div class="input-group mt-3">
+                        <input type="text" class="form-control form-control-light" placeholder="Coupon code" aria-label="Recipient's username">
+                        <button class="input-group-text btn btn-light" type="button">Apply</button>
+                        </div> *@
                         </div>
                     </div>
                 </div>
             </div>
-        }
-        else
-        {
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card shadow-none bg-transparent">
-                        <div class="card-body">
-                            <div class="col-sm-12 text-center">
-                                <img src="images/cart.png" width="130" height="130" class="img-fluid mb-4 mr-3">
-                                <h3><strong>Your Cart is Empty</strong></h3>
-                                <h4>Add something to make me happy :)</h4>
-                                <a href="products" class="btn btn-custom fw-semibold"><i class="fas fa-arrow-left px-2"></i> Continue Shopping</a>
-                            </div>
-                        </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-none bg-transparent">
+                <div class="card-body">
+                    <div class="col-sm-12 text-center">
+                        <img src="images/cart.png" width="130" height="130" class="img-fluid mb-4 mr-3">
+                        <h3><strong>Your Cart is Empty</strong></h3>
+                        <h4>Add something to make me happy :)</h4>
+                        <a href="products" class="btn btn-custom fw-semibold"><i class="fas fa-arrow-left px-2"></i> Continue Shopping</a>
                     </div>
                 </div>
             </div>
-        }
-
-    </section>
-</div>
+        </div>
+    </div>
+}

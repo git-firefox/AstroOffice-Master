@@ -1,7 +1,8 @@
 ﻿@page "/"
-@using AstroOfficeWeb.Components.Shared
 
 @attribute [Authorize]
+
+@inject NavigationManager Navigation
 
 <AuthorizeView Roles="ManageProduct">
     <FluidPageLayout Title="Products">
@@ -10,9 +11,9 @@
         </ChildContent>
     </FluidPageLayout>
 </AuthorizeView>
+
 <AuthorizeView Roles=@("User, Admin" + ',' + ApplicationConst.Role_Astrologer)>
     <FluidPageLayout Title="Report">
-        <Dashboard />
+        <AstroOfficeWeb.Components.HomeComponents.Report />
     </FluidPageLayout>
 </AuthorizeView>
-

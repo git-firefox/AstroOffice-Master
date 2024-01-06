@@ -38,6 +38,7 @@
 
 	<ItemGroup>
 		<Folder Include="CustomFormInputs\CustomInputs\" />
+		<Folder Include="Temp\" />
 		<Folder Include="wwwroot\loaders\" />
 	</ItemGroup>
 

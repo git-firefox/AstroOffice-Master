@@ -11,59 +11,56 @@
 
 <ConfirmationModal @ref="Confirmation" OnConfirmationChanged="OnConfirmationChanged" Message="Are you sure you want to delete this Product?"></ConfirmationModal>
 
-<div class="container-fluid p-3">
-    <div class="d-flex justify-content-between">
-        <h1 class="pt-4 pb-2 font-weight-bold">Manage Products</h1>
-        <div class="pt-4 pb-2 "><button class="btn btn-custom" @onclick="()=>OnClick_BtnAdd()">Add Product</button></div>
-    </div>
-
-    @if (Products == null)
-    {
-        <MudSkeleton SkeletonType="SkeletonType.Text" />
-        <MudSkeleton SkeletonType="SkeletonType.Text" />
-        <MudSkeleton SkeletonType="SkeletonType.Text" />
-        <MudSkeleton SkeletonType="SkeletonType.Text" />
-    }
-    else if (Products.Any())
-    {
-        <MudDataGrid T="ViewProductDTO" Items="@Products" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter">
-            <ToolBarContent>
-                <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-            </ToolBarContent>
-            <Columns>
-
-                <PropertyColumn Property="x => x.Sno" Sortable="false" Filterable="false" Title="SrNo" />
-                <PropertyColumn Property="x => x.Name" Title="Name" />
-                <PropertyColumn Property="x=> x.ImageUrl" Title="Image">
-                    <CellTemplate>
-                        <img alt="@context.Item.Name" class="img-thumbnail" src="@(context.Item.ImageUrl ?? "images/image-not-found.png")" height="50" width="50" title="@context.Item.Name" />
-                    </CellTemplate>
-                </PropertyColumn>
-                <PropertyColumn Property="x => x.Price" Title="Price" />
-                <PropertyColumn Property="x => x.StockQuantity" Title="Stock Quantity" />
-                <PropertyColumn Property="x => x.AddedDate" Title="Added Date" />
-                <PropertyColumn Property="x => x.LastModifiedDate" Title="Last Modified Date" />
-                <TemplateColumn Filterable="false" Sortable="false" CellClass="mud-table-cell">
-                    <CellTemplate>
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.RemoveRedEye" OnClick="(()=> OnClick_BtnShow(context.Item))" />
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_BtnEdit(context.Item))" />
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_BtnDelete(context.Item))" />
-                    </CellTemplate>
-                </TemplateColumn>
-            </Columns>
-            <PagerContent>
-                <MudDataGridPager T="ViewProductDTO" />
-            </PagerContent>
-        </MudDataGrid>
-    }
-    else
-    {
-
-    }
+<div class="pt-4 pb-2 "><button class="btn btn-custom" @onclick="()=>OnClick_BtnAdd()">Add Product</button></div>
 
 
-    @* <section class="content">
+@if (Products == null)
+{
+    <MudSkeleton SkeletonType="SkeletonType.Text" />
+    <MudSkeleton SkeletonType="SkeletonType.Text" />
+    <MudSkeleton SkeletonType="SkeletonType.Text" />
+    <MudSkeleton SkeletonType="SkeletonType.Text" />
+}
+else if (Products.Any())
+{
+    <MudDataGrid T="ViewProductDTO" Items="@Products" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter">
+        <ToolBarContent>
+            <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <Columns>
+
+            <PropertyColumn Property="x => x.Sno" Sortable="false" Filterable="false" Title="SrNo" />
+            <PropertyColumn Property="x => x.Name" Title="Name" />
+            <PropertyColumn Property="x=> x.ImageUrl" Title="Image">
+                <CellTemplate>
+                    <img alt="@context.Item.Name" class="img-thumbnail" src="@(context.Item.ImageUrl ?? "images/image-not-found.png")" height="50" width="50" title="@context.Item.Name" />
+                </CellTemplate>
+            </PropertyColumn>
+            <PropertyColumn Property="x => x.Price" Title="Price" />
+            <PropertyColumn Property="x => x.StockQuantity" Title="Stock Quantity" />
+            <PropertyColumn Property="x => x.AddedDate" Title="Added Date" />
+            <PropertyColumn Property="x => x.LastModifiedDate" Title="Last Modified Date" />
+            <TemplateColumn Filterable="false" Sortable="false" CellClass="mud-table-cell">
+                <CellTemplate>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.RemoveRedEye" OnClick="(()=> OnClick_BtnShow(context.Item))" />
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_BtnEdit(context.Item))" />
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_BtnDelete(context.Item))" />
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="ViewProductDTO" />
+        </PagerContent>
+    </MudDataGrid>
+}
+else
+{
+
+}
+
+
+@* <section class="content">
     <div class="row">
     <div class="col-sm-12 col-md-12">
 
@@ -152,4 +149,3 @@
     </div>
     </div>
     </section> *@
-</div>

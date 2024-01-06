@@ -1,8 +1,4 @@
-﻿@page "/viewed-kundalis"
-@using AstroOfficeWeb.Services
-@using AstroOfficeWeb.Shared.ViewModels
-
-@inject KundaliHistroyService KundaliHistroy
+﻿@inject KundaliHistroyService KundaliHistroy
 
 <MudTable Items="@personKundaliTableTRs" Dense="false" Hover="true" ReadOnly="false" Filter="new Func<PersonKundaliTableTRModel,bool>(FilterFunc)"
           SortLabel="Sort By">
@@ -42,8 +38,8 @@
 
 
 
-@code    
-{
+    @code
+    {
     private List<PersonKundaliTableTRModel>? personKundaliTableTRs;
     private string searchString = "";
     protected override async Task OnInitializedAsync()
@@ -72,3 +68,87 @@
     }
 
 }
+
+
+@*         @inject KundaliHistroyService KundaliHistroy
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="chart-table table-responsive">
+            <table class="table">
+                <thead class="p-0 bg-da-yellow">
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Name</th>
+                        <th>Product Name</th>
+                        <th>Gender</th>
+                        <th>Date of Birth</th>
+                        <th>Time of Birth</th>
+                        <th>Place of Birth</th>
+                        <th>Language</th>
+                        <th>View Date</th>
+                    </tr>
+                </thead>
+
+                @if (personKundaliTableTRs == null)
+                {
+                    <tbody class="overlay-wrapper data-loader">
+                        <tr>
+                            <td colspan="9"><div class="overlay"><i class="fas fa-2x fa-sync fa-spin"></i></div></td>
+                        </tr>
+                        @for (int i = 0; i < 9; i++)
+                        {
+                            <tr>
+                                <td> - </td>
+                                <td> - </td>
+                                <td> - </td>
+                                <td> - </td>
+                                <td> - </td>
+                                <td> - </td>
+                                <td> - </td>
+                                <td> - </td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+                else
+                {
+                    <tbody>
+                        @if (personKundaliTableTRs.Any())
+                        {
+                            foreach (var row in personKundaliTableTRs)
+                            {
+                                <tr>
+                                    <td>@row.SrNo</td>
+                                    <td>@row.Name</td>
+                                    <td>@row.ProductName</td>
+                                    <td>@row.Gender</td>
+                                    <td>@row.DateOfBirth.ToString(format: "dd - MM - yyyy")</td>
+                                    <td>@row.TimeOfBirth.ToString(format: "c")</td>
+                                    <td>@row.PlaceOfBirth</td>
+                                    <td>@row.Language</td>
+                                    <td>@row.ViewDate</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center">No records found.</td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<PersonKundaliTableTRModel>? personKundaliTableTRs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        personKundaliTableTRs = await KundaliHistroy.GetUserViewedKundalies();
+    }
+} *@

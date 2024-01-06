@@ -17,9 +17,9 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 
-namespace AstroOfficeWeb.Components.Shared
+namespace AstroOfficeWeb.Components.HomeComponents
 {
-    public partial class Dashboard
+    public partial class Report
     {
         #region Define Variables
 
