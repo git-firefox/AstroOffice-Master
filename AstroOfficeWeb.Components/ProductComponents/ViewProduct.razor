@@ -43,14 +43,14 @@
                             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-bs-ride="carousel">
 
                                 <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <img src="@SelectedImage!.ImageURL" class="d-block w-100" alt="@SelectedImage!.ImageName" title="@SelectedImage!.ImageName" />
+                                    <div class="carousel-item active image-radius">
+                                        <img src="@SelectedImage!.ImageURL" class="d-block w-100 image-radius" alt="@SelectedImage!.ImageName" title="@SelectedImage!.ImageName" />
                                     </div>
 
                                     @foreach (var image in BrowserFiles)
                                     {
                                         <div class="carousel-item">
-                                            <img src="@image.ImageURL" class="d-block w-100" alt="@image.ImageName" title="@image.ImageName" />
+                                            <img src="@image.ImageURL" class="d-block w-100 image-radius" alt="@image.ImageName" title="@image.ImageName" />
                                         </div>
                                     }
                                 </div>

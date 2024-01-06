@@ -169,13 +169,13 @@
     }
     else
     {
-        <MudGrid>
 
-            @if (personKundaliTableTRs.Any())
-            {
-                @* <MudTextField @bind-Value="searchString" TextChanged="FilterFunc" InputType="InputType.Search" T="string" Placeholder="Search Kundali by name" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mud-theme-primary rounded-pill kundali-search" /> *@
+        @if (personKundaliTableTRs.Any())
+        {
+            @* <MudTextField @bind-Value="searchString" TextChanged="FilterFunc" InputType="InputType.Search" T="string" Placeholder="Search Kundali by name" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mud-theme-primary rounded-pill kundali-search" /> *@
 
-                <input class="w-100 form-control mt-3 rounded-pill" type="search" @bind="searchString" @oninput="FilterFunc" placeholder="Search Kundali by name" />
+            <input class="w-100 form-control mt-3 mb-3 rounded-pill" type="search" @bind="searchString" @oninput="FilterFunc" placeholder="Search Kundali by name" />
+            <MudGrid>
                 @foreach (var row in personKundaliTableTRs.Where(item => item!.Name!.Contains(searchString, StringComparison.OrdinalIgnoreCase)))
                 {
                     <MudItem xs="12" sm="6" md="4">
@@ -206,23 +206,18 @@
                         </MudCard>
                     </MudItem>
                 }
-            }
-            else
-            {
-                <div colspan="10" class="text-center">
-                    <h3>No records found.</h3>
-                </div>
-            }
-        </MudGrid>
+            </MudGrid>
+        }
+        else
+        {
+            <div colspan="10" class="text-center">
+                <h3>No records found.</h3>
+            </div>
+        }
     }
 
 
 </MudContainer>
-
-
-
-
-
 
 
 
