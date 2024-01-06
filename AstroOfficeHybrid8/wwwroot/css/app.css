@@ -55,6 +55,7 @@ body {
 }
 
 
+
 .btn-outline-custom {
     color: #17384e;
     border-color: #17384e
@@ -841,6 +842,23 @@ section .section-overlay {
 .card-body::after, .card-footer::after, .card-header::after{
     display:none !important;
 }
+
+.has-search .form-control {
+    padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+
 @media(max-width:767px){
     .dashboard-main h1{
         font-size:26px;
@@ -856,4 +874,36 @@ section .section-overlay {
         padding: 0 !important;
     }
     
+}
+@media (min-width: 576px) and (max-width:767px) {
+    .mt-sm-0, .my-sm-0 {
+        margin-top: 0 !important;
+    }
+}
+@media(min-width:992px) and (max-width:1032px){
+    .vartman-btn {
+        margin-top: 0px !important;
+    }
+   
+}
+@media(min-width:1200px) and (max-width:1264px) {
+    .vartman-btn {
+        margin-top: 12px !important;
+    }
+}
+@media(min-width:601px) and (max-width:991px) {
+    .vartman-btn, .varhaphal-btn {
+        margin-top: 0px !important;
+    }
+}
+@media(min-width:1541px)  {
+    .vartman-btn, .varhaphal-btn {
+        margin-top: 0px !important;
+    }
+}
+
+@media(min-width:1033px) and (max-width:1199px) {
+    .vartman-btn, .varhaphal-btn {
+        margin-top: 0px !important;
+    }
 }

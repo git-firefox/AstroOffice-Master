@@ -124,6 +124,22 @@ body {
     background-color: rgb(3, 26, 42) !important;
 }
 
+.has-search .form-control {
+    padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+
 .valid.modified:not([type="checkbox"]):not([type="radio"]) {
     outline: 1px solid #26b050;
     border-color: #198754;
@@ -848,3 +864,13 @@ section .section-overlay {
 .mud-button:hover, .mud-button:focus-visible {
     background-color: transparent;
 }
+
+/*::placeholder {
+    color: red !important;
+    opacity: 1;*/ /* Firefox */
+
+/*}
+
+::-ms-input-placeholder {*/ /* Edge 12-18 */
+    /*color: red;
+}*/

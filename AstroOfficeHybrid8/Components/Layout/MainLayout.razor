@@ -18,7 +18,7 @@
             <AuthorizeView>
                 <Authorized>
 
-                    <MudDrawer @bind-Open="@open" ClipMode="_themeManager.DrawerClipMode" Elevation="_themeManager.DrawerElevation" Breakpoint="@breakpoint" Variant="@DrawerVariant.Responsive" PreserveOpenState="false">
+                    <MudDrawer @bind-Open="@open" ClipMode="_themeManager.DrawerClipMode" Elevation="_themeManager.DrawerElevation" Breakpoint="Breakpoint.Xxl" Variant="@DrawerVariant.Responsive" PreserveOpenState="false">
 
                         <MudSwipeArea OnSwipeEnd="@OnSwipe">
 
@@ -191,7 +191,6 @@
 
     public bool open = false;
     bool preserveOpenState = false;
-    Breakpoint breakpoint = Breakpoint.Lg;
 
     public void ToggleDrawer()
     {

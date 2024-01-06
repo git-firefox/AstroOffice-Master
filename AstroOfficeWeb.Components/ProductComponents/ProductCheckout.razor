@@ -178,12 +178,12 @@
                                                     </div> <!-- end row -->
 
                                                 </div>
-                                                <div class="d-md-flex mb-3">
+                                                <div class="d-flex mb-3">
                                                     <div class="mb-2">
-                                                        <a href="shopping-cart" class="btn btn-custom"><i class="fas fa-arrow-left mx-2"></i> Back to Shopping Cart </a>
+                                                        <a href="shopping-cart" class="btn btn-custom"><i class="fas fa-arrow-left mx-2"></i> Back <span class="d-none d-md-inline-block">to Shopping Cart</span> </a>
                                                     </div>
                                                     <div class="ml-auto">
-                                                        <button class="btn btn-success" type="submit"><i class="fas fa-truck mx-2"></i> Update BillingInfo & @(BillingInfo.ShipToDifferentAddress ? "Proceed to Shipping" : "Proceed to Payment ") </button>
+                                                        <button class="btn btn-success" type="submit"><i class="fas fa-truck mx-2"></i> Update<span class="d-none d-md-inline-block"> BillingInfo & @(BillingInfo.ShipToDifferentAddress ? "Proceed to Shipping" : "Proceed to Payment ") </span></button>
                                                     </div>
                                                 </div>
 

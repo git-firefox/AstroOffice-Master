@@ -1,6 +1,6 @@
 ﻿@page "/products"
 @page "/products/{CategorySno}/{CategoryName}"
-@* 
+@*
 @using AstroOfficeWeb.Client.Services
 @using AstroOfficeWeb.Shared.DTOs
 
@@ -92,7 +92,7 @@
                             <MudButton OnClick="OnClick_BtnClear" Class="btn-custom" Style="margin-top:20px;">Clear</MudButton>
                         </MudItem>
                     </MudGrid>
-                    
+
                 </div>
 
                 <div class="row">
@@ -163,7 +163,7 @@
 
                 <div class="row">
                     <div class="col-12 d-flex justify-content-center scrolling-product">
-                      
+
                         <nav>
                             <ul>
                                 <li>
@@ -190,11 +190,11 @@
  *@
 
 
- <Container Name="Shop">
-        <ChildContent>
+<Container Name="Shop">
+    <ChildContent>
         <AstroOfficeWeb.Components.ProductComponents.ViewProducts CategoryName="@CategoryName" CategorySno="@CategorySno" CurrentPage="@CurrentPage"></AstroOfficeWeb.Components.ProductComponents.ViewProducts>
-        </ChildContent>
-    </Container>
+    </ChildContent>
+</Container>
 
 
 

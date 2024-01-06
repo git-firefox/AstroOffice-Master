@@ -85,12 +85,12 @@
         <div class="card card-primary card-frame">
 
             <div style="position:relative;z-index:999;padding:15px;">
-                <div class="card-header p-0 d-flex justify-content-between justify-content-md-center mb-2 px-4 px-md-0  ">
-                    <h2 class="font-weight-bold">Birth Details</h2>
-                    <button type="button" class="btn-custom btn-sm  d-inline-block d-md-none" @onclick="OnClick_BtnRefresh"><MudIcon Icon="@Icons.Material.Filled.Refresh"></MudIcon></button>
+                <div class="card-header p-0 mb-2 px-4 px-md-0  ">
+                    <h2 class="font-weight-bold text-center">Birth Details</h2>
+                    
                 </div>
                 <EditForm Model="BirthDetails">
-                    <div class="card-body">
+                    <div class="card-body px-md-0">
                         <div class="row">
                             <div class="col">
                                 <select @onchange="OnChange_CmbSkipBad" value="@BirthDetails!.CmbSkipBad" class="form-control form-control-sm" aria-label="Selection of SkipBad" title="Skip Bad">
@@ -356,6 +356,9 @@
                                                         <label class="form-check-label" for="ChkMfal">Mfal</label>
                                                     </div>
                                                 </div>
+                                                <div class="col-12  d-inline-block d-md-none">
+                                                    <button type="button" class="btn-custom btn-sm" @onclick="OnClick_BtnRefresh">Refresh</button>
+                                                </div>
                                                 @*  <div class="col">
                                                 <InputTextArea class="form-control mt-2" rows="4" Placeholder="Enter ..." @bind-Value="BirthDetails!.Brief" />
                                                 </div> *@
@@ -366,32 +369,36 @@
                             </div>
 
                         </div>
-                        <div class="d-sm-flex bd-highlight align-items-center">
-                            <div class="p-2 flex-grow-1 bd-highlight">
-                                <div class="form-check form-check-inline">
-                                    <InputCheckbox id="ref" class="form-check-input" @bind-Value="BirthDetails!.ChkShowRef" />
-                                    <label class="form-check-label" for="ref">Show Ref. Code</label>
+                           <div class="row align-items-center">
+                                <div class="col-sm-4">
+                                    <div class="form-check form-check-inline p-0 m-0">
+                                        <InputCheckbox id="ref" class="form-check-input" @bind-Value="BirthDetails!.ChkShowRef" />
+                                    <label class="form-check-label" for="ref"><span class="d-lg-none d-xl-inline-block">Show</span> Ref. Code</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="p-1 bd-highlight">
-                                <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnFaladesh"> Show Kundali </button>
-                            </div>
-                            <div class="p-1 bd-highlight">
-                                <button class="btn btn-block btn-custom  btn-sm" @onclick="OnClick_BtnChart"> Vivran </button>
-                            </div>
-                            <div class="p-1 bd-highlight">
-                                @if (OnInitialized_IsComplatedSuccessfully)
-                                {
-                                    <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnSaveKundali"> Save Kundali </button>
-                                }
-                                else
-                                {
-                                    <button class="btn btn-custom btn-sm" type="button" disabled>
-                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                        Loading...
-                                    </button>
-                                }
-                            </div>
+                                <div class="col-sm-8">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnFaladesh">  Show <span class="d-md-none d-xl-inline-block">Kundali</span>  </button>
+                                        </div>
+                                    <div class="col-4">
+                                        <button class="btn btn-block btn-custom  btn-sm" @onclick="OnClick_BtnChart"> Vivran </button>
+                                    </div>
+                                        <div class="col-4">
+                                        @if (OnInitialized_IsComplatedSuccessfully)
+                                        {
+                                            <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnSaveKundali"> Save <span class="d-md-none d-xl-inline-block">Kundali</span>  </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-custom btn-sm" type="button" disabled>
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                Loading...
+                                            </button>
+                                        }
+                                        </div>
+                                    </div>
+                                </div>
                         </div>
                     </div>
                 </EditForm>
@@ -480,10 +487,10 @@
                                 <button type="button" class="btn btn-block btn-custom btn-sm" title="Chandra Kundali" @onclick="OnClick_Chandra"> Chandra </button>
                             </div>
                             <div class="col-4 col-sm  mt-sm-0">
-                                <button type="button" class="btn btn-block btn-custom btn-sm btn-gochar" title="Vartmaan" @onclick="OnClick_Gochar"> Vartmaan </button>
+                                <button type="button" class="btn btn-block btn-custom btn-sm btn-gochar mt-3 mt-sm-0 vartman-btn" title="Vartmaan" @onclick="OnClick_Gochar"> Vartmaan </button>
                             </div>
                             <div class="col-4 col-sm mt-sm-0">
-                                <button type="button" class="btn btn-block btn-custom btn-smbtn btn-block btn-custom btn-sm btn-varsh" title="Varshphal" @onclick="OnClick_Varsh"> Varshphal </button>
+                                <button type="button" class="btn btn-block btn-custom btn-smbtn btn-block btn-custom btn-sm btn-varsh mt-3 mt-sm-0 mt-md-3 mt-xl-0 varhaphal-btn" title="Varshphal" @onclick="OnClick_Varsh"> Varshphal </button>
                             </div>
                         </div>
 
