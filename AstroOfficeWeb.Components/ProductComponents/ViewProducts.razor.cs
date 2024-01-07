@@ -1,67 +1,58 @@
-﻿using AstroOfficeWeb.Shared.DTOs;
-
-
+﻿using System.Security.Cryptography.X509Certificates;
+using AstroOfficeWeb.Components.Helper;
+using AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Shared.Helper;
+using AstroOfficeWeb.Shared.Utilities;
+using AstroOfficeWeb.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AstroOfficeWeb.Components.ProductComponents
 {
     public partial class ViewProducts
     {
-        [Parameter]
-        public string? CategorySno { get; set; } = null;
-        [Parameter]
-        public string? CategoryName { get; set; } = null;
+        private List<ViewProductDTO>? Products { get; set; }
+        private List<ViewProductDTO>? FilteredProducts { get; set; }
+        private List<ViewProductDTO> VisiableProducts { get; set; } = new();
 
-        [Parameter]
-        public int CurrentPage { get; set; } = 1;
-
-        public List<ViewProductDTO>? Products { get; set; }
-        private List<ViewProductDTO> FilteredProducts = new List<ViewProductDTO>();
-        private List<ViewProductDTO> ListedProducts = new List<ViewProductDTO>();
-        private List<PCategoryDTO>? CategoryDTOs { get; set; }
-
-        private int PageSize { get; set; } = 40;
-        private int TotalPages => (int)Math.Ceiling((double)FilteredProducts.Count / PageSize);
-
-        private bool IsFirstPage { get; set; }
-        private bool IsLastPage { get; set; }
+        private int PageSize { get; set; } = 25;
+        private int TotalPages => (int)Math.Ceiling((double)(FilteredProducts ?? new()).Count / PageSize);
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
         }
+
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            CategoryDTOs = await ProductService.GetShopCategories();
             Products = await ProductService.GetProducts();
-            //if (Products is not null)
-            //{
-            //    await ApplyFilter();
-            //}
+            if (Products is not null)
+            {
+                OnFilterChanged(new());
+            }
         }
 
-        private async Task OnClick_CategoryList(BaseCategoryDTO category)
+        private void PageChanged(int pageNo)
+        {
+            CurrentPage = pageNo;
+            UpdateVisibleItems();
+        }
+
+        private async Task OnCategorySelected(BaseCategoryDTO category)
         {
             Products = await ProductService.GetProducts(category.Sno);
-            await ApplyFilter();
-            NavigationManager.NavigateTo($"/products/{category.Sno}/{category!.Title!.Replace(" ", "-").ToLower()}");
+            OnFilterChanged(new());
+            NavigationManager.NavigateTo(ProductRoutes.ProductsByCategory(category.Sno, category!.Title!));
         }
 
         private async Task OnClick_BtnAddToCart(ViewProductDTO product)
         {
             var tempQuantity = product!.ProductQuantity + 1;
-            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
             if (tempQuantity < 1 || tempQuantity > 5)
             {
-                Snackbar.Add($"Unable to add more products to your cart. Limit exceeded.", Severity.Error);
+                Snackbar.ShowErrorSnackbar($"Unable to add more products to your cart. Limit exceeded.");
                 return;
             }
 
@@ -69,41 +60,38 @@ namespace AstroOfficeWeb.Components.ProductComponents
             if (isAddedToCart)
             {
                 product.ProductQuantity += 1;
-                Snackbar.Add($"\"{product.Name}\" added to your cart.", Severity.Success);
+                Snackbar.ShowSuccessSnackbar($"\"{product.Name}\" added to your cart.");
             }
         }
 
         private void OnClick_ALinkView(ViewProductDTO product)
         {
-            NavigationManager.NavigateTo($"/product/{product.Sno}/{product.Name.Replace("'", "-").ToLower()}");
-        }
-        private async Task OnClick_BtnClear()
-        {
-            await ApplyFilter();
+            NavigationManager.NavigateTo(ProductRoutes.ViewProduct(product.Sno, product.Name));
         }
 
-        private async Task ApplyFilter()
+        private void OnFilterChanged(ProductFilterViewModel filterViewModel)
         {
-            FilteredProducts = Products!.ToList();
-            var searchString = await JSRuntime.InvokeAsync<string>("getSearchboxValue");
-            var filter = await JSRuntime.InvokeAsync<string>("getDropdownValue");
-            var size = await JSRuntime.InvokeAsync<string>("getPageSizeValue");
-            PageSize = string.IsNullOrEmpty(size) ? 24 : Convert.ToInt32(size);
+            FilteredProducts = (Products ?? new()).ToList();
 
-            if (!string.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(filterViewModel.Search))
             {
-                FilteredProducts = Products!.Where(item => item.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+                FilteredProducts = Products!.Where(item => item.Name.Contains(filterViewModel.Search, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
-            if (filter == "Low-Max")
+            if (filterViewModel.Sorting == ProductSorting.PriceAscending)
             {
                 FilteredProducts = FilteredProducts.OrderBy(x => x.Price).ToList();
             }
-            else if (filter == "Max-Low")
+            else if (filterViewModel.Sorting == ProductSorting.PriceDescending)
             {
                 FilteredProducts = FilteredProducts.OrderByDescending(x => x.Price).ToList();
             }
+            else
+            {
+                FilteredProducts = FilteredProducts.OrderBy(x => x.Name).ToList();
+            }
 
+            PageSize = filterViewModel.Page;
             CurrentPage = 1;
             UpdateVisibleItems();
         }
@@ -111,26 +99,15 @@ namespace AstroOfficeWeb.Components.ProductComponents
         private void UpdateVisibleItems()
         {
             int startIndex = (CurrentPage - 1) * PageSize;
-            ListedProducts = FilteredProducts.Skip(startIndex).Take(PageSize).ToList();
-            IsFirstPage = CurrentPage == 1;
-            IsLastPage = CurrentPage == TotalPages;
+            VisiableProducts = (FilteredProducts ?? new()).Skip(startIndex).Take(PageSize).ToList();
         }
 
-        private void NextPage()
+        private async Task OnFilterReset(MouseEventArgs args)
         {
-            CurrentPage++;
-            if (!IsLastPage)
+            Products = await ProductService.GetProducts();
+            if (Products is not null)
             {
-                UpdateVisibleItems();
-            }
-        }
-
-        private void PreviousPage()
-        {
-            if (!IsFirstPage)
-            {
-                CurrentPage--;
-                UpdateVisibleItems();
+                OnFilterChanged(new ());
             }
         }
     }

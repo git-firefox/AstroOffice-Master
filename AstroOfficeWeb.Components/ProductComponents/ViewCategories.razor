@@ -1,0 +1,43 @@
+﻿@inject ProductService ProductService
+@inject NavigationManager NavigationManager
+
+<MudPaper Class="h-100 p-2" Elevation="3">
+    <h3>Shop Categories</h3>
+
+    <MudNavMenu>
+        @if (CategoryDTOs == null)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                <MudSkeleton Width="100%" Height="42px;" />
+            }
+        }
+        else if (CategoryDTOs.Any())
+        {
+            foreach (var category in CategoryDTOs)
+            {
+                if (category.SubCategories != null && category.SubCategories.Any())
+                {
+                    <MudNavGroup Title="@category.Title">
+                        @foreach (var subcategory in category.SubCategories)
+                        {
+                            <MudNavLink OnClick="(()=> OnClick_CategoryListItem(subcategory))">@subcategory.Title</MudNavLink>
+                        }
+                    </MudNavGroup>
+                }
+                else
+                {
+                    <MudNavLink OnClick="(()=> OnClick_CategoryListItem(category))">@category.Title</MudNavLink>
+                }
+            }
+        }
+
+    </MudNavMenu>
+
+</MudPaper>
+
+@code
+{
+    [Parameter]
+    public EventCallback<BaseCategoryDTO> OnCategorySelected { get; set; }
+}

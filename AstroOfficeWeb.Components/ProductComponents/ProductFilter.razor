@@ -1,0 +1,46 @@
+﻿@* div class="shop-search"> *@
+<MudPaper Class="p-2" Elevation="3">
+    <MudForm @ref="Form">
+        <MudGrid>
+            <MudItem xs="12" sm="4">
+                <MudTextField T="string" DebounceInterval="500" InputType="InputType.Search" TextChanged="OnTextChanged_InputSearch" Placeholder="Search Product" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Margin="Margin.Dense" />
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MudSelect T="ProductSorting" Label="Sort by" Variant="Variant.Outlined" SelectedValuesChanged="SelectedValuesChanged_InputSorting" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense">
+                    @foreach (ProductSorting item in Enum.GetValues(typeof(ProductSorting)))
+                    {
+                        <MudSelectItem Value="@item">@item.ToDescriptionString()</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" sm="3">
+                <MudSelect T="int" Label="Page size" Value="ProductFilterModal.Page" Variant="Variant.Outlined" SelectedValuesChanged="SelectedValuesChanged_InputPage" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense">
+                    <MudSelectItem Value="25"/>
+                    <MudSelectItem Value="50" />
+                    <MudSelectItem Value="100" />
+                </MudSelect>
+            </MudItem>
+            <MudItem sm="1" Class="d-flex justify-center align-content-center m-auto">
+                <MudIconButton Class="rounded-circle btn btn-custom" ButtonType="ButtonType.Button" Variant="Variant.Filled" Color="Color.Secondary" Icon="@Icons.Material.Rounded.FilterAltOff" OnClick="OnClick_BtnReset" aria-label="clear filter"></MudIconButton>
+            </MudItem>
+        </MudGrid>
+    </MudForm>
+</MudPaper>
+@* </div> *@
+
+@code {
+    // [Parameter]
+    // public EventCallback<string> OnSearchChanged { get; set; }
+
+    // [Parameter]
+    // public EventCallback<ProductSorting> OnSortingChanged { get; set; }
+
+    // [Parameter]
+    // public EventCallback<int> OnPageChanged { get; set; }
+    
+    [Parameter]
+    public EventCallback<ProductFilterViewModel> OnFilterChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnFilterReset { get; set; }
+}

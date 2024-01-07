@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace AstroOfficeWeb.Shared.Utilities
 {
@@ -163,5 +164,28 @@ namespace AstroOfficeWeb.Shared.Utilities
         Success,
         Warning,
         Error
+    }
+    public enum ProductSorting
+    {
+        [Description("Default Sorting")]
+        Default,
+
+        [Description("Sort by Name (A to Z)")]
+        NameAscending,
+
+        [Description("Sort by Name (Z to A)")]
+        NameDescending,
+
+        [Description("Sort by Price (Low to High)")]
+        PriceAscending,
+
+        [Description("Sort by Price (High to Low)")]
+        PriceDescending,
+
+        [Description("Sort by Rating (Low to High)")]
+        RatingAscending,
+
+        [Description("Sort by Rating (High to Low)")]
+        RatingDescending
     }
 }
