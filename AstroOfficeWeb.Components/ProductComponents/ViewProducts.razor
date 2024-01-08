@@ -3,25 +3,25 @@
 @inject ProductService ProductService
 
 <div class="row">
-    <div class="col">
+    <div class="col-3 d-none d-md-block">
         <ViewCategories OnCategorySelected="OnCategorySelected" />
     </div>
 
-    <div class="col-9">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+    <div class="col">
+        <div class="row">
             <div class="col">
                 <ProductFilter OnFilterReset="OnFilterReset" OnFilterChanged="OnFilterChanged" />
             </div>
         </div>
 
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+        <div class="row mt-2 row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
             @if (FilteredProducts == null)
             {
                 for (int i = 0; i < 10; i++)
                 {
                     <div class="col">
-                        <div class="card shop-card">
-                            <div class="card-body d-flex align-items-center flex-column">
+                        <div class="card">
+                            <div class="card-body">
                                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="200px" Height="110px" />
                                 <MudSkeleton Width="30%" Height="40px" />
                                 <MudSkeleton Width="30%" Height="40px;" />
@@ -37,50 +37,27 @@
                 {
 
                     <div class="col">
-                        <div class="card shop-card">
-                            <div class="card-body" style="transform: rotate(0);">
-                                <div class="card-img-actions">
-                                    <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="card-img img-fluid" width="96" height="350">
-                                    <img src="https://www.astromantra.com/wp-content/uploads/2022/03/IMG_3212-555x555.jpg" alt="@product.Name" title="@product.Name" class="hover-img" width="96" height="350" />
+                        <div class="card product-card h-100">
+                            <div class="product-img-top">
+                                <img class="card-img-top primary-img" @onclick="() => OnClick_ALinkView(product)" src="@product.ImageUrl" alt="@product.Name" title="@product.Name" />
+                                <img class="card-img-top secondary-img " @onclick="() => OnClick_ALinkView(product)" src="https://www.astromantra.com/wp-content/uploads/2022/03/IMG_3212-555x555.jpg" alt="...">
+                                <div class="btn-group-vertical btn-group-sm product-buttons" role="group" aria-label="Vertical button group">
+                                    <button type="button" @onclick="() => OnClick_ALinkView(product)" class="btn btn-primary">
+                                        <MudIcon Icon="@Icons.Material.Filled.Search" Title="View to Product" />
+                                    </button>
+                                    <button type="button" @onclick="() => OnClick_BtnAddToWishlist(product)" class="btn btn-primary">
+                                        <MudIcon Icon="@Icons.Material.Filled.Favorite" Title="Add to whishlist" />
+                                    </button>
                                 </div>
-
-                                <div class="card-icon">
-                                    <div class="quick-view wd-action-btn wd-style-icon wd-quick-view-icon">
-
-                                        <a> <i class="fas fa-search"></i></a>
-                                    </div>
-                                    <div class="wd-wishlist-btn wd-action-btn wd-style-icon wd-wishlist-icon">
-                                        <a> <i class="far fa-heart"></i></a>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="javascript:void(0);" class="text-default mb-2 stretched-link" data-abc="true" @onclick="() => OnClick_ALinkView(product)"></a>
                             </div>
+                            <div class="card-body">
+                                <h5 class="card-title text-truncate">Card title</h5>
+                                <p class="card-text">&#8377; @product.Price.ToString("N2")</p>
 
-                            <div class="card-body text-center">
-                                <div class="mb-2 " style="transform: rotate(0);">
-                                    <h6 class="font-weight-semibold mb-0">
-                                        <a href="javascript:void(0);" class="text-default mb-0 stretched-link" title="@product.Name" data-abc="true" @onclick="() => OnClick_ALinkView(product)">@product.Name</a>
-                                    </h6>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                                    <MudButton OnClick="() => OnClick_BtnAddToCart(product)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.AddShoppingCart" ButtonType="ButtonType.Button" Color="Color.Primary" Size="Size.Small">Add To Cart</MudButton>
+                                    <MudButton Class="d-sm-flex d-md-none" OnClick="() => OnClick_BtnAddToWishlist(product)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Favorite" ButtonType="ButtonType.Button" Color="Color.Secondary" aria-label="add to favorite" Size="Size.Small">Add To Wishlist</MudButton>
                                 </div>
-
-                                <h3 class="mb-0">
-                                    &#8377; @product.Price.ToString("N2")
-                                </h3>
-
-                                @* <div>
-                        <i class="fa fa-star star"></i>
-                        <i class="fa fa-star star"></i>
-                        <i class="fa fa-star star"></i>
-                        <i class="fa fa-star star"></i>
-                        </div> *@
-
-                                @* <div class="text-muted mb-3">34 reviews</div> *@
-
-                                <button type="button" class="btn bg-cart" @onclick="() => OnClick_BtnAddToCart(product)"><i class="fa fa-cart-plus mr-2"></i> Add to cart</button>
-
                             </div>
                         </div>
                     </div>

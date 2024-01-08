@@ -34,17 +34,17 @@ namespace AstroOfficeWeb.Components.ProductComponents
             }
         }
 
-        private void PageChanged(int pageNo)
-        {
-            CurrentPage = pageNo;
-            UpdateVisibleItems();
-        }
-
+        
         private async Task OnCategorySelected(BaseCategoryDTO category)
         {
             Products = await ProductService.GetProducts(category.Sno);
             OnFilterChanged(new());
             NavigationManager.NavigateTo(ProductRoutes.ProductsByCategory(category.Sno, category!.Title!));
+        }
+
+        private async Task OnClick_BtnAddToWishlist(ViewProductDTO product)
+        {
+            await ProductService.AddToWishList(product.Sno);
         }
 
         private async Task OnClick_BtnAddToCart(ViewProductDTO product)
@@ -109,6 +109,12 @@ namespace AstroOfficeWeb.Components.ProductComponents
             {
                 OnFilterChanged(new ());
             }
+        }
+
+        private void PageChanged(int pageNo)
+        {
+            CurrentPage = pageNo;
+            UpdateVisibleItems();
         }
     }
 }

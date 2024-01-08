@@ -16,7 +16,7 @@
 
 
 
-<div class="row">
+<div class="row g-2">
 
     @* Birth Details *@
     <div class="col-xl-12">
@@ -356,7 +356,7 @@
                     }
                     else
                     {
-                        <button class="btn btn-custom btn-sm" type="button" disabled>
+                        <button class="btn btn-custom btn-sm me-sm-2" type="button" disabled>
                             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                             <span role="status">Loading...</span>
                         </button>
@@ -366,7 +366,7 @@
         </div>
     </div>
 
-    <div class="col-lg-6 col-xl-6 my-3 my-lg-5 astro-report-kundali-table">
+    <div class="col-lg-6 astro-report-kundali-table">
         <div class="card border-img bg-custom">
             <div class="card-header bg-transparent border-bottom-2 text-center">
                 <h2 class="fw-bold">Kundali Table</h2>
@@ -418,7 +418,7 @@
         </div>
     </div>
 
-    <div class="col-lg-6 col-xl-6 my-lg-5 astro-report-kundali-chart">
+    <div class="col-lg-6 astro-report-kundali-chart">
         <div class="card border-img bg-custom">
             <div class="card-header bg-transparent border-bottom-2 text-center">
                 <h2 class="fw-bold">Kundali</h2>
@@ -427,36 +427,36 @@
             <div class="card-body">
                 <EditForm Model="BirthDetails">
                     <div class="row gy-5">
-                        <div class="col-9">
-                            <div class="overflow-x-scroll">
-                                <div class="d-grid gap-2 d-flex justify-content-between">
-                                    <button type="button" class="btn btn-custom btn-sm" title="Cusp" @onclick="OnClick_BhavChalit"> Cusp </button>
-                                    <button type="button" class="btn btn-custom btn-sm" title="Kundali" @onclick="OnClick_Lagan"> Kundali </button>
-                                    <button type="button" class="btn btn-custom btn-sm" title="Chandra Kundali" @onclick="OnClick_Chandra"> Chandra </button>
-                                    <button type="button" class="btn btn-custom btn-sm" title="Vartmaan" @onclick="OnClick_Gochar"> Vartmaan </button>
-                                    <button type="button" class="btn btn-custom btn-sm" title="Varshphal" @onclick="OnClick_Varsh"> Varshphal </button>
-                                </div>
+                        <div class="col-12">
+
+                            <div class="row row-cols-2 row-cols-md-3 row-cols-xxl-6 g-2">
+                                <div class="col"><button type="button" class="w-100 btn btn-custom btn-sm" title="Cusp" @onclick="OnClick_BhavChalit"> Cusp </button></div>
+                                <div class="col"><button type="button" class="w-100 btn btn-custom btn-sm" title="Kundali" @onclick="OnClick_Lagan"> Kundali </button></div>
+                                <div class="col"><button type="button" class="w-100 btn btn-custom btn-sm" title="Chandra Kundali" @onclick="OnClick_Chandra"> Chandra </button></div>
+                                <div class="col"><button type="button" class="w-100 btn btn-custom btn-sm" title="Vartmaan" @onclick="OnClick_Gochar"> Vartmaan </button></div>
+                                <div class="col"><button type="button" class="w-100 btn btn-custom btn-sm" title="Varshphal" @onclick="OnClick_Varsh"> Varshphal </button></div>
+                                @if (isNumVarshVisible)
+                                {
+                                    <div class="col">
+                                        <InputNumber class="form-control form-control-sm text-center " min="1" max="120" @bind-Value="BirthDetails.KundaliUdvYear" />
+                                    </div>
+                                }
                             </div>
+
                         </div>
 
-                        @if (isNumVarshVisible)
-                        {
-                            <div class="col-3">
-                                <InputNumber class="form-control form-control-sm " min="1" max="120" @bind-Value="BirthDetails.KundaliUdvYear" />
-                            </div>
-                        }
 
 
-                        <div class="col-12">
+                        <div class="col-12 d-flex">
                             @if (!string.IsNullOrEmpty(imgSrc))
                             {
-                                <div class="bg-astro">
-                                    <img src="data:image/png;base64,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" alt="" class="img-fluid" />
-                                </div>
+
+                                <img class="img-fluid  flex-fill" src="@imgSrc" alt="" />
+
                             }
                             else
                             {
-                                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="200px" />
+                                <MudSkeleton Class="flex-fill" SkeletonType="SkeletonType.Rectangle" Height="200px" />
 
                             }
                         </div>
@@ -469,10 +469,8 @@
             </div>
         </div>
     </div>
-</div>
 
-<div class="row astro-report">
-    <div class="col">
+    <div class="col-lg-12 astro-report">
         <BSTabs BSTabName="Report Tabs">
             <BSTabItems>
                 <BSTabItem TabName="Charts" IsActive="true" />

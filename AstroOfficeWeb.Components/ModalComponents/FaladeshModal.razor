@@ -1,40 +1,41 @@
-﻿<MudDialog Class="overflow-y-scroll">
+﻿<MudDialog Class="overflow-y-scroll bg-custom">
     <DialogContent>
         <MudGrid>
             <MudItem xs="12" md="6">
-                <MudCard>
-                    <MudCardHeader>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.body1">CUSP</MudText>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardMedia Image="@BhavChalitSrc" Title="CUSP" Class="object-fit-fill border rounded" />
-                </MudCard>
+                <div class="card border-img bg-custom">
+                    @* <div class="card text-center"> *@
+                    <div class="card-header bg-transparent border-bottom-2 text-center">
+                        <MudText Typo="Typo.body1">CUSP</MudText>
+                    </div>
+                    <div class="card-body d-flex">
+                        <img class="img-fluid flex-fill" title="CUSP" src="@BhavChalitSrc" alt="CUSP" />
+                    </div>
+                </div>
             </MudItem>
             <MudItem xs="12" md="6">
-                <MudCard>
-                    <MudCardHeader>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.body1">Kundali</MudText>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardMedia Image="@LaganSrc" Title="Kundali" />
-                </MudCard>
+                <div class="card border-img bg-custom ">
+                    @* <div class="card text-center"> *@
+                    <div class="card-header bg-transparent border-bottom-2 text-center">
+                        <MudText Typo="Typo.body1">Kundali</MudText>
+                    </div>
+                    <div class="card-body d-flex">
+                        <img class="img-fluid flex-fill" title="Kundali" src="@LaganSrc" alt="Kundali" />
+                    </div>
+                </div>
             </MudItem>
             <MudItem xs="12">
-                <MudCard>
-                    <MudCardHeader>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.body1">Kundali</MudText>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent>
+                <div class="card border-img bg-custom">
+                    @* <div class="card text-center"> *@
+                    <div class="card-header bg-transparent border-bottom-2 text-center">
+                        <MudText Typo="Typo.body1">Kundali</MudText>
+                    </div>
+                    <div class="card-body">
                         @if (!string.IsNullOrEmpty(Kundali))
                         {
                             @((MarkupString)Kundali)
                         }
-                    </MudCardContent>
-                </MudCard>
+                    </div>
+                </div>
             </MudItem>
         </MudGrid>
     </DialogContent>

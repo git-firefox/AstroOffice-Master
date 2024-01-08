@@ -1,7 +1,11 @@
 ﻿@page "/products"
 @page "/products/{CategorySno}/{CategoryName}"
 
-<AstroOfficeWeb.Components.ProductComponents.ViewProducts CategoryName="@CategoryName" CategorySno="@CategorySno" CurrentPage="@CurrentPage"></AstroOfficeWeb.Components.ProductComponents.ViewProducts>
+<PageLayout Title="Shop">
+    <ChildContent>
+        <AstroOfficeWeb.Components.ProductComponents.ViewProducts CategoryName="@CategoryName" CategorySno="@CategorySno" CurrentPage="@CurrentPage"></AstroOfficeWeb.Components.ProductComponents.ViewProducts>
+    </ChildContent>
+</PageLayout>
 
 @code{
     [Parameter]
