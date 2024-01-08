@@ -6,10 +6,10 @@
         </div>
         @if (UserToken != null)
         {
-            @UserToken
+            <MudChip Color="Color.Warning"> @UserToken</MudChip>
+          @*   @UserToken *@
         }
     </div>
-
     <section class="content">
         @ChildContent
     </section>

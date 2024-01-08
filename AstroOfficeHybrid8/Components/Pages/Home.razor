@@ -1,5 +1,7 @@
 ﻿@page "/"
+@using AstroOfficeWeb.Services.IServices
 @inject NavigationManager Navigation
+@inject IPrintService print
 @attribute [Authorize]
 
 <PageLayout Title="Home" >
@@ -22,6 +24,11 @@
                 <h2>Our platform offers a variety of features to help you explore and understand astrology, from personalized horoscopes to in-depth Kundali analysis.</h2>
             </div>
         </div>
+
+       @*  <button @onclick="OnClick_BtnExplore">
+            check
+        </button> *@
+
     </ChildContent>
 </PageLayout>
 
@@ -30,6 +37,7 @@
 {
     private void OnClick_BtnExplore()
     {
+        // print.PrintPdf();
         Navigation.NavigateTo("/", false, true);
     }
 }

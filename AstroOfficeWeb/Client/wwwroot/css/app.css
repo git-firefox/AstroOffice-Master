@@ -864,7 +864,6 @@ section .section-overlay {
 .mud-button:hover, .mud-button:focus-visible {
     background-color: transparent;
 }
-
 /*::placeholder {
     color: red !important;
     opacity: 1;*/ /* Firefox */
@@ -874,3 +873,11 @@ section .section-overlay {
 ::-ms-input-placeholder {*/ /* Edge 12-18 */
     /*color: red;
 }*/
+
+
+
+@media (min-width: 600px) and (max-width: 765px) {
+    .mt-sm-2 {
+        margin-top: 8px !important;
+    } 
+}

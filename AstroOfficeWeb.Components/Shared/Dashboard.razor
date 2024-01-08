@@ -16,11 +16,12 @@
 @inject KundaliHistroyService KundaliHistroy
 @inject ISwaggerApiService Swagger
 @inject TokenWalletService TokenWallet
+@inject IPrintService PrintService
 
 @code {
     public bool KaranOpened { get; set; } = false;
 
-   
+
     [Parameter]
     public EventCallback<bool> IsKaranOpened { get; set; }
 
@@ -68,7 +69,7 @@
             @KaranPanelContent
         </MudExpansionPanel>
     </MudExpansionPanels>
-   // IsKaranOpened.InvokeAsync(true);
+    // IsKaranOpened.InvokeAsync(true);
 }
 
 
@@ -87,7 +88,7 @@
             <div style="position:relative;z-index:999;padding:15px;">
                 <div class="card-header p-0 mb-2 px-4 px-md-0  ">
                     <h2 class="font-weight-bold text-center">Birth Details</h2>
-                    
+
                 </div>
                 <EditForm Model="BirthDetails">
                     <div class="card-body px-md-0">
@@ -369,22 +370,22 @@
                             </div>
 
                         </div>
-                           <div class="row align-items-center">
-                                <div class="col-sm-4">
-                                    <div class="form-check form-check-inline p-0 m-0">
-                                        <InputCheckbox id="ref" class="form-check-input" @bind-Value="BirthDetails!.ChkShowRef" />
+                        <div class="row align-items-center">
+                            <div class="col-sm-4">
+                                <div class="form-check form-check-inline p-0 m-0">
+                                    <InputCheckbox id="ref" class="form-check-input" @bind-Value="BirthDetails!.ChkShowRef" />
                                     <label class="form-check-label" for="ref"><span class="d-lg-none d-xl-inline-block">Show</span> Ref. Code</label>
-                                    </div>
                                 </div>
-                                <div class="col-sm-8">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnFaladesh">  Show <span class="d-md-none d-xl-inline-block">Kundali</span>  </button>
-                                        </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnFaladesh">  Show <span class="d-md-none d-xl-inline-block">Kundali</span>  </button>
+                                    </div>
                                     <div class="col-4">
                                         <button class="btn btn-block btn-custom  btn-sm" @onclick="OnClick_BtnChart"> Vivran </button>
                                     </div>
-                                        <div class="col-4">
+                                    <div class="col-4">
                                         @if (OnInitialized_IsComplatedSuccessfully)
                                         {
                                             <button class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnSaveKundali"> Save <span class="d-md-none d-xl-inline-block">Kundali</span>  </button>
@@ -396,9 +397,9 @@
                                                 Loading...
                                             </button>
                                         }
-                                        </div>
                                     </div>
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </EditForm>
@@ -476,35 +477,29 @@
                 <EditForm Model="BirthDetails">
                     <div class="card-body">
 
+
+
                         <div class="row">
-                            <div class="col-4 col-sm">
-                                <button type="button" class="btn btn-block btn-custom btn-sm" title="Cusp" @onclick="OnClick_BhavChalit"> Cusp </button>
-                            </div>
-                            <div class="col-4 col-sm">
-                                <button type="button" class="btn btn-block btn-custom btn-sm" title="Kundali" @onclick="OnClick_Lagan"> Kundali </button>
-                            </div>
-                            <div class="col-4 col-sm">
-                                <button type="button" class="btn btn-block btn-custom btn-sm" title="Chandra Kundali" @onclick="OnClick_Chandra"> Chandra </button>
-                            </div>
-                            <div class="col-4 col-sm  mt-sm-0">
-                                <button type="button" class="btn btn-block btn-custom btn-sm btn-gochar mt-3 mt-sm-0 vartman-btn" title="Vartmaan" @onclick="OnClick_Gochar"> Vartmaan </button>
-                            </div>
-                            <div class="col-4 col-sm mt-sm-0">
-                                <button type="button" class="btn btn-block btn-custom btn-smbtn btn-block btn-custom btn-sm btn-varsh mt-3 mt-sm-0 mt-md-3 mt-xl-0 varhaphal-btn" title="Varshphal" @onclick="OnClick_Varsh"> Varshphal </button>
-                            </div>
-                        </div>
+                            <div class="col-12">
+                                <div class="row row-cols-2 row-cols-md-3 mb-2">
+                                    <div class="col mb-2"><button type="button" class="w-100 btn btn-custom btn-sm" title="Cusp" @onclick="OnClick_BhavChalit"> Cusp</button> </div>
+                                    <div class="col"><button type="button" class="w-100 btn btn-custom btn-sm" title="Kundali" @onclick="OnClick_Lagan"> Kundali </button></div>
+                                    <div class="col mb-2"><button type="button" class="w-100 btn btn-custom btn-sm" title="Chandra Kundali" @onclick="OnClick_Chandra"> Chandra </button></div>
+                                    <div class="col"><button type="button" class="w-100 btn btn-custom btn-sm" title="Vartmaan" @onclick="OnClick_Gochar"> Vartmaan </button></div>
+                                    <div class="col"><button type="button" class="w-100 btn btn-custom btn-sm" title="Varshphal" @onclick="OnClick_Varsh"> Varshphal </button></div>
+                                    <div class="col">
+                                        @if (isNumVarshVisible)
+                                        {
+                                            <InputNumber id="1" @bind-Value="BirthDetails.KundaliUdvYear" class="form-control form-control-sm text-center" min="1" max="120" />
+                                        }
+                                        else
+                                        {
 
-                        <div class="row justify-content-end mt-2">
-                            <div class="col-2">
-                                @if (isNumVarshVisible)
-                                {
-                                    <InputNumber id="1" @bind-Value="BirthDetails.KundaliUdvYear" class="form-control form-control-sm" min="1" max="120" />
-                                }
-                                else
-                                {
+                                            <InputNumber @bind-Value="BirthDetails.KundaliUdvYear" class="form-control form-control-sm text-center" style="opacity:0" min="1" max="120" />
+                                        }
 
-                                    <InputNumber @bind-Value="BirthDetails.KundaliUdvYear" class="form-control form-control-sm" style="opacity:0" min="1" max="120" />
-                                }
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -513,8 +508,8 @@
                         @if (!string.IsNullOrEmpty(imgSrc))
                         {
                             <div class="row mt-2">
-                                <div class="col-12 text-center">
-                                    <img src="@imgSrc" alt="" class="img-fluid text-center" />
+                                <div class="col-12 text-center d-flex">
+                                    <img src="@imgSrc" alt="" class="img-fluid text-center flex-fill" />
                                 </div>
                             </div>
                         }

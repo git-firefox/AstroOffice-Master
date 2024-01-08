@@ -9,6 +9,7 @@
     <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
         <BlazorWebView.RootComponents>
             <RootComponent ComponentType="{x:Type local:Routes}" Selector="#app" />
+            
         </BlazorWebView.RootComponents>
     </BlazorWebView>
 
