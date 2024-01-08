@@ -197,7 +197,7 @@ window.fnSummernoteInterop = function (element, height, dotnetObject) {
                     e.preventDefault();
                     var clipboardData = (e.originalEvent || e).clipboardData;
                     console.log(clipboardData);
-                    var bufferText = clipboardData.getData('text/plain');
+                    var bufferText = clipboardData.getData('text/html');
                     console.log(bufferText);
                     var cleanHtml = DOMPurify.sanitize(bufferText, {
                         ALLOWED_ATTR: []

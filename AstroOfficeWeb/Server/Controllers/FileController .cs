@@ -15,8 +15,8 @@ namespace AstroOfficeWeb.Server.Controllers
         public IActionResult SaveProductImages(List<IFormFile> files)
         {
             var test = Request.Form.Files;
-            var mediaImagesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media", "images");
-            var mediaVideosPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media", "videos");
+            var mediaImagesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media");
+            var mediaVideosPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media");
 
             foreach (var file in files)
             {

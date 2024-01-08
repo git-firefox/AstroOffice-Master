@@ -1,5 +1,6 @@
 ﻿using AstroOfficeWeb.Client.Pages.Product;
 using AstroOfficeWeb.Client.Services;
+using AstroOfficeWeb.Components.ProductComponents;
 using AstroOfficeWeb.Shared.ComponentModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;

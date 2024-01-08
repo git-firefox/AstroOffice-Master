@@ -23,8 +23,9 @@ builder.Services.AddScoped<IAuthenticationStateService, AuthenticationStateServi
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ISwaggerApiService, SwaggerApiService>();
 builder.Services.AddScoped<IPrintService, PrintService>();
-builder.Services.AddScoped<KaranService>();
 builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<CountryService>();
+builder.Services.AddScoped<KaranService>();
 builder.Services.AddScoped<BestBLLService>();
 builder.Services.AddScoped<KPBLLService>();
 builder.Services.AddScoped<KPDAOService>();

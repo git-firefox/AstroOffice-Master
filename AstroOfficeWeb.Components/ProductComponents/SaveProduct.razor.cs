@@ -65,7 +65,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         public MetaDataDTO MetaData { get; set; } = new();
         public MetaDataDTO? SelectedMetaData { get; set; }
         private ActionMode MetaDataAction { get; set; }
-        private List<MetaDataDTO>? MetaDataList { get; set; } = new List<MetaDataDTO>();
+        private List<MetaDataDTO> MetaDataList { get; set; } = new List<MetaDataDTO>();
 
         [Parameter]
         public List<CategoryDialoge> CategoryDTOs { get; set; } = new();
@@ -90,23 +90,32 @@ namespace AstroOfficeWeb.Components.ProductComponents
         {
 
 
+
+
             SaveProductInfoContext = new EditContext(ProductModel);
             SaveProductImageInfoContext = new EditContext(ProductImage);
             SaveProductMetadataInfoContext = new EditContext(MetaData);
 
-            BrowserFiles = ProductModel.ProductImages ??= new();
-            MetaDataList = ProductModel.MetaDatas;
-            CharacterCount = Convert.ToInt32(ProductModel.Summary?.Length);
 
             base.OnInitialized();
         }
 
-        //protected override async Task OnInitializedAsync()
-        //{
+        protected override async Task OnInitializedAsync()
+        {
+            var productDTO = await ProductService.GetProductBySno(Sno);
+            if (productDTO != null)
+            {
+                ProductModel = productDTO;
+                SaveProductInfoContext = new EditContext(ProductModel);
+                SaveProductImageInfoContext = new EditContext(ProductImage);
+                SaveProductMetadataInfoContext = new EditContext(MetaData);
+                BrowserFiles = ProductModel.ProductImages ??= new();
+                MetaDataList = ProductModel.MetaDatas ??= new();
+                CharacterCount = Convert.ToInt32(ProductModel.Summary?.Length);
+            }
 
-
-        //    //CategoryDTOs = await ProductService.GetCategories();
-        //}
+            //CategoryDTOs = await ProductService.GetCategories();
+        }
 
 
 
@@ -154,7 +163,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
                     var buffer = memoryStream.ToArray();
 
-                    FileData.Add(new FileData { File = file.OpenReadStream(file.Size), FileName = file.Name });
+                    FileData.Add(new FileData { File = file.OpenReadStream(file.Size), FileName = file.Name, ContentType= file.ContentType, Name = file.Name });
 
                     var base64String = Convert.ToBase64String(buffer);
 
@@ -287,8 +296,11 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
             ProductModel.ProductImages = BrowserFiles;
             ProductModel.MetaDatas = MetaDataList;
+            if (FileData.Any())
+            {
+                await ProductService.SaveProductImages(FileData);
 
-            //await ProductService.SaveProductImages(FileData);
+            }
             if (Sno == 0)
             {
                 await ProductService.AddProduct(ProductModel);

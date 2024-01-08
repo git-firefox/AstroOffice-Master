@@ -37,5 +37,10 @@
     <ProjectReference Include="..\Shared\AstroOfficeWeb.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\media\images\" />
+    <Folder Include="wwwroot\media\videos\" />
+  </ItemGroup>
+
 
 </Project>

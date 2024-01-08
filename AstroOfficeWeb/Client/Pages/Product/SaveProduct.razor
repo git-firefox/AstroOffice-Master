@@ -1,10 +1,7 @@
 ﻿@page "/save-product"
 @page "/save-product/{Sno:long}"
 @using AstroOfficeWeb.Client.Services
-
-;
 @using AstroOfficeWeb.Shared.DTOs;
-
 @inject ProductService ProductService
 @inject NavigationManager NavigationManager
 @inject StateContainerService StateContainerService
@@ -13,428 +10,46 @@
 @inject IDialogService Dialog
 @attribute [Authorize(Roles = "Admin,User,ManageProduct")]
 
-@* <MudDialogProvider FullWidth="true"
-                   MaxWidth="MaxWidth.ExtraSmall"
-                   CloseButton="true"
-                   DisableBackdropClick="true"
-                   NoHeader="true"
-                   Position="DialogPosition.Center"
-                   CloseOnEscapeKey="true" />
-<MudMessageBox @ref="MessageBox" Title="Alert" CancelText="Cancel">
 
-    <MessageContent>
-        Are you sure you want to delete ?
-    </MessageContent>
-    <YesButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever">Delete!</MudButton>
-    </YesButton>
-</MudMessageBox> *@
-
-
-@*
-                                                                    <InputTextEditor></InputTextEditor>
-                                                                    <InputMask></InputMask>
-                                                                    <InputSelect2></InputSelect2> *@
-
-<div class="container-fluid p-3">
+@* <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold "> Add product </h1>
     <section class="content">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body">
-
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-body">
-
-                                        <div id="addproduct-nav-pills-wizard" class="twitter-bs-wizard form-wizard-header">
-                                            <ul class="twitter-bs-wizard-nav mb-2 nav nav-pills nav-justified">
-                                                <li class="nav-item">
-                                                    <a @ref="ER_AGeneralInfo" href="#general-info" class="nav-link active" data-bs-toggle="tab" data-toggle="tab">
-                                                        <span class="number">01</span>
-                                                        <span class="d-none d-sm-inline">General</span>
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a @ref="ER_AProductImage" href="#product-img" class="nav-link" data-bs-toggle="tab" data-toggle="tab">
-                                                        <span class="number">02</span>
-                                                        <span class="d-none d-sm-inline">Product Images</span>
-                                                    </a>
-                                                </li>
-
-                                                <li class="nav-item">
-                                                    <a @ref="ER_AMetaData" href="#metadata" class="nav-link" data-bs-toggle="tab" data-toggle="tab">
-                                                        <span class="number">03</span>
-                                                        <span class="d-none d-sm-inline">Metadata</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                            <div class="tab-content twitter-bs-wizard-tab-content">
-                                                <div class="tab-pane active" id="general-info">
-                                                    <EditForm Model="ProductModel" OnValidSubmit="OnSubmit_EditForm" OnInvalidSubmit="OnInvalidSubmit_EditForm">
-                                                        <DataAnnotationsValidator />
-                                                        <h4 class="header-title">General Information</h4>
-                                                        <p class="sub-header">Fill all information below</p>
-
-                                                        <div>
-
-                                                            <div class="row">
-                                                                <div class="col-lg">
-                                                                    <div class="mb-3">
-                                                                        <label for="product-name" class="form-label">Product Name <span class="text-danger">*</span></label>
-                                                                        <ValidationMessage For=@(()=>ProductModel!.Name) style="position:revert;" />
-                                                                        <InputText @bind-Value="ProductModel!.Name" id="product-name" class="form-control" placeholder="e.g : Yantra / यन्त्र" />
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-lg">
-                                                                    <div class="mb-3">
-                                                                        <label for="product-price" class="form-label">Price <span class="text-danger">*</span></label>
-                                                                        <ValidationMessage For=@(()=>ProductModel.Price) style="position: revert;" />
-                                                                        <InputNumber @bind-Value="ProductModel!.Price" class="form-control" id="product-price" placeholder="Enter amount" />
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-lg">
-                                                                    <div class="mb-3">
-                                                                        <label for="product-stock-quantity" class="form-label">Stock Quantity <span class="text-danger">*</span></label>
-                                                                        <ValidationMessage For=@(()=>ProductModel.StockQuantity) style="position: revert;" />
-                                                                        <InputNumber @bind-Value="ProductModel!.StockQuantity" class="form-control" id="product-stock-quantity" placeholder="Enter quantity" />
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-
-                                                            @*  <div class="mb-3">
-                                                            <label for="product-description" class="form-label">Product Description <span class="text-danger">*</span></label>
-                                                            </div> *@
-
-                                                            <div class="mb-3">
-
-                                                                @* <ValidationMessage For=@(() => SaveProductModel.Description) style="position:revert;" /> *@
-                                                                @* <InputTextArea @ref="ER_TextEditor" @bind-Value="SaveProductModel!.Description"></InputTextArea> *@
-
-                                                                <label for="product-description" class="form-label">Product Description <span class="text-danger">*</span></label>
-                                                                <ValidationMessage For=@(() => ProductModel!.Description) style="position:revert;" />
-                                                                <InputTextEditor @bind-Value="ProductModel!.Description" id="product-description" DefaultValue="@ProductModel!.Description"></InputTextEditor>
-
-
-                                                            </div>
-
-                                                            <div class="row">
-                                                                <div class="col-lg-6">
-                                                                    <div class="mb-3">
-                                                                        <label for="product-summary" class="form-label">Product Summary</label>
-                                                                        <ValidationMessage For=@(()=>ProductModel.Summary) style="position: revert;" />
-                                                                        <InputTextArea @bind-Value="ProductModel.Summary" @oninput="UpdateCharacterCount" class="form-control" id="product-summary" rows="5" placeholder="Please enter summary"></InputTextArea>
-                                                                    </div>
-                                                                    <span>@CharacterCount / 255</span>
-                                                                </div>
-                                                                <div class="col-lg-6">
-                                                                    <div class="mb-3">
-                                                                        <label for="product-category" class="form-label">Categories <span class="text-danger">*</span></label>
-                                                                        <InputSelect2 @bind-Value="ProductModel.ProductCategoriesSno" Options="CategoryDTOs.Select(s => new Option( value:  s.Sno, text: s.Title))" class="form-control " id="product-category" />
-                                                                    </div>
-
-                                                                    <div class="mb-3">
-                                                                        <label for="product-reference" class="form-label">Reference <span class="text-danger">*</span></label>
-                                                                        <InputText @bind-Value="ProductModel!.Reference" id="product-reference" class="form-control" placeholder="e.g : Amethyst" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="row">
-                                                                <div class="col-12 col-sm-10">
-                                                                    <div class="mb-3">
-                                                                        <label class="mb-2">Status <span class="text-danger">*</span></label>
-                                                                        <br>
-                                                                        <ValidationMessage For=@(()=>ProductModel.Status) />
-                                                                        <InputRadioGroup Name="ProductStatusGroup" @bind-Value="ProductModel!.Status">
-                                                                            @foreach (var value in Enum.GetValues<ProductStatus>())
-                                                                            {
-                                                                                <div class="form-check form-check-inline">
-                                                                                    <InputRadio id=@(value + "Radio") Value=@value class="form-check-input" />
-                                                                                    <label for=@(value + "Radio")> @value </label>
-                                                                                </div>
-                                                                            }
-                                                                        </InputRadioGroup>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-12 col-sm-10">
-                                                                    <label class="form-label">Comment</label>
-                                                                    <InputTextArea @bind-Value="ProductModel!.Comment" class="form-control" rows="3" placeholder="Please enter comment"></InputTextArea>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-
-                                                        <ul class="pager wizard mb-0 list-inline text-end mt-3">
-                                                            <li class="next list-inline-item">
-                                                                <button type="submit" class="btn btn-success">Add More Info <i class="mdi mdi-arrow-right ms-1"></i></button>
-                                                            </li>
-                                                        </ul>
-                                                    </EditForm>
-                                                </div>
-
-                                                <div class="tab-pane" id="product-img">
-                                                    <EditForm Model="ProductImage" OnValidSubmit="OnSubmit_ProductImage" OnInvalidSubmit="OnInvalidSubmit_ProductImage">
-                                                        <DataAnnotationsValidator />
-                                                        <ValidationSummary />
-                                                        <h4 class="header-title">Product Images</h4>
-                                                        <p class="sub-header">Upload product image</p>
-
-                                                        @*  <form action="/" method="post" class="dropzone dz-clickable" id="myAwesomeDropzone" data-plugin="dropzone" data-previews-container="#file-previews" data-upload-preview-template="#uploadPreviewTemplate">
-
-
-                                                        <div class="dz-message needsclick">
-                                                        <div class="mb-3">
-                                                        <i class="h1 text-muted ri-upload-cloud-2-line"></i>
-                                                        </div>
-                                                        <h3>Drop files here or click to upload.</h3>
-                                                        <span class="text-muted font-13">
-                                                        (This is just a demo dropzone. Selected files are
-                                                        <strong>not</strong> actually uploaded.)
-                                                        </span>
-                                                        </div>
-                                                        </form> *@
-
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <div class="custom-file">
-
-                                                                    <ValidationMessage For=@(()=>ProductImage!.FileNames) style="position: revert;" />
-                                                                    <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png, .mp4" OnChange="OnChange_InputFile" multiple />
-                                                                    <label class="custom-file-label" for="inputFile"> @((ProductImage!.FileNames != null && ProductImage.FileNames.Any()) ? string.Join(",", ProductImage.FileNames) : "Choose file...") </label>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-
-
-                                                        <div class="row mt-3">
-
-
-                                                            <div class="col-7">
-                                                                <ul class="list-inline">
-                                                                    @foreach (var image in BrowserFiles)
-                                                                    {
-                                                                        <li class="list-inline-item" @onclick="() => OnClick_ImageItems(image)" role="button">
-                                                                            <img alt="@image.ImageName" class="img-thumbnail" src="@image.ImageURL" height="100" width="100" title="@image.ImageName" />
-
-                                                                            <span class="cross-icon" @onclick="() => OnClick_RemoveImage(image)">
-                                                                                &#10006; <!-- Unicode character for the cross symbol -->
-                                                                            </span>
-                                                                        </li>
-                                                                    }
-                                                                </ul>
-                                                            </div>
-
-                                                            <div class="col-5">
-                                                                @if (SelectedImage?.ImageURL != null)
-                                                                {
-                                                                    <img alt="@SelectedImage.ImageName" class="img-fluid img-thumbnail" src="@SelectedImage.ImageURL" title="@SelectedImage.ImageName" />
-                                                                    <div class="mt-3">
-                                                                        <button type="button" class="btn btn-success" @onclick="OnClick_BtnSetAsMain"> Set image as main</button>
-                                                                    </div>
-                                                                }
-
-                                                            </div>
-
-                                                        </div>
-
-                                                        <!-- Preview -->
-                                                        <div class="dropzone-previews mt-3" id="file-previews"></div>
-
-                                                        <ul class="pager wizard mb-0 list-inline text-end mt-3">
-                                                            <li class="previous list-inline-item disabled">
-                                                                <button type="button" @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.General)" class="btn btn-secondary"> Back to General </button>
-                                                            </li>
-                                                            <li class="next list-inline-item">
-                                                                <button type="submit" class="btn btn-success">Add Meta Data</button>
-                                                            </li>
-                                                        </ul>
-
-
-
-
-
-
-                                                    </EditForm>
-
-                                                </div>
-
-                                                <div class="tab-pane" id="metadata">
-                                                    <h4 class="header-title">Metadata</h4>
-                                                    <p class="sub-header">Fill all information below</p>
-
-                                                    <EditForm Model="MetaData" OnValidSubmit="OnSubmit_MetaData" OnInvalidSubmit="OnInvalidSubmit_MetaData" Context="MetaDataContext">
-                                                        <DataAnnotationsValidator />
-                                                        <div class="row">
-
-                                                            <div class="col-4">
-                                                                <ValidationMessage For=@(()=>MetaData.MetaKeyword) style="position: revert;" />
-                                                                <label for="product-meta-keyword" class="form-label">Meta Keyword</label>
-                                                                <InputText @bind-Value="MetaData.MetaKeyword" class="form-control" id="product-meta-keyword" placeholder="Meta Value" />
-                                                            </div>
-                                                            <div class=" col-4">
-                                                                <ValidationMessage For=@(()=>MetaData!.MetaValue) style="position: revert;" />
-                                                                <label for="product-meta-value" class="form-label">Meta Value</label>
-                                                                <InputText @bind-Value="MetaData!.MetaValue" class="form-control" id="product-meta-value" placeholder="Meta Keywords" />
-                                                            </div>
-                                                            <div class="col-4 mt-4">
-                                                                @if (MetaDataAction is ActionMode.Add)
-                                                                {
-                                                                    <button type="button" @onclick="Onclick_AddMetaData" class="btn btn-success float-right">Add MetaData</button>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <button type="button" @onclick="(()=> MetaDataAction = ActionMode.Add)" class="btn btn-success float-right">Cancel</button>
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                        @*
-                                                        <div>
-                                                        <label for="product-meta-description" class="form-label">Meta Description </label>
-                                                        <InputTextArea @bind-Value="MetaData.MetaDescription" class="form-control" rows="5" id="product-meta-description" placeholder="Please enter description"></InputTextArea>
-                                                        </div> *@
-
-
-                                                        <div class="row mt-3">
-                                                            <div class="col-12">
-                                                                <MudTable T="MetaDataDTO" Items="@MetaDataList" Dense="true" Hover="true" ReadOnly="false" CanCancelEdit="true" Filter="new Func<MetaDataDTO,bool>(FilterFunc)" SortLabel="Sort By" CommitEditTooltip="Commit Edit" tabindex="=" RowEditPreview="BackupItem" RowEditCancel="ResetItemToOriginalValues" RowEditCommit="ItemHasBeenCommitted" IsEditRowSwitchingBlocked="false" ApplyButtonPosition="TableApplyButtonPosition.Start" EditButtonPosition="TableEditButtonPosition.Start" EditTrigger="TableEditTrigger.EditButton">
-
-                                                                    <ToolBarContent>
-                                                                        <MudText Typo="Typo.h6">Product Metadata</MudText>
-                                                                        <MudSpacer />
-                                                                        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-                                                                    </ToolBarContent>
-
-                                                                    <HeaderContent>
-                                                                        <MudTh>
-                                                                            <MudTableSortLabel SortBy="new Func<MetaDataDTO, object>(x=>x.MetaValue)">Meta Keyword</MudTableSortLabel>
-                                                                        </MudTh>
-                                                                        <MudTh>
-                                                                            <MudTableSortLabel SortBy="new Func<MetaDataDTO, object>(x=>x.MetaValue)">Meta Value</MudTableSortLabel>
-                                                                        </MudTh>
-                                                                        <MudTh>Action</MudTh>
-                                                                    </HeaderContent>
-
-                                                                    <RowTemplate>
-                                                                        <MudTd DataLabel="MetaKeyword">
-                                                                            @context.MetaKeyword
-                                                                        </MudTd>
-                                                                        <MudTd DataLabel="MetaValue">
-                                                                            @context.MetaValue
-                                                                        </MudTd>
-                                                                        <MudTd>
-                                                                            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="(() => OnClick_DeleteMetaData(context))"></MudIconButton>
-                                                                        </MudTd>
-                                                                    </RowTemplate>
-
-                                                                    <RowEditingTemplate>
-
-                                                                        <MudTd DataLabel="MetaKeyword">
-                                                                            <MudTextField @bind-Value="@context.MetaKeyword" Required />
-                                                                         </MudTd>
-                                                                         <MudTd DataLabel="MetaValue">
-                                                                             <MudTextField @bind-Value="@context.MetaValue" Required />
-                                                                         </MudTd>
-                                                                         <MudTd></MudTd>
-                                                                     </RowEditingTemplate>
-
-                                                                     <PagerContent>
-                                                                         <MudTablePager />
-                                                                     </PagerContent>
-
-                                                                     <EditButtonContent Context="button">
-                                                                         <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
-                                                                     </EditButtonContent>
-
-                                                                 </MudTable>
-
-
-
-                                                                 @*  <MudDataGrid Items="@MetaDataList.Select((value, index) => (value, index))" Bordered="true">
-                                                                <Columns>
-                                                                <PropertyColumn Property="x => x.index+1" Title="Sr No" IsEditable="false" />
-                                                                <PropertyColumn Property="x => x.value.MetaKeyword" Title="Meta Keyword" />
-                                                                <PropertyColumn Property="x => x.value.MetaTitle" Title="Meta Value" />
-                                                                <TemplateColumn Title="Action" Sortable="false" IsEditable="false">
-                                                                <CellTemplate>
-                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_UpdateMetaData(ActionMode.Edit,context.Item.value))" />
-                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_UpdateMetaData(ActionMode.Delete,context.Item.value))" />
-                                                                </CellTemplate>
-                                                                </TemplateColumn>
-                                                                </Columns>
-                                                                </MudDataGrid> *@
-
-                                                                 @*   <table class="table table-striped">
-                                                                <thead>
-                                                                <tr>
-                                                                <th scope="col">Sno.</th>
-                                                                <th scope="col">Meta Keywords</th>
-                                                                <th scope="col">Meta Value</th>
-                                                                <th scope="col">Action</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-
-                                                                @foreach (var (value, index) in MetaDataList.Select((value, index) => (value, index)))
-                                                                {
-                                                                <tr>
-                                                                <td>@(index + 1) </td>
-                                                                <td>@value.MetaTitle </td>
-                                                                <td>@value.MetaKeyword</td>
-                                                                <td>
-                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_UpdateMetaData(1,value))" />
-                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_UpdateMetaData(0,value))" />
-                                                                </td>
-                                                                </tr>
-
-
-                                                                }
-                                                                </tbody>
-                                                                </table> *@
-
-
-
-
-
-
-
-
-                                                             </div>
-                                                         </div>
-
-
-                                                         <ul class="pager wizard mb-0 list-inline text-end mt-3">
-                                                             <li class="previous list-inline-item disabled">
-                                                                 <button @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.General)" type="button" class="btn btn-secondary"><i class="mdi mdi-arrow-left"></i> Edit Information </button>
-                                                             </li>
-                                                             <li class="list-inline-item">
-                                                                 <button @onclick="OnClick_BtnPublished" type="button" class="btn btn-success">Publish Product <i class="mdi mdi-arrow-right ms-1"></i></button>
-                                                             </li>
-                                                         </ul>
-
-
-
-
-                                                     </EditForm>
-                                                 </div>
-                                             </div>
-
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-         </div>
+     
      </section>
- </div>
+ </div> *@
+
+
+ <ContainerFluid>
+     <ChildContent>
+        <AstroOfficeWeb.Components.ProductComponents.SaveProduct Sno="@Sno" ProductModel="@ProductModel" CategoryDTOs="CategoryDTOs"></AstroOfficeWeb.Components.ProductComponents.SaveProduct>
+     </ChildContent>
+ </ContainerFluid>
+
+
+@code {
+    [Parameter]
+    public long Sno { get; set; }
+
+
+    public ProductDTO ProductModel { get; set; } = new();
+
+    public List<CategoryDialoge> CategoryDTOs { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var categories = await ProductService.GetCategories();
+        if (categories != null)
+        {
+            CategoryDTOs = categories;
+        }
+        if (Sno != 0)
+        {
+            var productDTO = await ProductService.GetProductBySno(Sno);
+            if (productDTO != null)
+            {
+                ProductModel = productDTO;
+            }
+        }
+    }
+
+} 
