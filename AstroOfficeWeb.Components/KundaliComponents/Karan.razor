@@ -1,0 +1,125 @@
+﻿@page "/karan"
+@using AstroOfficeWeb.Shared.VOs
+@inject KPDAOService KPDAOService
+@attribute [Authorize]
+
+@* <div class="container-fluid p-3">
+    <h1 class="pt-4 pb-2 font-weight-bold ">Karan</h1>
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="chart-table table-responsive">
+                    <table class="table">
+                        <thead class="p-0 bg-da-yellow">
+                            <tr>
+                                <th>Problem</th>
+                                <th>House</th>
+                                <th>Significators</th>
+                                <th>Good</th>
+                                <th>Bad</th>
+                                <th>Karan Planet</th>
+                                <th>Position</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (KaranModelTableData != null)
+                            {
+                                foreach (var row in KaranModelTableData)
+                                {
+                                    <tr>
+                                        <td>@row.Problem</td>
+                                        <td>@row.House</td>
+                                        <td>@row.Significators</td>
+                                        <td>@row.Good</td>
+                                        <td>@row.Bad</td>
+                                        <td>@row.KaranPlanet</td>
+                                        <td>@row.Position</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div> *@
+
+
+<div class="col-sm-12 col-md-12">
+    <div class="chart-table table-responsive p-0">
+        <table class="table table-sm">
+            <thead class="p-0 bg-da-yellow">
+                <tr>
+                    <th>Problem</th>
+                    <th>House</th>
+                    <th>Significators</th>
+                    <th>Good</th>
+                    <th>Bad</th>
+                    <th>KaranPlanet</th>
+                    <th>Position</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (KaranModelTableData == null)
+                {
+
+                }
+                else if (KaranModelTableData.Any())
+                {
+                    foreach (var context in KaranModelTableData)
+                    {
+                        <tr>
+                            <td DataLabel="Problem">
+                                @context.Problem
+                            </td>
+                            <td DataLabel="House">
+                                @context.House
+                            </td>
+                            <td DataLabel="Significators">
+                                @context.Significators
+                            </td>
+                            <td DataLabel="Good" Class=@(!string.IsNullOrEmpty(context.Good) ? "bg-success" : string.Empty)>
+                                @context.Good
+                            </td>
+                            <td DataLabel="Bad" Class="text-danger">
+                                @context.Bad
+                            </td>
+                            <td DataLabel="KaranPlanet">
+                                @context.KaranPlanet
+                            </td>
+                            <td DataLabel="Position">
+                                @context.Position
+                            </td>
+                        </tr>
+                    }
+
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            No records available!
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<KPPlanetMappingVO> KPPlanetMappingVOs { get; set; } = Enumerable.Empty<KPPlanetMappingVO>();
+
+    [Parameter]
+    public IEnumerable<KPHouseMappingVO> KPHouseMappingVOs { get; set; } = Enumerable.Empty<KPHouseMappingVO>();
+
+    [Parameter]
+    public bool IsSahasaneLogic { get; set; }
+
+    [Parameter]
+    public List<KPUpay> KPUpays { get; set; } = new();
+}
