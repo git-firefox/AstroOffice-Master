@@ -296,14 +296,17 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
             ProductModel.ProductImages = BrowserFiles;
             ProductModel.MetaDatas = MetaDataList;
-            if (FileData.Any())
-            {
-                await ProductService.SaveProductImages(FileData);
+            //if (FileData.Any())
+            //{
+            //    //await ProductService.SaveProductImages(FileData);
+            //    await ProductService.AddProduct(ProductModel, FileData);
 
-            }
+            //}
             if (Sno == 0)
             {
-                await ProductService.AddProduct(ProductModel);
+                //await ProductService.AddProduct(ProductModel);
+                await ProductService.AddProduct(ProductModel, FileData);
+
             }
             else
             {

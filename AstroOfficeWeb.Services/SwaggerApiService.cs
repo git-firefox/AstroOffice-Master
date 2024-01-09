@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq.Expressions;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
@@ -41,16 +42,58 @@ namespace AstroOfficeWeb.Services
             return default;
         }
 
+        public async Task<TResponse?> PostWithMultipartFormDataContentAsync<TRequest, TResponse>(string url, List<FileData> files, TRequest request)
+        {
+            try
+            {
+                var multipartContent = new MultipartFormDataContent();
+
+                if (request != null)
+                {
+                    var content = JsonConvert.SerializeObject(request);
+                    var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+                    multipartContent.Add(bodyContent, "json");
+                }
+
+                foreach (var file in files)
+                {
+
+                    var fileStreamContent = new StreamContent(file.File);
+                    fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                    {
+                        Name = "Files",
+                        FileName = file.FileName,
+                    };
+                    fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+                    multipartContent.Add(fileStreamContent, file.Name, file.FileName);
+
+                }
+
+                var response = await _client.PostAsync(_client.BaseAddress + url, multipartContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var contentTemp = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<TResponse>(contentTemp);
+                    return result;
+                }
+                else if (response.StatusCode == HttpStatusCode.Unauthorized) { };
+
+                return default;
+            }
+            catch (Exception)
+            {
+                throw new Exception("getting error");
+            }
+
+        }
+
+
+
         public async Task<TResponse?> PostWithMultipartFormDataContentAsync<TResponse>(string url, List<FileData> files)
         {
             var multipartContent = new MultipartFormDataContent();
 
-            //if (request != null)
-            //{
-            //    var content = JsonConvert.SerializeObject(request);
-            //    var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-            //    multipartContent.Add(bodyContent, "json");
-            //}
 
             foreach (var file in files)
             {
@@ -112,7 +155,7 @@ namespace AstroOfficeWeb.Services
                     return result;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }

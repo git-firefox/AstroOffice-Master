@@ -22,7 +22,6 @@
                 @* <MudIconButton OnClick="OnClick_BtnFilter" Icon="@Icons.Material.Filled.FilterAlt" Variant="Variant.Filled" Style="background-color: white"></MudIconButton> *@
             </div>
             <div id="search">        
-                 @* <input class="w-100 form-control mt-2 rounded-pill" @bind="searchString" @oninput="FilterFunc" type="search" placeholder="Search Products" /> *@
                 <div class="form-group has-search">
                     <span class="fa fa-search form-control-feedback"></span>
                     <input type="search" class="form-control w-100 form-control mt-2 rounded-pill" @bind="searchString" @oninput="FilterFunc" placeholder="Search Products">

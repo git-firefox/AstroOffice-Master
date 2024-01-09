@@ -149,7 +149,7 @@ namespace ASModels
         public virtual DbSet<NewMixDasha> NewMixDashas { get; set; } = null!;
         public virtual DbSet<OrderItem> OrderItems { get; set; } = null!;
         public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
-        public virtual DbSet<ProductImage> ProductImages { get; set; } = null!;
+        public virtual DbSet<ProductMedia> ProductMedia { get; set; } = null!;
         public virtual DbSet<ProductMetaData> ProductMetaDatas { get; set; } = null!;
         public virtual DbSet<ProductOrder> ProductOrders { get; set; } = null!;
         public virtual DbSet<ProductWishlist> ProductWishlists { get; set; } = null!;
@@ -1041,14 +1041,14 @@ namespace ASModels
                     .HasConstraintName("FK__ProductCa__Paren__13FCE2E3");
             });
 
-            modelBuilder.Entity<ProductImage>(entity =>
+            modelBuilder.Entity<ProductMedia>(entity =>
             {
                 entity.HasKey(e => e.Sno)
                     .HasName("PK__ProductI__CA1FE464295FE454");
 
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.ProductImages)
-                    .HasForeignKey(d => d.ProductId)
+                entity.HasOne(d => d.AProductsSnoNavigation)
+                    .WithMany(p => p.ProductMedia)
+                    .HasForeignKey(d => d.AProductsSno)
                     .HasConstraintName("FK__ProductIm__Produ__75785BC3");
             });
 

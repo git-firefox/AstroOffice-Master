@@ -34,7 +34,7 @@ namespace AstroOfficeWeb.Shared.DTOs
         public long ProductCategoriesSno { get; set; } 
     
         public string? ProductCategory { get; set; } 
-        public DateTime AddedDate { get; set; }
+        public DateTime? AddedDate { get; set; }
         public DateTime? LastModifiedDate { get; set; }
         public bool IsActive { get; set; } = true;
 
@@ -56,7 +56,7 @@ namespace AstroOfficeWeb.Shared.DTOs
         public ProductStatus Status { get; set; }
 
         public long Sno { get; set; }
-        public List<ImagesDTO> ProductImages { get; set; } = new();
+        public List<ImagesDTO>? ProductImages { get; set; } = new();
 
         public List<MetaDataDTO>? MetaDatas { get; set; }
 
