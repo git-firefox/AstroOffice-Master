@@ -55,8 +55,8 @@
                                 <p class="card-text">&#8377; @product.Price.ToString("N2")</p>
 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-between">
-                                    <MudButton OnClick="() => OnClick_BtnAddToCart(product)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.AddShoppingCart" ButtonType="ButtonType.Button" Color="Color.Primary" Size="Size.Small">Add To Cart</MudButton>
-                                    <MudButton Class="d-sm-flex d-md-none" OnClick="() => OnClick_BtnAddToWishlist(product)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Favorite" ButtonType="ButtonType.Button" Color="Color.Secondary" aria-label="add to favorite" Size="Size.Small">Add To Wishlist</MudButton>
+                                    <MudButton Class="w-100" OnClick="() => OnClick_BtnAddToCart(product)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.AddShoppingCart" ButtonType="ButtonType.Button" Color="Color.Primary" Size="Size.Small">Add To Cart</MudButton>
+                                    <MudButton Class="d-sm-flex d-md-none w-100" OnClick="() => OnClick_BtnAddToWishlist(product)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Favorite" ButtonType="ButtonType.Button" Color="Color.Secondary" aria-label="add to favorite" Size="Size.Small">Add To Wishlist</MudButton>
                                 </div>
                             </div>
                         </div>

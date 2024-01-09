@@ -1,13 +1,18 @@
 ﻿@page "/products"
 @page "/products/{CategorySno}/{CategoryName}"
 
+@inject IJSRuntime JSRuntime
 <PageLayout Title="Shop">
+    <RightContainer>
+        @* <MudIconButton OnClick="()=>OnClick_BtnFilter(isOpened)" Color="Color.Primary" Icon="@Icons.Material.Filled.FilterAlt" Class="d-flex d-sm-none" Style="background-color:white; height: 40px; width: 40px;"></MudIconButton> *@
+    </RightContainer>
     <ChildContent>
         <AstroOfficeWeb.Components.ProductComponents.ViewProducts CategoryName="@CategoryName" CategorySno="@CategorySno" CurrentPage="@CurrentPage"></AstroOfficeWeb.Components.ProductComponents.ViewProducts>
     </ChildContent>
 </PageLayout>
 
-@code{
+
+@code {
     [Parameter]
     public string? CategorySno { get; set; } = null;
     [Parameter]
@@ -15,5 +20,4 @@
 
     [Parameter]
     public int CurrentPage { get; set; } = 1;
-
 }

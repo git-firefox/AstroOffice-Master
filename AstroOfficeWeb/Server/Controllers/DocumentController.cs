@@ -9,17 +9,17 @@ namespace AstroOfficeWeb.Server.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class PdfController : ControllerBase
+    public class DocumentController : ControllerBase
     {
         private readonly IConverter _converter;
 
-        public PdfController(IConverter converter)
+        public DocumentController(IConverter converter)
         {
             _converter = converter;
         }
 
         [HttpPost]
-        public IActionResult GeneratePDF([FromBody] GeneratePDFRequest request)
+        public IActionResult ExportKundaliToPdf([FromBody] GeneratePDFRequest request)
         {
             string falla = request.Falla;
             string imgBhavChalit = request.ImgBhavChalit;

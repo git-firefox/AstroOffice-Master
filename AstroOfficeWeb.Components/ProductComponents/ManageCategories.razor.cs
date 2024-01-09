@@ -19,6 +19,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
     public partial class ManageCategories
     {
+        [Parameter]
+        public EventCallback<bool> IsCategoryLoaded { get; set; }
+
         [CascadingParameter]
         public CategoryDialoge CategoryDialoge { get; set; } = new();
         //[CascadingParameter] ManageCategories obj { get; set; } = this;

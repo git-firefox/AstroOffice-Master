@@ -1,6 +1,5 @@
 ﻿using AstroOfficeWeb.Shared.DTOs;
-
-
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,10 @@ namespace AstroOfficeWeb.Components.ProductComponents
 {
     public partial class UserWishlist
     {
+
+        [Parameter]
+        public string Breakpoint { get; set; } = "row-cols-1 row-cols-sm-3 row-cols-md-3 row-cols-xl-5";
+
         private List<ViewProductDTO>? ViewProductDTOs { get; set; }
         protected override void OnInitialized()
         {
@@ -55,5 +58,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
                 Snackbar.Add($"{productDTO.Name} Added to your cart.", Severity.Success);
             }
         }
+
+
     }
 }

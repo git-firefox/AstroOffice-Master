@@ -117,6 +117,12 @@
 </div>
 
 @code {
+
+    [Parameter]
+    public EventCallback<decimal?> OnTokenUpdated { get; set; }
+    // [Parameter]
+    // public Action<decimal?> OnTokenUpdated { get; set; } = null!;
+
     public class TokenModel
     {
         public decimal TokenAmount { get; set; }
@@ -134,6 +140,9 @@
         await base.OnInitializedAsync();
 
         Token.UserName = UserName;
+        // Token.TokenAmount = UserToken ?? 0;
+        // OnTokenUpdated.Invoke(UserToken);
+        await OnTokenUpdated.InvokeAsync(UserToken);
     }
 
     private void OnInvalidSubmit()
@@ -159,7 +168,9 @@
 
         TokenRechargeTableTRs = await TokenWallet.GetTokenRechargeTransactionHistory();
         // UserToken = balance;
-        UserToken = totalBalance;
+        // UserToken = totalBalance;
+        await OnTokenUpdated.InvokeAsync(totalBalance);
+        // OnTokenUpdated.Invoke(totalBalance);
         StateHasChanged();
     }
 }

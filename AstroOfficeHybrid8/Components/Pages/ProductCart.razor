@@ -1,4 +1,28 @@
 ﻿@page "/product-cart"
 @page "/shopping-cart"
 
-<AstroOfficeWeb.Components.ProductComponents.ProductCart></AstroOfficeWeb.Components.ProductComponents.ProductCart>
+
+<PageLayout Title="Shopping Cart">
+    <RightContainer>
+        @if (!IsEmpty)
+        {
+            <div class="pt-4 pb-2 ">
+                <a href="products" class="btn btn-custom fw-semibold"> Continue Shopping</a>
+            </div>
+        }
+    </RightContainer>
+
+    <ChildContent>
+        <div class="mt-5 px-3">
+            <AstroOfficeWeb.Components.ProductComponents.ProductCart HandleEmptyCart="OnEmptyCart"></AstroOfficeWeb.Components.ProductComponents.ProductCart>
+        </div>
+    </ChildContent>
+</PageLayout>
+
+@code {
+    public bool IsEmpty { get; set; } = false;
+    private void OnEmptyCart(bool isEmpty)
+    {
+        IsEmpty = isEmpty;
+    }
+}

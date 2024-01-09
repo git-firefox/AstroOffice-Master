@@ -9,10 +9,37 @@
 
 @if (OrderDTOs == null)
 {
-    for (int row = 0; row < 10; row++)
-    {
-        <MudSkeleton />
-    }
+    <table>
+        <thead>
+            <tr>
+                <th>Sr No</th>
+                <th>Billing Name</th>
+                <th>Date</th>
+                <th>Payment Status</th>
+                <th>Total</th>
+                <th>Payment Method</th>
+                <th>Order Status</th>
+                <th>Action </th>
+            </tr>
+        </thead>
+        <tbody>      
+            @for (int row = 0; row < 10; row++)
+            {
+                <tr>
+                    <td> <MudSkeleton /></td>
+                    <td> <MudSkeleton /></td>
+                    <td> <MudSkeleton /></td>
+                    <td> <MudSkeleton /></td>
+                    <td> <MudSkeleton /></td>
+                    <td> <MudSkeleton /></td>
+                    <td> <MudSkeleton /></td>
+                    <td> <MudSkeleton /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
 }
 else
 {

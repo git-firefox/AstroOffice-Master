@@ -1,5 +1,5 @@
 @page "/product/{ProductSno:long}/{ProductName}"
-@using AstroOfficeWeb.Services
+
 
 @* @using AstroOfficeWeb.Client.Services *@
 
@@ -7,7 +7,7 @@
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
 
-<div class="container-fluid p-3">
+<div class="container p-3">
 
     <h1 class="pt-4 pb-2 font-weight-bold "> @ViewProductDTO!.Name </h1>
 
@@ -36,17 +36,17 @@
                     <div class="col-12 col-sm-6">
                         <h3 class="d-inline-block d-sm-none">@ViewProductDTO!.Name</h3>
                         <div class="col-12">
-                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-bs-ride="carousel">
 
                                 <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <img src="@SelectedImage!.ImageURL" class="d-block w-100" alt="@SelectedImage!.ImageName" title="@SelectedImage!.ImageName" />
+                                    <div class="carousel-item active image-radius">
+                                        <img src="@SelectedImage!.ImageURL" class="d-block w-100 image-radius" alt="@SelectedImage!.ImageName" title="@SelectedImage!.ImageName" />
                                     </div>
 
                                     @foreach (var image in BrowserFiles)
                                     {
                                         <div class="carousel-item">
-                                            <img src="@image.ImageURL" class="d-block w-100" alt="@image.ImageName" title="@image.ImageName" />
+                                            <img src="@image.ImageURL" class="d-block w-100 image-radius" alt="@image.ImageName" title="@image.ImageName" />
                                         </div>
                                     }
                                 </div>
@@ -59,6 +59,8 @@
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="sr-only">Next</span>
                                 </a>
+
+
 
                                 <div class="carousel-indicators">
 
@@ -74,22 +76,27 @@
                                     }
                                 </div>
 
+
                             </div>
+
+
+
+
                         </div>
                     </div>
-                    <div class="col-12 col-sm-6">
-                        <h3 class="my-3">@ViewProductDTO!.Name</h3>
-                        <h4 class="my-3">@ViewProductDTO!.Summary</h4>
+                    <div class="col-12 col-sm-6 ">
+                        <h3 class="my-3 product-maintitle">@ViewProductDTO!.Name</h3>
+                        <h6 class="my-3">@ViewProductDTO!.Summary</h6>
 
                         <hr />
 
                         @if (!string.IsNullOrEmpty(ViewProductDTO.ProductCategory))
                         {
-                            <h4>Category : @ViewProductDTO.ProductCategory</h4>
+                            <h4 class="Category-tittle">Category : @ViewProductDTO.ProductCategory</h4>
                         }
 
-                        <div class="bg-gray py-2 px-3 mt-4">
-                            <h2 class="mb-0">
+                        <div class="bg-white py-2 px-3 mt-4 product-size">
+                            <h2 class="mb-0 ">
                                 <i class="fas fa-rupee-sign"></i> @ViewProductDTO!.Price.ToString("N2")
                             </h2>
                             <h4 class="mt-0">
@@ -97,17 +104,41 @@
                             </h4>
                         </div>
 
-                        <div class="mt-4">
-                            <button class="btn btn-primary btn-lg btn-flat" @onclick="OnClick_BtnAddToCart">
-                                <i class="fas fa-cart-plus fa-lg mr-2"></i>
-                                Add to Cart
-                            </button>
+                        <AuthorizeView Roles=@(ApplicationConst.Role_ProductManager + "," + ApplicationConst.Role_Admin)>
+                            <Authorized>
 
-                            <button class="btn btn-default btn-lg btn-flat" @onclick="OnClick_BtnAddToWishlist">
-                                <i class="fas fa-heart fa-lg mr-2"></i>
-                                Add to Wishlist
-                            </button>
-                        </div>
+                                <div class="mt-4 product-btn d-flex justify-content-between">
+                                    <button class="btn btn-primary ">
+                                        <i class="fas fa-cart-plus fa-lg mr-2"></i>
+                                        Add to Cart
+                                    </button>
+
+                                    <button class="btn btn-default ">
+                                        <i class="fas fa-heart fa-lg mr-2"></i>
+                                        Add to Wishlist
+                                    </button>
+                                </div>
+
+
+
+                            </Authorized>
+
+                            <NotAuthorized>
+                                <div class="mt-4 product-btn d-flex justify-content-between">
+                                    <button class="btn btn-primary" @onclick="OnClick_BtnAddToCart">
+                                        <i class="fas fa-cart-plus fa-lg mr-2"></i>
+                                        Add to Cart
+                                    </button>
+
+                                    <button class="btn btn-default" @onclick="OnClick_BtnAddToWishlist">
+                                        <i class="fas fa-heart fa-lg mr-2"></i>
+                                        Add to Wishlist
+                                    </button>
+                                </div>
+                            </NotAuthorized>
+                        </AuthorizeView>
+
+
 
                         @* <div class="mt-4 product-share">
                         <a href="#" class="text-gray">

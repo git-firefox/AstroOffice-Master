@@ -1,5 +1,6 @@
 ﻿using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Utilities;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
@@ -13,6 +14,8 @@ namespace AstroOfficeWeb.Components.ProductComponents
 {
     public partial class ProductCart
     {
+        [Parameter]
+        public EventCallback<bool> HandleEmptyCart { get; set; }
         private CalculateOrderSummary OrderSummary { get; set; } = null!;
 
         public List<CartItemDTO>? CartItems { get; set; }
@@ -27,6 +30,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
             CartItems = await ProductService.GetCartItems();
             if (CartItems != null)
                 UpdateOrderSummary();
+            await HandleEmptyCart.InvokeAsync(CartItems?.Any() == true);
         }
 
         private void OnClick_UpdateQuantity(CartItemDTO cartItem, int quantity)
@@ -48,6 +52,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
             if (CartItems.Count == 0)
             {
                 await ProductService.UpdateShoppingCart(CartItems);
+                await HandleEmptyCart.InvokeAsync(CartItems?.Any() == true);
             }
         }
 

@@ -9,6 +9,65 @@
 
 @using AstroOfficeHybrid8.Components.Layout;
 
+
+<PageLayout Title="Saved Kundali">
+    <ChildContent>
+        <MudContainer Class="content">
+            @if (personKundaliTableTRs == null)
+            {
+                <div class="overlay dark">
+                    <i class="fas fa-2x fa-sync fa-spin"></i>
+                </div>
+            }
+            else
+            {
+                @if (personKundaliTableTRs.Any())
+                {
+                    @foreach (var row in personKundaliTableTRs)
+                    {
+                        <MudCard Class="mt-3 " Style="background-color: rgba(245, 234, 234, 1)" Elevation="8">
+                            <MudCardHeader Class="py-0">
+                                <CardHeaderAvatar>
+                                    <MudAvatar Color="Color.Secondary">@(!string.IsNullOrEmpty(row.Name) ? row.Name.ToUpper()[0] : 'U')</MudAvatar>
+                                </CardHeaderAvatar>
+                                <CardHeaderContent>
+                                    <MudText Typo="Typo.h6">
+                                        @row.Name
+                                    </MudText>
+                                    <MudText Typo="Typo.subtitle1">
+                                        @row.DateOfBirth
+                                    </MudText>
+                                    <MudText Typo="Typo.subtitle1">
+                                        @row.PlaceOfBirth
+                                    </MudText>
+                                </CardHeaderContent>
+
+                                <CardHeaderActions>
+                                    <div class="mt-6">
+                                        <MudIconButton Class="py-3" OnClick="()=>OnClick_EditBtnShow(row)" Icon="@Icons.Material.Filled.Edit" Color="Color.Default" />
+                                        <MudIconButton Class="py-3" OnClick="()=>OnClick_BtnDelete(row)" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+                                    </div>
+                                </CardHeaderActions>
+                            </MudCardHeader>
+                        </MudCard>
+                    }
+
+                }
+
+                else
+                {
+                    <div style="height:90vh;" class="text-center d-flex justify-content-center justify-content-center
+        ">
+                        <h3 class="d-flex justify-content-center align-items-center text-white">No records found.</h3>
+                    </div>
+                }
+            }
+
+
+        </MudContainer>
+    </ChildContent>
+</PageLayout>
+
 @* <MudContainer Class="content mt-3">
 
 
@@ -83,51 +142,7 @@
  *@
 
 
-<MudContainer Class="content">
-    @if (personKundaliTableTRs == null)
-    {
-        <div class="overlay dark">
-            <i class="fas fa-2x fa-sync fa-spin"></i>
-        </div>
-    }
-    else
-    {
-        @if (personKundaliTableTRs.Any())
-        {
-            @foreach (var row in personKundaliTableTRs)
-            {
-                <MudCard Class="mt-3 " Style="background-color: rgba(245, 234, 234, 1)" Elevation="8">
-                    <MudCardHeader Class="py-0">
-                        <CardHeaderAvatar>
-                            <MudAvatar Color="Color.Secondary">@(!string.IsNullOrEmpty(row.Name) ? row.Name.ToUpper()[0] : 'U')</MudAvatar>
-                        </CardHeaderAvatar>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.h6">
-                                @row.Name
-                            </MudText>
-                            <MudText Typo="Typo.subtitle1">
-                                @row.DateOfBirth
-                            </MudText>
-                            <MudText Typo="Typo.subtitle1">
-                                @row.PlaceOfBirth
-                            </MudText>
-                        </CardHeaderContent>
 
-                        <CardHeaderActions>
-                            <div class="mt-6">
-                                <MudIconButton Class="py-3" OnClick="()=>OnClick_EditBtnShow(row)" Icon="@Icons.Material.Filled.Edit" Color="Color.Default" />
-                                <MudIconButton Class="py-3" OnClick="()=>OnClick_BtnDelete(row)" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
-                            </div>
-                        </CardHeaderActions>
-                    </MudCardHeader>
-                </MudCard>
-            }
-
-        }
-    }
-
-
-</MudContainer>
 
 
 @code {

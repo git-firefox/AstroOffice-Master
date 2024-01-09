@@ -1,8 +1,26 @@
 ﻿@page "/manage-categories"
 
-<AstroOfficeWeb.Components.ProductComponents.ManageCategories></AstroOfficeWeb.Components.ProductComponents.ManageCategories>
+<PageLayout Title="Manage category">
+    <RightContainer>
+        @if (isLoadedCategory)
+        {
+
+            <MudButton OnClick="MCategories.Onclick_AddMetaData" Class="btn-custom">Add Category</MudButton>
+        }
+    </RightContainer>
+
+    <ChildContent>
+        <div class="mt-5 px-3">
+            <AstroOfficeWeb.Components.ProductComponents.ManageCategories @ref=MCategories IsCategoryLoaded="CategoryLoaded" />
+        </div>
+    </ChildContent>
+</PageLayout>
 
 @code{
-    [CascadingParameter]
-    public CategoryDialoge CategoryDialoge { get; set; } = new();
+    AstroOfficeWeb.Components.ProductComponents.ManageCategories MCategories = null!;
+    bool isLoadedCategory = false;
+    private void CategoryLoaded(bool isLoaded)
+    {
+        isLoadedCategory = isLoaded;
+    }
 }

@@ -473,12 +473,20 @@
     <div class="col-lg-12 astro-report">
         <BSTabs BSTabName="Report Tabs">
             <BSTabItems>
+                @* <BSTabItem TabName="Karan" @onclick=""/> *@
                 <BSTabItem TabName="Charts" IsActive="true" />
                 <BSTabItem TabName="Mahadasha" />
                 <BSTabItem TabName="Date Finder" />
                 <BSTabItem TabName="Best Kundali Dates" />
             </BSTabItems>
             <BSTabContent>
+
+                @* <BSTabPanel TabPanelName="Karan">
+                    <TabPanelBody>
+                        <DynamicComponent Type="@typeof(Karan)"  />
+                    </TabPanelBody>
+                </BSTabPanel> *@
+
                 <BSTabPanel TabPanelName="Charts" IsActive="true">
                     <TabPanelBody>
 

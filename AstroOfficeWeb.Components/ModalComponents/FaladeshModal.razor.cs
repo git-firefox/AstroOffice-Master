@@ -15,11 +15,11 @@ namespace AstroOfficeWeb.Components.ModalComponents
         [Parameter] public string? BhavChalitSrc { get; set; }
         [Parameter] public string? LaganSrc { get; set; }
         [Parameter] public string? Kundali { get; set; }
-        [Parameter] public EventCallback<MouseEventArgs> OnClickPrint { get; set; }
 
-        void OnClick_BtnPrint(MouseEventArgs args)
+        async Task OnClick_BtnPrint(MouseEventArgs args)
         {
-
+            string data = await Document.ExportKundaliToPdf(Kundali, BhavChalitSrc, LaganSrc);
+            await Print.PrintPdfAsync(data);
         }
         void Cancel() => MudDialog.Cancel();
     }

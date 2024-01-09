@@ -12,22 +12,22 @@ namespace AstroOfficeWeb.Services
     {
         public void ShowDarkSnackbar(string? message)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(message);
         }
 
         public void ShowErrorSnackbar(string? message)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(message);
         }
 
         public void ShowInfoSnackbar(string? message)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(message);
         }
 
         public void ShowSnackbar(Snackbar snackbar)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Obj");
         }
 
         public Task ShowSnackbarAsync(Snackbar snackbar)
@@ -37,12 +37,12 @@ namespace AstroOfficeWeb.Services
 
         public void ShowSuccessSnackbar(string? message)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(message);
         }
 
         public void ShowWarningSnackbar(string? message)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(message);
         }
     }
 }

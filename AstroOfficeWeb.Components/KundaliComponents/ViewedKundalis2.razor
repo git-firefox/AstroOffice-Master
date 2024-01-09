@@ -1,0 +1,295 @@
+﻿@page "/viewed-kundalis"
+@using AstroOfficeWeb.Services
+@using AstroOfficeWeb.Shared.ViewModels
+
+@inject KundaliHistroyService KundaliHistroy
+@*
+<MudTable Items="@personKundaliTableTRs" Dense="false" Hover="true" ReadOnly="false" Filter="new Func<PersonKundaliTableTRModel,bool>(FilterFunc)"
+          SortLabel="Sort By">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Viewed Kundalis</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+
+    <HeaderContent>
+        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.SrNo)"><strong> Sr No </strong> </MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.Name!)"><strong>Name</strong></MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.ProductName!)"><strong> Product Name </strong></MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.Gender!)"><strong> Gender </strong></MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.DateOfBirth)"><strong> Date Of Birth </strong> </MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.TimeOfBirth)"> <strong>Time Of Birth </strong></MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.PlaceOfBirth!)"><strong> Place Of Birth </strong></MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.Language!)"> <strong>Language </strong> </MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PersonKundaliTableTRModel, object>(x=>x.ViewDate!)"><strong>View Date </strong> </MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Sr No">@context.SrNo</MudTd>
+            <MudTd DataLabel="Sign">@context.Name</MudTd>
+            <MudTd DataLabel="Name">@context.ProductName</MudTd>
+            <MudTd DataLabel="Position">@context.Gender</MudTd>
+            <MudTd DataLabel="Molar mass">@context.DateOfBirth</MudTd>
+            <MudTd DataLabel="Molar mass">@context.TimeOfBirth</MudTd>
+            <MudTd DataLabel="Molar mass">@context.PlaceOfBirth</MudTd>
+            <MudTd DataLabel="Molar mass">@context.Language</MudTd>
+            <MudTd DataLabel="Molar mass">@context.ViewDate</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+
+    </MudTable>
+ *@
+
+
+<MudDrawer @bind-Open="IsDrawerOpen" Width="375px" Height="100%" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
+    <MudDrawerHeader>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudStack Justify="Justify.SpaceBetween" Row="true">
+                    <MudText Typo="Typo.h6">
+                        Kundali details
+                    </MudText>
+                    <MudIconButton Icon="@Icons.Material.Filled.Close" OnClick="OnClick_BtnClose" Color="Color.Primary" Size="Size.Small" />
+                </MudStack>
+            </MudItem>
+        </MudGrid>
+    </MudDrawerHeader>
+
+
+    <MudDrawerContainer>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudPaper Elevation="0" Class="pa-4">
+                    @*  <MudCard Class="mt-3 " Elevation="0">
+                    <MudGrid>
+                    <MudItem xs="6" sm="6">
+
+                    <MudStack Spacing="2">
+                    <!-- Left side: Content -->
+                    <MudText Typo="Typo.h6">
+                    Sr No
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    Name
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    Product Name
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    Gender
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    Date Of Birth
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    Time Of Birth
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    Place Of Birth
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    Language
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    View Date
+                    </MudText>
+                    </MudStack>
+                    </MudItem>
+                    <MudItem xs="6" sm="6">
+                    <!-- Right side: Label -->
+                    @*      <MudCardHeader Class="py-0">
+                    <CardHeaderContent>
+                    <MudStack Spacing="2">
+
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.SrNo
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.Name
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.ProductName
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.Gender
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.DateOfBirth
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.TimeOfBirth
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.PlaceOfBirth
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.Language
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                    @SelectedRow.ViewDate
+                    </MudText>
+                    </MudStack>
+                    </CardHeaderContent>
+                    </MudCardHeader>
+                    </MudItem>
+                    </MudGrid>
+
+                    </MudCard> *@
+
+
+                    <MudSimpleTable Hover="true" Dense="true">
+                        <tbody>
+                            @foreach (var item in SelectedRowKeyValue)
+                            {
+                                <tr>
+                                    <th>@item.Key</th>
+                                    <td>@item.Value.ToStringX()</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </MudSimpleTable>
+
+                    <MudStack Justify="Justify.SpaceBetween" Row="true" Class="py-4">
+                        <MudPaper Elevation="0"><MudButton ButtonType=ButtonType.Button Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="OnClick_BtnClose">Cancel</MudButton></MudPaper>
+                    </MudStack>
+
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudDrawerContainer>
+</MudDrawer>
+
+<MudContainer Class="content">
+    @if (personKundaliTableTRs == null)
+    {
+        <div class="overlay dark ">
+            <i class="fas fa-2x fa-sync fa-spin"></i>
+        </div>
+    }
+    else
+    {
+
+        @if (personKundaliTableTRs.Any())
+        {
+            @* <MudTextField @bind-Value="searchString" TextChanged="FilterFunc" InputType="InputType.Search" T="string" Placeholder="Search Kundali by name" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mud-theme-primary rounded-pill kundali-search" /> *@
+
+            @* <input class="w-100 form-control mt-3 mb-3 rounded-pill" type="search" @bind="searchString" @oninput="FilterFunc" placeholder="Search Kundali by name" /> *@
+
+            <div class="form-group has-search">
+                <span class="fa fa-search form-control-feedback"></span>
+                <input type="search" class="form-control w-100 form-control mt-3 mb-3 rounded-pill" @bind="searchString" @oninput="FilterFunc" placeholder="Search Kundali by name">
+            </div>
+
+            <MudGrid>
+                @foreach (var row in personKundaliTableTRs.Where(item => item!.Name!.Contains(searchString, StringComparison.OrdinalIgnoreCase)))
+                {
+                    <MudItem xs="12" sm="6" md="4">
+                        @* <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=12</MudPaper> *@
+                        <MudCard Elevation="8">
+                            <MudCardHeader Class="py-0">
+                                <CardHeaderAvatar>
+                                    <MudAvatar Color="Color.Primary">@(!string.IsNullOrEmpty(row.Name) ? row.Name.ToUpper()[0] : 'U')</MudAvatar>
+                                </CardHeaderAvatar>
+                                <CardHeaderContent>
+                                    <MudText Typo="Typo.h6">
+                                        @row.Name
+                                    </MudText>
+                                    <MudText Typo="Typo.subtitle1">
+                                        @row.ProductName
+                                    </MudText>
+                                    <MudText Typo="Typo.subtitle1">
+                                        @row.ViewDate
+                                    </MudText>
+                                </CardHeaderContent>
+
+                                <CardHeaderActions>
+                                    <div class="mt-6">
+                                        <MudIconButton Class="py-3" OnClick="()=>OnClick_BtnAction(row)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Default" />
+                                    </div>
+                                </CardHeaderActions>
+                            </MudCardHeader>
+                        </MudCard>
+                    </MudItem>
+                }
+            </MudGrid>
+        }
+        else
+        {
+            <div colspan="10" class="text-center">
+                <h3>No records found.</h3>
+            </div>
+        }
+    }
+
+
+</MudContainer>
+
+
+
+@code
+{
+    private bool IsDrawerOpen { get; set; } = false;
+    private List<PersonKundaliTableTRModel>? personKundaliTableTRs;
+    private IEnumerable<PersonKundaliTableTRModel> FilteredPersonKundaliTableTRs = Enumerable.Empty<PersonKundaliTableTRModel>();
+    private PersonKundaliTableTRModel? SelectedRow { get; set; }
+    private Dictionary<string, object> SelectedRowKeyValue { get; set; } = new Dictionary<string, object>();
+
+
+    private string searchString = "";
+    protected override async Task OnInitializedAsync()
+    {
+        personKundaliTableTRs = await KundaliHistroy.GetUserViewedKundalies();
+        FilteredPersonKundaliTableTRs = personKundaliTableTRs ?? Enumerable.Empty<PersonKundaliTableTRModel>();
+    }
+
+    // private void FilterFunc(string searchString)
+    // {
+    //     if (!string.IsNullOrWhiteSpace(searchString))
+    //     {
+    //         FilteredPersonKundaliTableTRs = personKundaliTableTRs.Where(item => item.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+    //     }
+    //     else
+    //     {
+    //         FilteredPersonKundaliTableTRs = personKundaliTableTRs;
+    //     }
+    // }
+
+    private void FilterFunc(ChangeEventArgs e)
+    {
+        searchString = e.Value.ToStringX(); // Update the searchString
+        if (!string.IsNullOrWhiteSpace(searchString))
+        {
+            FilteredPersonKundaliTableTRs = personKundaliTableTRs?.Where(item => item!.Name!.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList() ?? Enumerable.Empty<PersonKundaliTableTRModel>();
+        }
+        else
+        {
+            FilteredPersonKundaliTableTRs = personKundaliTableTRs ?? Enumerable.Empty<PersonKundaliTableTRModel>(); ;
+        }
+    }
+
+    private void OnClick_BtnClose(MouseEventArgs e)
+    {
+        IsDrawerOpen = !IsDrawerOpen;
+    }
+
+    private void OnClick_BtnAction(PersonKundaliTableTRModel row)
+    {
+        IsDrawerOpen = true;
+        SelectedRowKeyValue = new Dictionary<string, object>()
+        {
+            { "Sr No", row.SrNo},
+            { "Name", row!.Name!},
+            { "Product Name", row?.ProductName!},
+            { "Gender", row?.Gender!},
+            { "Date of Birth", row?.DateOfBirth!},
+            { "Time of Birth", row?.TimeOfBirth!},
+            { "Place of Birth", row?.PlaceOfBirth!},
+            { "Language", row?.Language!},
+            { "View Date", row?.ViewDate!}
+        };
+
+        // SelectedRow = row;
+        // StateHasChanged();
+    }
+}

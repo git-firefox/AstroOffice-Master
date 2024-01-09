@@ -39,6 +39,8 @@ namespace AstroOfficeHybrid8
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<ISwaggerApiService, SwaggerApiService>();
             builder.Services.AddScoped<ISnackbarService,CustomSnackbar>();
+            builder.Services.AddScoped<IPrintService,PrintService>();
+            builder.Services.AddScoped<DocumentService>();
             builder.Services.AddScoped<ProductService>();
             builder.Services.AddScoped<KundaliHistroyService>();
             builder.Services.AddScoped<CountryService>();

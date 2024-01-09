@@ -1,8 +1,17 @@
-﻿@inject TokenWalletService TokenWallet
+﻿@page "/transactions"
+@using AstroOfficeWeb.Services
+@using AstroOfficeWeb.Shared.ViewModels;
+
+@inject TokenWalletService TokenWallet
+
+
+@* <div class="container-fluid p-3">
+    <h1 class="pt-4 pb-2 font-weight-bold ">Transactions</h1>
+    <section class="content"> *@
 <div class="row">
     <div class="col-sm-12 col-md-12">
         <div class="chart-table table-responsive">
-            <table class="table">
+            <MudSimpleTable class="table">
                 <thead class="p-0 bg-da-yellow">
                     <tr>
                         <th>SrNo</th>
@@ -58,12 +67,13 @@
                         }
                     </tbody>
                 }
-            </table>
+            </MudSimpleTable>
         </div>
     </div>
 </div>
-
-
+@*     </section>
+</div>
+ *@
 @code {
     private List<TransactionTableTRModel>? TransactionTableTRs;
 

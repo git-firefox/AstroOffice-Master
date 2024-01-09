@@ -27,6 +27,12 @@
     </YesButton>
 </MudMessageBox> *@
 
+
+@*
+                                                                    <InputTextEditor></InputTextEditor>
+                                                                    <InputMask></InputMask>
+                                                                    <InputSelect2></InputSelect2> *@
+
 <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold "> Add product </h1>
     <section class="content">
@@ -34,7 +40,6 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="card">
@@ -43,20 +48,20 @@
                                         <div id="addproduct-nav-pills-wizard" class="twitter-bs-wizard form-wizard-header">
                                             <ul class="twitter-bs-wizard-nav mb-2 nav nav-pills nav-justified">
                                                 <li class="nav-item">
-                                                    <a @ref="ER_AGeneralInfo" href="#general-info" class="nav-link active" data-bs-toggle="tab" data-toggle="tab">
+                                                    <a @ref="ER_AGeneralInfo" href="#general-info" class="nav-link active" data-bs-toggle="tab" data-toggle="tab" @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.General)">
                                                         <span class="number">01</span>
                                                         <span class="d-none d-sm-inline">General</span>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a @ref="ER_AProductImage" href="#product-img" class="nav-link" data-bs-toggle="tab" data-toggle="tab">
+                                                    <a @ref="ER_AProductImage" href="#product-img" class="nav-link" data-bs-toggle="tab" data-toggle="tab" @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.ProductImage)">
                                                         <span class="number">02</span>
                                                         <span class="d-none d-sm-inline">Product Images</span>
                                                     </a>
                                                 </li>
 
                                                 <li class="nav-item">
-                                                    <a @ref="ER_AMetaData" href="#metadata" class="nav-link" data-bs-toggle="tab" data-toggle="tab">
+                                                    <a @ref="ER_AMetaData" href="#metadata" class="nav-link" data-bs-toggle="tab" data-toggle="tab" @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.Metadata)">
                                                         <span class="number">03</span>
                                                         <span class="d-none d-sm-inline">Metadata</span>
                                                     </a>
@@ -64,7 +69,7 @@
                                             </ul>
                                             <div class="tab-content twitter-bs-wizard-tab-content">
                                                 <div class="tab-pane active" id="general-info">
-                                                    <EditForm Model="ProductModel" OnValidSubmit="OnSubmit_EditForm" OnInvalidSubmit="OnInvalidSubmit_EditForm">
+                                                    <EditForm EditContext="SaveProductInfoContext" OnSubmit="OnSubmit_EditForm">
                                                         <DataAnnotationsValidator />
                                                         <h4 class="header-title">General Information</h4>
                                                         <p class="sub-header">Fill all information below</p>
@@ -117,7 +122,7 @@
                                                             <div class="row">
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
-                                                                        <label for="product-summary" class="form-label">Product Summary</label>
+                                                                        <label for="product-summary" class="form-label">  Product Summary <span class="text-danger">*</span></label>
                                                                         <ValidationMessage For=@(()=>ProductModel.Summary) style="position: revert;" />
                                                                         <InputTextArea @bind-Value="ProductModel.Summary" @oninput="UpdateCharacterCount" class="form-control" id="product-summary" rows="5" placeholder="Please enter summary"></InputTextArea>
                                                                     </div>
@@ -126,11 +131,12 @@
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="product-category" class="form-label">Categories <span class="text-danger">*</span></label>
+                                                                        <ValidationMessage For=@(()=> ProductModel.ProductCategoriesSno) style="position: revert;" />
                                                                         <InputSelect2 @bind-Value="ProductModel.ProductCategoriesSno" Options="CategoryDTOs.Select(s => new Option( value:  s.Sno, text: s.Title))" class="form-control " id="product-category" />
                                                                     </div>
 
                                                                     <div class="mb-3">
-                                                                        <label for="product-reference" class="form-label">Reference <span class="text-danger">*</span></label>
+                                                                        <label for="product-reference" class="form-label">Reference </label>
                                                                         <InputText @bind-Value="ProductModel!.Reference" id="product-reference" class="form-control" placeholder="e.g : Amethyst" />
                                                                     </div>
                                                                 </div>
@@ -171,7 +177,7 @@
                                                 </div>
 
                                                 <div class="tab-pane" id="product-img">
-                                                    <EditForm Model="ProductImage" OnValidSubmit="OnSubmit_ProductImage" OnInvalidSubmit="OnInvalidSubmit_ProductImage">
+                                                    <EditForm EditContext="SaveProductImageInfoContext" OnSubmit="OnSubmit_ProductImage">
                                                         <DataAnnotationsValidator />
                                                         <ValidationSummary />
                                                         <h4 class="header-title">Product Images</h4>
@@ -262,28 +268,29 @@
                                                     <h4 class="header-title">Metadata</h4>
                                                     <p class="sub-header">Fill all information below</p>
 
-                                                    <EditForm Model="MetaData" OnValidSubmit="OnSubmit_MetaData" OnInvalidSubmit="OnInvalidSubmit_MetaData" Context="MetaDataContext">
+                                                    <EditForm EditContext="SaveProductMetadataInfoContext" OnSubmit="Onclick_AddMetaData"  Context="MetaDataContext">
                                                         <DataAnnotationsValidator />
-                                                        <div class="row">
+                                                        <div class="row align-items-end">
 
-                                                            <div class="col-4">
-                                                                <ValidationMessage For=@(()=>MetaData.MetaKeyword) style="position: revert;" />
+                                                            <div class="col-md-4">
                                                                 <label for="product-meta-keyword" class="form-label">Meta Keyword</label>
-                                                                <InputText @bind-Value="MetaData.MetaKeyword" class="form-control" id="product-meta-keyword" placeholder="Meta Value" />
+                                                                <ValidationMessage For=@(()=>MetaData.MetaKeyword) style="position: revert;" />
+                                                                <InputText @bind-Value="MetaData.MetaKeyword" class="form-control" id="product-meta-keyword" placeholder="Meta Keyword" />
                                                             </div>
-                                                            <div class=" col-4">
-                                                                <ValidationMessage For=@(()=>MetaData!.MetaValue) style="position: revert;" />
+                                                            <div class="col-md-4 mt-3 mt-md-0">
                                                                 <label for="product-meta-value" class="form-label">Meta Value</label>
-                                                                <InputText @bind-Value="MetaData!.MetaValue" class="form-control" id="product-meta-value" placeholder="Meta Keywords" />
+                                                                <ValidationMessage For=@(()=>MetaData!.MetaValue) style="position: revert;" />
+                                                                <InputText @bind-Value="MetaData!.MetaValue" class="form-control" id="product-meta-value" placeholder="Meta Value" />
                                                             </div>
-                                                            <div class="col-4 mt-4">
+                                                            <div class="col-md-4 mt-4">
                                                                 @if (MetaDataAction is ActionMode.Add)
                                                                 {
-                                                                    <button type="button" @onclick="Onclick_AddMetaData" class="btn btn-success float-right">Add MetaData</button>
+                                                                    @* <button type="button" @onclick="Onclick_AddMetaData" class="btn btn-success float-right">Add MetaData</button> *@
+                                                                    <button type="submit" class="btn btn-success float-right w-100 w-md-auto">Add MetaData</button>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <button type="button" @onclick="(()=> MetaDataAction = ActionMode.Add)" class="btn btn-success float-right">Cancel</button>
+                                                                    <button type="button" @onclick="(()=> MetaDataAction = ActionMode.Add)" class="btn btn-success w-100 float-right">Cancel</button>
                                                                 }
                                                             </div>
                                                         </div>
@@ -403,11 +410,11 @@
 
 
                                                          <ul class="pager wizard mb-0 list-inline text-end mt-3">
-                                                             <li class="previous list-inline-item disabled">
-                                                                 <button @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.General)" type="button" class="btn btn-secondary"><i class="mdi mdi-arrow-left"></i> Edit Information </button>
+                                                             <li class="previous list-inline-item disabled w-100 w-md-auto">
+                                                                 <button @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.General)" type="button" class="btn btn-secondary w-100 w-md-auto"><i class="mdi mdi-arrow-left"></i> Edit Information </button>
                                                              </li>
-                                                             <li class="list-inline-item">
-                                                                 <button @onclick="OnClick_BtnPublished" type="button" class="btn btn-success">Publish Product <i class="mdi mdi-arrow-right ms-1"></i></button>
+                                                             <li class="list-inline-item mt-3 w-100">
+                                                                 <button @onclick="OnClick_BtnPublished" type="button" class="btn btn-success w-100 w-md-auto">Publish Product <i class="mdi mdi-arrow-right ms-1"></i></button>
                                                              </li>
                                                          </ul>
 
