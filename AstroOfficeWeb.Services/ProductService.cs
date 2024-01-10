@@ -134,6 +134,20 @@ namespace AstroOfficeWeb.Services
                 _snackbar?.ShowErrorSnackbar(response.Message);
             }
         }
+
+        public async Task UpdateProduct(ProductDTO saveProduct, long sno, List<FileData> files)
+        {
+            var response = await _swagger.PutWithMultipartFormDataContentAsync<ProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.PUT_UpdateProduct + "?sno=" + sno, files, saveProduct);
+            if (response!.Success)
+            {
+                _snackbar?.ShowSuccessSnackbar(response.Message);
+                _navigation.NavigateTo("/manage-products");
+            }
+            else
+            {
+                _snackbar?.ShowErrorSnackbar(response.Message);
+            }
+        }
         public async Task<bool> IsDeletedSelectdProduct(long sno)
         {
             var queryParams = new Dictionary<string, string>()

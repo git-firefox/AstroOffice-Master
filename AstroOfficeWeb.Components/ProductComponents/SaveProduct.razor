@@ -217,13 +217,13 @@
 
                                                             <div class="col-7">
                                                                 <ul class="list-inline">
-                                                                    @foreach (var image in BrowserFiles)
+                                                                    @foreach (var image in DisplayMediaData)
                                                                     {
-                                                                        <li class="list-inline-item" @onclick="() => OnClick_ImageItems(image)" role="button">
-                                                                            <img alt="@image.ImageName" class="img-thumbnail" src="@image.ImageURL" height="100" width="100" title="@image.ImageName" />
+                                                                        <li class="list-inline-item" @onclick="() => OnClick_SelectFileItems(image)" role="button">
+                                                                            <img alt="@image.FileName" class="img-thumbnail" src="@image.FileBase64String" height="100" width="100" title="@image.FileName" />
 
                                                                             <span class="cross-icon" @onclick="() => OnClick_RemoveImage(image)">
-                                                                                &#10006; <!-- Unicode character for the cross symbol -->
+                                                                                &#10006; 
                                                                             </span>
                                                                         </li>
                                                                     }
@@ -231,9 +231,9 @@
                                                             </div>
 
                                                             <div class="col-5">
-                                                                @if (SelectedImage?.ImageURL != null)
+                                                                @if (SelectedFile?.FileBase64String != null)
                                                                 {
-                                                                    <img alt="@SelectedImage.ImageName" class="img-fluid img-thumbnail" src="@SelectedImage.ImageURL" title="@SelectedImage.ImageName" />
+                                                                    <img alt="@SelectedFile.FileName" class="img-fluid img-thumbnail" src="@SelectedFile.FileBase64String" title="@SelectedFile.FileName" />
                                                                     <div class="mt-3">
                                                                         <button type="button" class="btn btn-success" @onclick="OnClick_BtnSetAsMain"> Set image as main</button>
                                                                     </div>

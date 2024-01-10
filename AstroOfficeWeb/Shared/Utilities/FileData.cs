@@ -10,8 +10,10 @@ namespace AstroOfficeWeb.Shared.Utilities
     {
         public string Name { get; set; } = null!;
         public Stream File { get; set; } = null!;
+        public string FileBase64String { get; set; } = null!;
         public string FileName { get; set; } = null!;
         public string ContentType { get; set; } = null!;
+        public bool IsImageSetAsMain { get; set; } = false;
         public FileType FileType { get; set; }
     }
 }
