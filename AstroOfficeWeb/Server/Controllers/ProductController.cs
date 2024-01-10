@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using AstroOfficeWeb.Server.Models;
 using Stripe.Checkout;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -198,12 +199,13 @@ namespace AstroOfficeWeb.Server.Controllers
         // POST api/<ProductController>
         [Authorize]
         [HttpPost]
-        public IActionResult AddProduct([FromBody] SaveProductDTO productDTO, List<IFormFile> files)
+        public IActionResult AddProduct([FromForm] MultipartFormRequest<SaveProductDTO> request)
         {
+            var s = request.GetDataObject();
             var apiResponse = new ApiResponse<ViewProductDTO> { Data = null };
             try
             {
-                AProduct aProduct = _mapper.Map<AProduct>(productDTO);
+                AProduct aProduct = _mapper.Map<AProduct>(request.GetDataObject());
                 aProduct.AddedByAUsersSno = User.GetUserSno();
                 aProduct.AddedDate = DateTime.Now;
                 _context.AProducts.Add(aProduct);
@@ -211,14 +213,14 @@ namespace AstroOfficeWeb.Server.Controllers
                 _context.SaveChanges();
 
 
-                if (files != null && files.Any())
+                if (request.Files.Any())
                 {
                     var productMedias = new List<ProductMedia>();
-                    var test = Request.Form.Files;
+                    //var test = Request.Form.Files;
 
                     var mediaPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media");
 
-                    foreach (var file in files)
+                    foreach (var file in request.Files)
                     {
                         var guid = Guid.NewGuid();
                         var extension = Path.GetExtension(file.FileName.ToLower());

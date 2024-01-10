@@ -52,7 +52,7 @@ namespace AstroOfficeWeb.Services
                 {
                     var content = JsonConvert.SerializeObject(request);
                     var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-                    multipartContent.Add(bodyContent, "json");
+                    multipartContent.Add(bodyContent, "Data");
                 }
 
                 foreach (var file in files)
