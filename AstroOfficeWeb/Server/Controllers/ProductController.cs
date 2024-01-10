@@ -201,11 +201,10 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpPost]
         public IActionResult AddProduct([FromForm] MultipartFormRequest<SaveProductDTO> request)
         {
-            var s = request.GetDataObject();
             var apiResponse = new ApiResponse<ViewProductDTO> { Data = null };
             try
             {
-                AProduct aProduct = _mapper.Map<AProduct>(request.GetDataObject());
+                AProduct aProduct = _mapper.Map<AProduct>(request.DataObject);
                 aProduct.AddedByAUsersSno = User.GetUserSno();
                 aProduct.AddedDate = DateTime.Now;
                 _context.AProducts.Add(aProduct);

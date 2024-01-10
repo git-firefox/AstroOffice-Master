@@ -8,7 +8,6 @@ namespace AstroOfficeWeb.Server.Models
     {
         public string Data { get; set; } = default!;
         public IFormFileCollection Files { get; set; } = default!;
-
-        public TRequest? GetDataObject() => JsonConvert.DeserializeObject<TRequest>(this.Data);
+        public TRequest? DataObject => JsonConvert.DeserializeObject<TRequest>(Data);
     }
 }
