@@ -20,9 +20,11 @@ namespace AstroOfficeWeb.Components.ProductComponents
         [Parameter]
         public string? ProductName { get; set; }
 
-        public ImagesDTO? SelectedImage { get; set; } = new ImagesDTO();
+        //public ImagesDTO? SelectedImage { get; set; } = new ImagesDTO();
+        //public MediaDTO? SelectedMedia { get; set; } = new ();
 
-        public List<ImagesDTO> BrowserFiles { get; set; } = new();
+        //public List<ImagesDTO> BrowserFiles { get; set; } = new();
+        public List<MediaDTO> MediaDTOs { get; set; } = new();
         public CultureInfo CultureInfo { get; set; } = new CultureInfo("en-IN");
 
         public ProductDTO? ViewProductDTO { get; set; } = new ViewProductDTO();
@@ -37,9 +39,10 @@ namespace AstroOfficeWeb.Components.ProductComponents
         protected override async Task OnInitializedAsync()
         {
             ViewProductDTO = await ProductService.GetProductBySno(ProductSno) ?? new();
-            BrowserFiles = ViewProductDTO.ProductImages ??= new();
+            //BrowserFiles = ViewProductDTO.ProductImages ??= new();
+            MediaDTOs = ViewProductDTO.ProductMediaFiles ??= new();
             MetaDataList = ViewProductDTO.MetaDatas ??= new();
-            SelectedImage = new ImagesDTO { ImageName = ViewProductDTO?.Name ?? "", ImageURL = ViewProductDTO?.ImageUrl ?? "" };
+            //SelectedMedia = new ImagesDTO { ImageName = ViewProductDTO?.Name ?? "", ImageURL = ViewProductDTO?.ImageUrl ?? "" };
         }
 
         private async Task OnClick_BtnAddToWishlist(MouseEventArgs e)

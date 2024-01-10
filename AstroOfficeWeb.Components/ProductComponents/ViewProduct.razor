@@ -40,13 +40,13 @@
 
                                 <div class="carousel-inner">
                                     <div class="carousel-item active image-radius">
-                                        <img src="@SelectedImage!.ImageURL" class="d-block w-100 image-radius" alt="@SelectedImage!.ImageName" title="@SelectedImage!.ImageName" />
+                                        <img src="@ViewProductDTO!.ImageUrl" class="d-block w-100 image-radius" alt="@ViewProductDTO!.Name" title="@ViewProductDTO!.Name" />
                                     </div>
 
-                                    @foreach (var image in BrowserFiles)
+                                    @foreach (var image in MediaDTOs)
                                     {
                                         <div class="carousel-item">
-                                            <img src="@image.ImageURL" class="d-block w-100 image-radius" alt="@image.ImageName" title="@image.ImageName" />
+                                            <img src="@image.MediaUrl" class="d-block w-100 image-radius" alt="@image.MediaName" title="@image.MediaName" />
                                         </div>
                                     }
                                 </div>
@@ -65,13 +65,13 @@
                                 <div class="carousel-indicators">
 
                                     <button data-bs-target="#carouselExampleIndicators" data-target="#carouselExampleIndicators" data-bs-slide-to="0" data-slide-to="0" class="thumbnail active" aria-current="true" aria-label="Slide 1">
-                                        <img src="@SelectedImage!.ImageURL" class="img-thumbnail" alt="@SelectedImage!.ImageName" title="@SelectedImage!.ImageName" />
+                                        <img src="@ViewProductDTO!.ImageUrl" class="img-thumbnail" alt="@ViewProductDTO!.Name" title="@ViewProductDTO!.Name" />
                                     </button>
 
-                                    @foreach (var (value, index) in BrowserFiles.Select((value, index) => (value, index)))
+                                    @foreach (var (value, index) in MediaDTOs.Select((value, index) => (value, index)))
                                     {
                                         <button data-bs-target="#carouselExampleIndicators" data-target="#carouselExampleIndicators" data-bs-slide-to="@(index+1)" data-slide-to="@(index+1)" class="thumbnail" aria-label="Slide @(index+2)">
-                                            <img src="@value.ImageURL" class="img-thumbnail" alt="@value.ImageName" title="@value.ImageName" />
+                                            <img src="@value.MediaUrl" class="img-thumbnail" alt="@value.MediaName" title="@value.MediaName" />
                                         </button>
                                     }
                                 </div>

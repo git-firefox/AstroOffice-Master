@@ -53,7 +53,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         //public DeleteConfirmationDialog? DeleteConfirmationDialog { get; set; }
 
 
-        public List<ImagesDTO> BrowserFiles { get; set; } = new();
+        //public List<ImagesDTO> BrowserFiles { get; set; } = new();
 
 
         public SaveProductDTO? SaveProductModel { get; set; }
@@ -79,7 +79,8 @@ namespace AstroOfficeWeb.Components.ProductComponents
         MudMessageBox MessageBox { get; set; } = null!;
 
         public bool IsImageLoaded { get; set; }
-        public ImagesDTO? SelectedImage { get; set; }
+        //public ImagesDTO? SelectedImage { get; set; }
+        public FileData? SelectedFile { get; set; }
         bool success;
         string[] errors = { };
         //MudForm form;
@@ -109,9 +110,30 @@ namespace AstroOfficeWeb.Components.ProductComponents
                 SaveProductInfoContext = new EditContext(ProductModel);
                 SaveProductImageInfoContext = new EditContext(ProductImage);
                 SaveProductMetadataInfoContext = new EditContext(MetaData);
-                BrowserFiles = ProductModel.ProductImages ??= new();
+                //BrowserFiles = ProductModel.ProductImages ??= new();
                 MetaDataList = ProductModel.MetaDatas ??= new();
                 CharacterCount = Convert.ToInt32(ProductModel.Summary?.Length);
+
+                DisplayMediaData = ProductModel.ProductMediaFiles.Select(a => new FileData
+                {
+                    IsImageSetAsMain = false,
+                    ContentType = a.MediaType,
+                    FileBase64String = a.MediaUrl,
+                    FileName = a.MediaName,
+                    Name = a.MediaName
+                }).ToList();
+
+                if (productDTO.ImageUrl != null)
+                {
+
+                    DisplayMediaData.Add(new FileData
+                    {
+                        IsImageSetAsMain = true,
+                        FileBase64String = productDTO.ImageUrl,
+                        FileName = productDTO.ImageUrl,
+                        Name = productDTO.Name
+                    });
+                }
             }
 
             //CategoryDTOs = await ProductService.GetCategories();
@@ -130,7 +152,8 @@ namespace AstroOfficeWeb.Components.ProductComponents
         }
 
 
-        private List<FileData> FileData { get; set; } = new List<FileData>();
+        private List<FileData> SaveFileData { get; set; } = new List<FileData>();
+        private List<FileData> DisplayMediaData { get; set; } = new List<FileData>();
 
         private async Task OnChange_InputFile(InputFileChangeEventArgs e)
         {
@@ -163,13 +186,26 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
                     var buffer = memoryStream.ToArray();
 
-                    FileData.Add(new FileData { File = file.OpenReadStream(file.Size), FileName = file.Name, ContentType= file.ContentType, Name = file.Name });
-
                     var base64String = Convert.ToBase64String(buffer);
 
-                    BrowserFiles.Add(new ImagesDTO { ImageURL = $"data:{file.ContentType};base64," + base64String, ImageName = file.Name });
+
+
+
+                    //FileData.Add(new FileData { File = file.OpenReadStream(file.Size), FileName = file.Name, ContentType = file.ContentType, Name = file.Name, FileBase64String = $"data:{file.ContentType};base64," + base64String });
+                    DisplayMediaData.Add(new FileData { File = file.OpenReadStream(file.Size), FileName = file.Name, ContentType = file.ContentType, Name = file.Name, FileBase64String = $"data:{file.ContentType};base64," + base64String });
+
+
+                    //BrowserFiles.Add(new ImagesDTO { ImageURL = $"data:{file.ContentType};base64," + base64String, ImageName = file.Name });
+
+
+
+                    //DisplayMediaData.Add()
+
+
+
+
                     ProductImage?.FileNames.Add(file.Name);
-                    SaveProductModel?.FileNames.Add(file.Name);
+                    //SaveProductModel?.FileNames.Add(file.Name);
                 }
             }
             IsImageLoaded = true;
@@ -281,7 +317,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
             }
 
 
-            if (!SaveProductImageInfoContext.Validate() && (ProductModel?.ProductImages?.Count == 0))
+            if (!SaveProductImageInfoContext.Validate() && (ProductModel?.ProductMediaFiles?.Count == 0))
             {
                 await JSRuntime.ShowTabAsync(ER_AProductImage);
                 return;
@@ -294,7 +330,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
             }
 
 
-            ProductModel.ProductImages = BrowserFiles;
+            //ProductModel.ProductImages = BrowserFiles;
             ProductModel.MetaDatas = MetaDataList;
             //if (FileData.Any())
             //{
@@ -302,57 +338,93 @@ namespace AstroOfficeWeb.Components.ProductComponents
             //    await ProductService.AddProduct(ProductModel, FileData);
 
             //}
+            //FileData
+
+            SaveFileData.Clear();
+
+            DisplayMediaData.ForEach(a =>
+            {
+                if (a.IsImageSetAsMain)
+                {
+                    a.FileName += "?ismain=true";
+                }
+                if (a.File != null)
+                {
+                    SaveFileData.Add(a);
+                }
+            });
+
+
             if (Sno == 0)
             {
                 //await ProductService.AddProduct(ProductModel);
-                await ProductService.AddProduct(ProductModel, FileData);
+                await ProductService.AddProduct(ProductModel, SaveFileData);
 
             }
             else
             {
-                await ProductService.UpdateProduct(ProductModel, Sno);
+
+                await ProductService.UpdateProduct(ProductModel, Sno, SaveFileData);
             }
         }
 
 
-        private void OnClick_ImageItems(ImagesDTO value)
+
+
+        private void OnClick_SelectFileItems(FileData value)
         {
-            SelectedImage = value;
+            SelectedFile = value;
         }
 
-        private void OnClick_RemoveImage(ImagesDTO value)
+        private void OnClick_RemoveImage(FileData value)
         {
-            BrowserFiles.Remove(value);
-            ProductImage?.FileNames?.Remove(value!.ImageName);
-            SaveProductModel?.FileNames.Remove(value!.ImageName);
-            if (SelectedImage == value)
-                SelectedImage = null;
+            DisplayMediaData.Remove(value);
+            //BrowserFiles.Remove(value);
+            //ProductImage?.FileNames?.Remove(value!.ImageName);
+            //SaveProductModel?.FileNames.Remove(value!.ImageName);
+            //if (SelectedImage == value)
+            //    SelectedImage = null;
         }
 
-
-        private async Task OnClick_BtnSetAsMain(MouseEventArgs e)
+        public bool IsImageSetAsMain = false;
+        private void OnClick_BtnSetAsMain(MouseEventArgs e)
         {
-            if (SelectedImage == null)
+
+            if (SelectedFile == null)
             {
                 Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
-                if (BrowserFiles.Count == 0)
+                //if (BrowserFiles.Count == 0)
+                if (DisplayMediaData.Count == 0)
                 {
                     Snackbar.Add("Please add images", Severity.Error);
                     //await JSRuntime.ShowToastAsync("Please add image(s)", SwalIcon.Error);
                     return;
                 }
 
+
+
                 Snackbar.Add("Please select image from list", Severity.Error);
                 //await JSRuntime.ShowToastAsync("Please select image from list", SwalIcon.Error);
             }
             else
             {
-                ProductModel!.ImageUrl = SelectedImage.ImageURL;
-                Snackbar.Add("The current selected image has been set as the main image successfully", Severity.Success);
-                //await JSRuntime.ShowToastAsync("The current selected image has been set as the main image successfully", SwalIcon.Success);
+
+                DisplayMediaData.ForEach(a =>
+                {
+                    a.IsImageSetAsMain = false;
+                });
+
+
             }
 
+            SelectedFile.IsImageSetAsMain = true;
+            //ProductModel!.ImageUrl = SelectedImage.ImageURL;
+            //SelectedFile.FileName = SelectedFile.FileName + "?ismain=true";
+            Snackbar.Add("The current selected image has been set as the main image successfully", Severity.Success);
+            //await JSRuntime.ShowToastAsync("The current selected image has been set as the main image successfully", SwalIcon.Success);
         }
+
+
         public string searchString = string.Empty;
         public void Onclick_AddMetaData()
         {

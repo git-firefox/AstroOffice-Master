@@ -56,7 +56,7 @@ namespace AstroOfficeWeb.Shared.DTOs
         public ProductStatus Status { get; set; }
 
         public long Sno { get; set; }
-        public List<ImagesDTO>? ProductImages { get; set; } = new();
+        public List<MediaDTO>? ProductMediaFiles { get; set; } = new();
 
         public List<MetaDataDTO>? MetaDatas { get; set; }
 
