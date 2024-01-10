@@ -91,8 +91,10 @@
 
     public static class DocumentApiConst
     {
-        public static string Base = "api/Document/";
-        public static string POST_ExportKundaliToPdf = Base + "ExportKundaliToPdf";
+        //public static string Base = "api/Document/";
+        //public static string POST_ExportKundaliToPdf = Base + "ExportKundaliToPdf";
+        public static string Base = "api/Pdf/";
+        public static string POST_ExportKundaliToPdf = Base + "GeneratePDF";
     }
     public static class SMSApiConst
     {
