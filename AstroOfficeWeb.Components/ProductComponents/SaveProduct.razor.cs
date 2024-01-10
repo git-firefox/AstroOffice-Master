@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 
 namespace AstroOfficeWeb.Components.ProductComponents
 {
-
     public enum ActionMode
     {
         Add,
@@ -23,12 +22,11 @@ namespace AstroOfficeWeb.Components.ProductComponents
         Delete,
         Cancel
     }
+
     public class ProductImage
     {
         public string? Src { get; set; }
         public string Alt { get; set; } = null!;
-
-
 
         [Required(ErrorMessage = "Please select a file.")]
         //[MinLength(1, ErrorMessage = "Upload atleast 1 image.")]
@@ -42,6 +40,11 @@ namespace AstroOfficeWeb.Components.ProductComponents
     {
         [Parameter]
         public long Sno { get; set; }
+
+        private EditContext SaveProductInfoContext { get; set; } = null!;
+        private EditContext SaveProductImageInfoContext { get; set; } = null!;
+        private EditContext SaveProductMetadataInfoContext { get; set; } = null!;
+
 
         private int Counter = 0;
 
@@ -70,9 +73,6 @@ namespace AstroOfficeWeb.Components.ProductComponents
         [Parameter]
         public List<CategoryDialoge> CategoryDTOs { get; set; } = new();
 
-        private EditContext SaveProductInfoContext { get; set; } = null!;
-        private EditContext SaveProductImageInfoContext { get; set; } = null!;
-        private EditContext SaveProductMetadataInfoContext { get; set; } = null!;
 
         //public ProductDTO ViewProductDTO { get; set; } = new();
 

@@ -315,7 +315,7 @@ namespace AstroOfficeWeb.Server.Controllers
         public IActionResult UpdateProduct([FromQuery] long sno, [FromForm] MultipartFormRequest<SaveProductDTO> request)
 
         {
-            SaveProductDTO productDTO = request.GetDataObject();
+            SaveProductDTO productDTO = request.DataObject;
 
             var apiResponse = new ApiResponse<ViewProductDTO> { Data = null };
             try
@@ -331,7 +331,7 @@ namespace AstroOfficeWeb.Server.Controllers
                     aProduct.ModifiedByAUsersSno = User.GetUserSno();
                     aProduct.ImageUrl = existedProduct.ImageUrl;
                     aProduct.LastModifiedDate = DateTime.Now;
-                    //aProduct.IsActive = true;
+                    //aProduct.IsActive = true;c
 
                     _context.AProducts.Update(aProduct);
                     _context.SaveChanges();
@@ -341,11 +341,6 @@ namespace AstroOfficeWeb.Server.Controllers
 
 
                     var viewProduct = _mapper.Map<ViewProductDTO>(aProduct);
-
-
-
-
-
 
                     if (request.Files != null)
                     {
