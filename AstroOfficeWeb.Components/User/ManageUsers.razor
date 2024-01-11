@@ -39,7 +39,7 @@
 
                         <MudCheckBox @bind-Value="SaveUserModel.AdminUser" Label="Admin User ?"></MudCheckBox>
 
-                        <MudSelect T="UserRole" @bind-Value="SaveUserModel.Role" Label="Role">
+                        <MudSelect T="UserRole?" @bind-Value="SaveUserModel.Role" Label="Role">
                             @foreach (UserRole option in Enum.GetValues(typeof(UserRole)))
                             {
                                 <MudSelectItem Value="option">@option.ToString()</MudSelectItem>

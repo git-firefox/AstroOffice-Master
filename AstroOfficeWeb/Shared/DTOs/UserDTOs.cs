@@ -30,7 +30,7 @@ namespace AstroOfficeWeb.Shared.DTOs
         public string PasswordHash { get; set; } = null!;
 
         [Display(Name = "Role")]
-        public UserRole Role { get; set; }
+        public UserRole? Role { get; set; }
 
         [Display(Name = "Status")]
         public UserStatus Status { get; set; }

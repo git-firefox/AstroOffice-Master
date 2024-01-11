@@ -217,7 +217,7 @@ namespace AstroOfficeWeb.Services
                     return result;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
             }
