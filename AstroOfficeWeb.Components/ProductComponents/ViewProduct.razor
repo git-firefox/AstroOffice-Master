@@ -45,8 +45,21 @@
 
                                     @foreach (var image in MediaDTOs)
                                     {
+
                                         <div class="carousel-item">
+                                            @if (image.MediaType != "OGG" && image.MediaType != "WEBM" && image.MediaType != "MP4")
+                                            {
                                             <img src="@image.MediaUrl" class="d-block w-100 image-radius" alt="@image.MediaName" title="@image.MediaName" />
+                                            }
+                                            else
+                                            {
+                                            <video controls class="d-block w-100 image-radius">
+                                                <source src="@image.MediaUrl" type="video/mp4">
+                                                <source src="@image.MediaUrl" type="video/webm">
+                                                <source src="@image.MediaUrl" type="video/ogg">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                            }
                                         </div>
                                     }
                                 </div>
@@ -71,7 +84,19 @@
                                     @foreach (var (value, index) in MediaDTOs.Select((value, index) => (value, index)))
                                     {
                                         <button data-bs-target="#carouselExampleIndicators" data-target="#carouselExampleIndicators" data-bs-slide-to="@(index+1)" data-slide-to="@(index+1)" class="thumbnail" aria-label="Slide @(index+2)">
-                                            <img src="@value.MediaUrl" class="img-thumbnail" alt="@value.MediaName" title="@value.MediaName" />
+                                            @if (value.MediaType != "OGG" && value.MediaType != "WEBM" && value.MediaType != "MP4")
+                                            {
+                                                <img src="@value.MediaUrl" class="img-thumbnail" alt="@value.MediaName" title="@value.MediaName" />
+                                            }
+                                            else
+                                            {
+                                                <video controls class="img-thumbnail">
+                                                    <source src="@value.MediaUrl" type="video/mp4">
+                                                    <source src="@value.MediaUrl" type="video/webm">
+                                                    <source src="@value.MediaUrl" type="video/ogg">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            }
                                         </button>
                                     }
                                 </div>
@@ -104,11 +129,11 @@
                             </h4>
                         </div>
 
-                        <AuthorizeView Roles=@(ApplicationConst.Role_ProductManager + "," + ApplicationConst.Role_Admin) >
+                        <AuthorizeView Roles=@(ApplicationConst.Role_ProductManager + "," + ApplicationConst.Role_Admin)>
                             <Authorized>
 
                                 <div class="mt-4 product-btn d-flex justify-content-between">
-                                    <button class="btn btn-primary " >
+                                    <button class="btn btn-primary ">
                                         <i class="fas fa-cart-plus fa-lg mr-2"></i>
                                         Add to Cart
                                     </button>

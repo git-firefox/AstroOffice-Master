@@ -42,7 +42,7 @@ namespace AstroOfficeWeb.Services
             return default;
         }
 
-        public async Task<TResponse?> PostWithMultipartFormDataContentAsync<TRequest, TResponse>(string url, List<FileData> files, TRequest request)
+        public async Task<TResponse?> PostWithMultipartFormDataContentAsync<TRequest, TResponse>(string url, TRequest request, IEnumerable<FileData?>? files)
         {
             try
             {
@@ -54,25 +54,26 @@ namespace AstroOfficeWeb.Services
                     var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
                     multipartContent.Add(bodyContent, "Data");
                 }
-
-                foreach (var file in files)
+                if (files != null)
                 {
-                    if (file.File != null)
+                    foreach (var file in files)
                     {
-                        var fileStreamContent = new StreamContent(file.File);
-                        fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                        if (file?.File != null)
                         {
-                            Name = "Files",
-                            FileName = file.FileName,
-                        };
-                        fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
-                        multipartContent.Add(fileStreamContent, file.Name, file.FileName);
+                            var fileStreamContent = new StreamContent(file.File);
+                            fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                            {
+                                Name = "Files",
+                                FileName = file.FileName,
+                            };
+                            fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+                            multipartContent.Add(fileStreamContent, file.Name, file.FileName);
+                        }
+
+                        //multipartContent.Add(fileStreamContent, "1" , "2");
+
                     }
-                    
-                    //multipartContent.Add(fileStreamContent, "1" , "2");
-
                 }
-
                 var response = await _client.PostAsync(_client.BaseAddress + url, multipartContent);
 
                 if (response.IsSuccessStatusCode)
@@ -83,16 +84,16 @@ namespace AstroOfficeWeb.Services
                 }
                 else if (response.StatusCode == HttpStatusCode.Unauthorized) { };
 
-                return default;
+
             }
             catch (Exception ex)
             {
-                throw new Exception("getting error");
+                _ = ex;
             }
-
+            return default;
         }
-        
-        public async Task<TResponse?> PutWithMultipartFormDataContentAsync<TRequest, TResponse>(string url, List<FileData> files, TRequest request)
+
+        public async Task<TResponse?> PutWithMultipartFormDataContentAsync<TRequest, TResponse>(string url, TRequest request, IEnumerable<FileData?>? files)
         {
             try
             {
@@ -105,22 +106,25 @@ namespace AstroOfficeWeb.Services
                     multipartContent.Add(bodyContent, "Data");
                 }
 
-                foreach (var file in files)
+                if (files != null)
                 {
-                    if (file.File != null)
+                    foreach (var file in files)
                     {
-                        var fileStreamContent = new StreamContent(file.File);
-                        fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                        if (file?.File != null)
                         {
-                            Name = "Files",
-                            FileName = file.FileName,
-                        };
-                        fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
-                        multipartContent.Add(fileStreamContent, file.Name, file.FileName);
-                    }
-                    
-                    //multipartContent.Add(fileStreamContent, "1" , "2");
+                            var fileStreamContent = new StreamContent(file.File);
+                            fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                            {
+                                Name = "Files",
+                                FileName = file.FileName,
+                            };
+                            fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+                            multipartContent.Add(fileStreamContent, file.Name, file.FileName);
+                        }
 
+                        //multipartContent.Add(fileStreamContent, "1" , "2");
+
+                    }
                 }
 
                 //var response = await _client.PostAsync(_client.BaseAddress + url, multipartContent);
@@ -134,34 +138,37 @@ namespace AstroOfficeWeb.Services
                 }
                 else if (response.StatusCode == HttpStatusCode.Unauthorized) { };
 
-                return default;
             }
             catch (Exception ex)
             {
-                throw new Exception("getting error");
-            }
+                _ = ex;
 
+            }
+            return default;
         }
 
 
 
-        public async Task<TResponse?> PostWithMultipartFormDataContentAsync<TResponse>(string url, List<FileData> files)
+        public async Task<TResponse?> PostWithMultipartFormDataContentAsync<TResponse>(string url, IEnumerable<FileData?>? files)
         {
             var multipartContent = new MultipartFormDataContent();
 
-
-            foreach (var file in files)
-            {
-
-                var fileStreamContent = new StreamContent(file.File);
-                fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+            if (files != null)
+                foreach (var file in files)
                 {
-                    Name = "Files",
-                    FileName = file.FileName,
-                };
-                fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
-                multipartContent.Add(fileStreamContent, file.Name, file.FileName);
-            }
+                    if (file != null)
+                    {
+
+                        var fileStreamContent = new StreamContent(file.File);
+                        fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                        {
+                            Name = "Files",
+                            FileName = file.FileName,
+                        };
+                        fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+                        multipartContent.Add(fileStreamContent, file.Name, file.FileName);
+                    }
+                }
 
             var response = await _client.PostAsync(_client.BaseAddress + url, multipartContent);
 

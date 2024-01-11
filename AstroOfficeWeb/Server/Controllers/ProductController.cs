@@ -108,11 +108,23 @@ namespace AstroOfficeWeb.Server.Controllers
             var mediaDTOs = _mapper.Map<List<MediaDTO>>(aProduct.ProductMedia);
             var metaDataDTOs = _mapper.Map<List<MetaDataDTO>>(aProduct.ProductMetaData);
 
+            if (aProduct.ImageUrl != null)
+            {
+                mediaDTOs.Add(new MediaDTO
+                {
+                    IsPrimary = true,
+                    IsSecondary = true,
+                    MediaName = aProduct.Name,
+                    MediaType = !aProduct.ImageUrl.StartsWith("data:image") ? Path.GetExtension(aProduct.ImageUrl).ToUpper()[1..] : null,
+                    MediaUrl = !aProduct.ImageUrl.StartsWith("data:image") ? Path.GetFileNameWithoutExtension(aProduct.ImageUrl) : aProduct.ImageUrl,
+                    Sno = -1,
+                });
+
+            }
             mediaDTOs.ForEach(md =>
             {
                 md.MediaUrl = SetMedia(md.MediaUrl, md.MediaType);
             });
-
             productDTO.ProductMediaFiles = mediaDTOs;
             productDTO.MetaDatas = metaDataDTOs;
             productDTO.ProductCategory = aProduct.ProductCategoriesSnoNavigation?.Title ?? string.Empty;
@@ -317,6 +329,7 @@ namespace AstroOfficeWeb.Server.Controllers
         {
             SaveProductDTO productDTO = request.DataObject;
 
+
             var apiResponse = new ApiResponse<ViewProductDTO> { Data = null };
             try
             {
@@ -329,7 +342,8 @@ namespace AstroOfficeWeb.Server.Controllers
                     aProduct.AddedByAUsersSno = existedProduct.AddedByAUsersSno;
                     aProduct.AddedDate = existedProduct.AddedDate;
                     aProduct.ModifiedByAUsersSno = User.GetUserSno();
-                    aProduct.ImageUrl = existedProduct.ImageUrl;
+                    if (productDTO.ProductMediaFiles.FirstOrDefault(a => a.Attachment == null && a.IsPrimary == true) is MediaDTO primaryMediaDTO)
+                        aProduct.ImageUrl = primaryMediaDTO.MediaUrl;
                     aProduct.LastModifiedDate = DateTime.Now;
                     //aProduct.IsActive = true;c
 
@@ -347,13 +361,16 @@ namespace AstroOfficeWeb.Server.Controllers
 
                         if (request.Files.Any())
                         {
-                            var productMedias = new List<ProductMedia>();
+                            //var productMedias = new List<ProductMedia>();
                             //var test = Request.Form.Files;
 
                             var mediaPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media");
 
                             foreach (var file in request.Files)
                             {
+
+
+
                                 var guid = Guid.NewGuid();
                                 var extension = Path.GetExtension(file.FileName.ToLower());
                                 var temp = extension.Split('?');
@@ -365,12 +382,25 @@ namespace AstroOfficeWeb.Server.Controllers
 
                                 if (temp.Length < 2)
                                 {
-                                    productMedias.Add(new ProductMedia
+
+                                    var test = new ProductMedia
                                     {
                                         MediaName = Path.GetFileNameWithoutExtension(file.FileName),
                                         MediaUrl = guid.ToString(),
                                         AProductsSno = aProduct.Sno,
                                         MediaType = Path.GetExtension(file.FileName)?.ToUpper().TrimStart('.')
+                                    };
+                                    //productMedias.Add(test);
+                                    _context.ProductMedia.Add(test);
+                                    _context.SaveChanges();
+
+
+                                    productDTO.ProductMediaFiles.Add(new MediaDTO
+                                    {
+                                        MediaName = test.MediaName,
+                                        MediaType = test.MediaType,
+                                        Sno = test.Sno,
+                                        MediaUrl = test.MediaUrl
                                     });
                                 }
                                 else
@@ -380,8 +410,8 @@ namespace AstroOfficeWeb.Server.Controllers
 
                             }
 
-                            _context.ProductMedia.AddRange(productMedias);
-                            _context.SaveChanges();
+
+
                         }
                     }
 

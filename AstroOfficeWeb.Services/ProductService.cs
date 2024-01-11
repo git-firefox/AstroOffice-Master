@@ -93,9 +93,9 @@ namespace AstroOfficeWeb.Services
             }
         }
         
-        public async Task AddProduct(ProductDTO saveProduct, List<FileData> files)
+        public async Task AddProduct(ProductDTO saveProduct, IEnumerable<FileData?>? files)
         {
-            var response = await _swagger.PostWithMultipartFormDataContentAsync<ProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.POST_AddProduct, files, saveProduct);
+            var response = await _swagger.PostWithMultipartFormDataContentAsync<ProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.POST_AddProduct, saveProduct, files);
             if (response!.Success)
             {
                 _snackbar?.ShowSuccessSnackbar(response.Message);
@@ -135,9 +135,9 @@ namespace AstroOfficeWeb.Services
             }
         }
 
-        public async Task UpdateProduct(ProductDTO saveProduct, long sno, List<FileData> files)
+        public async Task UpdateProduct( long sno,ProductDTO saveProduct, IEnumerable<FileData?>? files)
         {
-            var response = await _swagger.PutWithMultipartFormDataContentAsync<ProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.PUT_UpdateProduct + "?sno=" + sno, files, saveProduct);
+            var response = await _swagger.PutWithMultipartFormDataContentAsync<ProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.PUT_UpdateProduct + "?sno=" + sno, saveProduct, files);
             if (response!.Success)
             {
                 _snackbar?.ShowSuccessSnackbar(response.Message);
