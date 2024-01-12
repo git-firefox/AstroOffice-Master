@@ -1,4 +1,4 @@
-﻿@page "/users"
+﻿@* @page "/users" *@
 @using System.ComponentModel.DataAnnotations
 
 @inject IDialogService Dialog
@@ -22,10 +22,10 @@
             <MudItem xs="12">
                 <MudPaper Elevation="0" Class="pa-4">
                     <MudForm @ref="Form" @bind-IsValid="@IsSaveUserFormValid">
-                        <MudTextField T="string" @bind-Value="SaveUserModel.UserName" Label="Username" Required="true" RequiredError="User name is required!"></MudTextField>
+                        <MudTextField T="string" @bind-Value="SaveUserModel.Username" Label="Username" Required="true" RequiredError="User name is required!"></MudTextField>
                         @* <MudTextField T="string" Label="Email" Required="true" RequiredError="Email is required!" Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})"></MudTextField> *@
 
-                        <MudTextField T="string" @bind-Value="SaveUserModel.Password" Label="Password" HelperText="Choose a strong password" InputType="InputType.Password" Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true" RequiredError="Password is required!"></MudTextField>
+                        <MudTextField T="string" @bind-Value="SaveUserModel.Password" Label="Password" HelperText="Choose a strong password" InputType="InputType.Password" Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))"  RequiredError="Password is required!"></MudTextField>
 
                         <MudTextField T="string" @bind-Value="SaveUserModel.RetypePassword" Label="Repeat Password" HelperText="Repeat the password" InputType="InputType.Password" Validation="@(new Func<string, string?>(PasswordMatch))"></MudTextField>
 
@@ -39,7 +39,7 @@
 
                         <MudCheckBox @bind-Value="SaveUserModel.AdminUser" Label="Admin User ?"></MudCheckBox>
 
-                        <MudSelect T="UserRole?" @bind-Value="SaveUserModel.Role" Label="Role">
+                        <MudSelect T="UserRole" @bind-Value="SaveUserModel.Role" Label="Role">
                             @foreach (UserRole option in Enum.GetValues(typeof(UserRole)))
                             {
                                 <MudSelectItem Value="option">@option.ToString()</MudSelectItem>
@@ -71,27 +71,27 @@
         <MudButton Variant="Variant.Text" Class="btn-custom" OnClick="()=>OnClick_BtnAction(FormMode.Add)">Add User</MudButton>
     </Header>
     <ChildContent> *@
-        <MudDataGrid T=UserViewModel Items=Users Filterable="true" FilterMode="DataGridFilterMode.ColumnFilterRow" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive">
-            <Columns>
-                <PropertyColumn Property="x => x.Sno" Title="Sno" Filterable="false" Sortable="false" />
-                <PropertyColumn Property="x => x.UserName" Title="User Name" />
-                <PropertyColumn Property="x => x.Role" Title="Role" />
-                <PropertyColumn Property="x => x.MobileNumber" Title="Mobile Number" />
-                <PropertyColumn Property="x => x.Status" Title="Status" />
-                <TemplateColumn CellClass="d-flex justify-end" Filterable="false" Sortable="false">
-                    <CellTemplate>
-                        <MudStack Row=true>
-                            <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye" aria-label="View user info" OnClick="()=>OnClick_BtnAction(FormMode.View, context.Item )" />
-                            <MudIconButton Icon="@Icons.Material.Filled.ModeEdit" aria-label="Edit user info" OnClick="()=>OnClick_BtnAction(FormMode.Edit, context.Item )" />
-                            <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="Delete user" OnClick="()=>OnClick_BtnAction(FormMode.Delete, context.Item)" />
-                        </MudStack>
-                    </CellTemplate>
-                </TemplateColumn>
-            </Columns>
-            <PagerContent>
-                <MudDataGridPager T="UserViewModel" />
-            </PagerContent>
-        </MudDataGrid>
- @*    </ChildContent>
+<MudDataGrid T=UserListItemModel Items=Users Filterable="true" FilterMode="DataGridFilterMode.ColumnFilterRow" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive">
+    <Columns>
+        <PropertyColumn Property="x => x.Sno" Title="Sno" Filterable="false" Sortable="false" />
+        <PropertyColumn Property="x => x.Username" Title="User Name" />
+        <PropertyColumn Property="x => x.Role" Title="Role" />
+        <PropertyColumn Property="x => x.MobileNumber" Title="Mobile Number" />
+        <PropertyColumn Property="x => x.Status" Title="Status" />
+        <TemplateColumn CellClass="d-flex justify-end" Filterable="false" Sortable="false">
+            <CellTemplate>
+                <MudStack Row=true>
+                    <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye" aria-label="View user info" OnClick="()=>OnClick_BtnAction(FormMode.View, context.Item )" />
+                    <MudIconButton Icon="@Icons.Material.Filled.ModeEdit" aria-label="Edit user info" OnClick="()=>OnClick_BtnAction(FormMode.Edit, context.Item )" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="Delete user" OnClick="()=>OnClick_BtnAction(FormMode.Delete, context.Item)" />
+                </MudStack>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="UserListItemModel" />
+    </PagerContent>
+</MudDataGrid>
+@*    </ChildContent>
 </ContainerFluid> *@
 

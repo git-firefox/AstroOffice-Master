@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,11 @@ namespace ASModels.Astrooff
         [StringLength(25)]
         [Unicode(false)]
         public string? Role { get; set; }
+
+        [DefaultValue("1")]
+        [StringLength(25)]
+        [Unicode(false)]
+        public string? Status { get; set; }
 
         [InverseProperty("AUserSnoNavigation")]
         public virtual AUserTokenBalance? AUserTokenBalance { get; set; }

@@ -15,6 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Helper;
+using AutoMapper;
+using AstroOfficeWeb.Shared.Utilities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,11 +29,13 @@ namespace AstroOfficeWeb.Server.Controllers
         //ASDLL 
         private readonly BALUser _balUser;
         private readonly JWTSettings _jwtSettings;
+        private readonly IMapper _mapper;
 
-        public AccountController(IOptions<JWTSettings> options, BALUser balUser)
+        public AccountController(IOptions<JWTSettings> options, BALUser balUser, IMapper mapper)
         {
             _balUser = balUser;
             _jwtSettings = options.Value;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -260,88 +264,138 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpGet]
         public IActionResult GetAllUsers()
         {
-            var aUSer = _balUser.GetAllUsers();
-            return Ok(aUSer);
+            var response = new ApiResponse<List<BaseUserDTO>>();
+            var aUsers = _balUser.GetAllUsers();
+            var userDTOs = _mapper.Map<List<BaseUserDTO>>(aUsers);
+            response.Data = userDTOs;
+            return Ok(response);
         }
 
         [HttpPost]
-        public IActionResult SignUp([FromBody] SignUpMasterRequest request)
+        public IActionResult SignUp([FromBody] SignUpRequest request)
         {
-            //if (User.IsInRole(ApplicationConst.Role_Admin))
-            //{
-
-            //}
-
-            var response = new SignUpResponse();
-            response.IsRegisterationSuccessful = false;
+            var response = new ApiResponse<string>();
             response.Success = false;
+
             try
             {
-
                 var user = _balUser.UserNameSearch(request.UserName);
-
                 if (user != null)
                 {
                     response.Message = AccountMessageConst.UserExist;
                     goto returnResponse;
                 }
 
-                var mobileUserName = _balUser.GetUserByMobileNumber(request.PhoneNumber);
 
+                var mobileUserName = _balUser.GetUserByMobileNumber(request.MobileNumber);
                 if (mobileUserName != null)
                 {
                     response.Message = AccountMessageConst.MobileNumberExist;
                     goto returnResponse;
                 }
+
+                if (!ModelState.IsValid)
+                {
+                    response.Message = AccountMessageConst.SignUpFailed;
+                    goto returnResponse;
+                }
+
+                _balUser.AddUser(new AUser()
+                {
+                    Active = true,
+                    Adminuser = false,
+                    CanAdd = false,
+                    CanEdit = false,
+                    CanReport = false,
+                    Password = request.Password,
+                    Username = request.UserName,
+                    MobileNumber = request.MobileNumber,
+                    Role = UserRole.Guest.ToString()
+                });
+
+                response.Success = true;
+                response.Message = AccountMessageConst.SignUpSuccessful;
             }
             catch
             {
+                response.Success = false;
                 response.Message = ApiMessageConst.ServerError;
-                goto returnResponse;
             }
 
-            if (ModelState.IsValid)
-            {
-                var aUser = new AUser()
-                {
-                    Active = true,
-                    Adminuser = request.UserPermission?.AdminUser ?? false,
-                    CanAdd = request.UserPermission?.CanAdd ?? false,
-                    CanEdit = request.UserPermission?.CanEdit ?? false,
-                    CanReport = request.UserPermission?.CanReport ?? false,
-                    Password = request.Password,
-                    Username = request.UserName,
-                    MobileNumber = request.PhoneNumber,
-                    Sno = request.Sno
-                };
+        returnResponse:
+            return Ok(response);
+        }
 
-                try
+        [Authorize]
+        [HttpPost]
+        public IActionResult SignUpMaster([FromBody] SignUpMasterRequest request)
+        {
+            var response = new ApiResponse<long>();
+            response.Success = false;
+            response.Message = response.Message = AccountMessageConst.SignUpFailed;
+
+            try
+            {
+                var  updateUserInfo = new AUser();
+
+                if (request.UserDTO != null)
                 {
-                    if (aUser.Sno == 0)
+                    updateUserInfo = _balUser.GetSelectedUser(request.UserDTO?.Sno ?? 0);
+
+                    if ((!string.IsNullOrEmpty(updateUserInfo.Username) && !updateUserInfo.Username.Equals(request?.UserDTO?.Username))
+                        || (request?.UserDTO?.Sno == 0 && !string.IsNullOrEmpty(request?.UserDTO?.Username)))
                     {
-                        _balUser.AddUser(aUser);
+
+                        updateUserInfo = _balUser.UserNameSearch(updateUserInfo.Username);
+                        if (updateUserInfo != null)
+                        {
+                            response.Message = AccountMessageConst.UserExist;
+                            goto returnResponse;
+                        }
+
+                    }
+
+                    if ((!string.IsNullOrEmpty(updateUserInfo?.MobileNumber) && !updateUserInfo.MobileNumber.Equals(request?.UserDTO?.MobileNumber))
+                        || (request?.UserDTO?.Sno == 0 && !string.IsNullOrEmpty(request?.UserDTO?.MobileNumber)))
+                    {
+                        updateUserInfo = _balUser.GetUserByMobileNumber(request?.UserDTO?.MobileNumber);
+                        if (updateUserInfo != null)
+                        {
+                            response.Message = AccountMessageConst.MobileNumberExist;
+                            goto returnResponse;
+                        }
+                    }
+
+                    updateUserInfo!.Active = request?.UserDTO?.Active ?? true;
+                    updateUserInfo.Adminuser = request?.UserDTO?.AdminUser ?? false;
+                    updateUserInfo.CanAdd = request?.UserDTO?.CanAdd ?? false;
+                    updateUserInfo.CanEdit = request?.UserDTO?.CanEdit ?? false;
+                    updateUserInfo.CanReport = request?.UserDTO?.CanReport ?? false;
+                    updateUserInfo.Password = request?.UserDTO?.HashedPassword ?? updateUserInfo.Password;
+                    updateUserInfo.Username = request?.UserDTO?.Username ?? updateUserInfo.Username;
+                    updateUserInfo.MobileNumber = request?.UserDTO?.MobileNumber ?? updateUserInfo.MobileNumber;
+                    updateUserInfo.Role = request?.UserDTO?.Role.ToString() ?? UserRole.Guest.ToString();
+
+
+                    if (updateUserInfo.Sno > 0)
+                    {
+                        _balUser.UpdateUser(updateUserInfo);
+
                     }
                     else
                     {
-                        aUser.Password = ENCEK.ENCEK.CellGell_ENC(aUser.Password, "cellgell.com");
-                        _balUser.UpdateUser(aUser);
+                        _balUser.AddUser(updateUserInfo);
                     }
-                    response.IsRegisterationSuccessful = true;
+
+                    response.Data = updateUserInfo.Sno;
                     response.Success = true;
-
-                    response.Data = aUser.Sno;
                     response.Message = AccountMessageConst.SignUpSuccessful;
-
-                }
-                catch (Exception ex)
-                {
-                    _ = ex;
-                    response.Message = ApiMessageConst.ServerError;
                 }
             }
-            else
+            catch
             {
-                response.Message = AccountMessageConst.SignUpFailed;
+                response.Success = false;
+                response.Message = ApiMessageConst.ServerError;
             }
 
         returnResponse:

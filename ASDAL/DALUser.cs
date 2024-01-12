@@ -11,7 +11,7 @@ namespace ASDAL
             _context = context;
         }
 
-        public void AddUser(AUser au)
+        public void AddUser(AUser aUser, bool withEncryption = true)
         {
             //try
             //{
@@ -28,9 +28,12 @@ namespace ASDAL
             //if (aUser != null)
             //    throw new Exception("Username already exists");
 
-            au.Password = ENCEK.ENCEK.CellGell_ENC(au.Password, "cellgell.com");
+            if (withEncryption)
+            {
+                aUser.Password = ENCEK.ENCEK.CellGell_ENC(aUser.Password!, "cellgell.com");
+            }
 
-            _context.AUsers.Add(au);
+            _context.AUsers.Add(aUser);
             _ = _context.SaveChanges();
         }
 
@@ -41,7 +44,7 @@ namespace ASDAL
 
         public AUser GetSelectedUser(long sno)
         {
-            return _context.AUsers.FirstOrDefault<AUser>(uu => uu.Sno == sno);
+            return _context.AUsers.FirstOrDefault<AUser>(uu => uu.Sno == sno) ?? new AUser();
         }
 
         public int UpdateUser(AUser au)

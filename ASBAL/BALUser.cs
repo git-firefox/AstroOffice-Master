@@ -12,9 +12,9 @@ namespace ASBAL
             _du = dALUser;
         }
 
-        public void AddUser(AUser au)
+        public void AddUser(AUser au, bool withEncryption = true)
         {
-            _du.AddUser(au);
+            _du.AddUser(au, withEncryption = true);
         }
 
         public IEnumerable<AUser> GetAllUsers()

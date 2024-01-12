@@ -11,28 +11,41 @@ using AstroOfficeWeb.Shared.Utilities;
 namespace AstroOfficeWeb.Shared.ViewModels
 {
 
-    public class UserViewModel : UserDTO
+    public class UserListItemModel : BaseUserDTO
     {
-        public string Password { get; set; } = null!;
-        public string RetypePassword { get; set; } = null!;
-
-        public UserViewModel() { }
-        public UserViewModel(UserViewModel original)
+        public UserListItemModel() { }
+        public UserListItemModel(SaveUserModel userModel)
         {
-            if (original == null)
-            {
-                throw new ArgumentNullException(nameof(UserViewModel));
-            }
-            Sno = original.Sno;
-            UserName = original.UserName;
-            MobileNumber = original.MobileNumber;
-            Role = original.Role;
-            Status = original.Status;
-            CanAdd = original.CanAdd;
-            CanEdit = original.CanEdit;
-            CanReport = original.CanReport;
-            AdminUser = original.AdminUser;
+            Sno = userModel.Sno;
+            Username = userModel.Username;
+            MobileNumber = userModel.MobileNumber;
+            Role = userModel.Role;
+            Status = userModel.Status;
+            CanAdd = userModel.CanAdd;
+            CanEdit = userModel.CanEdit;
+            CanReport = userModel.CanReport;
+            AdminUser = userModel.AdminUser;
+            Role = userModel.Role;
         }
+    }
 
+    public class SaveUserModel : SaveUserDTO
+    {
+        public string? Password { get; set; }
+        public string? RetypePassword { get; set; }
+
+        public SaveUserModel() { }
+        public SaveUserModel(UserListItemModel userList)
+        {
+            Sno = userList.Sno;
+            Username = userList.Username;
+            MobileNumber = userList.MobileNumber;
+            Role = userList.Role;
+            Status = userList.Status;
+            CanAdd = userList.CanAdd;
+            CanEdit = userList.CanEdit;
+            CanReport = userList.CanReport;
+            AdminUser = userList.AdminUser;
+        }
     }
 }

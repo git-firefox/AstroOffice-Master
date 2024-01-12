@@ -22,25 +22,30 @@ namespace AstroOfficeWeb.Services
             _snackbar = snackbar;
         }
 
-        public async Task<List<UserViewModel>?> GetUsers()
+        public async Task<List<UserListItemModel>?> GetUsers()
         {
-            var response = await _swagger!.GetAsync<List<UserViewModel>>(AccountApiConst.GET_Users);
-            return response;
+            var response = await _swagger!.GetAsync<ApiResponse<List<UserListItemModel>>>(AccountApiConst.GET_Users);
+            if (!response!.Success)
+            {
+                return null;
+            }
+            return response.Data;
         }
 
-        public async Task<bool> IsUsedSavedAsync(UserViewModel user)
+        public async Task<bool> IsUsedSavedAsync(SaveUserDTO user, string? password = null)
         {
+            if (!string.IsNullOrEmpty(password))
+            {
+                //user.HashedPassword = ENCEK.ENCEK.CellGell_ENC(password, "cellgell.com");
+            }
             var request = new SignUpMasterRequest()
             {
-                Password = user.Password,
-                PasswordHash = user.PasswordHash,
-                PhoneNumber = user.MobileNumber,
-                UserName = user!.UserName!,
-                UserPermission = (UserPermission)(user)
+                UserDTO = user,
             };
-            var response = await _swagger!.PostAsync<SignUpMasterRequest, ApiResponse<long>>(AccountApiConst.POST_SignUp, request);
 
-            if(response == null)
+            var response = await _swagger!.PostAsync<SignUpMasterRequest, ApiResponse<long>>(AccountApiConst.POST_SignUpMaster, request);
+
+            if (response == null)
             {
                 _snackbar.ShowErrorSnackbar("Some this wrong.. try again");
                 return false;

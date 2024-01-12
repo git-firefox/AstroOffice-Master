@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AstroOfficeWeb\Shared\AstroOfficeWeb.Shared.csproj" />
+    <ProjectReference Include="..\ENCEK\ENCEK.csproj" />
   </ItemGroup>
 
 </Project>

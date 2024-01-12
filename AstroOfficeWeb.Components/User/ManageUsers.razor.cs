@@ -15,14 +15,14 @@ namespace AstroOfficeWeb.Components.User
     public partial class ManageUsers
     {
         [Parameter]
-        public EventCallback<bool> IsOrdersLoaded { get; set; }
+        public EventCallback<bool> UsersLoaded { get; set; }
 
         private bool IsDrawerOpen { get; set; }
         private string DrawerTitle { get; set; } = null!;
         private bool IsSaveUserFormValid { get; set; }
         private FormMode SaveUserFormMode { get; set; }
-        private UserViewModel SaveUserModel { get; set; } = new();
-        private IList<UserViewModel>? Users { get; set; }
+        private SaveUserModel SaveUserModel { get; set; } = new();
+        private IList<UserListItemModel>? Users { get; set; }
         private MudForm Form { get; set; } = null!;
 
 
@@ -36,7 +36,7 @@ namespace AstroOfficeWeb.Components.User
             await base.OnInitializedAsync();
 
             Users = await Account.GetUsers();
-            await IsOrdersLoaded.InvokeAsync(true);
+            await UsersLoaded.InvokeAsync(true);
         }
 
         protected override void OnAfterRender(bool firstRender)
@@ -64,7 +64,7 @@ namespace AstroOfficeWeb.Components.User
             IsDrawerOpen = !IsDrawerOpen;
         }
 
-        public async Task OnClick_BtnAction(FormMode mode = FormMode.Add, UserViewModel? selectedUser = null)
+        public async Task OnClick_BtnAction(FormMode mode = FormMode.Add, UserListItemModel? selectedUser = null)
         {
             await Form.ResetAsync();
             switch (mode)
@@ -113,7 +113,7 @@ namespace AstroOfficeWeb.Components.User
             await Form.Validate();
             if (Form.IsValid)
             {
-                if (await Account.IsUsedSavedAsync(SaveUserModel))
+                if (await Account.IsUsedSavedAsync(SaveUserModel, SaveUserModel.Password))
                 {
                     switch (SaveUserFormMode)
                     {
@@ -126,7 +126,7 @@ namespace AstroOfficeWeb.Components.User
                             {
                                 var existedUser = Users!.First(a => a.Sno == SaveUserModel.Sno);
                                 var index = Users!.IndexOf(existedUser);
-                                Users[index] = SaveUserModel;
+                                Users[index] = new(SaveUserModel);
                                 break;
                             }
                     }
