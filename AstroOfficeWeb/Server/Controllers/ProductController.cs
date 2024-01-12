@@ -64,6 +64,7 @@ namespace AstroOfficeWeb.Server.Controllers
             {
                 pd.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == pd.Sno)?.Quantity ?? 0;
                 pd.ImageUrl = SetMedia(pd.ImageUrl);
+                pd.SecondaryImageUrl = SetMedia(pd.SecondaryImageUrl);
 
             });
 
@@ -76,7 +77,6 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpGet]
         public IActionResult GetUserAddedProducts()
         {
-
 
             var aProducts = _context.AProducts.Where(p => p.AddedByAUsersSno == User.GetUserSno() && p.IsActive == true).ToList();
             var productDTOs = _mapper.Map<List<ViewProductDTO>>(aProducts);
@@ -131,6 +131,7 @@ namespace AstroOfficeWeb.Server.Controllers
             productDTO.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == aProduct.Sno)?.Quantity ?? 0;
 
             productDTO.ImageUrl = SetMedia(productDTO.ImageUrl);
+            productDTO.SecondaryImageUrl = SetMedia(productDTO.SecondaryImageUrl);
 
             apiResponse.Data = productDTO;
 

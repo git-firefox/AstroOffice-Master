@@ -28,6 +28,7 @@ namespace AstroOfficeWeb.Shared.DTOs
         public int ProductQuantity { get; set; }
 
         public string? ImageUrl { get; set; }
+        public string? SecondaryImageUrl { get; set; }
 
         [Required]
         [Range(1, 1_000_000, ErrorMessage = "Select category")]
