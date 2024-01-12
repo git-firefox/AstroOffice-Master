@@ -8,6 +8,7 @@
 @inject IJSRuntime JSRuntime
 @inject ISnackbar Snackbar
 @inject IDialogService Dialog
+
 @* @attribute [Authorize(Roles = "Admin,User,ManageProduct")] *@
 
 @* <MudDialogProvider FullWidth="true"
@@ -32,6 +33,9 @@
                                                                     <InputTextEditor></InputTextEditor>
                                                                     <InputMask></InputMask>
                                                                     <InputSelect2></InputSelect2> *@
+
+
+                                                                 
 
 <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold "> Add product </h1>
@@ -216,11 +220,10 @@
 
 
                                                             <div class="col-7">
-                                                                <ul class="list-inline">
+@*                                                                 <ul class="list-inline">
                                                                     @foreach (var image in ProductMediaFiles ?? new())
                                                                     {
                                                                         <li class="list-inline-item" @onclick="() => OnClick_SelectFileItems(image)" role="button">
-                                                                            @* <img alt="@image.FileName" class="img-thumbnail" src="@image.FileBase64String" height="100" width="100" title="@image.FileName" /> *@
 
                                                                             @if (image.Attachment != null)
                                                                             {
@@ -230,12 +233,15 @@
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    <video height="100" width="100" class="img-thumbnail">
-                                                                                        <source src="@image.Attachment.FileBase64String" type="video/mp4">
-                                                                                        <source src="@image.Attachment.FileBase64String" type="video/webm">
-                                                                                        <source src="@image.Attachment.FileBase64String" type="video/ogg">
-                                                                                        Your browser does not support the video tag.
-                                                                                    </video>
+                                                                                    <div class="video-container">
+                                                                                        <video class="video">
+                                                                                            <source src="@image.Attachment.FileBase64String" type="video/mp4">
+                                                                                            <source src="@image.Attachment.FileBase64String" type="video/webm">
+                                                                                            <source src="@image.Attachment.FileBase64String" type="video/ogg">
+                                                                                            Your browser does not support the video tag.
+                                                                                        </video>
+                                                                                        <div class="play-button"></div>
+                                                                                    </div>
                                                                                 }
 
                                                                             }
@@ -262,7 +268,84 @@
                                                                             </span>
                                                                         </li>
                                                                     }
-                                                                </ul>
+                                                                </ul> *@
+
+
+                                                                <MudSimpleTable Style="overflow-x: auto;">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th><strong>Image</strong></th>
+                                                                            <th><strong>File Name</strong></th>
+                                                                            <th><strong>Size</strong></th>
+                                                                            <th><strong>Set As Main</strong></th>
+                                                                            <th><strong>Action</strong></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach (var image in ProductMediaFiles ?? new())
+                                                                        {
+                                                                            <tr>
+
+
+                                                                                <td>
+
+                                                                                    @if (image.Attachment != null)
+                                                                                    {
+                                                                                        if (image.MediaType != "MP4" && image.MediaType != "WEBM" && image.MediaType != "OGG")
+                                                                                        {
+                                                                                            <img alt="@image.MediaName" class="img-thumbnail" src="@image.Attachment.FileBase64String" height="50" width="50" title="@image.MediaName" />
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <div class="video-container">
+                                                                                                <video class="video">
+                                                                                                    <source src="@image.Attachment.FileBase64String" type="video/mp4">
+                                                                                                    <source src="@image.Attachment.FileBase64String" type="video/webm">
+                                                                                                    <source src="@image.Attachment.FileBase64String" type="video/ogg">
+                                                                                                    Your browser does not support the video tag.
+                                                                                                </video>
+                                                                                                <div class="play-button"></div>
+                                                                                            </div>
+                                                                                        }
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        if (image.MediaType != "MP4" && image.MediaType != "WEBM" && image.MediaType != "OGG")
+                                                                                        {
+                                                                                            <img alt="@image.MediaName" class="img-thumbnail" src="@image.MediaUrl" height="100" width="100" title="@image.MediaName" />
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <video height="100" width="100" class="img-thumbnail">
+                                                                                                <source src="@image.MediaUrl" type="video/mp4">
+                                                                                                <source src="@image.MediaUrl" type="video/webm">
+                                                                                                <source src="@image.MediaUrl" type="video/ogg">
+                                                                                                Your browser does not support the video tag.
+                                                                                            </video>
+                                                                                        }
+                                                                                    }
+                                                                                </td>
+
+
+                                                                                <td>@image.MediaName</td>
+                                                                                <td>2.5 MB</td>
+                                                                                <td>
+                                                                                    <MudCheckBox @bind-Value="@IsImageSetAsMain" Color="Color.Primary"></MudCheckBox>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.RemoveRedEye" OnClick="(()=> OnClick_SelectFileItems(image))" />
+                                                                                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=>  OnClick_RemoveImage(image))" />
+
+                                                                                </td>
+
+                                                                            </tr>
+                                                                        }
+                                                                    </tbody>
+                                                                </MudSimpleTable>
+
+
+
                                                             </div>
 
                                                             <div class="col-5">
@@ -282,7 +365,7 @@
                                                                     }
                                                                     else
                                                                     {
-                                                                        <video controls>
+                                                                        <video controls class="img-fluid img-thumbnail">
                                                                             <source src="@SelectedFile.Attachment.FileBase64String" type="video/mp4">
                                                                             <source src="@SelectedFile.Attachment.FileBase64String" type="video/webm">
                                                                             <source src="@SelectedFile.Attachment.FileBase64String" type="video/ogg">
@@ -302,7 +385,7 @@
                                                                     }
                                                                     else
                                                                     {
-                                                                        <video controls>
+                                                                        <video controls class="img-fluid img-thumbnail">
                                                                             <source src="@SelectedFile?.MediaUrl" type="video/mp4">
                                                                             <source src="@SelectedFile?.MediaUrl" type="video/webm">
                                                                             <source src="@SelectedFile?.MediaUrl" type="video/ogg">

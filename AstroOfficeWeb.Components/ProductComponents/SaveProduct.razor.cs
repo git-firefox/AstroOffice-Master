@@ -295,6 +295,14 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         //}
 
+
+
+        private void OpenDialog()
+        {
+            var options = new DialogOptions { ClassBackground = "my-custom-class" };
+            Dialog.Show<>("Set As Main", options);
+        }
+
         private async Task OnClick_BtnPublished()
         {
             if (!SaveProductInfoContext.Validate())
@@ -356,7 +364,6 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
 
 
-
         private void OnClick_SelectFileItems(MediaDTO value)
         {
             SelectedFile = value;
@@ -376,6 +383,17 @@ namespace AstroOfficeWeb.Components.ProductComponents
         }
 
         public bool IsImageSetAsMain = false;
+        private bool IsImageCheckedAsMain { get; set; }
+
+        private void OnSwitchValueChanged(bool newValue)
+        {
+            // Handle the switch value change here
+            if (newValue)
+            {
+               // OnClick_BtnSetAsMain();
+            }
+        }
+
         private void OnClick_BtnSetAsMain(MouseEventArgs e)
         {
 
