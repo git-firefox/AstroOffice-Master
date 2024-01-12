@@ -897,3 +897,31 @@ section .section-overlay {
         margin-top: 8px !important;
     } 
 }
+
+
+.video-container {
+    position: relative;
+    display: inline-block;
+}
+
+.play-button {
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+    .play-button::before {
+        content: '\25BA'; /* Unicode character for play arrow */
+        font-size: 24px;
+        color: #333;
+    }
+

@@ -147,35 +147,3 @@ video::-webkit-media-controls-current-time-display {
     display: none !important;
 }*/
 
-
-.video-container {
-    position: relative;
-    display: inline-block;
-}
-
-.play-button {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50px;
-    height: 50px;
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-    .play-button::before {
-        content: '\25BA'; /* Unicode character for play arrow */
-        font-size: 24px;
-        color: #333;
-    }
-
-.video {
-    width: 120px; /* Set your desired width */
-    height: 100px; /* Set your desired height */
-    vertical-align: middle;
-}

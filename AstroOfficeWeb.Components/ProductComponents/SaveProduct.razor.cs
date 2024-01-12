@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace AstroOfficeWeb.Components.ProductComponents
 {
@@ -46,6 +47,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         private EditContext SaveProductImageInfoContext { get; set; } = null!;
         private EditContext SaveProductMetadataInfoContext { get; set; } = null!;
 
+        private SetAsMainDialoge setAsMainDialoge { get; set; } = null!;
 
         private int Counter = 0;
 
@@ -297,12 +299,6 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
 
 
-        //private void OpenDialog()
-        //{
-        //    var options = new DialogOptions { ClassBackground = "my-custom-class" };
-        //    Dialog.Show<>("Set As Main", options);
-        //}
-
         private async Task OnClick_BtnPublished()
         {
             if (!SaveProductInfoContext.Validate())
@@ -343,7 +339,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
             {
                 if (a.IsPrimary && a.Attachment != null)
                 {
-                    
+
                     a.Attachment!.FileName += "?ismain=true";
                 }
             });
@@ -367,6 +363,12 @@ namespace AstroOfficeWeb.Components.ProductComponents
         private void OnClick_SelectFileItems(MediaDTO value)
         {
             SelectedFile = value;
+            var parameters = new DialogParameters();
+            parameters.Add("SelectedFile", SelectedFile);
+
+            //var options = new DialogOptions { ClassBackground = "bg-warning" };
+            //Dialog.Show<SetAsMainDialoge>(SelectedFile.MediaName, parameters, options);
+            Dialog.Show<SetAsMainDialoge>(SelectedFile.MediaName, parameters);
         }
 
         private void OnClick_RemoveImage(MediaDTO value)
@@ -390,7 +392,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
             // Handle the switch value change here
             if (newValue)
             {
-               // OnClick_BtnSetAsMain();
+                // OnClick_BtnSetAsMain();
             }
         }
 

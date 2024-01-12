@@ -219,7 +219,7 @@
                                                         <div class="row mt-3">
 
 
-                                                            <div class="col-7">
+                                                            <div class="col">
 @*                                                                 <ul class="list-inline">
                                                                     @foreach (var image in ProductMediaFiles ?? new())
                                                                     {
@@ -289,7 +289,7 @@
 
                                                                                 <td>
 
-                                                                                    @if (image.Attachment != null)
+                                                                                 @*    @if (image.Attachment != null)
                                                                                     {
                                                                                         if (image.MediaType != "MP4" && image.MediaType != "WEBM" && image.MediaType != "OGG")
                                                                                         {
@@ -324,7 +324,11 @@
                                                                                                 Your browser does not support the video tag.
                                                                                             </video>
                                                                                         }
-                                                                                    }
+                                                                                    } *@
+
+
+                                                                                    <MyMedia SelectedFile="image" IsThumbnail="true" ShowVideoControl="false"></MyMedia>
+
                                                                                 </td>
 
 
@@ -348,53 +352,7 @@
 
                                                             </div>
 
-                                                            <div class="col-5">
-
-
-                                                                @if (SelectedFile?.Attachment != null)
-                                                                {
-
-
-                                                                    if (SelectedFile.MediaType != "MP4" && SelectedFile.MediaType != "WEBM" && SelectedFile.MediaType != "OGG")
-                                                                    {
-                                                                        <img alt="@SelectedFile.MediaName" class="img-fluid img-thumbnail" src="@SelectedFile.Attachment.FileBase64String" title="@SelectedFile.MediaName" />
-                                                                        <div class="mt-3">
-                                                                            <button type="button" class="btn btn-success" @onclick="OnClick_BtnSetAsMain"> Set image as main</button>
-                                                                        </div>
-
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <video controls class="img-fluid img-thumbnail">
-                                                                            <source src="@SelectedFile.Attachment.FileBase64String" type="video/mp4">
-                                                                            <source src="@SelectedFile.Attachment.FileBase64String" type="video/webm">
-                                                                            <source src="@SelectedFile.Attachment.FileBase64String" type="video/ogg">
-                                                                            Your browser does not support the video tag.
-                                                                        </video>
-                                                                    }
-                                                                }
-                                                                else
-                                                                {
-                                                                    if (SelectedFile?.MediaType != "MP4" && SelectedFile?.MediaType != "WEBM" && SelectedFile?.MediaType != "OGG")
-                                                                    {
-                                                                        <img alt="@SelectedFile?.MediaName" class="img-fluid img-thumbnail" src="@SelectedFile?.MediaUrl" title="@SelectedFile?.MediaName" />
-                                                                        <div class="mt-3">
-                                                                            <button type="button" class="btn btn-success" @onclick="OnClick_BtnSetAsMain"> Set image as main</button>
-                                                                        </div>
-
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <video controls class="img-fluid img-thumbnail">
-                                                                            <source src="@SelectedFile?.MediaUrl" type="video/mp4">
-                                                                            <source src="@SelectedFile?.MediaUrl" type="video/webm">
-                                                                            <source src="@SelectedFile?.MediaUrl" type="video/ogg">
-                                                                            Your browser does not support the video tag.
-                                                                        </video>
-                                                                    }
-                                                                }
-
-                                                            </div>
+                                                         
 
                                                         </div>
 

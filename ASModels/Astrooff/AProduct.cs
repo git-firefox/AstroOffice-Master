@@ -27,6 +27,7 @@ namespace ASModels.Astrooff
         public string? Description { get; set; }
         public int StockQuantity { get; set; }
         public string? ImageUrl { get; set; }
+        public string? SecondaryImageUrl { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime AddedDate { get; set; }
         [Column(TypeName = "datetime")]

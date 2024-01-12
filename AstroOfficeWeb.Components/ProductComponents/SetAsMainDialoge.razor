@@ -1,0 +1,27 @@
+﻿@inject ProductService ProductService
+
+<MudDialog>
+    <DialogContent>
+
+
+            <MyMedia  SelectedFile="SelectedFile" IsThumbnail="false" IsFluid="true" ImageHeight="100%" ImageWidth="100%" VideoHeight="100%" VideoWidth="100%"></MyMedia>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Set As Main</MudButton>
+    </DialogActions>
+
+</MudDialog>
+
+
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter]
+    public MediaDTO? SelectedFile { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+}

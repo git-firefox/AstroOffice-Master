@@ -1,0 +1,58 @@
+﻿@if (SelectedFile?.Attachment != null)
+{
+
+    if (SelectedFile.MediaType != "MP4" && SelectedFile.MediaType != "WEBM" && SelectedFile.MediaType != "OGG")
+    {
+        <img alt="@SelectedFile.MediaName" class=@( Class + " " + (IsFluid ? "img-fluid " : "") + (IsThumbnail ? "img-thumbnail " : "") ) src="@SelectedFile.Attachment.FileBase64String" title="@SelectedFile.MediaName" height="@ImageHeight" width="@ImageWidth" />
+
+    }
+    else
+    {
+
+        <Video Class="@( Class + " " + (IsFluid ? "img-fluid " : ""))" Src="@SelectedFile.Attachment.FileBase64String" Height="@VideoHeight" Width="@VideoWidth" ShowVideoControl="ShowVideoControl"></Video>
+    }
+}
+else
+{
+    if (SelectedFile?.MediaType != "MP4" && SelectedFile?.MediaType != "WEBM" && SelectedFile?.MediaType != "OGG")
+    {
+        <img alt="@SelectedFile?.MediaName" class=@( Class + " " + (IsFluid ? "img-fluid " : "") + (IsThumbnail ? "img-thumbnail " : "") ) src="@SelectedFile?.MediaUrl" title="@SelectedFile?.MediaName" height="@ImageHeight" width="@ImageWidth" />
+
+    }
+    else
+    {
+        <Video Class="@( Class + " " + (IsFluid ? "img-fluid " : ""))" Src="@SelectedFile?.MediaUrl" Height="@VideoHeight" Width="@VideoWidth" ShowVideoControl="ShowVideoControl"></Video>
+    }
+}
+
+
+
+
+
+
+@code {
+
+    [Parameter]
+    public MediaDTO SelectedFile { get; set; } = null!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string ImageHeight { get; set; } = "50";
+    [Parameter]
+    public string ImageWidth { get; set; } = "50";
+    [Parameter]
+    public string VideoHeight { get; set; } = "100";
+    [Parameter]
+    public string VideoWidth { get; set; } = "100";
+
+    [Parameter]
+    public bool IsThumbnail { get; set; } = true;
+
+    [Parameter]
+    public bool IsFluid { get; set; } = true;
+
+    [Parameter]
+    public bool ShowVideoControl { get; set; } = true;
+}

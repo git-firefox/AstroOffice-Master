@@ -139,7 +139,16 @@
                                         <div class="card-img-actions">
                                             <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="card-img img-fluid" width="96" height="350">
 
-                                            <img src="https://www.astromantra.com/wp-content/uploads/2022/03/IMG_3212-555x555.jpg" alt="@product.Name" title="@product.Name" class="hover-img" width="96" height="350" />
+                                            @if (product.SecondaryImageUrl == null)
+                                            {
+                                                <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="hover-img" width="96" height="350">
+                                            }
+                                            else
+                                            {
+                                                <img src="@product.SecondaryImageUrl" alt="@product.Name"class="hover-img" width="96" height="350">
+                                            }
+
+                                           
                                         </div>
 
                                         <div class="card-icon">
