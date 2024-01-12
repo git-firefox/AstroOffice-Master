@@ -297,11 +297,11 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
 
 
-        private void OpenDialog()
-        {
-            var options = new DialogOptions { ClassBackground = "my-custom-class" };
-            Dialog.Show<>("Set As Main", options);
-        }
+        //private void OpenDialog()
+        //{
+        //    var options = new DialogOptions { ClassBackground = "my-custom-class" };
+        //    Dialog.Show<>("Set As Main", options);
+        //}
 
         private async Task OnClick_BtnPublished()
         {
