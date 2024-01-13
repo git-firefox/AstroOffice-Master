@@ -17,7 +17,7 @@ namespace AstroOfficeWeb.Components.UsersComponents
         private bool IsDrawerOpen { get; set; }
         private string DrawerTitle { get; set; } = null!;
         private bool IsSaveUserFormValid { get; set; }
-        private FormMode SaveUserFormMode { get; set; }
+        private ActionMode SaveUserFormMode { get; set; }
         private SaveUserModel SaveUserModel { get; set; } = new();
         private IList<UserListItemModel>? Users { get; set; }
         private MudForm Form { get; set; } = null!;
@@ -61,27 +61,27 @@ namespace AstroOfficeWeb.Components.UsersComponents
             IsDrawerOpen = !IsDrawerOpen;
         }
 
-        public async Task OnClick_BtnAction(FormMode mode = FormMode.Add, UserListItemModel? selectedUser = null)
+        public async Task OnClick_BtnAction(ActionMode mode = ActionMode.Add, UserListItemModel? selectedUser = null)
         {
             await Form.ResetAsync();
             switch (mode)
             {
-                case FormMode.Add:
+                case ActionMode.Add:
                     {
                         DrawerTitle = "Add User";
                         break;
                     }
-                case FormMode.View:
+                case ActionMode.View:
                     {
                         DrawerTitle = "View User";
                         break;
                     }
-                case FormMode.Edit:
+                case ActionMode.Edit:
                     {
                         DrawerTitle = "Edit User";
                         break;
                     }
-                case FormMode.Delete:
+                case ActionMode.Delete:
                     {
                         bool? result = await Dialog.ShowMessageBox("Warning", "Deleting can not be undone!", yesText: "Delete!", cancelText: "Cancel");
                         if (result.GetValueOrDefault())
@@ -114,12 +114,12 @@ namespace AstroOfficeWeb.Components.UsersComponents
                 {
                     switch (SaveUserFormMode)
                     {
-                        case FormMode.Add:
+                        case ActionMode.Add:
                             {
                                 Users!.Add(new(SaveUserModel));
                                 break;
                             }
-                        case FormMode.Edit:
+                        case ActionMode.Edit:
                             {
                                 var existedUser = Users!.First(a => a.Sno == SaveUserModel.Sno);
                                 var index = Users!.IndexOf(existedUser);

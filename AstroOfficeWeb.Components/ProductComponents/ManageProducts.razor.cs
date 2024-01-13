@@ -1,6 +1,8 @@
 ﻿
+using AstroOfficeWeb.Components.Helper;
 using AstroOfficeWeb.Components.MyComponents;
 using AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Shared.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,71 +14,53 @@ namespace AstroOfficeWeb.Components.ProductComponents
     public partial class ManageProducts
     {
         public List<ViewProductDTO>? Products { get; set; }
-        public ConfirmationModal Confirmation { get; set; } = null!;
-        public ViewProductDTO? SelectedProduct { get; set; }
-        public string _searchString { get; set; }
-        protected override void OnInitialized()
-        {
-            StateContainerService.OnStateChange += StateHasChanged;
-        }
+        public string? SearchString { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            StateContainerService.SetSelectedProduct(null);
+
             Products = await ProductService.GetProducts();
         }
 
         private void OnClick_BtnAdd()
         {
-            NavigationManager.NavigateTo("/save-product");
+            NavigationManager.NavigateTo(ProductRoutes.SaveProduct(mode: ActionMode.Add));
         }
 
-        private async Task OnClick_BtnShow(ViewProductDTO productDTO)
+        private void OnClick_BtnShow(ViewProductDTO productDTO)
         {
-            SelectedProduct = productDTO;
-            StateContainerService.SetSelectedProduct(productDTO);
-            //await LocalStorage.SetItemAsync<ViewProductDTO>(ApplicationConst.Local_SelectedProduct, productDTO);
-            NavigationManager.NavigateTo($"/product/{productDTO.Sno}/{productDTO.Name.Replace(" ", "-").ToLower()}");
+
+            NavigationManager.NavigateTo(ProductRoutes.ViewProduct(productDTO.Sno, productDTO!.Name));
         }
 
         private async Task OnClick_BtnDelete(ViewProductDTO productDTO)
         {
-            SelectedProduct = productDTO;
-            await Confirmation.ShowAsync();
-        }
-
-        private async void OnConfirmationChanged(bool isConfirm)
-        {
-            if (isConfirm)
+            var confirm = await Dialog.ShowMessageBox("Delete Confirmation", "Are you sure you want to delete this Product?", yesText: "Delete", noText: "Cancel");
+            if (confirm.GetValueOrDefault())
             {
-                if (await ProductService.IsDeletedSelectdProduct(SelectedProduct!.Sno))
+                if (await ProductService.IsDeletedSelectdProduct(productDTO.Sno))
                 {
-                    Products?.Remove(SelectedProduct);
-                    SelectedProduct = null;
+                    Products?.Remove(productDTO);
                     StateHasChanged();
                 }
             }
-            await Confirmation.CloseAsync();
         }
 
-        private async void OnClick_BtnEdit(ViewProductDTO productDTO)
+        private void OnClick_BtnEdit(ViewProductDTO productDTO)
         {
-            SelectedProduct = productDTO;
-            StateContainerService.SetSelectedProduct(productDTO);
-            //await LocalStorage.SetItemAsync<ViewProductDTO>(ApplicationConst.Local_SelectedProduct, productDTO);
-            NavigationManager.NavigateTo($"/save-product/{productDTO.Sno}");
+            NavigationManager.NavigateTo(ProductRoutes.SaveProduct(productDTO.Sno, productDTO.Name, ActionMode.Edit));
         }
 
-        private Func<ViewProductDTO, bool> _quickFilter => x =>
+        private Func<ViewProductDTO, bool> QuickFilter => x =>
         {
-            if (string.IsNullOrWhiteSpace(_searchString))
+            if (string.IsNullOrWhiteSpace(SearchString))
                 return true;
 
-            if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            if (x.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
                 return true;
 
-            if ($"{x.Price} {x.StockQuantity}".Contains(_searchString))
-                return true;
+            //if ($"{x.Price} {x.StockQuantity}".Contains(SearchString))
+            //    return true;
 
             return false;
         };

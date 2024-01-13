@@ -1,48 +1,22 @@
-﻿@page "/save-product"
-@page "/save-product/{No:long}"
-@using AstroOfficeWeb.Client.Services
-@using AstroOfficeWeb.Shared.DTOs
+﻿@page "/manage-products/{Mode}/product"
+@page "/manage-products/{Mode}/product/{Sno}/{Name}"
 
-@inject ProductService ProductService
-@inject NavigationManager NavigationManager
-@inject StateContainerService StateContainerService
-@inject IJSRuntime JSRuntime
-@inject ISnackbar Snackbar
-@inject IDialogService Dialog
 @attribute [Authorize(Roles = "Admin,User,ManageProduct")]
 
 <FluidPageLayout Title="Add Product">
     <ChildContent>
-        <AstroOfficeWeb.Components.ProductComponents.SaveProduct Sno="No" />
+        <AstroOfficeWeb.Components.ProductComponents.SaveProduct Sno="Sno" />
     </ChildContent>
 </FluidPageLayout>
 
 @code
 {
     [Parameter]
-    public long No { get; set; }
+    public long Sno { get; set; } = 0;
+
+    [Parameter]
+    public ActionMode Mode { get; set; } = ActionMode.Add;
+
+    [Parameter]
+    public string? Name { get; set; }
 }
-
-
-@* <MudDialogProvider FullWidth="true"
-                   MaxWidth="MaxWidth.ExtraSmall"
-                   CloseButton="true"
-                   DisableBackdropClick="true"
-                   NoHeader="true"
-                   Position="DialogPosition.Center"
-                   CloseOnEscapeKey="true" />
-<MudMessageBox @ref="MessageBox" Title="Alert" CancelText="Cancel">
-
-    <MessageContent>
-        Are you sure you want to delete ?
-    </MessageContent>
-    <YesButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever">Delete!</MudButton>
-    </YesButton>
-</MudMessageBox> *@
-
-
-@*
-                                                                    <InputTextEditor></InputTextEditor>
-                                                                    <InputMask></InputMask>
-                                                                    <InputSelect2></InputSelect2> *@

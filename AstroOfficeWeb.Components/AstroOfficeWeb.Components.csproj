@@ -14,6 +14,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="MyComponents\BSTable.razor.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Remove="MyComponents\BSTable.razor" />
 		<Content Remove="MyComponents\FaladeshModal.razor" />
 		<Content Remove="SavedKundalis.razor" />
 		<Content Remove="wwwroot\backgrounds\astro-background.webp" />

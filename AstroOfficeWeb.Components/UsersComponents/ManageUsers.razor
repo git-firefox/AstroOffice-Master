@@ -81,9 +81,9 @@
         <TemplateColumn CellClass="d-flex justify-end" Filterable="false" Sortable="false">
             <CellTemplate>
                 <MudStack Row=true>
-                    <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye" aria-label="View user info" OnClick="()=>OnClick_BtnAction(FormMode.View, context.Item )" />
-                    <MudIconButton Icon="@Icons.Material.Filled.ModeEdit" aria-label="Edit user info" OnClick="()=>OnClick_BtnAction(FormMode.Edit, context.Item )" />
-                    <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="Delete user" OnClick="()=>OnClick_BtnAction(FormMode.Delete, context.Item)" />
+                    <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye" aria-label="View user info" OnClick="()=>OnClick_BtnAction(ActionMode.View, context.Item )" />
+                    <MudIconButton Icon="@Icons.Material.Filled.ModeEdit" aria-label="Edit user info" OnClick="()=>OnClick_BtnAction(ActionMode.Edit, context.Item )" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="Delete user" OnClick="()=>OnClick_BtnAction(ActionMode.Delete, context.Item)" />
                 </MudStack>
             </CellTemplate>
         </TemplateColumn>

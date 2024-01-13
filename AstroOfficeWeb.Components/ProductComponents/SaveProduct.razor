@@ -1,5 +1,5 @@
-﻿@page "/save-product"
-@page "/save-product/{Sno:long}"
+﻿@* @page "/{Mode}/product/{}"
+@page "/save-product/{Sno:long}" *@
 @using AstroOfficeWeb.Services;
 @using AstroOfficeWeb.Shared.DTOs;
 
@@ -8,30 +8,6 @@
 @inject IJSRuntime JSRuntime
 @inject ISnackbar Snackbar
 @inject IDialogService Dialog
-@* @attribute [Authorize(Roles = "Admin,User,ManageProduct")] *@
-
-@* <MudDialogProvider FullWidth="true"
-                   MaxWidth="MaxWidth.ExtraSmall"
-                   CloseButton="true"
-                   DisableBackdropClick="true"
-                   NoHeader="true"
-                   Position="DialogPosition.Center"
-                   CloseOnEscapeKey="true" />
-<MudMessageBox @ref="MessageBox" Title="Alert" CancelText="Cancel">
-
-    <MessageContent>
-        Are you sure you want to delete ?
-    </MessageContent>
-    <YesButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever">Delete!</MudButton>
-    </YesButton>
-</MudMessageBox> *@
-
-
-@*
-                                                                    <InputTextEditor></InputTextEditor>
-                                                                    <InputMask></InputMask>
-                                                                    <InputSelect2></InputSelect2> *@
 
 <div class="container-fluid p-3">
     <h1 class="pt-4 pb-2 font-weight-bold "> Add product </h1>

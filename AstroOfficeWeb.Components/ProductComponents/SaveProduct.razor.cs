@@ -16,15 +16,10 @@ using System.Threading.Tasks;
 namespace AstroOfficeWeb.Components.ProductComponents
 {
 
-    public enum ActionMode
-    {
-        Add,
-        Edit,
-        Delete,
-        Cancel
-    }
+  
     public class ProductImage
     {
+
         public string? Src { get; set; }
         public string Alt { get; set; } = null!;
 
@@ -40,8 +35,16 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
     public partial class SaveProduct
     {
+
         [Parameter]
-        public long Sno { get; set; }
+        public long Sno { get; set; } = 0;
+
+        [Parameter]
+        public ActionMode Mode { get; set; } = ActionMode.Add;
+
+        [Parameter]
+        public string? Name { get; set; }
+
 
         private int Counter = 0;
 

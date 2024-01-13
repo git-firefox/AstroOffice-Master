@@ -136,7 +136,7 @@ namespace AstroOfficeWeb.Shared.Utilities
         Administrator
     }
 
-    public enum FormMode
+    public enum ActionMode
     {
         View,
         Edit,
