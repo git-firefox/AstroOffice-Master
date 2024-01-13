@@ -15,6 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Helper;
+using AutoMapper;
+using AstroOfficeWeb.Shared.Utilities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,11 +29,15 @@ namespace AstroOfficeWeb.Server.Controllers
         //ASDLL 
         private readonly BALUser _balUser;
         private readonly JWTSettings _jwtSettings;
+        private readonly IMapper _mapper;
+        private readonly AstrooffContext _context;
 
-        public AccountController(IOptions<JWTSettings> options, BALUser balUser)
+        public AccountController(IOptions<JWTSettings> options, BALUser balUser, IMapper mapper, AstrooffContext context)
         {
             _balUser = balUser;
             _jwtSettings = options.Value;
+            _mapper = mapper;
+            _context = context;
         }
 
         [HttpPost]
@@ -41,18 +47,18 @@ namespace AstroOfficeWeb.Server.Controllers
 
             try
             {
-                var aUser = _balUser.UserNameSearch(signInReques.UserName);
+                var aUser = _balUser.UserNameSearch(signInReques!.UserName!);
 
-                if (aUser == null)
+                if (aUser is null)
                 {
-                    response.IsAuthSuccessful = false;
+                    response.Success = false;
                     response.Message = AccountMessageConst.AccountNotFound;
                     goto returnResponse;
                 }
 
                 if (!aUser.Active.GetValueOrDefault())
                 {
-                    response.IsAuthSuccessful = false;
+                    response.Success = false;
                     response.Message = AccountMessageConst.AccountLocked;
                     goto returnResponse;
                 }
@@ -61,19 +67,19 @@ namespace AstroOfficeWeb.Server.Controllers
 
                 if (aUser.Sno <= 0)
                 {
-                    response.IsAuthSuccessful = false;
+                    response.Success = false;
                     response.Message = AccountMessageConst.InvalidCredentials;
                     goto returnResponse;
                 }
 
-                var userDTO = new UserDTO()
+                var userDTO = new BaseUserDTO()
                 {
-                    UserName = aUser.Username ?? "",
-                    CanAddNew = aUser.CanAdd.GetValueOrDefault(),
-                    CanModify = aUser.CanEdit.GetValueOrDefault(),
+                    Username = aUser.Username ?? "",
+                    CanAdd = aUser.CanAdd.GetValueOrDefault(),
+                    CanEdit = aUser.CanEdit.GetValueOrDefault(),
                     CanReport = aUser.CanReport.GetValueOrDefault(),
-                    ActiveUserId = aUser.Sno,
-                    IsAdmin = aUser.Adminuser.GetValueOrDefault()
+                    Sno = aUser.Sno,
+                    AdminUser = aUser.Adminuser.GetValueOrDefault()
                 };
 
                 var signinCredentials = GetSigningCredentials();
@@ -89,18 +95,18 @@ namespace AstroOfficeWeb.Server.Controllers
 
                 var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
-                response.IsAuthSuccessful = true;
+                response.Success = true;
                 response.Token = token;
-                response.UserDTO = userDTO;
+                response.Data = userDTO;
                 response.Message = AccountMessageConst.SignUpSuccessful;
             }
             catch (Exception ex)
             {
-                response.IsAuthSuccessful = false;
+                response.Success = false;
                 response.Message = ex.Message;
             }
 
-        returnResponse:
+            returnResponse:
             return Ok(response);
         }
 
@@ -116,33 +122,33 @@ namespace AstroOfficeWeb.Server.Controllers
 
                 if (aUser == null)
                 {
-                    response.IsAuthSuccessful = false;
+                    response.Success = false;
                     response.Message = AccountMessageConst.MobileNumberNotFound;
                     goto returnResponse;
                 }
 
                 if (!aUser.Active.GetValueOrDefault())
                 {
-                    response.IsAuthSuccessful = false;
+                    response.Success = false;
                     response.Message = AccountMessageConst.AccountLocked;
                     goto returnResponse;
                 }
 
                 if (aUser.MobileOtp != request.Otp)
                 {
-                    response.IsAuthSuccessful = false;
+                    response.Success = false;
                     response.Message = SMSMessageConst.InvalidOTP;
                     goto returnResponse;
                 }
 
-                var userDTO = new UserDTO()
+                var userDTO = new BaseUserDTO()
                 {
-                    UserName = aUser.Username ?? "",
-                    CanAddNew = aUser.CanAdd.GetValueOrDefault(),
-                    CanModify = aUser.CanEdit.GetValueOrDefault(),
+                    Username = aUser.Username ?? "",
+                    CanAdd = aUser.CanAdd.GetValueOrDefault(),
+                    CanEdit = aUser.CanEdit.GetValueOrDefault(),
                     CanReport = aUser.CanReport.GetValueOrDefault(),
-                    ActiveUserId = aUser.Sno,
-                    IsAdmin = aUser.Adminuser.GetValueOrDefault()
+                    Sno = aUser.Sno,
+                    AdminUser = aUser.Adminuser.GetValueOrDefault()
                 };
 
                 var signinCredentials = GetSigningCredentials();
@@ -157,18 +163,18 @@ namespace AstroOfficeWeb.Server.Controllers
 
                 var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
-                response.IsAuthSuccessful = true;
+                response.Success = true;
                 response.Token = token;
-                response.UserDTO = userDTO;
+                response.Data = userDTO;
                 response.Message = AccountMessageConst.SignUpSuccessful;
             }
             catch
             {
-                response.IsAuthSuccessful = false;
+                response.Success = false;
                 response.Message = ApiMessageConst.ServerError;
             }
 
-        returnResponse:
+            returnResponse:
             return Ok(response);
         }
 
@@ -252,7 +258,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = AccountMessageConst.UserPassNotUpdated;
             }
 
-        returnResponse:
+            returnResponse:
             return Ok(response);
         }
 
@@ -260,46 +266,43 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpGet]
         public IActionResult GetAllUsers()
         {
-            var aUSer = _balUser.GetAllUsers();
-            return Ok(aUSer);
+            var response = new ApiResponse<List<BaseUserDTO>>();
+            var aUsers = _balUser.GetAllUsers();
+            var userDTOs = _mapper.Map<List<BaseUserDTO>>(aUsers);
+            response.Data = userDTOs;
+            return Ok(response);
         }
 
         [HttpPost]
         public IActionResult SignUp([FromBody] SignUpRequest request)
         {
-            var response = new SignUpResponse();
-                                                                                    
+            var response = new ApiResponse<string>();
+            response.Success = false;
+
             try
             {
-
                 var user = _balUser.UserNameSearch(request.UserName);
-
                 if (user != null)
                 {
-                    response.IsRegisterationSuccessful = false;
                     response.Message = AccountMessageConst.UserExist;
                     goto returnResponse;
                 }
 
-                var mobileUserName = _balUser.GetUserByMobileNumber(request.PhoneNumber);
 
+                var mobileUserName = _balUser.GetUserByMobileNumber(request.MobileNumber);
                 if (mobileUserName != null)
                 {
-                    response.IsRegisterationSuccessful = false;
                     response.Message = AccountMessageConst.MobileNumberExist;
                     goto returnResponse;
                 }
-            }
-            catch
-            {
-                response.IsRegisterationSuccessful = false;
-                response.Message = ApiMessageConst.ServerError;
-                goto returnResponse;
-            }
 
-            if (ModelState.IsValid)
-            {
-                var aUser = new AUser()                                                      
+                if (!ModelState.IsValid)
+                {
+                    response.Message = AccountMessageConst.SignUpFailed;
+                    goto returnResponse;
+                }
+
+                _balUser.AddUser(new AUser()
                 {
                     Active = true,
                     Adminuser = false,
@@ -308,30 +311,84 @@ namespace AstroOfficeWeb.Server.Controllers
                     CanReport = false,
                     Password = request.Password,
                     Username = request.UserName,
-                    MobileNumber = request.PhoneNumber
-                };
+                    MobileNumber = request.MobileNumber,
+                    Role = UserRole.Guest.ToString()
+                });
 
-                try
-                {
-                    _balUser.AddUser(aUser);
-                    response.IsRegisterationSuccessful = true;
-                    response.Message = AccountMessageConst.SignUpSuccessful;
-
-                }
-                catch (Exception ex)
-                {
-                    _ = ex;
-                    response.IsRegisterationSuccessful = false;
-                    response.Message = ApiMessageConst.ServerError;
-                }
+                response.Success = true;
+                response.Message = AccountMessageConst.SignUpSuccessful;
             }
-            else
+            catch
             {
-                response.IsRegisterationSuccessful = false;
-                response.Message = AccountMessageConst.SignUpFailed;
+                response.Success = false;
+                response.Message = ApiMessageConst.ServerError;
             }
 
-        returnResponse:
+            returnResponse:
+            return Ok(response);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult SignUpMaster([FromBody] SignUpMasterRequest request)
+        {
+            var response = new ApiResponse<long>();
+            response.Success = false;
+            response.Message = response.Message = AccountMessageConst.SignUpFailed;
+
+            AUser? existsUserInfo = null;
+            AUser updateUserInfo = _mapper.Map<AUser>(request.UserDTO) ?? new AUser();
+            updateUserInfo.Password = updateUserInfo.Username;
+
+            try
+            {
+                if (updateUserInfo.Sno > 0)
+                {
+                    existsUserInfo = _balUser.GetSelectedUser(updateUserInfo.Sno);
+                }
+
+                var isUserExists = !string.IsNullOrEmpty(updateUserInfo.Username) && !updateUserInfo.Username.Equals(existsUserInfo?.Username) && _balUser.UserNameSearch(updateUserInfo.Username) is not null;
+                if (isUserExists)
+                {
+                    response.Message = AccountMessageConst.UserExist;
+                    goto returnResponse;
+                }
+
+                var isMobileNumberExists = !string.IsNullOrEmpty(updateUserInfo.MobileNumber) && !updateUserInfo.MobileNumber.Equals(existsUserInfo?.MobileNumber) && _balUser.GetUserByMobileNumber(updateUserInfo.MobileNumber) is not null;
+                if (isMobileNumberExists)
+                {
+                    response.Message = AccountMessageConst.MobileNumberExist;
+                    goto returnResponse;
+                }
+
+                updateUserInfo.Sno = existsUserInfo?.Sno ?? 0;
+                updateUserInfo.Adminuser ??= existsUserInfo?.Adminuser ?? false;
+                updateUserInfo.CanAdd ??= existsUserInfo?.CanAdd ?? false;
+                updateUserInfo.CanEdit ??= existsUserInfo?.CanEdit ?? false;
+                updateUserInfo.CanReport ??= existsUserInfo?.CanReport ?? false;
+                updateUserInfo.Role ??= existsUserInfo?.Role ?? UserRole.Guest.ToString();
+                updateUserInfo.Username ??= existsUserInfo?.Username;
+                updateUserInfo.MobileNumber ??= existsUserInfo?.MobileNumber;
+                updateUserInfo.Password = updateUserInfo.Username;
+                updateUserInfo.Active = true;
+
+                if ((updateUserInfo.Sno > 0 && _balUser.UpdateUser(updateUserInfo) > 0) || (updateUserInfo.Sno == 0 && _balUser.AddUser(updateUserInfo) > 0))
+                {
+                    response.Success = true;
+                    response.Message = AccountMessageConst.UserSaved;
+                    response.Data = updateUserInfo.Sno;
+                    goto returnResponse;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.ErrorNo = 1;
+                response.Message = ex.Message;
+            }
+
+            returnResponse:
             return Ok(response);
         }
 

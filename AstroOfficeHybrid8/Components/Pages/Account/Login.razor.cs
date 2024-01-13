@@ -76,7 +76,7 @@ namespace AstroOfficeHybrid8.Components.Pages.Account
                 Password = LoginModel!.Password
             });
             Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
-            if (response!.IsAuthSuccessful)
+            if (response!.Success)
             {
                 Snackbar.Add(response.Message, Severity.Success);
 

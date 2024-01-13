@@ -32,7 +32,7 @@ namespace AstroOfficeHybrid8.Services
             {
                 var response = await _apiService.PostAsync<SignInRequest, SignInResponse>(AccountApiConst.POST_SignIn, signInRequest);
 
-                if (response!.IsAuthSuccessful)
+                if (response!.Success)
                 {
                     await SecureStorage.SetAsync(ApplicationConst.Local_Token, response!.Token!);
                     ((AuthenticationStateService)_authStateProvider).NotifyUserLoggedIn(response.Token);
@@ -44,7 +44,7 @@ namespace AstroOfficeHybrid8.Services
             catch (Exception ex)
             {
                 _ = ex;
-                return new SignInResponse() { IsAuthSuccessful = false, Message = "Oops! Something went wrong on our end. Please try again later or contact support." };
+                return new SignInResponse() { Success = false, Message = "Oops! Something went wrong on our end. Please try again later or contact support." };
             }
         }
 
@@ -52,7 +52,7 @@ namespace AstroOfficeHybrid8.Services
         {
             var response = await _apiService.PostAsync<SignInWithOtpRequest, SignInResponse>(AccountApiConst.POST_SignInWithOtp, signInRequest);
 
-            if (response!.IsAuthSuccessful)
+            if (response!.Success)
             {
                 await SecureStorage.SetAsync(ApplicationConst.Local_Token, response!.Token!);
                 ((AuthenticationStateService)_authStateProvider).NotifyUserLoggedIn(response.Token);

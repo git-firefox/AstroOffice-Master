@@ -72,7 +72,7 @@ namespace AstroOfficeHybrid8.Components.Pages.Account
             var response = await AuthService.RegisterUserAsync(new AstroOfficeWeb.Shared.Models.SignUpRequest()
             {
                 Password = RegistrationModel.Password,
-                PhoneNumber = RegistrationModel.MobileNumber,
+                MobileNumber = RegistrationModel.MobileNumber,
                 UserName = RegistrationModel.UserName
             });
 

@@ -10,12 +10,8 @@ using Newtonsoft.Json;
 namespace AstroOfficeWeb.Shared.Models
 {
 
-    public class SignInResponse
+    public class SignInResponse : ApiResponse<BaseUserDTO>
     {
-        public bool IsAuthSuccessful { get; set; }
-        public string? Message { get; set; }
-        public string? Token { get; set; }        
-        public UserDTO? UserDTO { get; set; }
-
+        public string? Token { get; set; }
     }
 }

@@ -12,9 +12,9 @@ namespace ASBAL
             _du = dALUser;
         }
 
-        public void AddUser(AUser au)
+        public int AddUser(AUser au, bool withEncryption = true)
         {
-            _du.AddUser(au);
+            return _du.AddUser(au, withEncryption);
         }
 
         public IEnumerable<AUser> GetAllUsers()
@@ -22,7 +22,7 @@ namespace ASBAL
             return _du.GetAllUsers();
         }
 
-        public AUser GetSelectedUser(long sno)
+        public AUser? GetSelectedUser(long sno)
         {
             return _du.GetSelectedUser(sno);
         }
@@ -37,10 +37,8 @@ namespace ASBAL
             return _du.UserLogin(userName, password);
         }
 
-        public AUser? UserNameSearch(string? userName)
+        public AUser? UserNameSearch(string userName)
         {
-            if (string.IsNullOrEmpty(userName))
-                return null;
             return _du.UserNameSearch(userName);
         }
         public AUser? GetUserByMobileNumber(string? mobileNumber)

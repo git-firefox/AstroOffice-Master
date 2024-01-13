@@ -80,7 +80,7 @@ namespace AstroOfficeWeb.Server.Controllers
         {
             var apiResponse = new ApiResponse<ProductDTO> { Data = null };
 
-            var aProduct = await _context.AProducts.Include(a => a.ProductImages).Include(a => a.ProductMetaData).Include(a => a.ProductCategoriesSnoNavigation).FirstOrDefaultAsync(p => p.Sno == sno && p.IsActive == true);
+            var aProduct = await _context.AProducts.Include(a => a.AProductMediaFiles).Include(a => a.ProductMetaData).Include(a => a.ProductCategoriesSnoNavigation).FirstOrDefaultAsync(p => p.Sno == sno && p.IsActive == true);
 
             var shoppingCart = await _context.ShoppingCarts.Include(i => i.CartItems).FirstOrDefaultAsync(a => a.AUsersSno == User.GetUserSno());
             var cartItems = shoppingCart?.CartItems.ToList();
@@ -96,7 +96,7 @@ namespace AstroOfficeWeb.Server.Controllers
             apiResponse.Success = true;
 
             var productDTO = _mapper.Map<ProductDTO>(aProduct);
-            var imagesDTOs = _mapper.Map<List<ImagesDTO>>(aProduct.ProductImages);
+            var imagesDTOs = _mapper.Map<List<ImagesDTO>>(aProduct.AProductMediaFiles);
             var metaDataDTOs = _mapper.Map<List<MetaDataDTO>>(aProduct.ProductMetaData);
             productDTO.ProductImages = imagesDTOs;
             productDTO.MetaDatas = metaDataDTOs;
@@ -180,7 +180,7 @@ namespace AstroOfficeWeb.Server.Controllers
             var response = new ApiResponse<List<ImagesDTO>> { Data = null };
             try
             {
-                var aProduct = _context.ProductImages.Where(p => p.ProductId == productId).ToList();
+                var aProduct = _context.AProductMediaFiles.Where(p => p.AProductsSno == productId).ToList();
                 var imagesDTOs = _mapper.Map<List<ImagesDTO>>(aProduct);
                 response.Data = imagesDTOs;
             }
@@ -218,14 +218,14 @@ namespace AstroOfficeWeb.Server.Controllers
                 if (productDTO.ProductImages != null)
                 {
 
-                    var productImages = productDTO.ProductImages.Select(a => new ProductImage
+                    var productImages = productDTO.ProductImages.Select(a => new AProductMediaFile
                     {
-                        ImageUrl = a.ImageURL,
-                        ImageName = Path.GetFileNameWithoutExtension(a.ImageName),
-                        ProductId = aProduct.Sno
+                        MediaUrl = a.ImageURL,
+                        MediaName = Path.GetFileNameWithoutExtension(a.ImageName),
+                        AProductsSno = aProduct.Sno
                     });
 
-                    _context.ProductImages.AddRange(productImages);
+                    _context.AProductMediaFiles.AddRange(productImages);
                     _context.SaveChanges();
                 }
 
@@ -274,20 +274,20 @@ namespace AstroOfficeWeb.Server.Controllers
                     if (productDTO.ProductImages != null)
                     {
 
-                        var existsImages = _context.ProductImages.Where(p => p.ProductId == aProduct.Sno).ToList();
+                        var existsImages = _context.AProductMediaFiles.Where(p => p.AProductsSno == aProduct.Sno).ToList();
 
                         var doNotingImageSnos = productDTO.ProductImages.Where(pi => pi.Sno != 0).Select(pi => pi.Sno).ToList();
 
                         var imagesNeedToDelete = existsImages.Where(ei => !doNotingImageSnos.Contains(ei.Sno));
 
-                        var imagesNeedToAdd = productDTO.ProductImages.Where(pi => !doNotingImageSnos.Contains(pi.Sno)).Select(pi => new ProductImage
+                        var imagesNeedToAdd = productDTO.ProductImages.Where(pi => !doNotingImageSnos.Contains(pi.Sno)).Select(pi => new AProductMediaFile
                         {
-                            ImageUrl = pi.ImageURL,
-                            ImageName = Path.GetFileNameWithoutExtension(pi.ImageName),
-                            ProductId = aProduct.Sno
+                            MediaUrl = pi.ImageURL,
+                            MediaName = Path.GetFileNameWithoutExtension(pi.ImageName),
+                            AProductsSno = aProduct.Sno
                         });
 
-                        _context.ProductImages.RemoveRange(imagesNeedToDelete);
+                        _context.AProductMediaFiles.RemoveRange(imagesNeedToDelete);
 
                         if (imagesNeedToAdd.Any())
                         {

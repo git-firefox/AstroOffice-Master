@@ -41,7 +41,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
                 UserName = LoginModel!.UserName,
                 Password = LoginModel!.Password
             });
-            if (response!.IsAuthSuccessful)
+            if (response!.Success)
             {
                 //await JSRuntime.ShowToastAsync(response?.Message ?? "Success!");
                 NavigationManager!.NavigateTo("/welcome");

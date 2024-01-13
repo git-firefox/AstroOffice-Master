@@ -44,10 +44,10 @@ namespace AstroOfficeWeb.Client.Services
             {
                 var response = await _apiService.PostAsync<SignInRequest, SignInResponse>(AccountApiConst.POST_SignIn, signInRequest);
 
-                if (response!.IsAuthSuccessful)
+                if (response!.Success)
                 {
                     await _localStorage.SetItemAsync(ApplicationConst.Local_Token, response.Token);
-                    await _localStorage.SetItemAsync(ApplicationConst.Local_UserDetails, response.UserDTO);
+                    await _localStorage.SetItemAsync(ApplicationConst.Local_UserDetails, response.Data);
                     ((AuthenticationStateService)_authStateProvider).NotifyUserLoggedIn(response.Token);
                     _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", response.Token);
                 }
@@ -57,7 +57,7 @@ namespace AstroOfficeWeb.Client.Services
             catch (Exception ex)
             {
                 _ = ex;
-                return new SignInResponse() { IsAuthSuccessful = false, Message = "Oops! Something went wrong on our end. Please try again later or contact support." };
+                return new SignInResponse() { Success = false, Message = "Oops! Something went wrong on our end. Please try again later or contact support." };
             }
         }
 
@@ -65,10 +65,10 @@ namespace AstroOfficeWeb.Client.Services
         {
             var response = await _apiService.PostAsync<SignInWithOtpRequest, SignInResponse>(AccountApiConst.POST_SignInWithOtp, signInRequest);
 
-            if (response!.IsAuthSuccessful)
+            if (response!.Success)
             {
                 await _localStorage.SetItemAsync(ApplicationConst.Local_Token, response.Token);
-                await _localStorage.SetItemAsync(ApplicationConst.Local_UserDetails, response.UserDTO);
+                await _localStorage.SetItemAsync(ApplicationConst.Local_UserDetails, response.Data);
                 ((AuthenticationStateService)_authStateProvider).NotifyUserLoggedIn(response.Token);
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", response.Token);
             }

@@ -129,7 +129,9 @@ namespace AstroOfficeWeb.Shared.Utilities
         Guest,
         Member,
         Astrologer,
+        [Description("Product Manager")]
         ProductManager,
+        [Description("Order Manager")]
         OrderManager,
         Administrator
     }
