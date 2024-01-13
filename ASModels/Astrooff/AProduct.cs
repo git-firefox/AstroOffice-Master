@@ -11,9 +11,9 @@ namespace ASModels.Astrooff
     {
         public AProduct()
         {
+            AProductMediaFiles = new HashSet<AProductMediaFile>();
             CartItems = new HashSet<CartItem>();
             OrderItems = new HashSet<OrderItem>();
-            ProductImages = new HashSet<ProductImage>();
             ProductMetaData = new HashSet<ProductMetaData>();
             ProductWishlists = new HashSet<ProductWishlist>();
         }
@@ -48,16 +48,17 @@ namespace ASModels.Astrooff
         public string? Status { get; set; }
         [Column("ProductCategories_Sno")]
         public long? ProductCategoriesSno { get; set; }
+        public string? SecondaryImageUrl { get; set; }
 
         [ForeignKey("ProductCategoriesSno")]
         [InverseProperty("AProducts")]
         public virtual ProductCategory? ProductCategoriesSnoNavigation { get; set; }
         [InverseProperty("AProductsSnoNavigation")]
+        public virtual ICollection<AProductMediaFile> AProductMediaFiles { get; set; }
+        [InverseProperty("AProductsSnoNavigation")]
         public virtual ICollection<CartItem> CartItems { get; set; }
         [InverseProperty("AProductsSnoNavigation")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
-        [InverseProperty("Product")]
-        public virtual ICollection<ProductImage> ProductImages { get; set; }
         [InverseProperty("AProductsSnoNavigation")]
         public virtual ICollection<ProductMetaData> ProductMetaData { get; set; }
         [InverseProperty("AProductsSnoNavigation")]

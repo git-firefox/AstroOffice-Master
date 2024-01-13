@@ -44,6 +44,12 @@ namespace ASModels.Astrooff
         public string? MobileNumber { get; set; }
         [StringLength(6)]
         public string? MobileOtp { get; set; }
+        [StringLength(25)]
+        [Unicode(false)]
+        public string? Role { get; set; }
+        [StringLength(25)]
+        [Unicode(false)]
+        public string? Status { get; set; }
 
         [InverseProperty("AUserSnoNavigation")]
         public virtual AUserTokenBalance? AUserTokenBalance { get; set; }

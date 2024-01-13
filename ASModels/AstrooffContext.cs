@@ -106,6 +106,7 @@ namespace ASModels
         public virtual DbSet<APlanetShreshtghar> APlanetShreshtghars { get; set; } = null!;
         public virtual DbSet<APlanetUchghar> APlanetUchghars { get; set; } = null!;
         public virtual DbSet<AProduct> AProducts { get; set; } = null!;
+        public virtual DbSet<AProductMediaFile> AProductMediaFiles { get; set; } = null!;
         public virtual DbSet<AProductPred> AProductPreds { get; set; } = null!;
         public virtual DbSet<APunjabi> APunjabis { get; set; } = null!;
         public virtual DbSet<APunjabiMini> APunjabiMinis { get; set; } = null!;
@@ -149,7 +150,6 @@ namespace ASModels
         public virtual DbSet<NewMixDasha> NewMixDashas { get; set; } = null!;
         public virtual DbSet<OrderItem> OrderItems { get; set; } = null!;
         public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
-        public virtual DbSet<ProductImage> ProductImages { get; set; } = null!;
         public virtual DbSet<ProductMetaData> ProductMetaDatas { get; set; } = null!;
         public virtual DbSet<ProductOrder> ProductOrders { get; set; } = null!;
         public virtual DbSet<ProductWishlist> ProductWishlists { get; set; } = null!;
@@ -783,6 +783,19 @@ namespace ASModels
                     .HasConstraintName("FK_ProductCategories_Sno");
             });
 
+            modelBuilder.Entity<AProductMediaFile>((Action<Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<AProductMediaFile>>)(entity =>
+            {
+                entity.HasKey(e => e.Sno)
+                    .HasName("PK__A_Produc__CA1FE464A4480897");
+
+                entity.Property(e => e.UploadDate).HasDefaultValueSql("(getdate())");
+
+                entity.HasOne<AProduct>(d => d.AProductsSnoNavigation)
+                    .WithMany(p => p.AProductMediaFiles)
+                    .HasForeignKey((System.Linq.Expressions.Expression<Func<AProductMediaFile, object?>>)(d => (object?)d.AProductsSno))
+                    .HasConstraintName<AProduct, AProductMediaFile>("FK_ProductMediaFiles_A_Products_Sno");
+            }));
+
             modelBuilder.Entity<APunjabi>(entity =>
             {
                 entity.HasIndex(e => e.Sno, "IX_A_punjabi")
@@ -921,6 +934,10 @@ namespace ASModels
             {
                 entity.Property(e => e.Password).UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
+                entity.Property(e => e.Role).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Status).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.Username).UseCollation("SQL_Latin1_General_CP1_CI_AS");
             });
 
@@ -1039,17 +1056,6 @@ namespace ASModels
                     .WithMany(p => p.InverseParentCategorySnoNavigation)
                     .HasForeignKey(d => d.ParentCategorySno)
                     .HasConstraintName("FK__ProductCa__Paren__13FCE2E3");
-            });
-
-            modelBuilder.Entity<ProductImage>(entity =>
-            {
-                entity.HasKey(e => e.Sno)
-                    .HasName("PK__ProductI__CA1FE464295FE454");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.ProductImages)
-                    .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__ProductIm__Produ__75785BC3");
             });
 
             modelBuilder.Entity<ProductMetaData>(entity =>
