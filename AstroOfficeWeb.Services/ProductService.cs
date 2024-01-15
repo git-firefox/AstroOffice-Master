@@ -92,7 +92,7 @@ namespace AstroOfficeWeb.Services
                 _snackbar?.ShowErrorSnackbar(response.Message);
             }
         }
-        
+
         public async Task AddProduct(ProductDTO saveProduct, IEnumerable<FileData?>? files)
         {
             var response = await _swagger.PostWithMultipartFormDataContentAsync<ProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.POST_AddProduct, saveProduct, files);
@@ -135,8 +135,10 @@ namespace AstroOfficeWeb.Services
             }
         }
 
-        public async Task UpdateProduct( long sno,ProductDTO saveProduct, IEnumerable<FileData?>? files)
+        public async Task UpdateProduct(long sno, ProductDTO saveProduct, IEnumerable<FileData?>? files)
         {
+
+            saveProduct.ProductMediaFiles = saveProduct?.ProductMediaFiles?.Where(a => a.Attachment == null).ToList();
             var response = await _swagger.PutWithMultipartFormDataContentAsync<ProductDTO, ApiResponse<ViewProductDTO>>(ProductApiConst.PUT_UpdateProduct + "?sno=" + sno, saveProduct, files);
             if (response!.Success)
             {

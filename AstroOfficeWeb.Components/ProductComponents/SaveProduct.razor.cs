@@ -66,7 +66,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         [Parameter]
         public ProductDTO ProductModel { get; set; } = new();
 
-        public List<MediaDTO>? ProductMediaFiles { get; set; } = new();
+        public List<MediaDTO> ProductMediaFiles { get; set; } = new();
 
         public ProductImage ProductImage { get; set; } = new();
 
@@ -337,24 +337,46 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
             ProductMediaFiles?.ForEach(a =>
             {
-                if (a.IsPrimary && a.Attachment != null)
-                {
+                StringBuilder sb = new StringBuilder(a.MediaName);
 
-                    a.Attachment!.FileName += "?ismain=true";
+                if (a.Attachment != null)
+                {
+                    if (a.IsPrimary)
+                    {
+                        sb.Append("|is-primary");
+                        a.Attachment!.FileName = sb.ToString();
+                    }
+                    if (a.IsSecondary)
+                    {
+                        sb.Append("|is-secondary");
+                        a.Attachment!.FileName = sb.ToString();
+                    }
                 }
+
+                //if (a.IsPrimary)
+                //{
+                //    sb.Append("|is-primary");
+                //    a.Attachment!.FileName = sb.ToString();
+                //}
+                //if (a.IsSecondary)
+                //{
+                //    sb.Append("|is-secondary");
+                //    a.Attachment!.FileName = sb.ToString();
+                //}
+
             });
 
             ProductModel.ProductMediaFiles = ProductMediaFiles;
             if (Sno == 0)
             {
                 //await ProductService.AddProduct(ProductModel);
-                await ProductService.AddProduct(ProductModel, ProductMediaFiles?.Select(a => a.Attachment));
+                await ProductService.AddProduct(ProductModel, ProductMediaFiles?.Where(a => a.Attachment != null).Select(a => a.Attachment)); ;
 
             }
             else
             {
 
-                await ProductService.UpdateProduct(Sno, ProductModel, ProductMediaFiles?.Select(a => a.Attachment));
+                await ProductService.UpdateProduct(Sno, ProductModel, ProductMediaFiles?.Where(a => a.Attachment != null).Select(a => a.Attachment));
             }
         }
 
@@ -396,45 +418,73 @@ namespace AstroOfficeWeb.Components.ProductComponents
             }
         }
 
-        private void OnClick_BtnSetAsMain(MouseEventArgs e)
+        private void OnClick_BtnSetAsMain(MediaDTO selectedMedia, int mode = 1)
         {
-
-            if (SelectedFile == null)
+            foreach (var item in ProductMediaFiles)
             {
-                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
-                //if (BrowserFiles.Count == 0)
-                if (ProductMediaFiles?.Count == 0)
+                if (item == selectedMedia)
                 {
-                    Snackbar.Add("Please add images", Severity.Error);
-                    //await JSRuntime.ShowToastAsync("Please add image(s)", SwalIcon.Error);
-                    return;
+                    if (mode == 1)
+                    {
+                        item.IsPrimary = true;
+
+                    }
+                    else
+                    {
+                        item.IsSecondary = true;
+                    }
+                }
+                else
+                {
+                    if (mode == 1)
+                    {
+                        item.IsPrimary = false;
+
+                    }
+                    else
+                    {
+                        item.IsSecondary = false;
+                    }
                 }
 
-
-
-                Snackbar.Add("Please select image from list", Severity.Error);
-                //await JSRuntime.ShowToastAsync("Please select image from list", SwalIcon.Error);
-            }
-            else
-            {
-
-                //DisplayMediaData.ForEach(a =>
-                //{
-                //    a.IsImageSetAsMain = false;
-                //});
-                ProductMediaFiles?.ForEach(a =>
-                {
-                    a.IsPrimary = false;
-                });
-
-
             }
 
-            SelectedFile!.IsPrimary = true;
-            //ProductModel!.ImageUrl = SelectedImage.ImageURL;
-            //SelectedFile.FileName = SelectedFile.FileName + "?ismain=true";
-            Snackbar.Add("The current selected image has been set as the main image successfully", Severity.Success);
-            //await JSRuntime.ShowToastAsync("The current selected image has been set as the main image successfully", SwalIcon.Success);
+            //if (SelectedFile == null)
+            //{
+            //    Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
+            //    //if (BrowserFiles.Count == 0)
+            //    if (ProductMediaFiles?.Count == 0)
+            //    {
+            //        Snackbar.Add("Please add images", Severity.Error);
+            //        //await JSRuntime.ShowToastAsync("Please add image(s)", SwalIcon.Error);
+            //        return;
+            //    }
+
+
+
+            //    Snackbar.Add("Please select image from list", Severity.Error);
+            //    //await JSRuntime.ShowToastAsync("Please select image from list", SwalIcon.Error);
+            //}
+            //else
+            //{
+
+            //    //DisplayMediaData.ForEach(a =>
+            //    //{
+            //    //    a.IsImageSetAsMain = false;
+            //    //});
+            //    ProductMediaFiles?.ForEach(a =>
+            //    {
+            //        a.IsPrimary = false;
+            //    });
+
+
+            //}
+
+            //SelectedFile!.IsPrimary = true;
+            ////ProductModel!.ImageUrl = SelectedImage.ImageURL;
+            ////SelectedFile.FileName = SelectedFile.FileName + "?ismain=true";
+            //Snackbar.Add("The current selected image has been set as the main image successfully", Severity.Success);
+            ////await JSRuntime.ShowToastAsync("The current selected image has been set as the main image successfully", SwalIcon.Success);
         }
 
 
