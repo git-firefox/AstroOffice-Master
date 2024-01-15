@@ -10,15 +10,16 @@ namespace AstroOfficeWeb.Server.Controllers
     {
         protected string? SetMedia(string? fileName, string? extension = null)
         {
-            fileName = (!String.IsNullOrEmpty(fileName) && !fileName.StartsWith("data:image")) ? HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value + "/media/" + fileName : fileName;
-
-            StringBuilder sb = new StringBuilder(fileName);
-
-            if (extension != null)
+            if (!String.IsNullOrEmpty(fileName) && (!fileName.StartsWith("data:image") && (!fileName.StartsWith("http") || !fileName.StartsWith("https"))))
             {
-                sb.Append("." + extension);
-                fileName = sb.ToString();
+                fileName = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value + "/media/" + fileName;
+                StringBuilder sb = new StringBuilder(fileName);
 
+                if (extension != null)
+                {
+                    sb.Append("." + extension);
+                    fileName = sb.ToString();
+                }
             }
             return fileName;
         }

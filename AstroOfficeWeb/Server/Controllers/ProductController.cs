@@ -108,7 +108,9 @@ namespace AstroOfficeWeb.Server.Controllers
             var mediaDTOs = _mapper.Map<List<MediaDTO>>(aProduct.ProductMedia);
             var metaDataDTOs = _mapper.Map<List<MetaDataDTO>>(aProduct.ProductMetaData);
 
-            if (aProduct.ImageUrl != null)
+
+
+            if (aProduct.ImageUrl?.Contains(aProduct.SecondaryImageUrl ?? "") == true)
             {
                 mediaDTOs.Add(new MediaDTO
                 {
@@ -119,8 +121,39 @@ namespace AstroOfficeWeb.Server.Controllers
                     MediaUrl = !aProduct.ImageUrl.StartsWith("data:image") ? Path.GetFileNameWithoutExtension(aProduct.ImageUrl) : aProduct.ImageUrl,
                     Sno = -1,
                 });
-
             }
+            else
+            {
+                if (aProduct.SecondaryImageUrl != null)
+                {
+                    mediaDTOs.Add(new MediaDTO
+                    {
+                        IsPrimary = false,
+                        IsSecondary = true,
+                        MediaName = aProduct.Name,
+                        MediaType = !aProduct.SecondaryImageUrl.StartsWith("data:image") ? Path.GetExtension(aProduct.SecondaryImageUrl).ToUpper()[1..] : null,
+                        MediaUrl = !aProduct.SecondaryImageUrl.StartsWith("data:image") ? Path.GetFileNameWithoutExtension(aProduct.SecondaryImageUrl) : aProduct.SecondaryImageUrl,
+                        Sno = -1,
+                    });
+
+                }
+
+                if (aProduct.ImageUrl != null)
+                {
+                    mediaDTOs.Add(new MediaDTO
+                    {
+                        IsPrimary = true,
+                        IsSecondary = false,
+                        MediaName = aProduct.Name,
+                        MediaType = !aProduct.ImageUrl.StartsWith("data:image") ? Path.GetExtension(aProduct.ImageUrl).ToUpper()[1..] : null,
+                        MediaUrl = !aProduct.ImageUrl.StartsWith("data:image") ? Path.GetFileNameWithoutExtension(aProduct.ImageUrl) : aProduct.ImageUrl,
+                        Sno = -1,
+                    });
+                }
+            }
+
+
+
             mediaDTOs.ForEach(md =>
             {
                 md.MediaUrl = SetMedia(md.MediaUrl, md.MediaType);
@@ -272,7 +305,15 @@ namespace AstroOfficeWeb.Server.Controllers
                         }
                         else
                         {
-                            aProduct.ImageUrl = guid.ToString() + extension;
+                            if (temp[1].Equals("is-secondary"))
+                            {
+                                aProduct.SecondaryImageUrl = guid.ToString() + extension;
+                            }
+                            else if (temp[1].Equals("is-primary"))
+                            {
+
+                                aProduct.ImageUrl = guid.ToString() + extension;
+                            }
                         }
 
                     }
@@ -343,8 +384,15 @@ namespace AstroOfficeWeb.Server.Controllers
                     aProduct.AddedByAUsersSno = existedProduct.AddedByAUsersSno;
                     aProduct.AddedDate = existedProduct.AddedDate;
                     aProduct.ModifiedByAUsersSno = User.GetUserSno();
+
                     if (productDTO.ProductMediaFiles.FirstOrDefault(a => a.Attachment == null && a.IsPrimary == true) is MediaDTO primaryMediaDTO)
                         aProduct.ImageUrl = primaryMediaDTO.MediaUrl;
+
+                    if (productDTO.ProductMediaFiles.FirstOrDefault(a => a.Attachment == null && a.IsSecondary == true) is MediaDTO secondaryMediaDTO)
+                        aProduct.SecondaryImageUrl = secondaryMediaDTO.MediaUrl;
+
+
+
                     aProduct.LastModifiedDate = DateTime.Now;
                     //aProduct.IsActive = true;c
 
@@ -374,16 +422,33 @@ namespace AstroOfficeWeb.Server.Controllers
 
                                 var guid = Guid.NewGuid();
                                 var extension = Path.GetExtension(file.FileName.ToLower());
-                                var temp = extension.Split('?');
+                                var temp = extension.Split('|');
                                 extension = temp[0];
 
                                 var filePath = Path.Combine(mediaPath, guid + extension);
                                 using var stream = new FileStream(filePath, FileMode.Create);
                                 file.CopyTo(stream);
 
-                                if (temp.Length < 2)
+                                if (temp.Length == 2)
                                 {
 
+                                    if (temp[1].Equals("is-primary"))
+                                    {
+
+                                        aProduct.ImageUrl = guid.ToString() + extension;
+                                    }
+                                    else if (temp[1].Equals("is-secondary"))
+                                    {
+                                        aProduct.SecondaryImageUrl = guid.ToString() + extension;
+                                    }
+                                }
+                                else if (temp.Length == 3)
+                                {
+                                    aProduct.ImageUrl = guid.ToString() + extension;
+                                    aProduct.SecondaryImageUrl = aProduct.ImageUrl;
+                                }
+                                else
+                                {
                                     var test = new ProductMedia
                                     {
                                         MediaName = Path.GetFileNameWithoutExtension(file.FileName),
@@ -403,10 +468,6 @@ namespace AstroOfficeWeb.Server.Controllers
                                         Sno = test.Sno,
                                         MediaUrl = test.MediaUrl
                                     });
-                                }
-                                else
-                                {
-                                    aProduct.ImageUrl = guid.ToString() + extension;
                                 }
 
                             }

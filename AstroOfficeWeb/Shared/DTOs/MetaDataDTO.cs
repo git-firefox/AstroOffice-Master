@@ -11,9 +11,9 @@ namespace AstroOfficeWeb.Shared.DTOs
     {
         public long Sno { get; set; }
         [Required]
-        public string MetaValue { get; set; } = string.Empty;
+        public string? MetaValue { get; set; } = string.Empty;
         [Required]
-        public string MetaKeyword { get; set; } = string.Empty;
+        public string? MetaKeyword { get; set; } = string.Empty;
         public string? MetaDescription { get; set; }
     }
 
