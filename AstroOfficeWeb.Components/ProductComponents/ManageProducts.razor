@@ -12,7 +12,8 @@
 
 @if (Products == null)
 {
-    <table class="table">
+    <div class="table-responsive">
+        <table class="table table-centered table-nowrap">
         <thead>
             <tr>
 
@@ -40,6 +41,7 @@
             }
         </tbody>
     </table>
+    </div>
 }
 else if (Products.Any())
 {

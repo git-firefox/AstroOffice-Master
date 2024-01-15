@@ -1,26 +1,26 @@
 ﻿@inject IDialogService Dialog
 @inject ISnackbarService Snackbar
 
-<div class="row align-items-end gy-2">
-    <EditForm Model="MetaData" OnSubmit="OnSubmit">
-        <DataAnnotationsValidator />
-        <div class="col-md-4">
-            <label for="product-meta-keyword" class="form-label">Meta Keyword</label>
-            <ValidationMessage For=@(()=>MetaData.MetaKeyword) />
-            <InputText @bind-Value="MetaData.MetaKeyword" class="form-control" id="product-meta-keyword" placeholder="Meta Keyword" />
-        </div>
-        <div class="col-md-4">
-            <label for="product-meta-value" class="form-label">Meta Value</label>
-            <ValidationMessage For=@(()=>MetaData!.MetaValue) />
-            <InputText @bind-Value="MetaData!.MetaValue" class="form-control" id="product-meta-value" placeholder="Meta Value" />
-        </div>
 
-        <div class="col-md-4">
-            <button type="submit" class="btn btn-custom float-right w-100 w-md-auto">Add MetaData</button>
-            <button type="reset" class="btn btn-secondary float-right w-100 w-md-auto">Reset</button>
-        </div>
-    </EditForm>
-</div>
+<EditForm class="row align-items-end gy-2" Model="MetaData" OnSubmit="OnSubmit">
+    <DataAnnotationsValidator />
+    <div class="col-md-4">
+        <label for="product-meta-keyword validation-ico" class="form-label">Meta Keyword</label>
+        <ValidationMessage For=@(()=>MetaData.MetaKeyword) />
+        <InputText @bind-Value="MetaData.MetaKeyword" class="form-control" id="product-meta-keyword" placeholder="Meta Keyword" />
+    </div>
+    <div class="col-md-4">
+        <label for="product-meta-value mb-0 validation-ico" class="form-label">Meta Value</label>
+        <ValidationMessage For=@(()=>MetaData!.MetaValue) />
+        <InputText @bind-Value="MetaData!.MetaValue" class="form-control" id="product-meta-value" placeholder="Meta Value" />
+    </div>
+
+    <div class="col-md-4 d-flex gap-2">
+        <button type="submit" class="btn btn-custom float-right w-100 w-md-auto">Add</button>
+        <button type="reset" class="btn btn-secondary float-right w-100 w-md-auto">Reset</button>
+    </div>
+</EditForm>
+
 
 <div class="row mt-3">
     <div class="col-12">

@@ -4,6 +4,7 @@
 @inject IDialogService Dialog
 @inject AccountService Account
 
+<MudButton Variant="Variant.Text" Class="btn-custom" OnClick="()=>OnClick_BtnAction(ActionMode.Add)">Add User</MudButton>
 <MudDrawer @bind-Open="IsDrawerOpen" Width="375px" Height="100%" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
     <MudDrawerHeader>
         <MudGrid>

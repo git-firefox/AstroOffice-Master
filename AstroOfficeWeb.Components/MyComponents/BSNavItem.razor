@@ -1,7 +1,7 @@
 ﻿<li class="nav-item" role="presentation">
     <button @ref="Reference" class="nav-link @_active" id=@($"pills-{_tab}-tab") data-bs-toggle="pill" data-bs-target=@($"#pills-{_tab}") type="button" role="tab" aria-controls="pills-home" aria-selected="@_selected" @onclick="Clicked">
         <span class="number">@TabNumber.ToString("00")</span>
-        <span class="d-none d-sm-inline">@TabName</span>
+        <span class="d-none d-md-inline">@TabName</span>
     </button>
 </li>
 
