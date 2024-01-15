@@ -78,8 +78,14 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         private void RowEditCancel(object element)
         {
-            element = new MetaDataDTO(BackUpMetaData!);
-            Console.WriteLine("RowEditCancel ****************************");
+            if (element is MetaDataDTO metaDataDTO)
+            {
+                metaDataDTO.Sno = BackUpMetaData!.Sno;
+                metaDataDTO.MetaValue = BackUpMetaData!.MetaValue;
+                metaDataDTO.MetaKeyword = BackUpMetaData!.MetaKeyword;
+            }
+            //element = new MetaDataDTO(BackUpMetaData!);
+            //Console.WriteLine("RowEditCancel ****************************");
         }
 
         private void RowEditCommit(object element)
