@@ -24,6 +24,17 @@ namespace AstroOfficeWeb.Services
         }
 
 
+        public async Task<(BaseProductDTO? GeneralInformation, List<MediaFileDTO>? ProductMediaFiles, List<MetaDataDTO>? ProductMetaDatas)> InitialiseProductBySno(long sno)
+        {
+            var queryParams = new Dictionary<string, string>()
+            {
+                { "Sno", sno.ToString()}
+            };
+
+            var response = await _swagger.GetAsync<ApiResponse<GetProductResponse>>(ProductApiConst.GET_ProductBySno, queryParams);
+            return (response?.Data?.GeneralInformation, response?.Data?.ProductMediaFiles, response?.Data?.ProductMetaDatas);
+        }
+
         public async Task<List<ViewProductDTO>?> GetProducts(long? categorySno = null)
         {
             List<ViewProductDTO>? products = null;
@@ -44,7 +55,6 @@ namespace AstroOfficeWeb.Services
             }
             return products;
         }
-
 
         public async Task<List<ViewProductDTO>?> GetUserAddedProducts()
         {
@@ -93,9 +103,9 @@ namespace AstroOfficeWeb.Services
             }
         }
 
-        public async Task SaveProductImages(List<FileData> saveProduct)
+        public async Task SaveProductImages(ProductDTO req, List<MediaFile> saveProduct)
         {
-            var response = await _swagger.PostWithMultipartFormDataContentAsync<ApiResponse<string>>(FileApiConst.POST_SaveProductImages, saveProduct);
+            var response = await _swagger.PostWithMultipartFormDataContentAsync<ProductDTO, ApiResponse<string>>(FileApiConst.POST_SaveProductImages, req, saveProduct);
             if (response!.Success)
             {
                 _snackbar?.ShowSuccessSnackbar(response.Message);

@@ -1,0 +1,26 @@
+﻿<div id=@("pills-" + _tabPane) class="tab-pane fade @_show @_active @_css" role="tabpanel" aria-labelledby=@($"pills-{_tabPane}-tab") tabindex="0">
+    @TabPaneBody
+</div>
+
+@code {
+    private string _active { get => this.IsActive ? "active" : string.Empty; }
+
+    private string _css { get => !string.IsNullOrEmpty(this.Css) ? this.Css : string.Empty; }
+
+    private string _show { get => this.IsActive ? "show" : string.Empty; }
+
+    private string _tabPane { get => this.TabPanelName.ToUrlFriendlyString(); }
+
+
+    [Parameter]
+    public bool IsActive { get; set; } = false;
+
+    [Parameter]
+    public string? Css { get; set; }
+
+    [Parameter]
+    public string TabPanelName { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment TabPaneBody { get; set; } = null!;
+}

@@ -17,19 +17,10 @@ using static MudBlazor.CategoryTypes;
 
 namespace AstroOfficeWeb.Client.Pages.Product
 {
-    public enum ActionMode
-    {
-        Add,
-        Edit,
-        Delete,
-        Cancel
-    }
     public class ProductImage
     {
         public string? Src { get; set; }
         public string Alt { get; set; } = null!;
-
-
 
         [Required(ErrorMessage = "Please select a file.")]
         //[MinLength(1, ErrorMessage = "Upload atleast 1 image.")]
@@ -160,6 +151,7 @@ namespace AstroOfficeWeb.Client.Pages.Product
                 }
             }
             IsImageLoaded = true;
+            
         }
 
         enum ProceedSaveProduct

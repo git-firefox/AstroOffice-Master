@@ -8,8 +8,8 @@ using Newtonsoft.Json;
 namespace AstroOfficeWeb.Shared.Models
 {
     //[JsonArray]
-    public class ApiResponse<TType> : ApiResponseBase
+    public class ApiResponse<TResponse> : ApiResponseBase
     {
-        public TType? Data { get; set; }
+        public TResponse? Data { get; set; }
     }
 }

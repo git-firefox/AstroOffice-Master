@@ -1,0 +1,87 @@
+﻿@inject IDialogService Dialog
+@inject ISnackbarService Snackbar
+
+<div class="row align-items-end gy-2">
+    <EditForm Model="MetaData" OnSubmit="OnSubmit">
+        <DataAnnotationsValidator />
+        <div class="col-md-4">
+            <label for="product-meta-keyword" class="form-label">Meta Keyword</label>
+            <ValidationMessage For=@(()=>MetaData.MetaKeyword) />
+            <InputText @bind-Value="MetaData.MetaKeyword" class="form-control" id="product-meta-keyword" placeholder="Meta Keyword" />
+        </div>
+        <div class="col-md-4">
+            <label for="product-meta-value" class="form-label">Meta Value</label>
+            <ValidationMessage For=@(()=>MetaData!.MetaValue) />
+            <InputText @bind-Value="MetaData!.MetaValue" class="form-control" id="product-meta-value" placeholder="Meta Value" />
+        </div>
+
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-custom float-right w-100 w-md-auto">Add MetaData</button>
+            <button type="reset" class="btn btn-secondary float-right w-100 w-md-auto">Reset</button>
+        </div>
+    </EditForm>
+</div>
+
+<div class="row mt-3">
+    <div class="col-12">
+        <MudTable T="MetaDataDTO" Items="@Items" Dense="true" Hover="true" ReadOnly="false" CanCancelEdit="true" Filter="new Func<MetaDataDTO,bool>(FilterFunc)" SortLabel="Sort By" CommitEditTooltip="Commit Edit" tabindex="=" RowEditPreview="RowEditPreview" RowEditCancel="RowEditCancel" RowEditCommit="RowEditCommit" IsEditRowSwitchingBlocked="false" ApplyButtonPosition="TableApplyButtonPosition.Start" EditButtonPosition="TableEditButtonPosition.Start" EditTrigger="TableEditTrigger.EditButton">
+
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Product Metadata</MudText>
+                <MudSpacer />
+                <MudTextField @bind-Value="SearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+
+            <HeaderContent>
+                <MudTh>
+                    <MudTableSortLabel SortBy="new Func<MetaDataDTO, object>(x=>x.MetaValue)">Meta Keyword</MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel SortBy="new Func<MetaDataDTO, object>(x=>x.MetaValue)">Meta Value</MudTableSortLabel>
+                </MudTh>
+                <MudTh>Action</MudTh>
+            </HeaderContent>
+
+            <RowTemplate>
+                <MudTd DataLabel="MetaKeyword">
+                    @context.MetaKeyword
+                </MudTd>
+                <MudTd DataLabel="MetaValue">
+                    @context.MetaValue
+                </MudTd>
+                <MudTd>
+                    <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="(() => OnClick_DeleteMetaData(context))"></MudIconButton>
+                </MudTd>
+            </RowTemplate>
+
+            <RowEditingTemplate>
+
+                <MudTd DataLabel="MetaKeyword">
+                    <MudTextField @bind-Value="@context.MetaKeyword" Required />
+                 </MudTd>
+                 <MudTd DataLabel="MetaValue">
+                     <MudTextField @bind-Value="@context.MetaValue" Required />
+                 </MudTd>
+                 <MudTd></MudTd>
+             </RowEditingTemplate>
+
+             <PagerContent>
+                 <MudTablePager />
+             </PagerContent>
+
+             <EditButtonContent Context="button">
+                 <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
+             </EditButtonContent>
+         </MudTable>
+     </div>
+ </div>
+
+
+ @* <ul class="pager wizard mb-0 list-inline text-end mt-3">
+    <li class="previous list-inline-item disabled w-100 w-md-auto">
+    <button @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.General)" type="button" class="btn btn-secondary w-100 w-md-auto"><i class="mdi mdi-arrow-left"></i> Edit Information </button>
+    </li>
+    <li class="list-inline-item mt-3 w-100">
+    <button @onclick="OnClick_BtnPublished" type="button" class="btn btn-success w-100 w-md-auto">Publish Product <i class="mdi mdi-arrow-right ms-1"></i></button>
+    </li>
+    </ul> *@

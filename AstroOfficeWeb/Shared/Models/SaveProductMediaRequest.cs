@@ -9,6 +9,6 @@ namespace AstroOfficeWeb.Shared.Models
 {
     public class SaveProductMediaRequest
     {
-        public List<FileData> File { get; set; } = null!;
+        public List<MediaFile> File { get; set; } = null!;
     }
 }

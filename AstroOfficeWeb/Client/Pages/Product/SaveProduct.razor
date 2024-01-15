@@ -1,11 +1,11 @@
 ﻿@page "/manage-products/{Mode}/product"
-@page "/manage-products/{Mode}/product/{Sno}/{Name}"
+@page "/manage-products/{Mode}/product/{Sno:long}/{Name}"
 
 @attribute [Authorize(Roles = "Admin,User,ManageProduct")]
 
 <FluidPageLayout Title="Add Product">
     <ChildContent>
-        <AstroOfficeWeb.Components.ProductComponents.SaveProduct Sno="Sno" />
+        <AstroOfficeWeb.Components.ProductComponents.SaveProduct Sno="Sno" Mode="Enum.Parse<ActionMode>(Mode, true)" Name="@Name" />
     </ChildContent>
 </FluidPageLayout>
 
@@ -15,7 +15,7 @@
     public long Sno { get; set; } = 0;
 
     [Parameter]
-    public ActionMode Mode { get; set; } = ActionMode.Add;
+    public string Mode { get; set; } = "add";
 
     [Parameter]
     public string? Name { get; set; }

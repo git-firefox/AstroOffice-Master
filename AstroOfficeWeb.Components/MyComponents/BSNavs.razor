@@ -1,0 +1,24 @@
+﻿<div class="twitter-bs-wizard form-wizard-header">
+    <ul id=@_tab class="twitter-bs-wizard-nav nav nav-justified nav-pills mb-3 @_css" role="tablist">
+        @BSTabItems
+    </ul>
+    <div id=@(_tab + "-content") class="tab-content">
+        @BSTabContent
+    </div>
+</div>
+@code {
+    private string _tab { get => this.BSTabName.ToUrlFriendlyString() + "-pills-tab"; }
+    private string _css { get => !string.IsNullOrEmpty(this.Css) ? this.Css : string.Empty; }
+
+    [Parameter]
+    public string BSTabName { get; set; } = null!;
+
+    [Parameter]
+    public string? Css { get; set; }
+
+    [Parameter]
+    public RenderFragment BSTabContent { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment BSTabItems { get; set; } = null!;
+}

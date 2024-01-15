@@ -1,0 +1,91 @@
+﻿<EditForm EditContext="GeneralInformationContext" OnSubmit="OnSubmit_EditForm">
+    <DataAnnotationsValidator />
+    <h4 class="header-title">General Information</h4>
+    <p class="sub-header">Fill all information below</p>
+
+    <div class="row">
+        <div class="col-lg">
+            <div class="mb-3">
+                <label for="product-name" class="form-label">Product Name <span class="text-danger">*</span></label>
+                <ValidationMessage For=@(()=>Model!.Name) />
+                <InputText @bind-Value="Model!.Name" id="product-name" class="form-control" placeholder="e.g : Yantra / यन्त्र" />
+            </div>
+        </div>
+
+        <div class="col-lg">
+            <div class="mb-3">
+                <label for="product-price" class="form-label">Price <span class="text-danger">*</span></label>
+                <ValidationMessage For=@(()=>Model.Price) />
+                <InputNumber @bind-Value="Model!.Price" class="form-control" id="product-price" placeholder="Enter amount" />
+            </div>
+        </div>
+
+        <div class="col-lg">
+            <div class="mb-3">
+                <label for="product-stock-quantity" class="form-label">Stock Quantity <span class="text-danger">*</span></label>
+                <ValidationMessage For=@(()=>Model.StockQuantity) />
+                <InputNumber @bind-Value="Model!.StockQuantity" class="form-control" id="product-stock-quantity" placeholder="Enter quantity" />
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="product-description" class="form-label">Product Description <span class="text-danger">*</span></label>
+        <ValidationMessage For=@(() => Model!.Description) />
+        <InputTextEditor @bind-Value="Model!.Description" id="product-description" DefaultValue="@Model!.Description"></InputTextEditor>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <label for="product-summary" class="form-label">  Product Summary <span class="text-danger">*</span></label>
+                <ValidationMessage For=@(()=>Model.Summary) />
+                <InputTextArea @bind-Value="Model.Summary" @oninput="UpdateCharacterCount" class="form-control" id="product-summary" rows="5" placeholder="Please enter summary"></InputTextArea>
+            </div>
+            <span>@CharacterCount / 255</span>
+        </div>
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <label for="product-category" class="form-label">Categories <span class="text-danger">*</span></label>
+                <ValidationMessage For=@(()=> Model.ProductCategoriesSno) />
+                <InputSelect2 @bind-Value="Model.ProductCategoriesSno" Options="CategoryDTOs.Select(s => new Option( value:  s.Sno, text: s.Title))" class="form-control " id="product-category" />
+            </div>
+
+            <div class="mb-3">
+                <label for="product-reference" class="form-label">Reference </label>
+                <InputText @bind-Value="Model!.Reference" id="product-reference" class="form-control" placeholder="e.g : Amethyst" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 ">
+            <div class="mb-3">
+                <label class="mb-2">Status <span class="text-danger">*</span></label>
+                <br>
+                <ValidationMessage For=@(()=>Model.Status) />
+                <InputRadioGroup Name="ProductStatusGroup" @bind-Value="Model!.Status">
+                    @foreach (var value in Enum.GetValues<ProductStatus>())
+                    {
+                        <div class="form-check form-check-inline">
+                            <InputRadio id=@(value + "Radio") Value=@value class="form-check-input" />
+                            <label for=@(value + "Radio")> @value </label>
+                        </div>
+                    }
+                </InputRadioGroup>
+            </div>
+        </div>
+
+        <div class="col-12 ">
+            <label class="form-label">Comment</label>
+            <InputTextArea @bind-Value="Model!.Comment" class="form-control" rows="3" placeholder="Please enter comment"></InputTextArea>
+        </div>
+
+    </div>
+
+    <ul class="pager wizard mb-0 list-inline text-end mt-3">
+        <li class="next list-inline-item">
+            <button type="submit" class="btn btn-success">Add More Info <i class="mdi mdi-arrow-right ms-1"></i></button>
+        </li>
+    </ul>
+</EditForm>

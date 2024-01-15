@@ -1,0 +1,20 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MyMedia MediaFile="MediaFile" IsThumbnail="false" IsFluid="true" ImageHeight="100%" ImageWidth="100%" VideoHeight="100%" VideoWidth="100%"></MyMedia>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Set As Main</MudButton>
+    </DialogActions>
+
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter]
+    public MediaFileDTO MediaFile { get; set; } = null!;
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+}

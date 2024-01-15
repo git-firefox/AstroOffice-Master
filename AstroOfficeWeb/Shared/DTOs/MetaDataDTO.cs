@@ -15,6 +15,14 @@ namespace AstroOfficeWeb.Shared.DTOs
         [Required]
         public string MetaKeyword { get; set; } = string.Empty;
         public string? MetaDescription { get; set; }
+
+        public MetaDataDTO() { }
+        public MetaDataDTO(MetaDataDTO metaData)
+        {
+            Sno = metaData.Sno;
+            MetaValue = metaData.MetaValue;
+            MetaKeyword = metaData.MetaKeyword;
+        }
     }
 
 }

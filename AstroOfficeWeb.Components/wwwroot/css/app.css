@@ -504,14 +504,14 @@ input[type=number] {
 }
 
 @media (min-width:768px) {
-    .tab-content .accordion-item {
+    .tab-content-accordion .tab-content .accordion-item {
         border: 0;
         border-radius: 0;
     }
 }
 
 @media (max-width:767px) {
-    .tab-content > .tab-pane {
+    .tab-content-accordion .tab-content > .tab-pane {
         display: block;
         opacity: 1;
     }
@@ -691,3 +691,81 @@ input[type=number] {
         transform: scale(1.15);
     }
 }
+
+/* form-wizard-header */
+.form-wizard-header .nav-item {
+    margin: 0 .5em;
+    text-align: left
+}
+
+    .form-wizard-header .nav-item:first-child {
+        margin-left: 0
+    }
+
+    .form-wizard-header .nav-item:last-child {
+        margin-right: 0
+    }
+
+    .form-wizard-header .nav-item .nav-link {
+        border-radius: 4px;
+        color:whitesmoke;
+        background-color: rgb(246 128 2 / 50%);
+        border: 1px solid rgb(246 128 2 / 50%);
+    }
+
+@media (max-width: 575.98px) {
+    .form-wizard-header .nav-item .nav-link {
+        text-align: center
+    }
+}
+
+.form-wizard-header .nav-item .nav-link .number {
+    display: inline-block;
+    line-height: 30px;
+    margin-right: 10px;
+    width: 30px;
+    border-radius: 50%;
+    color: #fff;
+    background-color: rgba(145, 13, 13,.2);
+    text-align: center
+}
+
+@media (max-width: 575.98px) {
+    .form-wizard-header .nav-item .nav-link .number {
+        margin: 0
+    }
+}
+
+.form-wizard-header .nav-item .nav-link.active {
+    background-color: #910d0d
+}
+
+    .form-wizard-header .nav-item .nav-link.active .number {
+        color: #fff;
+        background-color: rgba(255,255,255,.2)
+    }
+/* over form-wizard-header */
+
+.table-centered td, .table-centered th {
+    vertical-align: middle !important
+}
+
+.table-nowrap td, .table-nowrap th {
+    white-space: nowrap
+}
+
+.table .table-user img {
+    height: 30px;
+    width: 30px
+}
+
+.action-icon {
+    color: #98a6ad;
+    font-size: 1.2rem;
+    display: inline-block;
+    padding: 0 3px
+}
+
+    .action-icon:hover {
+        color: #6c757d
+    }

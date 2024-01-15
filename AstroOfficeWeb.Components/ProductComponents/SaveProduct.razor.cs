@@ -1,6 +1,7 @@
 ﻿using AstroOfficeWeb.Shared.ComponentModels;
 using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Utilities;
+using AstroOfficeWeb.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
@@ -16,7 +17,7 @@ using System.Threading.Tasks;
 namespace AstroOfficeWeb.Components.ProductComponents
 {
 
-  
+
     public class ProductImage
     {
 
@@ -40,42 +41,43 @@ namespace AstroOfficeWeb.Components.ProductComponents
         public long Sno { get; set; } = 0;
 
         [Parameter]
-        public ActionMode Mode { get; set; } = ActionMode.Add;
+        public ActionMode Mode { get; set; }
 
         [Parameter]
         public string? Name { get; set; }
 
+        private ElementReference ER_AGeneralInfo { get; set; }
+        private ElementReference ER_AProductImage { get; set; }
+        private ElementReference ER_AMetaData { get; set; }
+
+
+        private ProductGeneralInformationModel? GeneralInformation { get; set; }
+        private ProductMediaFilesModel? ProductMedia { get; set; }
+        private ProductMetaDatasModel? ProductMeta { get; set; }
+
+
+       
+        private EditContext SaveProductImageInfoContext { get; set; } = null!;
+    
+
+       
+
+        public BaseProductDTO GeneralInfo { get; set; } = new();
+
+
+
+
 
         private int Counter = 0;
-
-        public ElementReference ER_AGeneralInfo { get; set; }
-        public ElementReference ER_AProductImage { get; set; }
-        public ElementReference ER_AMetaData { get; set; }
-
-        //public ElementReference? Test1 { get; set; }
-        //public DeleteConfirmationDialog? DeleteConfirmationDialog { get; set; }
-
 
         public List<ImagesDTO> BrowserFiles { get; set; } = new();
 
 
         public SaveProductDTO? SaveProductModel { get; set; }
-        [Parameter]
-        public ProductDTO ProductModel { get; set; } = new();
-
         public ProductImage ProductImage { get; set; } = new();
 
-        public MetaDataDTO MetaData { get; set; } = new();
-        public MetaDataDTO? SelectedMetaData { get; set; }
-        private ActionMode MetaDataAction { get; set; }
-        private List<MetaDataDTO> MetaDataList { get; set; } = new List<MetaDataDTO>();
 
-        [Parameter]
-        public List<CategoryDialoge> CategoryDTOs { get; set; } = new();
 
-        private EditContext SaveProductInfoContext { get; set; } = null!;
-        private EditContext SaveProductImageInfoContext { get; set; } = null!;
-        private EditContext SaveProductMetadataInfoContext { get; set; } = null!;
 
         //public ProductDTO ViewProductDTO { get; set; } = new();
 
@@ -87,53 +89,49 @@ namespace AstroOfficeWeb.Components.ProductComponents
         string[] errors = { };
         //MudForm form;
         string fileValidation = "none";
-        private int CharacterCount { get; set; } = 0;
+       
 
         protected override void OnInitialized()
         {
-
-
-
-
-            SaveProductInfoContext = new EditContext(ProductModel);
-            SaveProductImageInfoContext = new EditContext(ProductImage);
-            SaveProductMetadataInfoContext = new EditContext(MetaData);
-
-
             base.OnInitialized();
+
+            //GeneralInformationContext = new EditContext(GeneralInfo);
+            //SaveProductImageInfoContext = new EditContext(ProductMedia);
+            //SaveProductMetadataInfoContext = new EditContext(ProductMeta);
+
         }
 
         protected override async Task OnInitializedAsync()
         {
-            var productDTO = await ProductService.GetProductBySno(Sno);
-            if (productDTO != null)
-            {
-                ProductModel = productDTO;
-                SaveProductInfoContext = new EditContext(ProductModel);
-                SaveProductImageInfoContext = new EditContext(ProductImage);
-                SaveProductMetadataInfoContext = new EditContext(MetaData);
-                BrowserFiles = ProductModel.ProductImages ??= new();
-                MetaDataList = ProductModel.MetaDatas ??= new();
-                CharacterCount = Convert.ToInt32(ProductModel.Summary?.Length);
-            }
+            //var productInfo = await ProductService.InitialiseProductBySno(Sno);
+
+
+            //GeneralInformationContext = new EditContext(productInfo.GeneralInformation);
+            //SaveProductImageInfoContext = new EditContext(ProductImage);
+            //SaveProductMetadataInfoContext = new EditContext(MetaData);
 
             //CategoryDTOs = await ProductService.GetCategories();
+
+            //if (productDTO != null)
+            //{
+            //    ProductModel = productDTO;
+            //    BrowserFiles = ProductModel.ProductImages ??= new();
+            //    MetaDataList = ProductModel.MetaDatas ??= new();
+            //    CharacterCount = Convert.ToInt32(ProductModel.Summary?.Length);
+            //}
+
         }
 
 
 
-        private void UpdateCharacterCount(ChangeEventArgs args)
-        {
-            string summary = args.Value?.ToString() ?? string.Empty;
-            CharacterCount = summary.Length;
-        }
+        
         protected override Task OnAfterRenderAsync(bool firstRender)
         {
             return base.OnAfterRenderAsync(firstRender);
         }
 
 
-        private List<FileData> FileData { get; set; } = new List<FileData>();
+        private List<MediaFile> FileData { get; set; } = new List<MediaFile>();
 
         private async Task OnChange_InputFile(InputFileChangeEventArgs e)
         {
@@ -158,22 +156,18 @@ namespace AstroOfficeWeb.Components.ProductComponents
             IsImageLoaded = false;
             foreach (IBrowserFile file in e.GetMultipleFiles(10))
             {
+                using var memoryStream = new MemoryStream();
+                await file.OpenReadStream(file.Size).CopyToAsync(memoryStream);
+
+                var buffer = memoryStream.ToArray();
+                var base64String = Convert.ToBase64String(buffer);
+
+                FileData.Add(new MediaFile { File = file.OpenReadStream(file.Size), MediaName = file.Name, ContentType = file.ContentType });
 
 
-                using (var memoryStream = new MemoryStream())
-                {
-                    await file.OpenReadStream(file.Size).CopyToAsync(memoryStream);
-
-                    var buffer = memoryStream.ToArray();
-
-                    FileData.Add(new FileData { File = file.OpenReadStream(file.Size), FileName = file.Name, ContentType = file.ContentType, Name = file.Name });
-
-                    var base64String = Convert.ToBase64String(buffer);
-
-                    BrowserFiles.Add(new ImagesDTO { ImageURL = $"data:{file.ContentType};base64," + base64String, ImageName = file.Name });
-                    ProductImage?.FileNames.Add(file.Name);
-                    SaveProductModel?.FileNames.Add(file.Name);
-                }
+                BrowserFiles.Add(new ImagesDTO { ImageURL = $"data:{file.ContentType};base64," + base64String, ImageName = file.Name });
+                ProductImage?.FileNames.Add(file.Name);
+                SaveProductModel?.FileNames.Add(file.Name);
             }
             IsImageLoaded = true;
 
@@ -277,41 +271,41 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         private async Task OnClick_BtnPublished()
         {
-            if (!SaveProductInfoContext.Validate())
-            {
-                await JSRuntime.ShowTabAsync(ER_AGeneralInfo);
-                return;
-            }
+            //if (!SaveProductInfoContext.Validate())
+            //{
+            //    await JSRuntime.ShowTabAsync(ER_AGeneralInfo);
+            //    return;
+            //}
 
 
-            if (!SaveProductImageInfoContext.Validate() && (ProductModel?.ProductImages?.Count == 0))
-            {
-                await JSRuntime.ShowTabAsync(ER_AProductImage);
-                return;
-            }
+            //if (!SaveProductImageInfoContext.Validate() && (ProductModel?.ProductImages?.Count == 0))
+            //{
+            //    await JSRuntime.ShowTabAsync(ER_AProductImage);
+            //    return;
+            //}
 
-            if (!SaveProductMetadataInfoContext.Validate() && (ProductModel?.MetaDatas?.Count == 0))
-            {
-                await JSRuntime.ShowTabAsync(ER_AMetaData);
-                return;
-            }
+            //if (!SaveProductMetadataInfoContext.Validate() && (ProductModel?.MetaDatas?.Count == 0))
+            //{
+            //    await JSRuntime.ShowTabAsync(ER_AMetaData);
+            //    return;
+            //}
 
 
-            ProductModel.ProductImages = BrowserFiles;
-            ProductModel.MetaDatas = MetaDataList;
-            if (FileData.Any())
-            {
-                await ProductService.SaveProductImages(FileData);
+            //GeneralInfo.ProductImages = BrowserFiles;
+            //GeneralInfo.MetaDatas = MetaDataList;
+            ////if (FileData.Any())
+            //{
+            //await ProductService.SaveProductImages(GeneralInfo, FileData);
 
-            }
-            if (Sno == 0)
-            {
-                await ProductService.AddProduct(ProductModel);
-            }
-            else
-            {
-                await ProductService.UpdateProduct(ProductModel, Sno);
-            }
+            //}
+            //if (Sno == 0)
+            //{
+            //    await ProductService.AddProduct(ProductModel);
+            //}
+            //else
+            //{
+            //    await ProductService.UpdateProduct(ProductModel, Sno);
+            //}
         }
 
 
@@ -347,104 +341,13 @@ namespace AstroOfficeWeb.Components.ProductComponents
             }
             else
             {
-                ProductModel!.ImageUrl = SelectedImage.ImageURL;
-                Snackbar.Add("The current selected image has been set as the main image successfully", Severity.Success);
+                //ProductModel!.ImageUrl = SelectedImage.ImageURL;
+                //Snackbar.Add("The current selected image has been set as the main image successfully", Severity.Success);
                 //await JSRuntime.ShowToastAsync("The current selected image has been set as the main image successfully", SwalIcon.Success);
             }
 
         }
-        public string searchString = string.Empty;
-        public void Onclick_AddMetaData()
-        {
-            // Add the current MetaDataDTO to the list
-            MetaDataList.Add(new MetaDataDTO
-            {
-                MetaValue = MetaData!.MetaValue,
-                MetaKeyword = MetaData.MetaKeyword,
-            });
-            MetaData = new MetaDataDTO();
-        }
-        private bool FilterFunc(MetaDataDTO element)
-        {
-            if (string.IsNullOrWhiteSpace(searchString))
-                return true;
-            if (element.MetaKeyword!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-                return true;
-            return false;
-        }
-
-        private async Task OnClick_DeleteMetaData(MetaDataDTO data)
-        {
-            bool? result = await Dialog.ShowMessageBox(title: "Alert", message: "Are you sure you want to delete?", yesText: "Delete", noText: "", cancelText: "Cancel", new DialogOptions() { FullWidth = true });
-
-            if (result.GetValueOrDefault())
-            {
-                MetaDataList.Remove(data);
-                StateHasChanged();
-            }
-        }
-
-        private string SearchMetaTitle { get; set; } = string.Empty;
-        private Func<string, bool> QuickFilter => x =>
-        {
-            return x.Contains(SearchMetaTitle, StringComparison.OrdinalIgnoreCase);
-        };
-
-        private MetaDataDTO? elementBeforeEdit;
-
-        private void AddEditionEvent(string message)
-        {
-
-            StateHasChanged();
-        }
-        private void BackupItem(object element)
-        {
-            //elementBeforeEdit = element.As<MetaData>(); 
-            //AddEditionEvent($"RowEditPreview event: made a backup of Element {((MetaData)element).MetaTitle}");
-            if (element is MetaDataDTO metaData)
-            {
-                // Serialize and then deserialize to create a deep copy
-                var serializedElement = JsonSerializer.Serialize(metaData);
-                elementBeforeEdit = JsonSerializer.Deserialize<MetaDataDTO>(serializedElement);
-
-                AddEditionEvent($"RowEditPreview event: made a backup of Element {metaData.MetaValue}");
-            }
-        }
-
-        private void ResetItemToOriginalValues(object? element)
-        {
-
-            //element = elementBeforeEdit; 
-            ////element.As<MetaDataDTO>();
-            ////MetaDataDTO.MetaKeyword = elementBeforeEdit!.MetaKeyword;
-            ////MetaData.MetaTitle = elementBeforeEdit.MetaTitle;
-            //AddEditionEvent($"RowEditCancel event: Editing of Element {((MetaData)element).MetaTitle} canceled");
-
-
-
-
-            if (element is MetaDataDTO metaDataElement)
-            {
-                // Make a copy or create a new instance
-                MetaDataDTO originalValues = new MetaDataDTO
-                {
-                    MetaKeyword = elementBeforeEdit?.MetaKeyword,
-                    MetaValue = elementBeforeEdit?.MetaValue,
-                    // Copy other properties as needed
-                };
-
-                // Reset MetaDataDTO properties using values from the copy
-                metaDataElement.MetaKeyword = originalValues.MetaKeyword;
-                metaDataElement.MetaValue = originalValues.MetaValue;
-
-                AddEditionEvent($"RowEditCancel event: Editing of Element {metaDataElement.MetaValue} canceled");
-            }
-
-        }
-
-        private void ItemHasBeenCommitted(object element)
-        {
-            AddEditionEvent($"RowEditCommit event: Changes to Element {((MetaDataDTO)element).MetaValue} committed");
-        }
+       
+        
     }
 }

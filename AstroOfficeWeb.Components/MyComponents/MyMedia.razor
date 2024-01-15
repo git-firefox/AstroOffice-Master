@@ -1,0 +1,54 @@
+﻿@if (MediaFile.File != null)
+{
+
+    if (MediaFile.MediaType != "MP4" && MediaFile.MediaType != "WEBM" && MediaFile.MediaType != "OGG")
+    {
+        <img alt="@MediaFile.MediaName" class=@( Class + " " + (IsFluid ? "img-fluid " : "") + (IsThumbnail ? "img-thumbnail " : "") ) src="@MediaFile.File?.FileDataUrl" title="@MediaFile.MediaName" height="@ImageHeight" width="@ImageWidth" />
+
+    }
+    else
+    {
+
+        <Video Class="@( Class + " " + (IsFluid ? "img-fluid " : ""))" Src="@MediaFile.File?.FileDataUrl" Height="@VideoHeight" Width="@VideoWidth" ShowVideoControl="ShowVideoControl"></Video>
+    }
+}
+else
+{
+    if (MediaFile?.MediaType != "MP4" && MediaFile?.MediaType != "WEBM" && MediaFile?.MediaType != "OGG")
+    {
+        <img alt="@MediaFile?.MediaName" class=@( Class + " " + (IsFluid ? "img-fluid " : "") + (IsThumbnail ? "img-thumbnail " : "") ) src="@MediaFile?.MediaUrl" title="@MediaFile?.MediaName" height="@ImageHeight" width="@ImageWidth" />
+
+    }
+    else
+    {
+        <Video Class="@( Class + " " + (IsFluid ? "img-fluid " : ""))" Src="@MediaFile?.MediaUrl" Height="@VideoHeight" Width="@VideoWidth" ShowVideoControl="ShowVideoControl"></Video>
+    }
+}
+
+
+@code {
+
+    [Parameter]
+    public MediaFileDTO MediaFile { get; set; } = null!;
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string ImageHeight { get; set; } = "50";
+    [Parameter]
+    public string ImageWidth { get; set; } = "50";
+    [Parameter]
+    public string VideoHeight { get; set; } = "100";
+    [Parameter]
+    public string VideoWidth { get; set; } = "100";
+
+    [Parameter]
+    public bool IsThumbnail { get; set; } = true;
+
+    [Parameter]
+    public bool IsFluid { get; set; } = true;
+
+    [Parameter]
+    public bool ShowVideoControl { get; set; } = true;
+}

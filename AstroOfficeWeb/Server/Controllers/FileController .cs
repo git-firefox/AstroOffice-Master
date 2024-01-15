@@ -1,4 +1,5 @@
-﻿using AstroOfficeWeb.Shared.Models;
+﻿using AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Shared.Models;
 using AstroOfficeWeb.Shared.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +13,7 @@ namespace AstroOfficeWeb.Server.Controllers
     {
         // POST api/<FileController>
         [HttpPost]
-        public IActionResult SaveProductImages(List<IFormFile> files)
+        public IActionResult SaveProductImages([FromForm] ProductDTO o, [FromForm] List<IFormFile> files)
         {
             var test = Request.Form.Files;
             var mediaImagesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media", "images");

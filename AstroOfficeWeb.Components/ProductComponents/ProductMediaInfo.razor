@@ -1,0 +1,100 @@
+﻿@inject IDialogService Dialog
+@inject ISnackbarService Snackbar
+
+@* <EditForm EditContext="SaveProductImageInfoContext" OnSubmit="OnSubmit_ProductImage">
+    <DataAnnotationsValidator />
+    <ValidationSummary /> *@
+<h4 class="header-title">Product Images</h4>
+<p class="sub-header">Upload product image</p>
+
+<div class="row">
+    <div class="col-12 text-end">
+
+        <MudFileUpload T="IReadOnlyList<IBrowserFile>" Accept=".jpeg, .jpg, .png, .mp4 ,.webm, .ogg" FilesChanged="FilesChanged" MaximumFileCount="100">
+            <ButtonTemplate>
+                <MudButton HtmlTag="label"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.CloudUpload"
+                           for="@context.Id">
+                    Only image or video files
+                </MudButton>
+            </ButtonTemplate>
+        </MudFileUpload>
+
+        @*  <div class="custom-file">
+        <ValidationMessage For=@(()=>ProductImage!.FileNames) />
+        <InputFile typeclass="custom-file-input" id="inputFile" accept=".jpeg, .jpg, .png, .mp4 ,.webm, .ogg" OnChange="OnChange_InputFile" multiple />
+        <label class="custom-file-label" for="inputFile"> @((ProductImage!.FileNames != null && ProductImage.FileNames.Any()) ? string.Join(",", ProductImage.FileNames) : "Choose file...") </label>
+        </div> *@
+    </div>
+
+</div>
+
+
+<div class="row">
+
+    <div class="col">
+
+        <MudSimpleTable Class="table table-centered table-nowrap">
+            <thead>
+                <tr>
+                    <th scope="col"><strong>#</strong></th>
+                    <th scope="col"><strong>Image / Video</strong></th>
+                    <th scope="col"><strong>File Name</strong></th>
+                    <th scope="col"><strong>Size</strong></th>
+                    <th scope="col"><strong>Set as Primary</strong></th>
+                    <th scope="col"><strong>Set as Secondary</strong></th>
+                    <th scope="col"><strong>Action</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var image in MediaFiles.Select((value, index) => (value, index)))
+                {
+                    <tr>
+                        <th scope="row">
+                            @(image.index + 1)
+                        </th>
+
+                        <td>
+                            <MyMedia MediaFile="image.value" IsThumbnail="true" ShowVideoControl="false"></MyMedia>
+                        </td>
+
+                        <td>@image.value.MediaName</td>
+                        <td>2.5 MB</td>
+                        <td>
+                            <MudCheckBox Value="image.value.IsPrimary" ValueChanged="@((bool value) => OnCheckedChanged(image.value, 1))" Color="Color.Primary" title="Set as primary image" />
+                        </td>
+                        <td>
+                            <MudCheckBox Value="image.value.IsSecondary" ValueChanged="@((bool value) => OnCheckedChanged(image.value, 2))" Color="Color.Secondary" title="Set as secondary image" />
+                        </td>
+                        <td>
+                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.RemoveRedEye" OnClick="(()=> OnClick_SelectFileItems(image.value))" />
+                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_RemoveImage(image.value))" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+
+
+
+    </div>
+
+
+
+</div>
+
+<!-- Preview -->
+@*  <div class="dropzone-previews mt-3" id="file-previews"></div>
+
+    <ul class="pager wizard mb-0 list-inline text-end mt-3">
+    <li class="previous list-inline-item disabled">
+    <button type="button" @onclick="() => OnClick_BtnProceed(ProceedSaveProduct.General)" class="btn btn-secondary"> Back to General </button>
+    </li>
+    <li class="next list-inline-item">
+    <button type="submit" class="btn btn-success">Add Meta Data</button>
+    </li>
+    </ul> *@
+
+@* </EditForm> *@
