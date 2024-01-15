@@ -26,6 +26,7 @@ namespace AstroOfficeWeb.Server
             CreateMap<ProductMetaData, MetaDataDTO>();
             CreateMap<ViewProductDTO, AProduct>();
             CreateMap<AUser, BaseUserDTO>();
+            CreateMap<SaveUserDTO, AUser>();
             CreateMap<ProductCategory, CategoryDTO>().ReverseMap();
             CreateMap<SaveProductDTO, AProduct>()
                 .ForMember(x => x.ProductMedia, opt => opt.Ignore())

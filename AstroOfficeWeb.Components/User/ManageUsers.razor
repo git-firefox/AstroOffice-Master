@@ -25,9 +25,9 @@
                         <MudTextField T="string" @bind-Value="SaveUserModel.Username" Label="Username" Required="true" RequiredError="User name is required!"></MudTextField>
                         @* <MudTextField T="string" Label="Email" Required="true" RequiredError="Email is required!" Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})"></MudTextField> *@
 
-                        <MudTextField T="string" @bind-Value="SaveUserModel.Password" Label="Password" HelperText="Choose a strong password" InputType="InputType.Password" Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))"  RequiredError="Password is required!"></MudTextField>
+                        @* <MudTextField T="string" @bind-Value="SaveUserModel.Password" Label="Password" HelperText="Choose a strong password" InputType="InputType.Password" Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" RequiredError="Password is required!"></MudTextField> *@
 
-                        <MudTextField T="string" @bind-Value="SaveUserModel.RetypePassword" Label="Repeat Password" HelperText="Repeat the password" InputType="InputType.Password" Validation="@(new Func<string, string?>(PasswordMatch))"></MudTextField>
+                        @* <MudTextField T="string" @bind-Value="SaveUserModel.RetypePassword" Label="Repeat Password" HelperText="Repeat the password" InputType="InputType.Password" Validation="@(new Func<string, string?>(PasswordMatch))"></MudTextField> *@
 
                         <MudTextField T="string" @bind-Value="SaveUserModel.MobileNumber" Label="Mobile Number" HelperText="Repeat the MobileNumber"></MudTextField>
 
@@ -94,4 +94,3 @@
 </MudDataGrid>
 @*    </ChildContent>
 </ContainerFluid> *@
-

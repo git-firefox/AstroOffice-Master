@@ -104,7 +104,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = ex.Message;
             }
 
-        returnResponse:
+            returnResponse:
             return Ok(response);
         }
 
@@ -172,7 +172,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = ApiMessageConst.ServerError;
             }
 
-        returnResponse:
+            returnResponse:
             return Ok(response);
         }
 
@@ -256,7 +256,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = AccountMessageConst.UserPassNotUpdated;
             }
 
-        returnResponse:
+            returnResponse:
             return Ok(response);
         }
 
@@ -322,7 +322,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = ApiMessageConst.ServerError;
             }
 
-        returnResponse:
+            returnResponse:
             return Ok(response);
         }
 
@@ -334,71 +334,59 @@ namespace AstroOfficeWeb.Server.Controllers
             response.Success = false;
             response.Message = response.Message = AccountMessageConst.SignUpFailed;
 
+            AUser? existsUserInfo = null;
+            AUser updateUserInfo = _mapper.Map<AUser>(request.UserDTO) ?? new AUser();
+            updateUserInfo.Password = updateUserInfo.Username;
+
             try
             {
-                var  updateUserInfo = new AUser();
-
-                if (request.UserDTO != null)
+                if (updateUserInfo.Sno > 0)
                 {
-                    updateUserInfo = _balUser.GetSelectedUser(request.UserDTO?.Sno ?? 0);
-
-                    if ((!string.IsNullOrEmpty(updateUserInfo.Username) && !updateUserInfo.Username.Equals(request?.UserDTO?.Username))
-                        || (request?.UserDTO?.Sno == 0 && !string.IsNullOrEmpty(request?.UserDTO?.Username)))
-                    {
-
-                        updateUserInfo = _balUser.UserNameSearch(updateUserInfo.Username);
-                        if (updateUserInfo != null)
-                        {
-                            response.Message = AccountMessageConst.UserExist;
-                            goto returnResponse;
-                        }
-
-                    }
-
-                    if ((!string.IsNullOrEmpty(updateUserInfo?.MobileNumber) && !updateUserInfo.MobileNumber.Equals(request?.UserDTO?.MobileNumber))
-                        || (request?.UserDTO?.Sno == 0 && !string.IsNullOrEmpty(request?.UserDTO?.MobileNumber)))
-                    {
-                        updateUserInfo = _balUser.GetUserByMobileNumber(request?.UserDTO?.MobileNumber);
-                        if (updateUserInfo != null)
-                        {
-                            response.Message = AccountMessageConst.MobileNumberExist;
-                            goto returnResponse;
-                        }
-                    }
-
-                    updateUserInfo!.Active = request?.UserDTO?.Active ?? true;
-                    updateUserInfo.Adminuser = request?.UserDTO?.AdminUser ?? false;
-                    updateUserInfo.CanAdd = request?.UserDTO?.CanAdd ?? false;
-                    updateUserInfo.CanEdit = request?.UserDTO?.CanEdit ?? false;
-                    updateUserInfo.CanReport = request?.UserDTO?.CanReport ?? false;
-                    updateUserInfo.Password = request?.UserDTO?.HashedPassword ?? updateUserInfo.Password;
-                    updateUserInfo.Username = request?.UserDTO?.Username ?? updateUserInfo.Username;
-                    updateUserInfo.MobileNumber = request?.UserDTO?.MobileNumber ?? updateUserInfo.MobileNumber;
-                    updateUserInfo.Role = request?.UserDTO?.Role.ToString() ?? UserRole.Guest.ToString();
-
-
-                    if (updateUserInfo.Sno > 0)
-                    {
-                        _balUser.UpdateUser(updateUserInfo);
-
-                    }
-                    else
-                    {
-                        _balUser.AddUser(updateUserInfo);
-                    }
-
-                    response.Data = updateUserInfo.Sno;
-                    response.Success = true;
-                    response.Message = AccountMessageConst.SignUpSuccessful;
+                    existsUserInfo = _balUser.GetSelectedUser(updateUserInfo.Sno);
                 }
+
+                var isUserExists = !string.IsNullOrEmpty(updateUserInfo.Username) && !updateUserInfo.Username.Equals(existsUserInfo?.Username) && _balUser.UserNameSearch(updateUserInfo.Username) is not null;
+                if (isUserExists)
+                {
+                    response.Message = AccountMessageConst.UserExist;
+                    goto returnResponse;
+                }
+
+                var isMobileNumberExists = !string.IsNullOrEmpty(updateUserInfo.MobileNumber) && !updateUserInfo.MobileNumber.Equals(existsUserInfo?.MobileNumber) && _balUser.GetUserByMobileNumber(updateUserInfo.MobileNumber) is not null;
+                if (isMobileNumberExists)
+                {
+                    response.Message = AccountMessageConst.MobileNumberExist;
+                    goto returnResponse;
+                }
+
+                updateUserInfo.Sno = existsUserInfo?.Sno ?? 0;
+                updateUserInfo.Adminuser ??= existsUserInfo?.Adminuser ?? false;
+                updateUserInfo.CanAdd ??= existsUserInfo?.CanAdd ?? false;
+                updateUserInfo.CanEdit ??= existsUserInfo?.CanEdit ?? false;
+                updateUserInfo.CanReport ??= existsUserInfo?.CanReport ?? false;
+                updateUserInfo.Role ??= existsUserInfo?.Role ?? UserRole.Guest.ToString();
+                updateUserInfo.Username ??= existsUserInfo?.Username;
+                updateUserInfo.MobileNumber ??= existsUserInfo?.MobileNumber;
+                updateUserInfo.Password = updateUserInfo.Username;
+                updateUserInfo.Active = true;
+
+                if ((updateUserInfo.Sno > 0 && _balUser.UpdateUser(updateUserInfo) > 0) || (updateUserInfo.Sno == 0 && _balUser.AddUser(updateUserInfo) > 0))
+                {
+                    response.Success = true;
+                    response.Message = AccountMessageConst.UserSaved;
+                    response.Data = updateUserInfo.Sno;
+                    goto returnResponse;
+                }
+
             }
-            catch
+            catch (Exception ex)
             {
                 response.Success = false;
-                response.Message = ApiMessageConst.ServerError;
+                response.ErrorNo = 1;
+                response.Message = ex.Message;
             }
 
-        returnResponse:
+            returnResponse:
             return Ok(response);
         }
 
@@ -408,43 +396,49 @@ namespace AstroOfficeWeb.Server.Controllers
 
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
-        private List<Claim> GetClaims(AUser user)
+        private List<Claim> GetClaims(AUser aUser)
         {
+            var user = _mapper.Map<BaseUserDTO>(aUser);
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Sno.ToString()),
                 new Claim(ClaimTypes.Name, user.Username ?? string.Empty),
                 //new Claim("isAdminUser", user.Adminuser?.ToString() ?? "false"),
-                new Claim("canAdd", user.CanAdd?.ToString() ?? "false"),
-                new Claim("canEdit", user.CanEdit?.ToString() ?? "false"),
-                new Claim("canReport", user.CanReport?.ToString() ?? "false"),
+                new Claim("canAdd", user.CanAdd.ToString()),
+                new Claim("canEdit", user.CanEdit.ToString()),
+                new Claim("canReport", user.CanReport.ToString()),
             };
 
-            if (user.Username!.Equals(ApplicationConst.Role_Member, StringComparison.CurrentCultureIgnoreCase))
+            switch (user.Role)
             {
-                claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_Member));
-            }
-            else if (user.Username!.Equals(ApplicationConst.Role_Astrologer, StringComparison.CurrentCultureIgnoreCase))
-            {
-                claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_Astrologer));
-            }
-            else if (user.Username!.Equals(ApplicationConst.Role_Administrator, StringComparison.CurrentCultureIgnoreCase))
-            {
-                claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_Administrator));
-            }
-            else if (user.Username!.Equals(ApplicationConst.Role_OrderManager, StringComparison.CurrentCultureIgnoreCase))
-            {
-                claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_OrderManager));
-            }
-            else if (user.Username!.Equals("productmanager", StringComparison.CurrentCultureIgnoreCase))
-            {
-                claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_ProductManager));
-            }
-            else
-            {
-                claims.Add(new Claim(ClaimTypes.Role, user.Adminuser == true ? "Admin" : "User"));
-            }
+                case UserRole.Astrologer:
+                    claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_Astrologer));
+                    break;
+                
+                case UserRole.Guest:
+                    claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_User));
+                    break;        
+                
+                case UserRole.Member:
+                    claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_Member));
+                    break;
 
+                case UserRole.Administrator:
+                    claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_Administrator));
+                    break;
+
+                case UserRole.OrderManager:
+                    claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_OrderManager));
+                    break;
+
+                case UserRole.ProductManager:
+                    claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_ProductManager));
+                    break;
+
+                default:
+                    claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_Member));
+                    break;
+            }
             return claims;
         }
     }

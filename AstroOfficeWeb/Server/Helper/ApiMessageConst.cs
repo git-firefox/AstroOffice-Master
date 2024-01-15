@@ -3,6 +3,7 @@
     public static class AccountMessageConst
     {
         public static string UserNotFound = "User not found. Please check the username.";
+        public static string UserSaved = "User saved.";
         public static string UserPassUpdated = "Password updated successfully.";
         public static string UserPassNotUpdated = "Failed to update the password.";
         public static string UnknownError = "An unknown error occurred. Please try again later or contact support.";

@@ -1,5 +1,6 @@
 using ASModels;
 using ASModels.Astrooff;
+using Microsoft.EntityFrameworkCore;
 namespace ASDAL
 {
     public class DALUser
@@ -11,30 +12,12 @@ namespace ASDAL
             _context = context;
         }
 
-        public void AddUser(AUser aUser, bool withEncryption = true)
+        public int AddUser(AUser au, bool withEncryption = true)
         {
-            //try
-            //{
-            //    _context.AUsers.Add(au);
-            //    _ = _context.SaveChanges();
-            //}
-            //catch (Exception exception)
-            //{
-            //    //_ = MessageBox.Show(string.Concat("Access Denied..!!\n", exception.ToString()));
-            //}
-
-            //AUser? aUser = _context.AUsers.FirstOrDefault(aa => aa.Username == au.Username && aa.Active == true);
-
-            //if (aUser != null)
-            //    throw new Exception("Username already exists");
-
             if (withEncryption)
-            {
-                aUser.Password = ENCEK.ENCEK.CellGell_ENC(aUser.Password!, "cellgell.com");
-            }
-
-            _context.AUsers.Add(aUser);
-            _ = _context.SaveChanges();
+                au.Password = ENCEK.ENCEK.CellGell_ENC(au.Password!, "cellgell.com");
+            _context.AUsers.Add(au);
+            return _context.SaveChanges();
         }
 
         public IEnumerable<AUser> GetAllUsers()
@@ -42,23 +25,28 @@ namespace ASDAL
             return _context.AUsers.OrderBy(a => a.Username).ToList();
         }
 
-        public AUser GetSelectedUser(long sno)
+        public AUser? GetSelectedUser(long sno)
         {
-            return _context.AUsers.FirstOrDefault<AUser>(uu => uu.Sno == sno) ?? new AUser();
+            if (_context.AUsers.FirstOrDefault(e => e.Sno == sno) is AUser existingEntity)
+            {
+                _context.Entry(existingEntity).State = EntityState.Detached;
+                return existingEntity;
+            }
+            return null;
         }
 
-        public int UpdateUser(AUser au)
+        public int UpdateUser(AUser updateUserInfo)
         {
-            var aUsers = _context.AUsers.FirstOrDefault(u => u.Sno == au.Sno);
-
-            if (aUsers == null)
-            {
-                return 0;
-            }
-
             try
             {
-                _context.AUsers.Update(au);
+                if (_context.AUsers.FirstOrDefault(e => e.Sno == updateUserInfo.Sno) is AUser existingEntity)
+                {
+                    _context.Entry(existingEntity).State = EntityState.Detached;
+                }
+
+                updateUserInfo.Password = ENCEK.ENCEK.CellGell_ENC(updateUserInfo.Password!, "cellgell.com");
+                _context.AUsers.Update(updateUserInfo);
+                _context.Entry(updateUserInfo).State = EntityState.Modified;
                 return _context.SaveChanges();
             }
             catch
@@ -107,8 +95,13 @@ namespace ASDAL
 
         public AUser? UserNameSearch(string userName)
         {
-            AUser? aUser = _context.AUsers.FirstOrDefault<AUser>(aa => aa.Username == userName);
-            return aUser;
+            if (_context.AUsers.FirstOrDefault(e => e.Username == userName) is AUser existingEntity)
+            {
+                _context.Entry(existingEntity).State = EntityState.Detached;
+                return existingEntity;
+            }
+            return null;
+
         }
 
         public AUser? UserByMobileNumber(string mobileNumber)
