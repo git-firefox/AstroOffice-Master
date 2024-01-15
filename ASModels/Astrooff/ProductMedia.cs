@@ -18,6 +18,9 @@ namespace ASModels.Astrooff
         [StringLength(255)]
         [Unicode(false)]
         public string? MediaType { get; set; }
+        public int? MediaOrder { get; set; }
+        public bool IsPrimary { get; set; }
+        public bool IsSecondary { get; set; }
 
         [ForeignKey("AProductsSno")]
         [InverseProperty("ProductMedia")]

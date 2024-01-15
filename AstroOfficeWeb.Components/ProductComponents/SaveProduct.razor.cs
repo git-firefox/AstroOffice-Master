@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static MudBlazor.CategoryTypes;
 using static System.Formats.Asn1.AsnWriter;
 
 namespace AstroOfficeWeb.Components.ProductComponents
@@ -393,10 +394,22 @@ namespace AstroOfficeWeb.Components.ProductComponents
             Dialog.Show<SetAsMainDialoge>(SelectedFile.MediaName, parameters);
         }
 
-        private void OnClick_RemoveImage(MediaDTO value)
+        private async void OnClick_RemoveImage(MediaDTO value)
         {
+         // await  Dialog.ShowMessageBox("Are You sure you want to delete ?", "Cancel", "Delete");
+
+            var result = await Dialog.ShowMessageBox("Are you sure you want to delete?","", yesText: "Yes", noText: "No");
+
+            if (result.GetValueOrDefault())
+            {
+                ProductMediaFiles?.Remove(value);
+                StateHasChanged();
+               // Snackbar.Add("Image deleted successfully", Severity.Success);
+            }
+
+          
             //DisplayMediaData.Remove(value);
-            ProductMediaFiles?.Remove(value);
+        //    ProductMediaFiles?.Remove(value);
 
 
             //BrowserFiles.Remove(value);

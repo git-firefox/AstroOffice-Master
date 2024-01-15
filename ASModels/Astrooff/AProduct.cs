@@ -27,7 +27,6 @@ namespace ASModels.Astrooff
         public string? Description { get; set; }
         public int StockQuantity { get; set; }
         public string? ImageUrl { get; set; }
-        public string? SecondaryImageUrl { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime AddedDate { get; set; }
         [Column(TypeName = "datetime")]
@@ -49,6 +48,8 @@ namespace ASModels.Astrooff
         public string? Status { get; set; }
         [Column("ProductCategories_Sno")]
         public long? ProductCategoriesSno { get; set; }
+        [Unicode(false)]
+        public string? SecondaryImageUrl { get; set; }
 
         [ForeignKey("ProductCategoriesSno")]
         [InverseProperty("AProducts")]

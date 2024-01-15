@@ -16,6 +16,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using AstroOfficeWeb.Server.Models;
 using Stripe.Checkout;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using System.Dynamic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -107,50 +109,77 @@ namespace AstroOfficeWeb.Server.Controllers
             var productDTO = _mapper.Map<ProductDTO>(aProduct);
             var mediaDTOs = _mapper.Map<List<MediaDTO>>(aProduct.ProductMedia);
             var metaDataDTOs = _mapper.Map<List<MetaDataDTO>>(aProduct.ProductMetaData);
+            bool hasSecondaryImage = false;
+
+            //if (aProduct.ProductMedia.FirstOrDefault(a => a.MediaOrder == 2) is ProductMedia secondaryImage)
+            //{
+            //    mediaDTOs.Add(new MediaDTO
+            //    {
+            //        IsPrimary = false,
+            //        IsSecondary = true,
+            //        MediaName = secondaryImage.MediaName,
+            //        MediaType = secondaryImage.MediaType,
+            //        MediaUrl = $"{secondaryImage.MediaUrl}.{secondaryImage.MediaType}",
+            //        Sno = secondaryImage.Sno,
+            //    });
+            //    hasSecondaryImage = true;
+            //}
+
+            //if (aProduct.ProductMedia.FirstOrDefault(a => a.MediaOrder == 1) is ProductMedia primaryImage)
+            //{
+            //    mediaDTOs.Add(new MediaDTO
+            //    {
+            //        IsPrimary = true,
+            //        IsSecondary = !hasSecondaryImage,
+            //        MediaName = primaryImage.MediaName,
+            //        MediaType = primaryImage.MediaType,
+            //        MediaUrl = $"{primaryImage.MediaUrl}.{primaryImage.MediaType}",
+            //        Sno = primaryImage.Sno,
+            //    });
+            //}
 
 
+            //if (aProduct.ImageUrl?.Contains(aProduct.SecondaryImageUrl ?? "") == true)
+            //{
+            //    mediaDTOs.Add(new MediaDTO
+            //    {
+            //        IsPrimary = true,
+            //        IsSecondary = true,
+            //        MediaName = aProduct.Name,
+            //        MediaType = !aProduct.ImageUrl.StartsWith("data:image") ? Path.GetExtension(aProduct.ImageUrl).ToUpper()[1..] : null,
+            //        MediaUrl = !aProduct.ImageUrl.StartsWith("data:image") ? Path.GetFileNameWithoutExtension(aProduct.ImageUrl) : aProduct.ImageUrl,
+            //        Sno = -1,
+            //    });
+            //}
+            //else
+            //{
+            //    if (aProduct.SecondaryImageUrl != null)
+            //    {
+            //        mediaDTOs.Add(new MediaDTO
+            //        {
+            //            IsPrimary = false,
+            //            IsSecondary = true,
+            //            MediaName = aProduct.Name,
+            //            MediaType = !aProduct.SecondaryImageUrl.StartsWith("data:image") ? Path.GetExtension(aProduct.SecondaryImageUrl).ToUpper()[1..] : null,
+            //            MediaUrl = !aProduct.SecondaryImageUrl.StartsWith("data:image") ? Path.GetFileNameWithoutExtension(aProduct.SecondaryImageUrl) : aProduct.SecondaryImageUrl,
+            //            Sno = -1,
+            //        });
 
-            if (aProduct.ImageUrl?.Contains(aProduct.SecondaryImageUrl ?? "") == true)
-            {
-                mediaDTOs.Add(new MediaDTO
-                {
-                    IsPrimary = true,
-                    IsSecondary = true,
-                    MediaName = aProduct.Name,
-                    MediaType = !aProduct.ImageUrl.StartsWith("data:image") ? Path.GetExtension(aProduct.ImageUrl).ToUpper()[1..] : null,
-                    MediaUrl = !aProduct.ImageUrl.StartsWith("data:image") ? Path.GetFileNameWithoutExtension(aProduct.ImageUrl) : aProduct.ImageUrl,
-                    Sno = -1,
-                });
-            }
-            else
-            {
-                if (aProduct.SecondaryImageUrl != null)
-                {
-                    mediaDTOs.Add(new MediaDTO
-                    {
-                        IsPrimary = false,
-                        IsSecondary = true,
-                        MediaName = aProduct.Name,
-                        MediaType = !aProduct.SecondaryImageUrl.StartsWith("data:image") ? Path.GetExtension(aProduct.SecondaryImageUrl).ToUpper()[1..] : null,
-                        MediaUrl = !aProduct.SecondaryImageUrl.StartsWith("data:image") ? Path.GetFileNameWithoutExtension(aProduct.SecondaryImageUrl) : aProduct.SecondaryImageUrl,
-                        Sno = -1,
-                    });
+            //    }
 
-                }
-
-                if (aProduct.ImageUrl != null)
-                {
-                    mediaDTOs.Add(new MediaDTO
-                    {
-                        IsPrimary = true,
-                        IsSecondary = false,
-                        MediaName = aProduct.Name,
-                        MediaType = !aProduct.ImageUrl.StartsWith("data:image") ? Path.GetExtension(aProduct.ImageUrl).ToUpper()[1..] : null,
-                        MediaUrl = !aProduct.ImageUrl.StartsWith("data:image") ? Path.GetFileNameWithoutExtension(aProduct.ImageUrl) : aProduct.ImageUrl,
-                        Sno = -1,
-                    });
-                }
-            }
+            //    if (aProduct.ImageUrl != null)
+            //    {
+            //        mediaDTOs.Add(new MediaDTO
+            //        {
+            //            IsPrimary = true,
+            //            IsSecondary = false,
+            //            MediaName = aProduct.Name,
+            //            MediaType = !aProduct.ImageUrl.StartsWith("data:image") ? Path.GetExtension(aProduct.ImageUrl).ToUpper()[1..] : null,
+            //            MediaUrl = !aProduct.ImageUrl.StartsWith("data:image") ? Path.GetFileNameWithoutExtension(aProduct.ImageUrl) : aProduct.ImageUrl,
+            //            Sno = -1,
+            //        });
+            //    }
+            //}
 
 
 
@@ -299,6 +328,7 @@ namespace AstroOfficeWeb.Server.Controllers
                             {
                                 MediaName = Path.GetFileNameWithoutExtension(file.FileName),
                                 MediaUrl = guid.ToString(),
+                                IsPrimary = true,
                                 AProductsSno = aProduct.Sno,
                                 MediaType = Path.GetExtension(file.FileName)?.ToUpper().TrimStart('.')
                             });
@@ -318,7 +348,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
                     }
 
-                    _context.ProductMedia.AddRange(productMedias);
+                    //_context.ProductMedia.AddRange(productMedias);
                     _context.SaveChanges();
 
                 }
@@ -375,7 +405,7 @@ namespace AstroOfficeWeb.Server.Controllers
             var apiResponse = new ApiResponse<ViewProductDTO> { Data = null };
             try
             {
-                if (_context.AProducts.FirstOrDefault(ap => ap.Sno == sno && ap.IsActive == true) is AProduct existedProduct)
+                if (_context.AProducts.Include(a => a.ProductMedia).FirstOrDefault(ap => ap.Sno == sno && ap.IsActive == true) is AProduct existedProduct)
                 {
                     _context.Entry(existedProduct).State = EntityState.Detached;
 
@@ -385,107 +415,39 @@ namespace AstroOfficeWeb.Server.Controllers
                     aProduct.AddedDate = existedProduct.AddedDate;
                     aProduct.ModifiedByAUsersSno = User.GetUserSno();
 
-                    if (productDTO.ProductMediaFiles.FirstOrDefault(a => a.Attachment == null && a.IsPrimary == true) is MediaDTO primaryMediaDTO)
-                        aProduct.ImageUrl = primaryMediaDTO.MediaUrl;
-
-                    if (productDTO.ProductMediaFiles.FirstOrDefault(a => a.Attachment == null && a.IsSecondary == true) is MediaDTO secondaryMediaDTO)
-                        aProduct.SecondaryImageUrl = secondaryMediaDTO.MediaUrl;
-
-
-
                     aProduct.LastModifiedDate = DateTime.Now;
+
+
                     //aProduct.IsActive = true;c
-
-                    _context.AProducts.Update(aProduct);
-                    _context.SaveChanges();
-
-                    apiResponse.Message = ProductMessageConst.UpdateProduct;
-                    apiResponse.Success = true;
-
-
-                    var viewProduct = _mapper.Map<ViewProductDTO>(aProduct);
-
-                    if (request.Files != null)
-                    {
-
-                        if (request.Files.Any())
-                        {
-                            //var productMedias = new List<ProductMedia>();
-                            //var test = Request.Form.Files;
-
-                            var mediaPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media");
-
-                            foreach (var file in request.Files)
-                            {
-
-
-
-                                var guid = Guid.NewGuid();
-                                var extension = Path.GetExtension(file.FileName.ToLower());
-                                var temp = extension.Split('|');
-                                extension = temp[0];
-
-                                var filePath = Path.Combine(mediaPath, guid + extension);
-                                using var stream = new FileStream(filePath, FileMode.Create);
-                                file.CopyTo(stream);
-
-                                if (temp.Length == 2)
-                                {
-
-                                    if (temp[1].Equals("is-primary"))
-                                    {
-
-                                        aProduct.ImageUrl = guid.ToString() + extension;
-                                    }
-                                    else if (temp[1].Equals("is-secondary"))
-                                    {
-                                        aProduct.SecondaryImageUrl = guid.ToString() + extension;
-                                    }
-                                }
-                                else if (temp.Length == 3)
-                                {
-                                    aProduct.ImageUrl = guid.ToString() + extension;
-                                    aProduct.SecondaryImageUrl = aProduct.ImageUrl;
-                                }
-                                else
-                                {
-                                    var test = new ProductMedia
-                                    {
-                                        MediaName = Path.GetFileNameWithoutExtension(file.FileName),
-                                        MediaUrl = guid.ToString(),
-                                        AProductsSno = aProduct.Sno,
-                                        MediaType = Path.GetExtension(file.FileName)?.ToUpper().TrimStart('.')
-                                    };
-                                    //productMedias.Add(test);
-                                    _context.ProductMedia.Add(test);
-                                    _context.SaveChanges();
-
-
-                                    productDTO.ProductMediaFiles.Add(new MediaDTO
-                                    {
-                                        MediaName = test.MediaName,
-                                        MediaType = test.MediaType,
-                                        Sno = test.Sno,
-                                        MediaUrl = test.MediaUrl
-                                    });
-                                }
-
-                            }
-
-
-
-                        }
-                    }
-
-
                     if (productDTO?.ProductMediaFiles != null)
                     {
 
-                        var existsImages = _context.ProductMedia.Where(p => p.AProductsSno == aProduct.Sno).ToList();
+                        var existsImages = existedProduct.ProductMedia.Where(p => p.AProductsSno == aProduct.Sno).ToList();
 
                         var doNotingImageSnos = productDTO.ProductMediaFiles.Where(pi => pi.Sno != 0).Select(pi => pi.Sno).ToList();
 
+                        var needToUpdateImage = productDTO.ProductMediaFiles.Where(pi => pi.Sno != 0).ToList();
+
+
                         var imagesNeedToDelete = existsImages.Where(ei => !doNotingImageSnos.Contains(ei.Sno));
+
+                        _context.ProductMedia.RemoveRange(imagesNeedToDelete);
+
+
+
+
+                        foreach (var updateImage in needToUpdateImage)
+                        {
+                            existsImages.First(pi => pi.Sno == updateImage.Sno).IsPrimary = updateImage.IsPrimary;
+                            existsImages.First(pi => pi.Sno == updateImage.Sno).IsSecondary = updateImage.IsSecondary;
+
+
+                            //var mediaDTO = _mapper.Map<MediaDTO>(pi);
+                            //viewProduct?.ProductMediaFiles?.Add(mediaDTO);
+                        }
+                        _context.SaveChanges();
+                        //_context.UpdateRange(pi);
+
 
                         //var imagesNeedToAdd = productDTO.ProductMediaFiles.Where(pi => !doNotingImageSnos.Contains(pi.Sno)).Select(pi => new ProductMedia
                         //{
@@ -495,7 +457,6 @@ namespace AstroOfficeWeb.Server.Controllers
                         //    MediaType = Path.GetExtension(pi.MediaType)?.ToUpper().TrimStart('.')
                         //});
 
-                        _context.ProductMedia.RemoveRange(imagesNeedToDelete);
 
                         //if (imagesNeedToAdd.Any())
                         //{
@@ -512,55 +473,69 @@ namespace AstroOfficeWeb.Server.Controllers
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-                        var existMetaData = _context.ProductMetaDatas.Where(p => p.AProductsSno == aProduct.Sno).ToList();
-
-                        var doNothingMetaDataSnos = productDTO.MetaDatas.Where(p => p.Sno != 0).Select(pi => pi.Sno).ToList();
-
-                        var metaDataNeedToDelete = existMetaData.Where(p => !doNothingMetaDataSnos.Contains(p.Sno));
-
-                        var metaDataNeedToUpdate = existMetaData.Where(p => doNothingMetaDataSnos.Contains(p.Sno));
-
-                        var metaDataNeedToAdd = productDTO.MetaDatas.Where(pi => !doNothingMetaDataSnos.Contains(pi.Sno)).Select(pi => new ProductMetaData
-                        {
-                            MetaKeyword = pi.MetaKeyword,
-                            MetaValue = pi.MetaValue,
-                            AProductsSno = aProduct.Sno
-                        });
-
-                        if (metaDataNeedToUpdate.Any())
-                        {
-                            var newMetaDatas = productDTO.MetaDatas.Where(pi => doNothingMetaDataSnos.Contains(pi.Sno));
-
-                            var joinData = metaDataNeedToUpdate.Join(newMetaDatas,
-                                metaData => metaData.Sno,
-                                metaDataDto => metaDataDto.Sno,
-                                (metaData, metaDataDto) => new { OldMetaData = metaData, NewMetaDataDTO = metaDataDto });
-
-
-                            foreach (var tempData in joinData)
-                            {
-                                tempData.OldMetaData.MetaKeyword = tempData.NewMetaDataDTO.MetaKeyword;
-                                tempData.OldMetaData.MetaValue = tempData.NewMetaDataDTO.MetaValue;
-                                _context.ProductMetaDatas.Update(tempData.OldMetaData);
-                                _context.SaveChanges();
-                            }
-                        }
-
-                        _context.AddRange(metaDataNeedToAdd);
-                        _context.ProductMetaDatas.RemoveRange(metaDataNeedToDelete);
-                        _context.SaveChanges();
                     }
+
+
+                    _context.AProducts.Update(aProduct);
+                    _context.SaveChanges();
+
+                    apiResponse.Message = ProductMessageConst.UpdateProduct;
+                    apiResponse.Success = true;
+
+
+                    var viewProduct = _mapper.Map<ViewProductDTO>(aProduct);
+
+
+
+                   // UploadFileToServer(request.Files, existedProduct);
+
+
+
+
+                    //if (productDTO.ProductMediaFiles.FirstOrDefault(a => a.Attachment == null && a.IsPrimary == true) is MediaDTO primaryMediaDTO)
+                    //    aProduct.ImageUrl = primaryMediaDTO.MediaUrl;
+
+                    //if (productDTO.ProductMediaFiles.FirstOrDefault(a => a.Attachment == null && a.IsSecondary == true) is MediaDTO secondaryMediaDTO)
+                    //    aProduct.SecondaryImageUrl = secondaryMediaDTO.MediaUrl;
+
+                    var existMetaData = _context.ProductMetaDatas.Where(p => p.AProductsSno == aProduct.Sno).ToList();
+
+                    var doNothingMetaDataSnos = productDTO.MetaDatas.Where(p => p.Sno != 0).Select(pi => pi.Sno).ToList();
+
+                    var metaDataNeedToDelete = existMetaData.Where(p => !doNothingMetaDataSnos.Contains(p.Sno));
+
+                    var metaDataNeedToUpdate = existMetaData.Where(p => doNothingMetaDataSnos.Contains(p.Sno));
+
+                    var metaDataNeedToAdd = productDTO.MetaDatas.Where(pi => !doNothingMetaDataSnos.Contains(pi.Sno)).Select(pi => new ProductMetaData
+                    {
+                        MetaKeyword = pi.MetaKeyword,
+                        MetaValue = pi.MetaValue,
+                        AProductsSno = aProduct.Sno
+                    });
+
+                    if (metaDataNeedToUpdate.Any())
+                    {
+                        var newMetaDatas = productDTO.MetaDatas.Where(pi => doNothingMetaDataSnos.Contains(pi.Sno));
+
+                        var joinData = metaDataNeedToUpdate.Join(newMetaDatas,
+                            metaData => metaData.Sno,
+                            metaDataDto => metaDataDto.Sno,
+                            (metaData, metaDataDto) => new { OldMetaData = metaData, NewMetaDataDTO = metaDataDto });
+
+
+                        foreach (var tempData in joinData)
+                        {
+                            tempData.OldMetaData.MetaKeyword = tempData.NewMetaDataDTO.MetaKeyword;
+                            tempData.OldMetaData.MetaValue = tempData.NewMetaDataDTO.MetaValue;
+                            _context.ProductMetaDatas.Update(tempData.OldMetaData);
+                            _context.SaveChanges();
+                        }
+                    }
+
+                    _context.AddRange(metaDataNeedToAdd);
+                    _context.ProductMetaDatas.RemoveRange(metaDataNeedToDelete);
+                    _context.SaveChanges();
+
                     apiResponse.Data = viewProduct;
                 }
                 else
@@ -580,6 +555,105 @@ namespace AstroOfficeWeb.Server.Controllers
 
             return Ok(apiResponse);
         }
+
+        //private void UploadFileToServer(IFormFileCollection files, AProduct existedProduct)
+        //{
+
+        //    if (request.Files != null)
+        //    {
+
+
+        //        if (request.Files.Any())
+        //        {
+        //            var productMedias = new List<ProductMedia>();
+        //            //var test = Request.Form.Files;
+        //            var countOrder = existedProduct.ProductMedia.Count;
+        //            var mediaPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media");
+
+        //            foreach (var file in request.Files)
+        //            {
+
+
+
+        //                var guid = Guid.NewGuid();
+        //                var extension = Path.GetExtension(file.FileName.ToLower());
+        //                var temp = extension.Split('|');
+        //                extension = temp[0];
+
+        //                var filePath = Path.Combine(mediaPath, guid + extension);
+        //                using var stream = new FileStream(filePath, FileMode.Create);
+        //                file.CopyTo(stream);
+
+        //                var test = new ProductMedia
+        //                {
+        //                    MediaName = Path.GetFileNameWithoutExtension(file.FileName),
+        //                    MediaUrl = guid.ToString(),
+        //                    AProductsSno = aProduct.Sno,
+        //                    MediaType = extension[1..].ToUpper(),
+        //                    MediaOrder = ++countOrder
+        //                };
+
+        //                if (temp.Length == 2)
+        //                {
+
+        //                    if (temp[1].Equals("is-primary"))
+        //                    {
+        //                        test.IsPrimary = true;
+        //                        test.IsSecondary = false;
+
+        //                    }
+        //                    else if (temp[1].Equals("is-secondary"))
+        //                    {
+        //                        test.IsPrimary = false;
+        //                        test.IsSecondary = true;
+        //                    }
+        //                }
+        //                else if (temp.Length == 3)
+        //                {
+        //                    test.IsPrimary = true;
+        //                    test.IsSecondary = true;
+        //                }
+        //                else
+        //                {
+        //                    test.IsPrimary = false;
+        //                    test.IsSecondary = false;
+        //                }
+
+
+        //                //    productDTO.ProductMediaFiles.Add(new MediaDTO
+        //                //    {
+        //                //        MediaName = test.MediaName,
+        //                //        MediaType = test.MediaType,
+        //                //        Sno = test.Sno,
+        //                //        MediaUrl = test.MediaUrl
+        //                //    });
+        //                //    productMedias.Add(test);
+
+
+
+
+
+
+
+        //                //productDTO.ProductMediaFiles.Add(new MediaDTO
+        //                //{
+        //                //    MediaName = test.MediaName,
+        //                //    MediaType = test.MediaType,
+        //                //    Sno = test.Sno,
+        //                //    MediaUrl = test.MediaUrl
+        //                //});
+        //                productMedias.Add(test);
+        //            }
+
+        //            _context.ProductMedia.AddRange(productMedias);
+        //            _context.SaveChanges();
+        //        }
+
+
+        //    }
+        //    //}
+
+        //}
 
         // DELETE api/<ProductController>/5
         [Authorize]
