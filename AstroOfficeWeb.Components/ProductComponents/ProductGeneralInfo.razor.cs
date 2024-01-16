@@ -25,6 +25,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         protected override void OnInitialized()
         {
             base.OnInitialized();
+            //    CharacterCount = Convert.ToInt32(ProductModel.Summary?.Length);
             GeneralInformationContext = new EditContext(Model);
         }
         private void UpdateCharacterCount(ChangeEventArgs args)

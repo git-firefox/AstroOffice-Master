@@ -17,7 +17,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         public EventCallback<bool> ValidSubmit { get; set; }
 
         [Parameter]
-        public List<MediaFileDTO> MediaFiles { get; set; } = null!;
+        public List<MediaFileDTO> Items { get; set; } = null!;
 
         //private ProductMediaFilesModel ProductMedia { get; set; }
 
@@ -33,7 +33,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         private void OnClick_RemoveImage(MediaFileDTO selectedFile)
         {
-            MediaFiles.Remove(selectedFile);
+            Items.Remove(selectedFile);
         }
 
         //private async Task OnSubmit_ProductImage(EditContext context)
@@ -60,7 +60,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
                     var base64String = Convert.ToBase64String(buffer);
 
-                    MediaFiles.Add(new MediaFileDTO
+                    Items.Add(new MediaFileDTO
                     {
                         IsPrimary = false,
                         IsSecondary = false,
@@ -85,7 +85,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         private void OnCheckedChanged(MediaFileDTO selectedFile, int flag)
         {
-            foreach (var file in MediaFiles)
+            foreach (var file in Items)
             {
                 if (file == selectedFile)
                 {

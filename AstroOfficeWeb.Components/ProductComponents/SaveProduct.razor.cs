@@ -39,30 +39,17 @@ namespace AstroOfficeWeb.Components.ProductComponents
         [Parameter]
         public string? Name { get; set; }
 
+        [Parameter]
+        public EventCallback<bool> IsLoaded { get; set; }
+
+
         private BSNavItem BSNavGeneralInfo { get; set; } = null!;
         private BSNavItem BSNavProductImages { get; set; } = null!;
         private BSNavItem BSNavMetaData { get; set; } = null!;
 
-
-        private ProductGeneralInformationModel? GeneralInformation { get; set; }
-        private ProductMediaFilesModel? ProductMedia { get; set; }
-        private ProductMetaDatasModel? ProductMeta { get; set; }
-
-
-
-        private EditContext SaveProductImageInfoContext { get; set; } = null!;
-
-
-
-
-        public BaseProductDTO? GeneralInfo { get; set; } = new(); 
-
-        private int Counter = 0;
-
-        public List<ImagesDTO> BrowserFiles { get; set; } = new();
-
-
-        public SaveProductDTO? SaveProductModel { get; set; }
+        private BaseProductDTO? GeneralInfo { get; set; }
+        private List<MediaFileDTO>? MediaFiles { get; set; }
+        private List<MetaDataDTO>? MetaDatas { get; set; }
 
         protected override void OnInitialized()
         {
@@ -76,23 +63,14 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         protected override async Task OnInitializedAsync()
         {
-            //var productInfo = await ProductService.InitialiseProductBySno(Sno);
-
-
-            //GeneralInformationContext = new EditContext(productInfo.GeneralInformation);
-            //SaveProductImageInfoContext = new EditContext(ProductImage);
-            //SaveProductMetadataInfoContext = new EditContext(MetaData);
-
-            //CategoryDTOs = await ProductService.GetCategories();
-
-            //if (productDTO != null)
-            //{
-            //    ProductModel = productDTO;
-            //    BrowserFiles = ProductModel.ProductImages ??= new();
-            //    MetaDataList = ProductModel.MetaDatas ??= new();
-            //    CharacterCount = Convert.ToInt32(ProductModel.Summary?.Length);
-            //}
-
+            await ProductService.GetCategories();
+            if (Sno != 0)
+            {
+                var productInfo = await ProductService.InitialiseProductBySno(Sno);
+                GeneralInfo = productInfo.GeneralInformation;
+                MediaFiles = productInfo.ProductMediaFiles;
+                MetaDatas = productInfo.ProductMetaDatas;
+            }
         }
 
         protected override Task OnAfterRenderAsync(bool firstRender)
@@ -118,11 +96,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         private async Task OnClick_BtnPublish()
         {
-            //if (!SaveProductInfoContext.Validate())
-            //{
-            //    await JSRuntime.ShowTabAsync(ER_AGeneralInfo);
-            //    return;
-            //}
+            await OnClick_BtnProceed(SaveProductTab.General);
 
 
             //if (!SaveProductImageInfoContext.Validate() && (ProductModel?.ProductImages?.Count == 0))

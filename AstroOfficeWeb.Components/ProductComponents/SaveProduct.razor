@@ -34,12 +34,12 @@
 
                 <BSNavItemPane Class="position-relative" TabPanelName="@SaveProductTab.ProductImages.ToDescriptionString()">
                     <TabPaneBody>
-                        <ProductMediaInfo MediaFiles="new ()" />
+                        <ProductMediaInfo Items="MediaFiles ?? new List<MediaFileDTO>()" />
                         <MudStack Justify="Justify.FlexEnd" Row="true">
                             <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Secondary" OnClick="() => OnClick_BtnProceed(SaveProductTab.General)">Back To General</MudButton>
                             <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowForward" Color="Color.Primary" OnClick="() => OnClick_BtnProceed(SaveProductTab.Metadata)">Add Metadata</MudButton>
                         </MudStack>
-                        <MudOverlay Visible=@(GeneralInfo == null) DarkBackground="true" Absolute="true">
+                        <MudOverlay Visible=@(MediaFiles == null) DarkBackground="true" Absolute="true">
                             <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
                         </MudOverlay>
                     </TabPaneBody>
@@ -47,11 +47,11 @@
 
                 <BSNavItemPane Class="position-relative" TabPanelName="@SaveProductTab.Metadata.ToDescriptionString()">
                     <TabPaneBody>
-                        <ProductMetadataInfo />
+                        <ProductMetadataInfo Items="MetaDatas ?? new List<MetaDataDTO>()" />
                         <MudStack Justify="Justify.FlexEnd" Row="true">
                             <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Secondary" OnClick="() => OnClick_BtnProceed(SaveProductTab.ProductImages)">Edit Information</MudButton>
                             <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Publish" Color="Color.Success" OnClick="OnClick_BtnPublish">Publish Product</MudButton>
-                            <MudOverlay Visible=@(GeneralInfo == null) DarkBackground="true" Absolute="true">
+                            <MudOverlay Visible=@(MetaDatas == null) DarkBackground="true" Absolute="true">
                                 <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
                             </MudOverlay>
                         </MudStack>
