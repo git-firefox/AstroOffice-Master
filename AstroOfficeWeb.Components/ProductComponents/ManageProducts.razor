@@ -8,39 +8,39 @@
 @inject IDialogService Dialog
 
 
-<div class="pt-4 pb-2 "><button class="btn btn-custom" @onclick="()=>OnClick_BtnAdd()">Add Product</button></div>
+<button class="btn btn-custom" @onclick="()=>OnClick_BtnAdd()">Add Product</button>
 
 @if (Products == null)
 {
     <div class="table-responsive">
         <table class="table table-centered table-nowrap">
-        <thead>
-            <tr>
-
-                <th scope="col">Sr No</th>
-                <th scope="col">Name</th>
-                <th scope="col">Image</th>
-                <th scope="col">Stock</th>
-                <th scope="col">Added Date</th>
-                <th scope="col">Last Modified Date</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (int i = 1; i <= 10; i++)
-            {
+            <thead>
                 <tr>
-                    <th scope="row">@i</th>
-                    <td><MudSkeleton /></td>
-                    <td><MudSkeleton /></td>
-                    <td><MudSkeleton /></td>
-                    <td><MudSkeleton /></td>
-                    <td><MudSkeleton /></td>
-                    <td><MudSkeleton /></td>
+
+                    <th scope="col">Sr No</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Added Date</th>
+                    <th scope="col">Last Modified Date</th>
+                    <th scope="col">Action</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @for (int i = 1; i <= 10; i++)
+                {
+                    <tr>
+                        <th scope="row">@i</th>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 }
 else if (Products.Any())

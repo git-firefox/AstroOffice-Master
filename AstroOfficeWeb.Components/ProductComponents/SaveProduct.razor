@@ -15,26 +15,46 @@
     <div class="col-lg-12 ">
         <BSNavs BSTabName="Save Product Info">
             <BSTabItems>
-                <BSNavItem TabName="General Information" IsActive="true" TabNumber="1"></BSNavItem>
-                <BSNavItem TabName="Product Images" TabNumber="2"></BSNavItem>
-                <BSNavItem TabName="Metadata" TabNumber="3"></BSNavItem>
+                <BSNavItem @ref="BSNavGeneralInfo" TabName="@SaveProductTab.General.ToDescriptionString()" IsActive="true" TabNumber="1"></BSNavItem>
+                <BSNavItem @ref="BSNavProductImages" TabName="@SaveProductTab.ProductImages.ToDescriptionString()" TabNumber="2"></BSNavItem>
+                <BSNavItem @ref="BSNavMetaData" TabName="@SaveProductTab.Metadata.ToDescriptionString()" TabNumber="3"></BSNavItem>
             </BSTabItems>
             <BSTabContent>
-                <BSNavItemPane IsActive="true" TabPanelName="General Information">
+                <BSNavItemPane Class="position-relative" IsActive="true" TabPanelName="@SaveProductTab.General.ToDescriptionString()">
                     <TabPaneBody>
-                        <ProductGeneralInfo Model="GeneralInfo" />
+                        <ProductGeneralInfo Model=@(GeneralInfo ?? new ()) />
+                        <MudStack Justify="Justify.FlexEnd" Row="true">
+                            <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowForward" Color="Color.Primary" OnClick="() => OnClick_BtnProceed(SaveProductTab.ProductImages)">Add More Info</MudButton>
+                        </MudStack>
+                        <MudOverlay Visible=@(GeneralInfo == null) DarkBackground="true" Absolute="true">
+                            <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+                        </MudOverlay>
                     </TabPaneBody>
                 </BSNavItemPane>
 
-                <BSNavItemPane TabPanelName="Product Images">
+                <BSNavItemPane Class="position-relative" TabPanelName="@SaveProductTab.ProductImages.ToDescriptionString()">
                     <TabPaneBody>
                         <ProductMediaInfo MediaFiles="new ()" />
+                        <MudStack Justify="Justify.FlexEnd" Row="true">
+                            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Secondary" OnClick="() => OnClick_BtnProceed(SaveProductTab.General)">Back To General</MudButton>
+                            <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowForward" Color="Color.Primary" OnClick="() => OnClick_BtnProceed(SaveProductTab.Metadata)">Add Metadata</MudButton>
+                        </MudStack>
+                        <MudOverlay Visible=@(GeneralInfo == null) DarkBackground="true" Absolute="true">
+                            <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+                        </MudOverlay>
                     </TabPaneBody>
                 </BSNavItemPane>
 
-                <BSNavItemPane TabPanelName="Metadata">
+                <BSNavItemPane Class="position-relative" TabPanelName="@SaveProductTab.Metadata.ToDescriptionString()">
                     <TabPaneBody>
                         <ProductMetadataInfo />
+                        <MudStack Justify="Justify.FlexEnd" Row="true">
+                            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Secondary" OnClick="() => OnClick_BtnProceed(SaveProductTab.ProductImages)">Edit Information</MudButton>
+                            <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Publish" Color="Color.Success" OnClick="OnClick_BtnPublish">Publish Product</MudButton>
+                            <MudOverlay Visible=@(GeneralInfo == null) DarkBackground="true" Absolute="true">
+                                <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+                            </MudOverlay>
+                        </MudStack>
                     </TabPaneBody>
                 </BSNavItemPane>
             </BSTabContent>

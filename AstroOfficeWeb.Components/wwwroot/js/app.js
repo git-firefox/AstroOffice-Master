@@ -1,8 +1,19 @@
 ﻿document.addEventListener("DOMContentLoaded", (event) => {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
     console.log("DOM fully loaded and parsed");
 });
+
+window.fnShowTab = function (element) {
+    if (element instanceof HTMLAnchorElement || element instanceof HTMLButtonElement) {
+        //const bootstrapTab = new bootstrap.Tab(element);
+        //bootstrapTab.show();
+        //bootstrap.Tab.getInstance(element).show();
+        $(element).tab('show');
+    }
+}
 
 window.fnFocusBlazorElement = function (element) {
     if (element instanceof HTMLInputElement) {
@@ -335,11 +346,7 @@ window.fnGetSelect2Data = function (element) {
     return null;
 }
 
-window.fnShowTab = function (element) {
-    if (element instanceof HTMLAnchorElement) {
-        $(element).tab('show');
-    }
-}
+
 
 window.getSearchboxValue = function () {
     var value = $("#searchShopBox").val();
