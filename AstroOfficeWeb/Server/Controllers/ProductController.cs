@@ -18,6 +18,7 @@ using AstroOfficeWeb.Server.Models;
 using Stripe.Checkout;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Dynamic;
+using static MudBlazor.CategoryTypes;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -52,21 +53,26 @@ namespace AstroOfficeWeb.Server.Controllers
             List<AProduct>? aProducts = null;
             if (categorySno != null)
             {
-                aProducts = _context.AProducts.Include(a => a.ProductCategoriesSnoNavigation).Where(p => p.ProductCategoriesSno == categorySno && p.IsActive == true).OrderByDescending(p => p.Sno).ToList();
+                aProducts = _context.AProducts.Include(a => a.ProductMedia).Include(a => a.ProductCategoriesSnoNavigation).Where(p => p.ProductCategoriesSno == categorySno && p.IsActive == true).OrderByDescending(p => p.Sno).ToList();
 
             }
             else
             {
-                aProducts = _context.AProducts.Include(a => a.ProductCategoriesSnoNavigation).Where(p => p.IsActive == true).OrderByDescending(p => p.Sno).ToList();
+                aProducts = _context.AProducts.Include(a => a.ProductMedia).Include(a => a.ProductCategoriesSnoNavigation).Where(p => p.IsActive == true).OrderByDescending(p => p.Sno).ToList();
             }
 
             var productDTOs = _mapper.Map<List<ViewProductDTO>>(aProducts);
+            ProductMedia? primaryImage = null;
+            ProductMedia? secondaryImage = null;
 
             productDTOs.ForEach(pd =>
             {
+                primaryImage = aProducts.First(a => a.Sno == pd.Sno).ProductMedia.FirstOrDefault(a => a.AProductsSno == pd.Sno && a.IsPrimary && a.MediaType != "MP4" && a.MediaType != "WEBM" && a.MediaType != "OGG");
+                secondaryImage = aProducts.First(a => a.Sno == pd.Sno).ProductMedia.FirstOrDefault(a => a.AProductsSno == pd.Sno && a.IsSecondary && a.MediaType != "MP4" && a.MediaType != "WEBM" && a.MediaType != "OGG");
+
                 pd.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == pd.Sno)?.Quantity ?? 0;
-                pd.ImageUrl = SetMedia(pd.ImageUrl);
-                pd.SecondaryImageUrl = SetMedia(pd.SecondaryImageUrl);
+                pd.ImageUrl = SetMedia(primaryImage?.MediaUrl, primaryImage?.MediaType);
+                pd.SecondaryImageUrl = SetMedia(secondaryImage?.MediaUrl, secondaryImage?.MediaType);
 
             });
 
@@ -304,54 +310,55 @@ namespace AstroOfficeWeb.Server.Controllers
                 _context.SaveChanges();
 
 
-                if (request.Files.Any())
-                {
-                    var productMedias = new List<ProductMedia>();
-                    //var test = Request.Form.Files;
+                UploadFileToServer(request.Files, aProduct);
+                //if (request.Files.Any())
+                //{
+                //    var productMedias = new List<ProductMedia>();
+                //    //var test = Request.Form.Files;
 
-                    var mediaPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media");
+                //    var mediaPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media");
 
-                    foreach (var file in request.Files)
-                    {
-                        var guid = Guid.NewGuid();
-                        var extension = Path.GetExtension(file.FileName.ToLower());
-                        var temp = extension.Split('?');
-                        extension = temp[0];
+                //    foreach (var file in request.Files)
+                //    {
+                //        var guid = Guid.NewGuid();
+                //        var extension = Path.GetExtension(file.FileName.ToLower());
+                //        var temp = extension.Split('?');
+                //        extension = temp[0];
 
-                        var filePath = Path.Combine(mediaPath, guid + extension);
-                        using var stream = new FileStream(filePath, FileMode.Create);
-                        file.CopyTo(stream);
+                //        var filePath = Path.Combine(mediaPath, guid + extension);
+                //        using var stream = new FileStream(filePath, FileMode.Create);
+                //        file.CopyTo(stream);
 
-                        if (temp.Length < 2)
-                        {
-                            productMedias.Add(new ProductMedia
-                            {
-                                MediaName = Path.GetFileNameWithoutExtension(file.FileName),
-                                MediaUrl = guid.ToString(),
-                                IsPrimary = true,
-                                AProductsSno = aProduct.Sno,
-                                MediaType = Path.GetExtension(file.FileName)?.ToUpper().TrimStart('.')
-                            });
-                        }
-                        else
-                        {
-                            if (temp[1].Equals("is-secondary"))
-                            {
-                                aProduct.SecondaryImageUrl = guid.ToString() + extension;
-                            }
-                            else if (temp[1].Equals("is-primary"))
-                            {
+                //        if (temp.Length < 2)
+                //        {
+                //            productMedias.Add(new ProductMedia
+                //            {
+                //                MediaName = Path.GetFileNameWithoutExtension(file.FileName),
+                //                MediaUrl = guid.ToString(),
+                //                IsPrimary = true,
+                //                AProductsSno = aProduct.Sno,
+                //                MediaType = Path.GetExtension(file.FileName)?.ToUpper().TrimStart('.')
+                //            });
+                //        }
+                //        else
+                //        {
+                //            if (temp[1].Equals("is-secondary"))
+                //            {
+                //                aProduct.SecondaryImageUrl = guid.ToString() + extension;
+                //            }
+                //            else if (temp[1].Equals("is-primary"))
+                //            {
 
-                                aProduct.ImageUrl = guid.ToString() + extension;
-                            }
-                        }
+                //                aProduct.ImageUrl = guid.ToString() + extension;
+                //            }
+                //        }
 
-                    }
+                //    }
 
-                    //_context.ProductMedia.AddRange(productMedias);
-                    _context.SaveChanges();
+                //    //_context.ProductMedia.AddRange(productMedias);
+                //    _context.SaveChanges();
 
-                }
+                //}
 
 
 
@@ -431,6 +438,19 @@ namespace AstroOfficeWeb.Server.Controllers
 
                         var imagesNeedToDelete = existsImages.Where(ei => !doNotingImageSnos.Contains(ei.Sno));
 
+                        string filePathFormat = "";
+
+
+                       // var filePath = Path.Combine(mediaPath, guid + extension);
+                        //var filePath = Path.Combine(mediaPath, guid + extension);
+                        //File.Exists(curFile)
+
+                        //foreach (var images in imagesNeedToDelete)
+                        //{
+                        //    if(File.E .Exists(curFile))
+                        //    _context.ProductMedia.RemoveRange(imagesNeedToDelete);
+                        //}
+
                         _context.ProductMedia.RemoveRange(imagesNeedToDelete);
 
 
@@ -487,7 +507,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
 
 
-                   // UploadFileToServer(request.Files, existedProduct);
+                    UploadFileToServer(request.Files, existedProduct);
 
 
 
@@ -556,104 +576,104 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(apiResponse);
         }
 
-        //private void UploadFileToServer(IFormFileCollection files, AProduct existedProduct)
-        //{
+        private void UploadFileToServer(IFormFileCollection files, AProduct existedProduct)
+        {
 
-        //    if (request.Files != null)
-        //    {
-
-
-        //        if (request.Files.Any())
-        //        {
-        //            var productMedias = new List<ProductMedia>();
-        //            //var test = Request.Form.Files;
-        //            var countOrder = existedProduct.ProductMedia.Count;
-        //            var mediaPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media");
-
-        //            foreach (var file in request.Files)
-        //            {
+            if (files != null)
+            {
 
 
+                if (files.Any())
+                {
+                    var productMedias = new List<ProductMedia>();
+                    //var test = Request.Form.Files;
+                    var countOrder = existedProduct.ProductMedia.Count;
+                    var mediaPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media");
 
-        //                var guid = Guid.NewGuid();
-        //                var extension = Path.GetExtension(file.FileName.ToLower());
-        //                var temp = extension.Split('|');
-        //                extension = temp[0];
-
-        //                var filePath = Path.Combine(mediaPath, guid + extension);
-        //                using var stream = new FileStream(filePath, FileMode.Create);
-        //                file.CopyTo(stream);
-
-        //                var test = new ProductMedia
-        //                {
-        //                    MediaName = Path.GetFileNameWithoutExtension(file.FileName),
-        //                    MediaUrl = guid.ToString(),
-        //                    AProductsSno = aProduct.Sno,
-        //                    MediaType = extension[1..].ToUpper(),
-        //                    MediaOrder = ++countOrder
-        //                };
-
-        //                if (temp.Length == 2)
-        //                {
-
-        //                    if (temp[1].Equals("is-primary"))
-        //                    {
-        //                        test.IsPrimary = true;
-        //                        test.IsSecondary = false;
-
-        //                    }
-        //                    else if (temp[1].Equals("is-secondary"))
-        //                    {
-        //                        test.IsPrimary = false;
-        //                        test.IsSecondary = true;
-        //                    }
-        //                }
-        //                else if (temp.Length == 3)
-        //                {
-        //                    test.IsPrimary = true;
-        //                    test.IsSecondary = true;
-        //                }
-        //                else
-        //                {
-        //                    test.IsPrimary = false;
-        //                    test.IsSecondary = false;
-        //                }
+                    foreach (var file in files)
+                    {
 
 
-        //                //    productDTO.ProductMediaFiles.Add(new MediaDTO
-        //                //    {
-        //                //        MediaName = test.MediaName,
-        //                //        MediaType = test.MediaType,
-        //                //        Sno = test.Sno,
-        //                //        MediaUrl = test.MediaUrl
-        //                //    });
-        //                //    productMedias.Add(test);
+
+                        var guid = Guid.NewGuid();
+                        var extension = Path.GetExtension(file.FileName.ToLower());
+                        var temp = extension.Split('|');
+                        extension = temp[0];
+
+                        var filePath = Path.Combine(mediaPath, guid + extension);
+                        using var stream = new FileStream(filePath, FileMode.Create);
+                        file.CopyTo(stream);
+
+                        var test = new ProductMedia
+                        {
+                            MediaName = Path.GetFileNameWithoutExtension(file.FileName),
+                            MediaUrl = guid.ToString(),
+                            AProductsSno = existedProduct.Sno,
+                            MediaType = extension[1..].ToUpper(),
+                            MediaOrder = ++countOrder
+                        };
+
+                        if (temp.Length == 2)
+                        {
+
+                            if (temp[1].Equals("is-primary"))
+                            {
+                                test.IsPrimary = true;
+                                test.IsSecondary = false;
+
+                            }
+                            else if (temp[1].Equals("is-secondary"))
+                            {
+                                test.IsPrimary = false;
+                                test.IsSecondary = true;
+                            }
+                        }
+                        else if (temp.Length == 3)
+                        {
+                            test.IsPrimary = true;
+                            test.IsSecondary = true;
+                        }
+                        else
+                        {
+                            test.IsPrimary = false;
+                            test.IsSecondary = false;
+                        }
 
 
+                        //    productDTO.ProductMediaFiles.Add(new MediaDTO
+                        //    {
+                        //        MediaName = test.MediaName,
+                        //        MediaType = test.MediaType,
+                        //        Sno = test.Sno,
+                        //        MediaUrl = test.MediaUrl
+                        //    });
+                        //    productMedias.Add(test);
 
 
 
 
 
-        //                //productDTO.ProductMediaFiles.Add(new MediaDTO
-        //                //{
-        //                //    MediaName = test.MediaName,
-        //                //    MediaType = test.MediaType,
-        //                //    Sno = test.Sno,
-        //                //    MediaUrl = test.MediaUrl
-        //                //});
-        //                productMedias.Add(test);
-        //            }
-
-        //            _context.ProductMedia.AddRange(productMedias);
-        //            _context.SaveChanges();
-        //        }
 
 
-        //    }
-        //    //}
+                        //productDTO.ProductMediaFiles.Add(new MediaDTO
+                        //{
+                        //    MediaName = test.MediaName,
+                        //    MediaType = test.MediaType,
+                        //    Sno = test.Sno,
+                        //    MediaUrl = test.MediaUrl
+                        //});
+                        productMedias.Add(test);
+                    }
 
-        //}
+                    _context.ProductMedia.AddRange(productMedias);
+                    _context.SaveChanges();
+                }
+
+
+            }
+            //}
+
+        }
 
         // DELETE api/<ProductController>/5
         [Authorize]
@@ -729,20 +749,36 @@ namespace AstroOfficeWeb.Server.Controllers
         public IActionResult GetUserShoppingCart()
         {
             var response = new ApiResponse<List<CartItemDTO>>();
-            var shoppingCart = _context.ShoppingCarts.Include(sc => sc.CartItems).ThenInclude(sc => sc.AProductsSnoNavigation).FirstOrDefault(a => a.AUsersSno == User.GetUserSno());
+            var shoppingCart = _context.ShoppingCarts.Include(sc => sc.CartItems).ThenInclude(sc => sc.AProductsSnoNavigation).ThenInclude(a => a.ProductMedia).FirstOrDefault(a => a.AUsersSno == User.GetUserSno());
+
 
             var cartItems = shoppingCart?.CartItems.Select(ci => new CartItemDTO
             {
                 ProductSno = ci.AProductsSno ?? 0,
                 ProductName = ci.AProductsSnoNavigation?.Name ?? "",
                 ProductQuantity = ci.Quantity ?? 0,
-                ProductImageSrc = ci.AProductsSnoNavigation?.ImageUrl,
+                ProductImageSrc = GetPrimaryImageUrl(ci.AProductsSnoNavigation?.ProductMedia),
                 ProductPrice = ci.AProductsSnoNavigation?.Price ?? 0
             }).ToList();
 
             response.Data = cartItems;
             return Ok(response);
         }
+
+        private string? GetPrimaryImageUrl(IEnumerable<ProductMedia>? aProduct)
+        {
+            var primaryImage = aProduct?.FirstOrDefault(a => a.IsPrimary && a.MediaType != "MP4" && a.MediaType != "WEBM" && a.MediaType != "OGG");
+            return SetMedia(primaryImage?.MediaUrl, primaryImage?.MediaType);
+        }
+
+        private string? GetSecondaryImageUrl(IEnumerable<ProductMedia>? aProduct)
+        {
+            var primaryImage = aProduct?.FirstOrDefault(a => a.IsSecondary && a.MediaType != "MP4" && a.MediaType != "WEBM" && a.MediaType != "OGG");
+            return SetMedia(primaryImage?.MediaUrl, primaryImage?.MediaType);
+        }
+
+
+
 
         [Authorize(Roles = "User")]
         [HttpGet]
@@ -929,7 +965,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 .Include(poi => poi.BillingAddressSnoNavigation)
                 .Include(poi => poi.ShippingAddressSnoNavigation)
                 .Include(poi => poi.OrderItems)
-                    .ThenInclude(poi => poi.AProductsSnoNavigation)
+                    .ThenInclude(poi => poi.AProductsSnoNavigation).ThenInclude(poi => poi!.ProductMedia)
                 .FirstOrDefaultAsync(po => po.Sno == orderSno);
 
             if (order == null)
@@ -946,7 +982,9 @@ namespace AstroOfficeWeb.Server.Controllers
                 ProductSno = ci.AProductsSno ?? default,
                 ProductName = ci.AProductsSnoNavigation!.Name,
                 ProductPrice = ci.AProductsSnoNavigation.Price,
-                ProductImageSrc = ci.AProductsSnoNavigation.ImageUrl,
+                //ProductImageSrc = ci.AProductsSnoNavigation.ImageUrl,
+                ProductImageSrc = GetPrimaryImageUrl(ci.AProductsSnoNavigation?.ProductMedia),
+
             }).ToList();
 
             response.OrderItems = orderItems;
@@ -970,32 +1008,57 @@ namespace AstroOfficeWeb.Server.Controllers
         public async Task<IActionResult> GetUserOrders()
         {
             var response = new ApiResponse<List<OrderDTO>>();
-            var orderDTOs = await _context.ProductOrders
-                .Include(poi => poi.BillingAddressSnoNavigation)
-                .Include(poi => poi.OrderItems)
-                    .ThenInclude(poi => poi.ProductOrdersSnoNavigation)
-                .Where(po => po.AUsersSno == User.GetUserSno())
-                .Select(po => new OrderDTO
-                {
-                    OrderId = po.Sno,
-                    BillingName = po!.BillingAddressSnoNavigation!.FirstName + " " + po.BillingAddressSnoNavigation.LastName,
-                    ShippingAddress = po!.ShippingAddressSnoNavigation!.AddressLine1!,
-                    Date = po.OrderDate,
-                    OrderStatus = Enum.Parse<OrderStatus>(po.Status!),
-                    PaymentMethod = Enum.Parse<PaymentMethod>(po.PaymentMethod!),
-                    PaymentStatus = Enum.Parse<PaymentStatus>(po.Status!),
-                    Total = po.TotalAmount,
-                    OrderItems = po.OrderItems.Select(ci => new OrderItemDTO
-                    {
-                        ProductQuantity = ci.Quantity ?? default,
-                        ProductSno = ci.AProductsSno ?? default,
-                        ProductName = ci.AProductsSnoNavigation!.Name,
-                        ProductPrice = ci.AProductsSnoNavigation.Price,
-                        ProductImageSrc = ci.AProductsSnoNavigation.ImageUrl,
-                    }).ToList()
-                }).ToListAsync();
+            try
+            {
 
-            response.Data = orderDTOs;
+                var primaryImages = await _context.ProductMedia.Where(a => a.IsPrimary && a.MediaType != "MP4" && a.MediaType != "WEBM" && a.MediaType != "OGG").ToListAsync();
+
+                var orderDTOs = await _context.ProductOrders
+                    .Include(poi => poi.BillingAddressSnoNavigation)
+                    .Include(poi => poi.OrderItems)
+                        .ThenInclude(poi => poi.ProductOrdersSnoNavigation)
+                    .Include(poi => poi.OrderItems)
+                        .ThenInclude(poi => poi.AProductsSnoNavigation)
+                    .Include(poi => poi.OrderItems)
+                        .ThenInclude(poi => poi.AProductsSnoNavigation)
+                    .Where(po => po.AUsersSno == User.GetUserSno())
+                    .Select(po => new OrderDTO
+                    {
+                        OrderId = po.Sno,
+                        BillingName = po!.BillingAddressSnoNavigation!.FirstName + " " + po.BillingAddressSnoNavigation.LastName,
+                        ShippingAddress = po!.ShippingAddressSnoNavigation!.AddressLine1!,
+                        Date = po.OrderDate,
+                        OrderStatus = Enum.Parse<OrderStatus>(po.Status!),
+                        PaymentMethod = Enum.Parse<PaymentMethod>(po.PaymentMethod!),
+                        PaymentStatus = Enum.Parse<PaymentStatus>(po.Status!),
+                        Total = po.TotalAmount,
+                        OrderItems = po.OrderItems.Select(ci => new OrderItemDTO
+                        {
+                            ProductQuantity = ci.Quantity ?? default,
+                            ProductSno = ci.AProductsSno ?? default,
+                            ProductName = ci.AProductsSnoNavigation!.Name,
+                            ProductPrice = ci.AProductsSnoNavigation.Price,
+                        }).ToList()
+                    }).ToListAsync();
+
+
+                orderDTOs.ForEach(od =>
+                {
+                    od.OrderItems.ForEach(oi =>
+                    {
+                        var primaryImage = primaryImages.FirstOrDefault(a => a.AProductsSno == oi.ProductSno);
+                        oi.ProductImageSrc = SetMedia(primaryImage?.MediaUrl, primaryImage?.MediaType);
+                    });
+                });
+
+
+
+                response.Data = orderDTOs;
+            }
+            catch (Exception e)
+            {
+                _ = e;
+            }
             return Ok(response);
         }
 
@@ -1080,12 +1143,19 @@ namespace AstroOfficeWeb.Server.Controllers
             var shoppingCart = await _context.ShoppingCarts.Include(i => i.CartItems).FirstOrDefaultAsync(a => a.AUsersSno == User.GetUserSno());
             var cartItems = shoppingCart?.CartItems.ToList();
 
-            var productWishlists = await _context.ProductWishlists.Include(pw => pw.AProductsSnoNavigation).Where(pw => pw.AUsersSno == User.GetUserSno()).ToListAsync();
+            var productWishlists = await _context.ProductWishlists.Include(pw => pw.AProductsSnoNavigation).ThenInclude(a => a!.ProductMedia).Where(pw => pw.AUsersSno == User.GetUserSno()).ToListAsync();
+
+
+
             var aProducts = productWishlists.Select(wi => wi.AProductsSnoNavigation).Where(p => p!.IsActive == true).OrderByDescending(p => p!.Sno).ToList();
+
+
             var productDTOs = _mapper.Map<List<ViewProductDTO>>(aProducts);
             productDTOs.ForEach(pd =>
             {
                 pd.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == pd.Sno)?.Quantity ?? 0;
+                pd.ImageUrl = GetPrimaryImageUrl(aProducts.FirstOrDefault(a => pd.Sno == a!.Sno)?.ProductMedia);
+                pd.SecondaryImageUrl = GetSecondaryImageUrl(aProducts.FirstOrDefault(a => pd.Sno == a!.Sno)?.ProductMedia);
             });
             response.Data = productDTOs;
             return Ok(response);

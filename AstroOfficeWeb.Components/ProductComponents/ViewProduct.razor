@@ -39,28 +39,40 @@
                             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-bs-ride="carousel">
 
                                 <div class="carousel-inner">
-                                    <div class="carousel-item active image-radius">
-                                        <img src="@ViewProductDTO!.ImageUrl" class="d-block w-100 image-radius" alt="@ViewProductDTO!.Name" title="@ViewProductDTO!.Name" />
-                                    </div>
 
-                                    @foreach (var image in MediaDTOs)
+                                    @foreach (var (value, index) in MediaDTOs.Select((value, index) => (value, index)))
                                     {
+                                        @* <div class="carousel-item active image-radius">
+                                    <img src="@ViewProductDTO!.ImageUrl" class="d-block w-100 image-radius" alt="@ViewProductDTO!.Name" title="@ViewProductDTO!.Name" />
+                                    </div> *@
 
-                                        <div class="carousel-item">
-                                            @if (image.MediaType != "OGG" && image.MediaType != "WEBM" && image.MediaType != "MP4")
-                                            {
-                                            <img src="@image.MediaUrl" class="d-block w-100 image-radius" alt="@image.MediaName" title="@image.MediaName" />
-                                            }
-                                            else
-                                            {
-                                            <video controls class="d-block w-100 image-radius">
-                                                <source src="@image.MediaUrl" type="video/mp4">
-                                                <source src="@image.MediaUrl" type="video/webm">
-                                                <source src="@image.MediaUrl" type="video/ogg">
-                                                Your browser does not support the video tag.
-                                            </video>
-                                            }
-                                        </div>
+                                        @if (index == 0)
+                                        {
+                                            <div class="carousel-item active image-radius">
+                                                <MyMedia SelectedFile="value" IsThumbnail="false" ImageHeight="100%" ImageWidth="100%" VideoHeight="100%" VideoWidth="100%" ShowVideoControl="true" IsFluid="true"></MyMedia>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="carousel-item">
+                                                <MyMedia SelectedFile="value" IsThumbnail="false" ImageHeight="100%" ImageWidth="100%" VideoHeight="100%" VideoWidth="100%" ShowVideoControl="true" IsFluid="true"></MyMedia>
+                                            </div>
+                                        }
+
+                                        @* @if (image.MediaType != "OGG" && image.MediaType != "WEBM" && image.MediaType != "MP4")
+                                    {
+                                    <img src="@image.MediaUrl" class="d-block w-100 image-radius" alt="@image.MediaName" title="@image.MediaName" />
+                                    }
+                                    else
+                                    {
+                                    <video controls class="d-block w-100 image-radius">
+                                    <source src="@image.MediaUrl" type="video/mp4">
+                                    <source src="@image.MediaUrl" type="video/webm">
+                                    <source src="@image.MediaUrl" type="video/ogg">
+                                    Your browser does not support the video tag.
+                                    </video>
+                                    } *@
+                                        @* </div> *@
                                     }
                                 </div>
 
@@ -77,35 +89,28 @@
 
                                 <div class="carousel-indicators">
 
-                                    <button data-bs-target="#carouselExampleIndicators" data-target="#carouselExampleIndicators" data-bs-slide-to="0" data-slide-to="0" class="thumbnail active" aria-current="true" aria-label="Slide 1">
-                                        <img src="@ViewProductDTO!.ImageUrl" class="img-thumbnail" alt="@ViewProductDTO!.Name" title="@ViewProductDTO!.Name" />
-                                    </button>
+                                    @*  <button data-bs-target="#carouselExampleIndicators" data-target="#carouselExampleIndicators" data-bs-slide-to="0" data-slide-to="0" class="thumbnail active" aria-current="true" aria-label="Slide 1">
+                                    <img src="@ViewProductDTO!.ImageUrl" class="img-thumbnail" alt="@ViewProductDTO!.Name" title="@ViewProductDTO!.Name" />
+                                    </button> *@
 
                                     @foreach (var (value, index) in MediaDTOs.Select((value, index) => (value, index)))
                                     {
-                                        <button data-bs-target="#carouselExampleIndicators" data-target="#carouselExampleIndicators" data-bs-slide-to="@(index+1)" data-slide-to="@(index+1)" class="thumbnail" aria-label="Slide @(index+2)">
-                                            @if (value.MediaType != "OGG" && value.MediaType != "WEBM" && value.MediaType != "MP4")
-                                            {
-                                                <img src="@value.MediaUrl" class="img-thumbnail" alt="@value.MediaName" title="@value.MediaName" />
-                                            }
-                                            else
-                                            {
-                                                <video controls class="img-thumbnail">
-                                                    <source src="@value.MediaUrl" type="video/mp4">
-                                                    <source src="@value.MediaUrl" type="video/webm">
-                                                    <source src="@value.MediaUrl" type="video/ogg">
-                                                    Your browser does not support the video tag.
-                                                </video>
-                                            }
-                                        </button>
+                                        @if (index == 0)
+                                        {
+                                            <button data-bs-target="#carouselExampleIndicators" data-target="#carouselExampleIndicators" data-bs-slide-to="@(index)" data-slide-to="@(index)" class="thumbnail active" aria-current="true" aria-label="Slide @(index+1)">
+                                                <MyMedia SelectedFile="value" ImageHeight="100" ImageWidth="100" VideoHeight="100" VideoWidth="100" ShowVideoControl="false"></MyMedia>
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button data-bs-target="#carouselExampleIndicators" data-target="#carouselExampleIndicators" data-bs-slide-to="@(index)" data-slide-to="@(index)" class="thumbnail" aria-label="Slide @(index+1)">
+                                                <MyMedia SelectedFile="value" ImageHeight="100" ImageWidth="100" VideoHeight="100" VideoWidth="100" ShowVideoControl="false"></MyMedia>
+                                            </button>
+                                        }
                                     }
                                 </div>
 
-
                             </div>
-
-
-
 
                         </div>
                     </div>
@@ -143,8 +148,6 @@
                                         Add to Wishlist
                                     </button>
                                 </div>
-
-
 
                             </Authorized>
 

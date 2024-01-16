@@ -346,12 +346,10 @@
 
                                                                                         @if (image.MediaType != "MP4" && image.MediaType != "WEBM" && image.MediaType != "OGG")
                                                                                         {
-
                                                                                             <MudCheckBox T="bool" Value="@image.IsPrimary" ValueChanged="()=>OnClick_BtnSetAsMain(image, 1)" Color="Color.Primary"></MudCheckBox>
                                                                                         }
                                                                                         else
                                                                                         {
-
                                                                                             <MudCheckBox T="bool?" Value="null" Disabled="true"  Color="Color.Primary"></MudCheckBox>
                                                                                         }
                                                                                     </td>
@@ -361,12 +359,10 @@
                                                                                         {
                                                                                             <MudCheckBox T="bool" Value="@image.IsSecondary" ValueChanged="()=>OnClick_BtnSetAsMain(image, 2)" Color="Color.Secondary"></MudCheckBox>
                                                                                         }
-
                                                                                         else
                                                                                         {
                                                                                             <MudCheckBox T="bool?" Value="null" Disabled="true" Color="Color.Secondary"></MudCheckBox>
                                                                                         }
-
                                                                                     </td>
 
                                                                                     <td>

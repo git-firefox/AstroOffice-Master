@@ -439,12 +439,11 @@ namespace AstroOfficeWeb.Components.ProductComponents
                 {
                     if (mode == 1)
                     {
-                        item.IsPrimary = true;
-
+                        item.IsPrimary = !item.IsPrimary;
                     }
                     else
                     {
-                        item.IsSecondary = true;
+                        item.IsSecondary = !item.IsSecondary;
                     }
                 }
                 else
