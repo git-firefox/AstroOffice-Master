@@ -34,6 +34,12 @@ namespace AstroOfficeWeb.Server
             CreateMap<AUser, BaseUserDTO>();
             CreateMap<BaseUserDTO, AUser>();
 
+
+
+            CreateMap<AProduct, BaseProductDTO>();
+            CreateMap<AProductMediaFile, MediaFileDTO>();
+            CreateMap<ProductMetaData, MetaDataDTO>();
+
         }
     }
 }

@@ -6,6 +6,7 @@ using ASDLL;
 using ASDLL.AstroScienceWeb.BLL;
 using ASDLL.DataAccess.Core;
 using ASModels;
+using AstroOfficeWeb.Server.Middlewares;
 using AstroOfficeWeb.Server.Services;
 using AstroOfficeWeb.Server.Services.IServices;
 using AstroOfficeWeb.Shared.Helper;
@@ -20,6 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 string astroOfficeConnectionString = builder.Configuration.GetConnectionString("AstroOfficeConnectionString");
 string matchMakingConnectionString = builder.Configuration.GetConnectionString("MatchMakingConnectionString");
@@ -125,6 +127,10 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+//var logger = app.Services.GetRequiredService<ILogger>();
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

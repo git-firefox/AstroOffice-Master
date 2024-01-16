@@ -32,7 +32,7 @@
     <div class="mb-3">
         <label for="product-description" class="form-label">Product Description <span class="text-danger">*</span></label>
         <ValidationMessage For=@(() => Model!.Description) />
-        <InputTextEditor @bind-Value="Model!.Description" id="product-description" DefaultValue="@Model!.Description"></InputTextEditor>
+        <InputTextEditor @bind-Value="Model!.Description" id="product-description"></InputTextEditor>
     </div>
 
     <div class="row">
@@ -48,7 +48,7 @@
             <div class="mb-3">
                 <label for="product-category" class="form-label">Categories <span class="text-danger">*</span></label>
                 <ValidationMessage For=@(()=> Model.ProductCategoriesSno) />
-                <InputSelect2 @bind-Value="Model.ProductCategoriesSno" Options="CategoryDTOs.Select(s => new Option( value:  s.Sno, text: s.Title))" class="form-control " id="product-category" />
+                <InputSelect2 @bind-Value="Model.ProductCategoriesSno" Options="CategoryItems" class="form-control " id="product-category" />
             </div>
 
             <div class="mb-3">

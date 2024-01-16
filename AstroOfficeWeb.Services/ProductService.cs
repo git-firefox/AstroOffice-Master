@@ -31,8 +31,8 @@ namespace AstroOfficeWeb.Services
                 { "Sno", sno.ToString()}
             };
 
-            var response = await _swagger.GetAsync<ApiResponse<GetProductResponse>>(ProductApiConst.GET_ProductBySno, queryParams);
-            return (response?.Data?.GeneralInformation, response?.Data?.ProductMediaFiles, response?.Data?.ProductMetaDatas);
+            var response = await _swagger.GetAsync<GetProductResponse>(ProductApiConst.GET_ProductBySno, queryParams);
+            return (response?.GeneralInformation, response?.ProductMediaFiles, response?.ProductMetaDatas);
         }
 
         public async Task<List<ViewProductDTO>?> GetProducts(long? categorySno = null)
@@ -311,7 +311,6 @@ namespace AstroOfficeWeb.Services
             }
             return response.Data;
         }
-
 
         public async Task<List<PCategoryDTO>?> GetShopCategories()
         {

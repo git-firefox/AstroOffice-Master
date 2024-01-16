@@ -19,6 +19,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Extensions\ExceptionMiddlewareExtensions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
     <PackageReference Include="DinkToPdf" Version="1.0.8" />
     <PackageReference Include="LinqKit" Version="1.2.5" />
@@ -35,6 +39,10 @@
     <ProjectReference Include="..\..\ASModels\ASModels.csproj" />
     <ProjectReference Include="..\Client\AstroOfficeWeb.Client.csproj" />
     <ProjectReference Include="..\Shared\AstroOfficeWeb.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AstroOfficeWeb.Shared.ComponentModels;
 using AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Shared.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
@@ -15,9 +16,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         [Parameter]
         public EventCallback<bool> ValidSubmit { get; set; }
-
+        
         [Parameter]
-        public List<CategoryDialoge> CategoryDTOs { get; set; } = new();
+        public IEnumerable<Option> CategoryItems { get; set; } = Enumerable.Empty<Option>();
 
         private EditContext GeneralInformationContext { get; set; } = null!;
 

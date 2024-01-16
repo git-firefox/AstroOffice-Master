@@ -78,7 +78,7 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProductBySno(long sno)
         {
-            var apiResponse = new ApiResponse<ProductDTO> { Data = null };
+            var apiResponse = new GetProductResponse();
 
             var aProduct = await _context.AProducts.Include(a => a.AProductMediaFiles).Include(a => a.ProductMetaData).Include(a => a.ProductCategoriesSnoNavigation).FirstOrDefaultAsync(p => p.Sno == sno && p.IsActive == true);
 
@@ -95,14 +95,20 @@ namespace AstroOfficeWeb.Server.Controllers
 
             apiResponse.Success = true;
 
-            var productDTO = _mapper.Map<ProductDTO>(aProduct);
-            var imagesDTOs = _mapper.Map<List<ImagesDTO>>(aProduct.AProductMediaFiles);
+            var productDTO = _mapper.Map<BaseProductDTO>(aProduct);
+            var imagesDTOs = _mapper.Map<List<MediaFileDTO>>(aProduct.AProductMediaFiles);
             var metaDataDTOs = _mapper.Map<List<MetaDataDTO>>(aProduct.ProductMetaData);
-            productDTO.ProductImages = imagesDTOs;
-            productDTO.MetaDatas = metaDataDTOs;
+
+            
+            apiResponse.GeneralInformation = productDTO;
+            apiResponse.ProductMediaFiles = imagesDTOs;
+            apiResponse.ProductMetaDatas = metaDataDTOs;
+
+
             productDTO.ProductCategory = aProduct.ProductCategoriesSnoNavigation?.Title ?? string.Empty;
             productDTO.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == aProduct.Sno)?.Quantity ?? 0; ;
-            apiResponse.Data = productDTO;
+
+
 
             return Ok(apiResponse);
         }

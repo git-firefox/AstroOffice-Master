@@ -8,7 +8,7 @@ using AstroOfficeWeb.Shared.ViewModels;
 
 namespace AstroOfficeWeb.Shared.Models
 {
-    public class GetProductResponse
+    public class GetProductResponse : ApiResponseBase
     {
         public BaseProductDTO GeneralInformation { get; set; } = new();
         public List<MediaFileDTO> ProductMediaFiles { get; set; } = new();

@@ -40,9 +40,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
         public string? Name { get; set; }
 
         [Parameter]
-        public EventCallback<bool> IsLoaded { get; set; }
+        public EventCallback<bool> Loaded { get; set; }
 
-
+        private bool IsCompleted { get; set; } = false;
         private BSNavItem BSNavGeneralInfo { get; set; } = null!;
         private BSNavItem BSNavProductImages { get; set; } = null!;
         private BSNavItem BSNavMetaData { get; set; } = null!;
@@ -50,20 +50,17 @@ namespace AstroOfficeWeb.Components.ProductComponents
         private BaseProductDTO? GeneralInfo { get; set; }
         private List<MediaFileDTO>? MediaFiles { get; set; }
         private List<MetaDataDTO>? MetaDatas { get; set; }
+        private IEnumerable<Option> CategoryOptions { get; set; } = Enumerable.Empty<Option>();
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
-
-            //GeneralInformationContext = new EditContext(GeneralInfo);
-            //SaveProductImageInfoContext = new EditContext(ProductMedia);
-            //SaveProductMetadataInfoContext = new EditContext(ProductMeta);
-
         }
 
         protected override async Task OnInitializedAsync()
         {
-            await ProductService.GetCategories();
+            IsCompleted = false;
+            CategoryOptions = await LookupService.GetCategoryOptions();
             if (Sno != 0)
             {
                 var productInfo = await ProductService.InitialiseProductBySno(Sno);
@@ -71,6 +68,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
                 MediaFiles = productInfo.ProductMediaFiles;
                 MetaDatas = productInfo.ProductMetaDatas;
             }
+            IsCompleted = true;
         }
 
         protected override Task OnAfterRenderAsync(bool firstRender)
