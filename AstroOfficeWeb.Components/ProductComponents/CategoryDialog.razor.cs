@@ -6,43 +6,29 @@ using System.Collections.Generic;
 
 using AstroOfficeWeb.Shared.ComponentModels;
 using AstroOfficeWeb.Shared.Utilities;
+using Microsoft.AspNetCore.Components.Web;
 
 
 namespace AstroOfficeWeb.Components.ProductComponents
 {
     public partial class CategoryDialog
     {
-        [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+        [CascadingParameter]
+        MudDialogInstance MudDialog { get; set; } = null!;
 
-        [Parameter] public CategoryDialoge Category { get; set; } = new CategoryDialoge();
+        [Parameter]
+        public CategoryListItem Category { get; set; } = null!;
 
-        [Parameter] public List<CategoryDialoge> CategoryDTOs { get; set; } = null!;
-        [Parameter] public ActionMode Mode { get; set; }
+        [Parameter]
+        public IEnumerable<Option> CategoryOptions { get; set; } = null!;
 
-        public string? CategoryImage { get; set; }
-
-        private void Cancel()
+        private void Cancel(MouseEventArgs args)
         {
             MudDialog!.Cancel();
         }
 
-        private async Task UploadFiles(IBrowserFile file)
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                await file.OpenReadStream(file.Size).CopyToAsync(memoryStream);
-
-                var buffer = memoryStream.ToArray();
-
-                var base64String = Convert.ToBase64String(buffer);
-                CategoryImage = file.Name;
-
-                Category.FileUpload = $"data:{file.ContentType};base64," + base64String;
-            }
-        }
-
-
         public bool IsImageLoaded { get; set; }
+
         private async Task OnChange_InputFile(InputFileChangeEventArgs e)
         {
 
@@ -57,22 +43,18 @@ namespace AstroOfficeWeb.Components.ProductComponents
                 var base64String = Convert.ToBase64String(buffer);
 
                 Category.ImageUrl = $"data:{file.ContentType};base64," + base64String;
-                CategoryImage = file.Name;
             }
 
             IsImageLoaded = true;
         }
 
-
-        public async Task AddCategory(EditContext context)
+        public void AddCategory(EditContext context)
         {
-            await S_Product.SaveAndUpdateCategory(Category);
-            
-            if (Mode == ActionMode.Add)
+            MudDialog.Close(DialogResult.Ok(new MyDialogResult<CategoryListItem>()
             {
-                CategoryDTOs.Add(Category);
-            }
-            MudDialog.Close(DialogResult.Ok(Category));
+                Result = true,
+                Data = Category
+            }));
         }
     }
 }

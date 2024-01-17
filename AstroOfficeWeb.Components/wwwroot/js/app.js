@@ -15,6 +15,73 @@ window.fnShowTab = function (element) {
     }
 }
 
+window.InputSelect2Interop = {
+    fnInitialize: function (element, dropdownParent = null) {
+
+        var select2Config = {
+            theme: 'bootstrap-5',
+            width: '100%',
+        };
+
+        if (dropdownParent != undefined || dropdownParent != null) {
+            select2Config.dropdownParent = dropdownParent;
+        }
+
+        if (element instanceof HTMLSelectElement) {
+            $(element).select2(select2Config);
+        }
+    },
+
+    fnAddChangeEvent: function (element, dotnetObject) {
+        $(element).on("change", function () {
+            var inputValue = $(this).val();
+            dotnetObject.invokeMethodAsync("OnInputSelect2Change", inputValue);
+        });
+    },
+};
+
+
+window.fnSummernoteInterop = function (element, height, dotnetObject) {
+    if (element instanceof HTMLDivElement || element instanceof HTMLTextAreaElement) {
+        var summernoteConfig = {
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['strikethrough', 'superscript', 'subscript', 'bold', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['height', ['height']]
+            ],
+            height: height, 
+            //fontName: 'Philosopher',
+            addDefaultFonts: false,
+            disableGrammar: false,
+            shortcuts: false,
+            disableDragAndDrop: false,
+            tabDisable: false,
+            codeviewFilter: false,
+            codeviewIframeFilter: true,
+            spellCheck: true
+        };
+
+        $(element).summernote(summernoteConfig);
+        $(element).summernote('fontName', 'Philosopher');
+        $(element).summernote('removeFormat');
+        $(element).on('summernote.init', function () {
+            console.log('Summernote is launched');
+        });
+
+        $(element).on('summernote.change', function (we, contents, $editable) {
+            console.log('Summernote\'s content is changed.');
+        });
+
+        $(element).on('summernote.paste', function (e) {
+            console.log('Called event paste');
+        });
+    }
+}
+
 window.fnFocusBlazorElement = function (element) {
     if (element instanceof HTMLInputElement) {
         element.focus();
@@ -163,51 +230,7 @@ window.InputMaskInterop2 = {
     },
 };
 
-window.InputSelect2Interop = {
-    fnInitialize: function (element, dropdownParent = null) {
 
-        var select2Config = {
-            theme: 'bootstrap-5',
-            width: '100%',
-        };
-
-        if (dropdownParent != undefined || dropdownParent != null) {
-            select2Config.dropdownParent = dropdownParent;
-        }
-
-        if (element instanceof HTMLSelectElement) {
-            $(element).select2(select2Config);
-        }
-    },
-
-    fnAddChangeEvent: function (element, dotnetObject) {
-        $(element).on("change", function () {
-            var inputValue = $(this).val();
-            dotnetObject.invokeMethodAsync("OnInputSelect2Change", inputValue);
-        });
-    },
-};
-
-
-window.fnSummernoteInterop = function (element, height, dotnetObject) {
-    if (element instanceof HTMLDivElement || element instanceof HTMLTextAreaElement) {
-        $(element).summernote({
-            height: height,
-            //focus: true,
-            fontNames: ['Philosopher'],
-            fontNamesIgnoreCheck: ['Philosopher'],
-            callbacks: {
-                onInit: function () {
-                    console.log('Summernote is launched');
-                },
-               
-            }
-        });
-        //$(element).on('summernote.change', function (we, contents, $editable) {
-        //    console.log('summernote.change', contents, $editable, we);
-        //});                                                                           
-    }
-}
 
 window.fnGetInputMaskValue = function (element) {
     if (element instanceof HTMLInputElement) {

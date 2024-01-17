@@ -38,6 +38,7 @@ namespace AstroOfficeWeb.Shared.DTOs
         public string? Descriptions { get; set; }
         public string? ImageUrl { get; set; }
     }
+
     public class PCategoryDTO : BaseCategoryDTO
     {
         public List<SCategoryDTO>? SubCategories { get; set; }

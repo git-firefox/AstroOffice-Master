@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AstroOfficeWeb.Shared.ComponentModels
 {
-    public class CategoryDialoge : CategoryDTO
+    public class CategoryListItem : CategoryDTO
     {
         public string? FileUpload { get; set; }
         public string ParentCategory { get; set; } = string.Empty;

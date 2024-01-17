@@ -14,9 +14,9 @@ namespace AstroOfficeWeb.Client.Shared
     {
         [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
 
-        [Parameter] public CategoryDialoge Category { get; set; } = new CategoryDialoge();
+        [Parameter] public CategoryListItem Category { get; set; } = new CategoryListItem();
 
-        [Parameter] public List<CategoryDialoge> CategoryDTOs { get; set; } = null!;
+        [Parameter] public List<CategoryListItem> CategoryDTOs { get; set; } = null!;
         [Parameter] public ActionMode Mode { get; set; }
 
         public string? CategoryImage { get; set; }

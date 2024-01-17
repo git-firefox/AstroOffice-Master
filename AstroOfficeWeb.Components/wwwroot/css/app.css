@@ -779,3 +779,19 @@ input[type=number] {
         border-bottom: 15px solid #f78100;
     }
 }
+
+.note-editor .dropdown-toggle::after {
+    all: unset;
+}
+
+.note-editor ul {
+    list-style-type: disc;
+}
+
+.note-editor .note-dropdown-menu {
+    box-sizing: content-box;
+}
+
+.note-editor .note-modal-footer {
+    box-sizing: content-box;
+}

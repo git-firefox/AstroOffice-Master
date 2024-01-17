@@ -28,7 +28,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
             var options = new DialogOptions() { CloseButton = true };
             var parameters = new DialogParameters();
             parameters.Add("MediaFile", selectedFile);
-            Dialog.Show<ViewFileModal>(selectedFile.MediaName, parameters, options);
+            Dialog.Show<FileModal>(selectedFile.MediaName, parameters, options);
         }
 
         private void OnClick_RemoveImage(MediaFileDTO selectedFile)

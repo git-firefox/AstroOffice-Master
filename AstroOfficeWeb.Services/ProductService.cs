@@ -241,7 +241,7 @@ namespace AstroOfficeWeb.Services
             return false;
         }
 
-        public async Task SaveAndUpdateCategory(CategoryDialoge categoryDTO)
+        public async Task SaveAndUpdateCategory(CategoryListItem categoryDTO)
         {
             var response = await _swagger.PostAsync<CategoryDTO, ApiResponse<CategoryDTO>>(ProductApiConst.POST_SaveAndUpdateCategory, categoryDTO);
             if (response!.Success)
@@ -301,9 +301,9 @@ namespace AstroOfficeWeb.Services
             return response.Data;
         }
 
-        public async Task<List<CategoryDialoge>?> GetCategories()
+        public async Task<List<CategoryListItem>?> GetCategories()
         {
-            var response = await _swagger.GetAsync<ApiResponse<List<CategoryDialoge>>>(ProductApiConst.GET_Categories);
+            var response = await _swagger.GetAsync<ApiResponse<List<CategoryListItem>>>(ProductApiConst.GET_Categories);
             if (!response!.Success)
             {
                 _snackbar?.ShowErrorSnackbar(response.Message);

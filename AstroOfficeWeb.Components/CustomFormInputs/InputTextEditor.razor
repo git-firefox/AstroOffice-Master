@@ -1,6 +1,8 @@
 ﻿@inject IJSRuntime JSRuntime
 @inherits InputBase<string>
-<div @ref="ER_TextArea"> @(new MarkupString(CurrentValue ?? "")) </div>
+<MudPaper>
+    <div @ref="ER_TextArea"> @(new MarkupString(CurrentValue ?? "")) </div>
+</MudPaper>
 @code {
     [Parameter]
     public int Height { get; set; } = 400;
