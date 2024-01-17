@@ -315,11 +315,11 @@ namespace AstroOfficeWeb.Components.ProductComponents
                 return;
             }
 
-            if (!SaveProductMetadataInfoContext.Validate() && (ProductModel?.MetaDatas?.Count == 0))
-            {
-                await JSRuntime.ShowTabAsync(ER_AMetaData);
-                return;
-            }
+            //if (!SaveProductMetadataInfoContext.Validate() && (ProductModel?.MetaDatas?.Count == 0))
+            //{
+            //    await JSRuntime.ShowTabAsync(ER_AMetaData);
+            //    return;
+            //}
 
 
             //ProductModel.ProductImages = BrowserFiles;
@@ -331,10 +331,6 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
             //}
             //FileData
-
-
-
-
 
             ProductMediaFiles?.ForEach(a =>
             {
@@ -381,6 +377,13 @@ namespace AstroOfficeWeb.Components.ProductComponents
             }
         }
 
+
+        private void ResetForm()
+        {
+            // Clear the form and reset validation messages
+            MetaData = new MetaDataDTO();
+            SaveProductMetadataInfoContext = new EditContext(MetaData);
+        }
 
 
         private void OnClick_SelectFileItems(MediaDTO value)
@@ -502,14 +505,18 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         public string searchString = string.Empty;
         public void Onclick_AddMetaData()
-        {
-            // Add the current MetaDataDTO to the list
-            MetaDataList.Add(new MetaDataDTO
+        {        
+            if (SaveProductMetadataInfoContext.Validate())
             {
-                MetaValue = MetaData!.MetaValue,
-                MetaKeyword = MetaData.MetaKeyword,
-            });
-            MetaData = new MetaDataDTO();
+                MetaDataList.Add(new MetaDataDTO
+                {
+                    MetaValue = MetaData.MetaValue,
+                    MetaKeyword = MetaData.MetaKeyword,
+                });
+                MetaData = new MetaDataDTO();
+                SaveProductMetadataInfoContext = new EditContext(MetaData);
+            }
+
         }
         private bool FilterFunc(MetaDataDTO element)
         {

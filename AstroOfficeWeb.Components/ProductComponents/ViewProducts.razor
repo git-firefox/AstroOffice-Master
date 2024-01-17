@@ -194,12 +194,13 @@
                         }
                     }
 
-                    <div class="row">
+                    @* <div class="row">
+                    
                         <div class="col-12 d-flex justify-content-center scrolling-product">
                             <MudPagination SelectedChanged="PageChanged" BoundaryCount="1" MiddleCount="1" Count="TotalPages" />
                         </div>
                     </div>
-
+ *@
 
                     @* <div class="row">
                     <div class="col-12 d-flex justify-content-center scrolling-product">
@@ -234,6 +235,14 @@
                     </ul>
                     </nav> *@
                 </div>
+               
+                <div class="row">
+
+                    <div class="col-12 d-flex justify-content-center scrolling-product">
+                        <MudPagination SelectedChanged="PageChanged" BoundaryCount="1" MiddleCount="1" Count="TotalPages" />
+                    </div>
+                </div>
+
             </div>
         </div>
 

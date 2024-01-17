@@ -438,23 +438,23 @@ namespace AstroOfficeWeb.Server.Controllers
 
                         var imagesNeedToDelete = existsImages.Where(ei => !doNotingImageSnos.Contains(ei.Sno));
 
-                        string filePathFormat = "";
+                        if (imagesNeedToDelete.Any())
+                        {
+                            var mediaPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media");
+                            string? filePath = null;
+                            foreach (var image in imagesNeedToDelete)
+                            {
+                                filePath = Path.Combine(mediaPath, image.MediaUrl + "." + image.MediaType);
+                                if (System.IO.File.Exists(filePath))
+                                {
+                                    System.IO.File.Delete(filePath);
+                                }
+                                _context.ProductMedia.Remove(image);
+                                filePath = null;
+                            }
+                        }
 
-
-                       // var filePath = Path.Combine(mediaPath, guid + extension);
-                        //var filePath = Path.Combine(mediaPath, guid + extension);
-                        //File.Exists(curFile)
-
-                        //foreach (var images in imagesNeedToDelete)
-                        //{
-                        //    if(File.E .Exists(curFile))
-                        //    _context.ProductMedia.RemoveRange(imagesNeedToDelete);
-                        //}
-
-                        _context.ProductMedia.RemoveRange(imagesNeedToDelete);
-
-
-
+                        //_context.ProductMedia.RemoveRange(imagesNeedToDelete);
 
                         foreach (var updateImage in needToUpdateImage)
                         {

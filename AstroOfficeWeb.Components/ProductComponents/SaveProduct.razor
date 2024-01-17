@@ -407,7 +407,7 @@
                                                     <h4 class="header-title">Metadata</h4>
                                                     <p class="sub-header">Fill all information below</p>
 
-                                                    <EditForm EditContext="SaveProductMetadataInfoContext" OnSubmit="Onclick_AddMetaData" Context="MetaDataContext">
+                                                    <EditForm EditContext="SaveProductMetadataInfoContext"  Context="MetaDataContext">
                                                         <DataAnnotationsValidator />
                                                         <div class="row align-items-end">
 
@@ -424,8 +424,8 @@
                                                             <div class="col-md-4 mt-4">
                                                                 @if (MetaDataAction is ActionMode.Add)
                                                                 {
-                                                                    @* <button type="button" @onclick="Onclick_AddMetaData" class="btn btn-success float-right">Add MetaData</button> *@
-                                                                    <button type="submit" class="btn btn-success float-right w-100 w-md-auto">Add MetaData</button>
+                                                                    <button type="button" @onclick="ResetForm" class="btn btn-secondary  mb-2 mb-md-0 w-100 w-md-auto">Reset</button>
+                                                                    <button type="submit" @onclick="(() => Onclick_AddMetaData())" class="btn btn-success float-right w-100 w-md-auto">Add MetaData</button>
                                                                 }
                                                                 else
                                                                 {
@@ -494,56 +494,6 @@
                                                                  </MudTable>
 
 
-
-                                                                 @*  <MudDataGrid Items="@MetaDataList.Select((value, index) => (value, index))" Bordered="true">
-                                                                <Columns>
-                                                                <PropertyColumn Property="x => x.index+1" Title="Sr No" IsEditable="false" />
-                                                                <PropertyColumn Property="x => x.value.MetaKeyword" Title="Meta Keyword" />
-                                                                <PropertyColumn Property="x => x.value.MetaTitle" Title="Meta Value" />
-                                                                <TemplateColumn Title="Action" Sortable="false" IsEditable="false">
-                                                                <CellTemplate>
-                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_UpdateMetaData(ActionMode.Edit,context.Item.value))" />
-                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_UpdateMetaData(ActionMode.Delete,context.Item.value))" />
-                                                                </CellTemplate>
-                                                                </TemplateColumn>
-                                                                </Columns>
-                                                                </MudDataGrid> *@
-
-                                                                 @*   <table class="table table-striped">
-                                                                <thead>
-                                                                <tr>
-                                                                <th scope="col">Sno.</th>
-                                                                <th scope="col">Meta Keywords</th>
-                                                                <th scope="col">Meta Value</th>
-                                                                <th scope="col">Action</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-
-                                                                @foreach (var (value, index) in MetaDataList.Select((value, index) => (value, index)))
-                                                                {
-                                                                <tr>
-                                                                <td>@(index + 1) </td>
-                                                                <td>@value.MetaTitle </td>
-                                                                <td>@value.MetaKeyword</td>
-                                                                <td>
-                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(()=> OnClick_UpdateMetaData(1,value))" />
-                                                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="(()=> OnClick_UpdateMetaData(0,value))" />
-                                                                </td>
-                                                                </tr>
-
-
-                                                                }
-                                                                </tbody>
-                                                                </table> *@
-
-
-
-
-
-
-
-
                                                              </div>
                                                          </div>
 
@@ -556,9 +506,6 @@
                                                                  <button @onclick="OnClick_BtnPublished" type="button" class="btn btn-success w-100 w-md-auto">Publish Product <i class="mdi mdi-arrow-right ms-1"></i></button>
                                                              </li>
                                                          </ul>
-
-
-
 
                                                      </EditForm>
                                                  </div>
