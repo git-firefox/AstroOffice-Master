@@ -33,6 +33,7 @@
         <label for="product-description" class="form-label">Product Description <span class="text-danger">*</span></label>
         <ValidationMessage For=@(() => Model!.Description) />
         <InputTextEditor @bind-Value="Model!.Description" id="product-description"></InputTextEditor>
+        @* @Model!.Description *@
     </div>
 
     <div class="row">
