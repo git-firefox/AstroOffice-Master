@@ -130,7 +130,8 @@ namespace AstroOfficeWeb.Shared.Utilities
         Astrologer,
         ProductManager,
         OrderManager,
-        Administrator
+        Administrator,
+        SystemAdministrator
     }
 
     public enum FormMode

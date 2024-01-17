@@ -9,6 +9,7 @@
         public const string Role_Administrator = "Admin";
         public const string Role_OrderManager = "OrderManager";
         public const string Role_ProductManager = "ManageProduct";
+        public const string Role_SystemAdmin = "SystemAdmin";
 
         public const string Role_AdminUser = "Admin, User";
 

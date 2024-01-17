@@ -363,7 +363,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
             });
 
-            ProductModel.ProductMediaFiles = ProductMediaFiles;
+            ProductModel.ProductMediaFiles = ProductMediaFiles?.Where(a => a.Attachment == null).ToList();
             if (Sno == 0)
             {
                 //await ProductService.AddProduct(ProductModel);

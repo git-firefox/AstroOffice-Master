@@ -49,13 +49,13 @@
                                         @if (index == 0)
                                         {
                                             <div class="carousel-item active image-radius">
-                                                <MyMedia SelectedFile="value" IsThumbnail="false" ImageHeight="100%" ImageWidth="100%" VideoHeight="100%" VideoWidth="100%" ShowVideoControl="true" IsFluid="true"></MyMedia>
+                                                <MyMedia  SelectedFile="value" IsThumbnail="false" ImageHeight="100%" ImageWidth="100%" VideoHeight="100%" VideoWidth="100%" ShowVideoControl="true" IsFluid="true"></MyMedia>
                                             </div>
                                         }
                                         else
                                         {
-                                            <div class="carousel-item">
-                                                <MyMedia SelectedFile="value" IsThumbnail="false" ImageHeight="100%" ImageWidth="100%" VideoHeight="100%" VideoWidth="100%" ShowVideoControl="true" IsFluid="true"></MyMedia>
+                                            <div class="carousel-item image-radius">
+                                                <MyMedia  SelectedFile="value" IsThumbnail="false" ImageHeight="100%" ImageWidth="100%" VideoHeight="100%" VideoWidth="100%" ShowVideoControl="true" IsFluid="true"></MyMedia>
                                             </div>
                                         }
 
@@ -98,13 +98,13 @@
                                         @if (index == 0)
                                         {
                                             <button data-bs-target="#carouselExampleIndicators" data-target="#carouselExampleIndicators" data-bs-slide-to="@(index)" data-slide-to="@(index)" class="thumbnail active" aria-current="true" aria-label="Slide @(index+1)">
-                                                <MyMedia SelectedFile="value" ImageHeight="100" ImageWidth="100" VideoHeight="100" VideoWidth="100" ShowVideoControl="false"></MyMedia>
+                                                <MyMedia Class="image-radius" SelectedFile="value" ImageHeight="100" ImageWidth="100" VideoHeight="100" VideoWidth="100" ShowVideoControl="false"></MyMedia>
                                             </button>
                                         }
                                         else
                                         {
                                             <button data-bs-target="#carouselExampleIndicators" data-target="#carouselExampleIndicators" data-bs-slide-to="@(index)" data-slide-to="@(index)" class="thumbnail" aria-label="Slide @(index+1)">
-                                                <MyMedia SelectedFile="value" ImageHeight="100" ImageWidth="100" VideoHeight="100" VideoWidth="100" ShowVideoControl="false"></MyMedia>
+                                                <MyMedia Class="image-radius" SelectedFile="value" ImageHeight="100" ImageWidth="100" VideoHeight="100" VideoWidth="100" ShowVideoControl="false"></MyMedia>
                                             </button>
                                         }
                                     }

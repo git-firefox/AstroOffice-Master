@@ -1,5 +1,4 @@
-﻿
-@using AstroOfficeWeb.Shared.Helper
+﻿@using AstroOfficeWeb.Shared.Helper
 <header>
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg">
@@ -13,7 +12,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
 
-                    <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser + "," + ApplicationConst.Role_Astrologer)>
+                    <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser + "," + ApplicationConst.Role_Astrologer + "," + ApplicationConst.Role_Member)>
                         <Authorized>
 
                             @* Home *@
@@ -65,7 +64,44 @@
                         </Authorized>
                     </AuthorizeView>
 
-                    <AuthorizeView Roles="@(ApplicationConst.Role_User)">
+
+                    <AuthorizeView Roles="@($"{ApplicationConst.Role_SystemAdmin}")">
+                        <Authorized>
+                            @* Manage Product *@
+                            <li>
+                                <a href="/manage-products" class="nav-link">
+                                    <i class="fas fa-list"></i>
+                                    Manage Product
+                                </a>
+                            </li>
+
+                            @* Manage User *@
+                            <li>
+                                <a href="/users" class="nav-link">
+                                    <i class="fas fa-list"></i>
+                                    Manage Users
+                                </a>
+                            </li>
+
+                            @* Manage Orders *@
+                            <li>
+                                <a href="/manage-orders" class="nav-link">
+                                    <i class="fas fa-list"></i>
+                                    Manage Orders
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/manage-categories" class="nav-link">
+                                    <i class="fas fa-list"></i>
+                                    Manage Categories
+                                </a>
+                            </li>
+
+                        </Authorized>
+                    </AuthorizeView>
+
+
+                    <AuthorizeView Roles="@($"{ApplicationConst.Role_User}, {ApplicationConst.Role_Member}")">
                         <Authorized>
                             @* Shop *@
                             <li>
@@ -89,8 +125,8 @@
                                     <i class="fa fa-heart"></i>
                                     Wishlist
                                 </a>
-                            </li> 
-                            
+                            </li>
+
                             <li>
                                 <a class="dropdown-item" href="/my-orders" title="Orders">
                                     <i class="fas fa-clipboard-list"></i>
@@ -144,6 +180,17 @@
                             </li>
                         </Authorized>
                     </AuthorizeView>
+                    <AuthorizeView Roles="@(ApplicationConst.Role_OrderManager)">
+                        <Authorized>
+                            @* Manage Orders *@
+                            <li>
+                                <a href="/manage-orders" class="nav-link">
+                                    <i class="fas fa-list"></i>
+                                    Manage Orders
+                                </a>
+                            </li>
+                        </Authorized>
+                    </AuthorizeView>
 
                     <AuthorizeView Roles="@(ApplicationConst.Role_ProductManager)">
                         <Authorized>
@@ -154,8 +201,6 @@
                                     Manage Product
                                 </a>
                             </li>
-
-
 
                             @* Manage Orders *@
                             <li>
@@ -171,17 +216,13 @@
                                 </a>
                             </li>
 
-                            @* Logout *@
-                            <li>
-                                <a href="/logout" class="nav-link">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    Logout
-                                </a>
-                            </li>
+
                         </Authorized>
                     </AuthorizeView>
 
-                    <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser)>
+
+
+                    <AuthorizeView Roles=@($"{ApplicationConst.Role_User}, {ApplicationConst.Role_Member}" )>
                         <Authorized>
                             @* Transactions *@
                             @* <li>
@@ -211,16 +252,29 @@
                                         <i class="fas fa-circle"></i>
                                         Recharge
                                     </a>
-                               @*      <a class="dropdown-item" href="/my-orders" title="Orders">
-                                        <i class="fas fa-clipboard-list"></i>
-                                        Orders
+                                    @*      <a class="dropdown-item" href="/my-orders" title="Orders">
+                                    <i class="fas fa-clipboard-list"></i>
+                                    Orders
                                     </a> *@
-                                    <a class="dropdown-item" href="/logout" s">
-                                        <i class="fas fa-sign-out-alt"></i>
-                                        Logout
-                                    </a>
+
                                 </div>
                             </div>
+
+
+
+                        </Authorized>
+                    </AuthorizeView>
+
+
+                    <AuthorizeView>
+                        <Authorized>
+                            @* Logout *@
+                            <li>
+                                <a href="/logout" class="nav-link">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </a>
+                            </li>
                         </Authorized>
                     </AuthorizeView>
                 </ul>

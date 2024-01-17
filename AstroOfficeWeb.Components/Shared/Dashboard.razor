@@ -1,6 +1,6 @@
 ﻿@page "/dashboard"
 
-@attribute [Authorize(Roles = "Admin,User")]
+@attribute [Authorize(Roles = $"{ApplicationConst.Role_Admin},{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
 
 @inherits BaseComponent
 

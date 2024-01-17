@@ -19,6 +19,7 @@ using Stripe.Checkout;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Dynamic;
 using static MudBlazor.CategoryTypes;
+using AstroOfficeWeb.Shared.Helper;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -934,7 +935,7 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "Admin,ManageProduct")]
+        [Authorize(Roles = $"{ApplicationConst.Role_Admin},{ApplicationConst.Role_ProductManager},{ApplicationConst.Role_OrderManager},{ApplicationConst.Role_SystemAdmin}")]
         [HttpGet]
         public async Task<IActionResult> GetOrders()
         {

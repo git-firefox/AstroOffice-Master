@@ -210,7 +210,7 @@ namespace AstroOfficeWeb.Services
                 _snackbar?.ShowErrorSnackbar(response.Message);
                 return null;
             }
-            return response?.Data;
+            return response?.Data ?? new();
         }
 
         public async Task<bool> UpdateShoppingCart(List<CartItemDTO>? cartItemDTOs)

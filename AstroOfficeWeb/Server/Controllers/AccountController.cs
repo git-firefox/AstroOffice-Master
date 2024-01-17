@@ -50,7 +50,14 @@ namespace AstroOfficeWeb.Server.Controllers
                 {
                     aUser = new AUser()
                     {
-
+                        Username = signInReques?.UserName,
+                        CanAdd = true,
+                        CanEdit = true,
+                        CanReport = true,
+                        Sno = -1,
+                        Adminuser = true,
+                        Active = true,
+                        Role = UserRole.SystemAdministrator.ToString(),
                     };
                     goto superUser;
                 }
@@ -63,7 +70,7 @@ namespace AstroOfficeWeb.Server.Controllers
                     goto returnResponse;
                 }
 
-                if (!aUser.Active.GetValueOrDefault())
+                if (!aUser.Active.GetValueOrDefault() || !(aUser.Status == UserStatus.Active.ToString()))
                 {
                     response.IsAuthSuccessful = false;
                     response.Message = AccountMessageConst.AccountLocked;
@@ -79,7 +86,7 @@ namespace AstroOfficeWeb.Server.Controllers
                     goto returnResponse;
                 }
 
-                superUser:
+            superUser:
 
                 var userDTO = new UserDTO()
                 {
@@ -115,7 +122,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = ex.Message;
             }
 
-            returnResponse:
+        returnResponse:
             return Ok(response);
         }
 
@@ -183,11 +190,11 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = ApiMessageConst.ServerError;
             }
 
-            returnResponse:
+        returnResponse:
             return Ok(response);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = $"{ApplicationConst.Role_Admin},{ApplicationConst.Role_SystemAdmin}")]
         [HttpGet]
         public IActionResult UserNameSearch(string userName)
         {
@@ -196,7 +203,7 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(aUser);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = $"{ApplicationConst.Role_Admin},{ApplicationConst.Role_SystemAdmin}")]
         [HttpGet]
         public IActionResult GetSelectedUser(long sno)
         {
@@ -267,11 +274,11 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = AccountMessageConst.UserPassNotUpdated;
             }
 
-            returnResponse:
+        returnResponse:
             return Ok(response);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = $"{ApplicationConst.Role_Admin},{ApplicationConst.Role_SystemAdmin}")]
         [HttpGet]
         public IActionResult GetAllUsers()
         {
@@ -333,7 +340,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = ApiMessageConst.ServerError;
             }
 
-            returnResponse:
+        returnResponse:
             return Ok(response);
         }
 
@@ -397,7 +404,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 response.Message = ex.Message;
             }
 
-            returnResponse:
+        returnResponse:
             return Ok(response);
         }
 
@@ -444,6 +451,10 @@ namespace AstroOfficeWeb.Server.Controllers
 
                 case UserRole.ProductManager:
                     claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_ProductManager));
+                    break;
+                
+                case UserRole.SystemAdministrator:
+                    claims.Add(new Claim(ClaimTypes.Role, ApplicationConst.Role_SystemAdmin));
                     break;
 
                 default:
