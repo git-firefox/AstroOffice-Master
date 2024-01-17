@@ -22,7 +22,7 @@ namespace AstroOfficeWeb.Services
         public async Task<IEnumerable<Option>> GetCategoryOptions()
         {
             var categories = await _service.GetCategories();
-            return categories?.Select(a => new Option()) ?? Enumerable.Empty<Option>();
+            return categories?.Select(c => new Option() { Text = c.Title!, Value = c.Sno}) ?? Enumerable.Empty<Option>();
         }
     }
 }

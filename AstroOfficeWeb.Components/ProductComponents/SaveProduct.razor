@@ -26,7 +26,11 @@
             <BSTabContent>
                 <BSNavItemPane IsActive="true" TabPanelName="@SaveProductTab.General.ToDescriptionString()">
                     <TabPaneBody>
-                        <ProductGeneralInfo Model=@(GeneralInfo ?? new ()) CategoryItems="CategoryOptions" />
+                        @if (IsCompleted)
+                        {
+                            <ProductGeneralInfo Model=@(GeneralInfo ?? new ()) CategoryItems="CategoryOptions" />
+                        }
+
                         <MudStack Justify="Justify.FlexEnd" Row="true">
                             <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowForward" Color="Color.Primary" OnClick="() => OnClick_BtnProceed(SaveProductTab.ProductImages)">Add More Info</MudButton>
                         </MudStack>
