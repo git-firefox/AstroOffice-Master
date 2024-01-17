@@ -1,6 +1,6 @@
-﻿<MudDialog Class="overflow-y-scroll">
-    <EditForm Model="@Category" OnValidSubmit="AddCategory">
-        <DataAnnotationsValidator />
+﻿<EditForm Model="@Category" OnValidSubmit="AddCategory">
+    <DataAnnotationsValidator />
+    <MudDialog Class="overflow-y-scroll">
         @* <TitleContent>
         </TitleContent> *@
         <DialogContent>
@@ -53,5 +53,5 @@
             <MudButton ButtonType="ButtonType.Submit" Color="Color.Success" Size="Size.Medium" Variant="Variant.Filled"> Save Category </MudButton>
             <MudButton Class="mr-4" Color="Color.Primary" Size="Size.Medium" Variant="Variant.Filled" OnClick="Cancel">Cancel</MudButton>
         </DialogActions>
-    </EditForm>
-</MudDialog>
+    </MudDialog>
+</EditForm>
