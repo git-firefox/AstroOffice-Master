@@ -34,6 +34,5 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(new ApiResponse<bool> { Data = vIsBestKundaliKPAuto, Success = true });
         }
 
-
     }
 }

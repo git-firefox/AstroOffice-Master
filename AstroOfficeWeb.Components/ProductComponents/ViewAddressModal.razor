@@ -42,6 +42,7 @@
                                 <div class="mb-3">
                                     <label for="billing-email-address" class="form-label">Email Address <span class="text-danger">*</span></label>
                                     <ValidationMessage For=@(() => BillingInfo!.Email) style="position:revert;" />
+                                    @* <InputText @bind-Value="BillingInfo!.Email" class="form-control" type="email" placeholder="Enter your email" id="billing-email-address" /> *@
                                     <InputText @bind-Value="BillingInfo!.Email" class="form-control" type="email" placeholder="Enter your email" id="billing-email-address" />
                                 </div>
                             </div>
@@ -50,6 +51,7 @@
                                     <label for="billing-phone" class="form-label">Phone <span class="text-danger">*</span></label>
                                     <ValidationMessage For=@(() => BillingInfo!.PhoneNumber) style="position:revert;" />
                                     <InputText @ref="Input_MobileNumber" @bind-Value="BillingInfo!.PhoneNumber" class="form-control" type="text" id="billing-phone" @onfocusout="OnFocusOut_InputPhoneNumber" />
+                                    @* <MudTextField id="billing-phone" @onfocusout="OnFocusOut_InputPhoneNumber" @bind-Value="BillingInfo!.PhoneNumber" Variant="Variant.Outlined" Mask="@(new PatternMask("0000000000"))" Class="form-control " Margin="Margin.Dense" Placeholder="Mobile No." /> *@
                                 </div>
                             </div>
                         </div> <!-- end row -->

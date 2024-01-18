@@ -226,8 +226,6 @@
         await InvokeAsync(StateHasChanged);
     }
 
-
-
     MudTheme MyCustomTheme = new MudTheme()
         {
             Palette = new PaletteLight()
@@ -247,14 +245,17 @@
                 DrawerWidthRight = "300px"
             },
 
-
-
             Typography = new Typography()
             {
                 Default = new Default()
                 {
                     FontFamily = new[] { "Philosopher", "sans-serif" }
+                },
+                Button = new Button()
+                {
+                    TextTransform = "unset"
                 }
+
             }
 
         };

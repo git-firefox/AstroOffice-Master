@@ -208,7 +208,6 @@ namespace AstroOfficeWeb.Server.Controllers
         public IActionResult GetSelectedUser(long sno)
         {
             var aUser = _balUser.GetSelectedUser(sno);
-
             return Ok(aUser);
         }
 
