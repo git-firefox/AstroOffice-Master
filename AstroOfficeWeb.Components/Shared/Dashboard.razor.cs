@@ -3193,6 +3193,7 @@ namespace AstroOfficeWeb.Components.Shared
             }
             else
             {
+                
                 //MessageBox.Show("Please choose City from list.");
                 //this.TxtBirthplace.SelectAll();
                 //this.TxtBirthplace.Focus();

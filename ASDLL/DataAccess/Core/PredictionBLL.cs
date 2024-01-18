@@ -7238,6 +7238,7 @@ namespace ASDLL.DataAccess.Core
             short planet = (
                 from Map in kPDashaVOs
                 where (date < Map.StartDate ? false : date <= Map.EndDate)
+                //select Map).SingleOrDefault<KPDashaVO>()?.Planet ?? default; //chageded date 18012024
                 select Map).SingleOrDefault<KPDashaVO>().Planet;
             DateTime startDate = (
                 from Map in kPDashaVOs

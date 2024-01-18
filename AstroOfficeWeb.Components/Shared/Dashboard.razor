@@ -209,7 +209,7 @@
                             </div>
                             <div class="col-6">
                                 <div class="row">
-                                    <div class="col-md-4 mb-2">
+                                    <div class="col-12 mb-2">
                                         @if (inputBirthDateEnabled)
                                         {
                                             @* <input type="date" class="form-control form-control-sm" @onchange="OnChange_BrithDate" value="1999-09-20" title="Date of Birth" max="9999-12-31" /> *@
@@ -232,7 +232,7 @@
                                                     <option value="@hour">@hour.ToString("D2")</option>
                                                 }
                                             </select>
-                                            <span> : </span>
+                                            
                                         }
                                         else
                                         {
@@ -250,14 +250,14 @@
                                                     <option value="@minute">@minute.ToString("D2")</option>
                                                 }
                                             </select>
-                                            <span> : </span>
+                                            
                                         }
                                         else
                                         {
                                             <input value="@BirthDetails!.Tobmm.ToString("D2")" class="form-control form-control-sm" title="Minute" readonly />
                                         }
                                     </div>
-                                    <div class="col-12 mb-2 ">
+                                    <div class="col-md-4 d-flex">
                                         @if (tobssEnabled)
                                         {
                                             @* <input @bind="inputSecond" class="form-control form-control-sm" min="0" max="60" @onfocusout="OnFocusOut_InputBrithDate" title="Second" /> *@

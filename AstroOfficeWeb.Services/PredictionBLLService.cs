@@ -8,15 +8,18 @@ using AstroOfficeWeb.Shared.Helper;
 using AstroOfficeWeb.Shared.Models;
 using AstroOfficeWeb.Shared.VOs;
 
+
 namespace AstroOfficeWeb.Services
 {
     public class PredictionBLLService
     {
         private readonly ISwaggerApiService _swagger;
+        private readonly ISnackbarService _snackbar;
 
-        public PredictionBLLService(ISwaggerApiService swagger)
+        public PredictionBLLService(ISwaggerApiService swagger, ISnackbarService snackbar)
         {
             _swagger = swagger;
+            _snackbar = snackbar;
         }
 
         public async Task<List<KPDashaVO>?> Get_List_35_Sala(string online_Result, KundliVO persKV, DateTime startDate, DateTime endDate)
@@ -68,8 +71,16 @@ namespace AstroOfficeWeb.Services
                 Rotate = rotate
             };
 
-            var kundliVO = await _swagger!.PostAsync<MapPersKVRequest, KundliVO>(PredictionBLLApiConst.POST_MapPersKV, mapPersKVRequest);
-            return kundliVO;
+            var response = await _swagger!.PostAsync<MapPersKVRequest, ApiResponse<KundliVO>>(PredictionBLLApiConst.POST_MapPersKV, mapPersKVRequest);
+            if (response?.Success == true)
+            {
+                return response.Data;
+            }
+            else
+            {
+                _snackbar.ShowErrorSnackbar(response?.Message);
+                return null;
+            }
 
         }
 

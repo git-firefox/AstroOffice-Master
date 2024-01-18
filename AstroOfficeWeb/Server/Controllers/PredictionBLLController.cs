@@ -1,5 +1,6 @@
 ﻿using ASDLL.DataAccess.Core;
 using AstroOfficeWeb.Shared.Models;
+using AstroOfficeWeb.Shared.VOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,9 +22,27 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpPost]
         public IActionResult MapPersKV([FromBody] MapPersKVRequest request)
         {
-            var persKV = _predictionBLL.map_persKV(request.Online_Result, request.Name, request.City, request.DD, request.MM, request.YY, request.HH, request.Min, request.SS, request.Username, request.Lon, request.Lat, request.TZ, request.Paid, request.Lang.ToString(), request.ShowRef, request.Male, request.Domain, request.FilePrefix, request.VcnPrefix, request.Source, request.HeaderTitle, request.Product, request.WDD, request.WMM, request.WYY, request.Rotate);
-            //var kundli = _mapper.Map<DTOs.KundliVO>(persKV);
-            return Ok(persKV);
+            var response = new ApiResponse<KundliVO> { Success = false};
+            try
+            {
+                response.Success = true;
+                var persKV = _predictionBLL.map_persKV(request.Online_Result, request.Name, request.City, request.DD, request.MM, request.YY, request.HH, request.Min, request.SS, request.Username, request.Lon, request.Lat, request.TZ, request.Paid, request.Lang.ToString(), request.ShowRef, request.Male, request.Domain, request.FilePrefix, request.VcnPrefix, request.Source, request.HeaderTitle, request.Product, request.WDD, request.WMM, request.WYY, request.Rotate);
+                response.Data = persKV;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                if (ex is NullReferenceException)
+                {
+                    response.Message = "No records found.";
+                }
+                else
+                {
+                    response.Message = ex.Message;
+                }
+                return Ok(response);
+            }
         }
 
         [HttpGet]
