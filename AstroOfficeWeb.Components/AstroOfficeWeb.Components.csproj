@@ -15,11 +15,13 @@
 
 	<ItemGroup>
 	  <Compile Remove="MyComponents\BSTable.razor.cs" />
+	  <Compile Remove="ProductComponents\CategoryDialog.razor.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Content Remove="MyComponents\BSTable.razor" />
 		<Content Remove="MyComponents\FaladeshModal.razor" />
+		<Content Remove="ProductComponents\CategoryDialog.razor" />
 		<Content Remove="SavedKundalis.razor" />
 		<Content Remove="wwwroot\backgrounds\astro-background.webp" />
 	</ItemGroup>

@@ -16,7 +16,7 @@ namespace AstroOfficeWeb.Shared.DTOs
 
         public string? ImageUrl { get; set; }
 
-        public long? ParentCategorySno { get; set; }
+        public long ParentCategorySno { get; set; }
         public string? Descriptions { get; set; }
 
         public string? Status { get; set; }

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.ComponentModels;
 using AstroOfficeWeb.Shared.Utilities;
+using AstroOfficeWeb.Components.ModalComponents;
 
 namespace AstroOfficeWeb.Components.ProductComponents
 {
@@ -36,7 +37,6 @@ namespace AstroOfficeWeb.Components.ProductComponents
         };
 
         private List<CategoryListItem>? CategoryList { get; set; }
-
         private IEnumerable<Option>? CategoryOptions { get; set; }
 
         protected override void OnInitialized()
@@ -47,7 +47,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         protected override async Task OnInitializedAsync()
         {
             CategoryList = await ProductService.GetCategories();
-            CategoryOptions = await LookupService.GetCategoryOptions();
+            CategoryOptions = CategoryList?.Select(cl => new Option(cl.Title, cl.Sno));
         }
 
         private async Task OnClick_DeleteCategory(CategoryListItem category)
@@ -65,13 +65,13 @@ namespace AstroOfficeWeb.Components.ProductComponents
             }
         }
 
-        private async Task OnClick_UpdateCategory(ActionMode mode = ActionMode.Add, CategoryDTO? categoryDTO = null)
+        private async Task OnClick_UpdateCategory(ActionMode mode = ActionMode.Add, CategoryListItem? categoryDTO = null)
         {
             var parameters = new DialogParameters();
-            parameters.Add("Category", categoryDTO ?? new CategoryDTO());
+            parameters.Add("Category", categoryDTO ?? new CategoryListItem());
             parameters.Add("CategoryOptions", CategoryOptions);
 
-            var dialog = await Dialog.ShowAsync<CategoryDialog>(mode.ToString() + "Category", parameters, new DialogOptions() { FullScreen = true, CloseButton = true });
+            var dialog = await Dialog.ShowAsync<SaveCategoryModal>(mode.ToString() + "Category", parameters, new DialogOptions() { FullScreen = true, CloseButton = true });
 
             var result = await dialog.Result;
 

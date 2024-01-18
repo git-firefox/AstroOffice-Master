@@ -16,15 +16,15 @@ window.fnShowTab = function (element) {
 }
 
 window.InputSelect2Interop = {
-    fnInitialize: function (element, dropdownParent = null) {
+    fnInitialize: function (element, dropdownParentId = null) {
 
         var select2Config = {
             theme: 'bootstrap-5',
-            width: '100%',
+            width: '100%'
         };
 
-        if (dropdownParent != undefined || dropdownParent != null) {
-            select2Config.dropdownParent = dropdownParent;
+        if (dropdownParentId != undefined || dropdownParentId != null) {
+            select2Config.dropdownParent = document.getElementById(dropdownParentId);
         }
 
         if (element instanceof HTMLSelectElement) {

@@ -13,7 +13,7 @@ namespace AstroOfficeWeb.Components.CustomFormInputs
         public string? FirstOption { get; set; }
 
         [Parameter]
-        public ElementReference? DropdownParent { get; set; }
+        public string? DropdownParent { get; set; }
 
         [Parameter]
         public string Placeholder { get; set; } = "Select an Option";
