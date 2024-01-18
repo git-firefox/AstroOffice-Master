@@ -4,7 +4,7 @@
 @inject IPrintService print
 @attribute [Authorize]
 
-<PageLayout Title="Home" >
+<PageLayout Title="Home">
     <ChildContent>
         <div class="container-fluid d-flex justify-content-center align-items-center" style="color: #fff;">
 
@@ -16,8 +16,14 @@
                     <MudText Typo="Typo.h4">Welcome to Divya Astro Ashram</MudText>
 
                     <AuthorizeView>
-                        <MudText Typo="Typo.subtitle1">Hello, <span class="badge rounded-pill bg-secondary">@context?.User?.Identity?.Name!</span> Explore the mystical world of astrology and discover insights into your life.</MudText>
-
+                        <MudText Typo="Typo.subtitle1">
+                            Hello, <span class="badge rounded-pill bg-secondary">
+                                @if (context?.User?.Identity?.Name != null)
+                                {
+                                    @($"{context.User.Identity.Name.Substring(0, 1).ToUpper()}{context.User.Identity.Name.Substring(1).ToLower()}!")
+                                }
+                            </span> Explore the mystical world of astrology and discover insights into your life.
+                        </MudText>
                     </AuthorizeView>
                 </MudContainer>
 
@@ -25,8 +31,8 @@
             </div>
         </div>
 
-       @*  <button @onclick="OnClick_BtnExplore">
-            check
+        @*  <button @onclick="OnClick_BtnExplore">
+        check
         </button> *@
 
     </ChildContent>

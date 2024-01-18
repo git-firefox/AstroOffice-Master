@@ -9,7 +9,14 @@
         <h1 class="display-4">Welcome to Divya Astro Ashram</h1>
         <!-- Add user-friendly welcome message with username -->
         <AuthorizeView>
-            <p class="lead">Hello, <span class="font-weight-bold badge badge-pill badge-secondary">@context?.User?.Identity?.Name </span>! Explore the mystical world of astrology and discover insights into your life.</p>
+            <p class="lead">
+                Hello, <span class="font-weight-bold badge badge-pill badge-secondary">
+                    @if (context?.User?.Identity?.Name != null)
+                    {
+                        @($"{context.User.Identity.Name.Substring(0, 1).ToUpper()}{context.User.Identity.Name.Substring(1).ToLower()}!")
+                    }
+                </span> Explore the mystical world of astrology and discover insights into your life.
+            </p>
         </AuthorizeView>
         <!-- Make the image circular -->
         <img src="images/loader-4.gif" alt="Astrology">

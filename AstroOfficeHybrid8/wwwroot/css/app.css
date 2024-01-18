@@ -935,3 +935,10 @@ section .section-overlay {
         font-size: 24px;
         color: #333;
     }
+
+
+@media (max-width: 600px) {
+    .mud-table-body .mud-table-row {
+        border-bottom: 15px solid #f78100;
+    }
+}

@@ -713,7 +713,7 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(apiResponse);
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpPost]
         public IActionResult AddToShoppingCart(AddToCartRequest request)
         {
@@ -745,7 +745,7 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpGet]
         public IActionResult GetUserShoppingCart()
         {
@@ -781,7 +781,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
 
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpGet]
         public IActionResult GetUserAddresses()
         {
@@ -801,7 +801,7 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpPost]
         public IActionResult SaveUserAddress(AddressDTO addressDTO)
         {
@@ -865,7 +865,8 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "User")]
+        
+        [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpPost]
         public IActionResult PlaceOrder(PlaceOrderRequest request)
         {
@@ -1004,7 +1005,7 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpGet]
         public async Task<IActionResult> GetUserOrders()
         {
@@ -1063,7 +1064,7 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpPut]
         public async Task<IActionResult> AddToWishList(AddToWishlistRequest request)
         {
@@ -1090,7 +1091,7 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteFromWishList(long productSno)
         {
@@ -1136,7 +1137,7 @@ namespace AstroOfficeWeb.Server.Controllers
         }
 
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpGet]
         public async Task<IActionResult> GetUserWishList()
         {
@@ -1162,7 +1163,7 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpPut]
         public async Task<IActionResult> UpdateShoppingCart(List<CartItemDTO> cartItemDTOs)
         {
@@ -1213,7 +1214,7 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteUserAddress(long addressSno)
         {
@@ -1243,7 +1244,7 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpPost]
         public async Task<IActionResult> CreateCheckoutSession()
         {

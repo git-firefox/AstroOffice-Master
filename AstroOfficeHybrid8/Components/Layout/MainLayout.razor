@@ -24,9 +24,21 @@
 
                             <MudDrawerHeader>
                                 <MudStack Row="true">
-                                    <MudAvatar Color="Color.Secondary" Size="Size.Medium">
-                                        @context?.User?.Identity?.Name?.Substring(0, 1).ToUpper()
-                                    </MudAvatar>
+
+                                    @if (@context.User!.IsInRole(ApplicationConst.Role_Member))
+                                    {
+                                        <MudBadge Icon="fas fa-crown" Overlap="true" Bordered="true">
+                                            <MudAvatar Color="Color.Secondary" Size="Size.Medium">
+                                                @context?.User?.Identity?.Name?.Substring(0, 1).ToUpper()
+                                            </MudAvatar>
+                                        </MudBadge>
+                                    }
+                                    else
+                                    {
+                                        <MudAvatar Color="Color.Secondary" Size="Size.Medium">
+                                            @context?.User?.Identity?.Name?.Substring(0, 1).ToUpper()
+                                        </MudAvatar>
+                                    }
                                     <MudStack Justify="Justify.Center" Spacing="0">
                                         <MudText Typo="Typo.body1">
                                             @if (context?.User?.Identity?.Name != null)
@@ -38,7 +50,8 @@
                                 </MudStack>
                             </MudDrawerHeader>
 
-                            <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser + "," + ApplicationConst.Role_Astrologer) Context="check">
+
+                            <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser + "," + ApplicationConst.Role_Astrologer + "," + ApplicationConst.Role_Member) Context="check">
                                 <Authorized>
 
                                     <MudNavLink Href="/" Match="NavLinkMatch.All" Style="font-size: 16px">
@@ -68,7 +81,7 @@
                             </AuthorizeView>
 
 
-                            <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser) Context="check1">
+                            <AuthorizeView Roles=@($"{ApplicationConst.Role_User}, {ApplicationConst.Role_Member}" ) Context="check1">
                                 <Authorized>
                                     <MudNavLink Href="/transactions" Match="NavLinkMatch.All" Style="font-size: 16px">
                                         <MudIcon Icon="@Icons.Material.Filled.Assignment" />
@@ -83,7 +96,7 @@
 
                             </AuthorizeView>
 
-                            <AuthorizeView Roles="@(ApplicationConst.Role_User)" Context="check2">
+                            <AuthorizeView Roles="@(($"{ApplicationConst.Role_User}, {ApplicationConst.Role_Member}"))" Context="check2">
                                 <Authorized>
                                     <MudNavLink Href="/products" Match="NavLinkMatch.All" Style="font-size: 16px">
                                         <MudIcon Icon="@Icons.Material.Filled.Shop" />
@@ -91,7 +104,8 @@
                                     </MudNavLink>
 
                                     <MudNavLink Href="/product-cart" Match="NavLinkMatch.All" Style="font-size: 16px">
-                                        <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" /> Cart
+                                        <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" />
+                                        Cart
                                     </MudNavLink>
 
                                     <MudNavLink Href="/my-orders" Match="NavLinkMatch.All" Style="font-size: 16px">
@@ -154,6 +168,16 @@
                                 </Authorized>
 
                             </AuthorizeView>
+
+                            <AuthorizeView Roles="@(ApplicationConst.Role_OrderManager)" Context="om">
+                                <Authorized>
+                                    <MudNavLink Href="/manage-orders" Match="NavLinkMatch.All" Style="font-size: 16px">
+                                        <MudIcon Icon="@Icons.Material.Filled.Assignment" />
+                                        Manage Orders
+                                    </MudNavLink>
+                                </Authorized>
+                            </AuthorizeView>
+
 
 
                             <MudNavLink Href="/logout" Match="NavLinkMatch.All" Style="font-size: 16px">

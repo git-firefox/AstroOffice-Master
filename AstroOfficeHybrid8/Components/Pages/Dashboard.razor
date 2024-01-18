@@ -1,5 +1,6 @@
 ﻿@page "/dashboard"
-@attribute [Authorize(Roles = "Admin,User")]
+@* @attribute [Authorize(Roles = "Admin,User")] *@
+@attribute [Authorize(Roles = $"{ApplicationConst.Role_Admin},{ApplicationConst.Role_User},{ApplicationConst.Role_Astrologer},{ApplicationConst.Role_Member}")]
 
 <PageLayout Title="Dashboard">
     <RightContainer>
@@ -12,10 +13,11 @@
     </ChildContent>
 </PageLayout>
 
-@code{
+@code {
     AstroOfficeWeb.Components.Shared.Dashboard RKaran = null!;
-   
-    private void OnClick_Karan(){
+
+    private void OnClick_Karan()
+    {
         // RKaran.KaranOpened = true;
         RKaran.KaranOpened = !RKaran.KaranOpened;
         StateHasChanged();
