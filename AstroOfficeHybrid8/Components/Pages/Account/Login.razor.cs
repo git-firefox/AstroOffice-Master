@@ -60,9 +60,6 @@ namespace AstroOfficeHybrid8.Components.Pages.Account
 
         protected override async Task OnInitializedAsync()
         {
-
-            
-
             await CheckAuthenticationState();
         }
 
@@ -70,7 +67,7 @@ namespace AstroOfficeHybrid8.Components.Pages.Account
         {
 
         }
-
+       
         private async Task OnValidSubmitAsync()
         {
             var response = await AuthService!.LoginAsync(new SignInRequest
@@ -107,5 +104,12 @@ namespace AstroOfficeHybrid8.Components.Pages.Account
             }
         }
 
+
+        private bool showPassword = false;
+
+        private InputType GetInputType()
+        {
+            return showPassword ? InputType.Text : InputType.Password;
+        }
     }
 }
