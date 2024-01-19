@@ -1,4 +1,6 @@
 ﻿@page "/dashboard"
+@using AstroOfficeHybrid8.Components.Locals
+@using AstroOfficeWeb.Shared.DTOs
 @* @attribute [Authorize(Roles = "Admin,User")] *@
 @attribute [Authorize(Roles = $"{ApplicationConst.Role_Admin},{ApplicationConst.Role_User},{ApplicationConst.Role_Astrologer},{ApplicationConst.Role_Member}")]
 
@@ -8,7 +10,11 @@
     </RightContainer>
     <ChildContent>
         <div class="mt-5 px-3">
-            <AstroOfficeWeb.Components.Shared.Dashboard @ref="RKaran" IsKaranOpened="OnClick_Karan"></AstroOfficeWeb.Components.Shared.Dashboard>
+            <AstroOfficeWeb.Components.Shared.Dashboard @ref="RKaran" IsKaranOpened="OnClick_Karan" CityListChanged="OnCityListChanged" >
+                 <SelectCityFragment >
+                    <SelectCity ListBirthCities="ListBirthCities"></SelectCity>
+                </SelectCityFragment>
+            </AstroOfficeWeb.Components.Shared.Dashboard>
         </div>
     </ChildContent>
 </PageLayout>
@@ -16,8 +22,22 @@
 @code {
     AstroOfficeWeb.Components.Shared.Dashboard RKaran = null!;
 
+    AstroOfficeWeb.Components.Shared.Dashboard dashboard = null!;
+
+
+    private List<PlaceDTO>? ListBirthCities { get; set; } = null!;
+
     private void OnClick_Karan()
     {
+        // RKaran.KaranOpened = true;
+        RKaran.KaranOpened = !RKaran.KaranOpened;
+        StateHasChanged();
+    } 
+
+
+    private void OnCityListChanged(List<PlaceDTO> placeDTOs)
+    {
+        ListBirthCities = placeDTOs;
         // RKaran.KaranOpened = true;
         RKaran.KaranOpened = !RKaran.KaranOpened;
         StateHasChanged();

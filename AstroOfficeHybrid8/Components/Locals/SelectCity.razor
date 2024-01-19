@@ -1,0 +1,81 @@
+﻿@using AstroOfficeWeb.Shared.DTOs
+<div>
+    <MudGrid>
+        <MudItem xs="12" sm="8" Class="d-flex gap-8 align-top justify-center" Style="height: 250px">
+           @*  <MudPaper Width="300px" Elevation="0">
+                <MudText Class="ma-4">
+                    @if (string.IsNullOrEmpty(SelectedCityName))
+                    {
+                        @: Select City
+                    }
+                    else
+                    {
+                        @SelectedCityName
+                    }
+
+                </MudText>
+
+
+            </MudPaper> *@
+            <MudListExtended T="PlaceDTO" ItemCollection="ListBirthCities" Clickable="true" MaxItems="3" ToStringFunc="@(e => e?.Place)" Dense="true" SelectedValueChanged="OnSelectedValueChanged" />
+        </MudItem>
+    </MudGrid>
+</div>
+
+
+@code {
+
+    bool _searchBox = false;
+
+    string? SelectedCityName { get; set; }
+
+    [Parameter]
+    public List<PlaceDTO> ListBirthCities { get; set; } = new List<PlaceDTO>();
+    AstroOfficeWeb.Components.Shared.Dashboard dashboard = null!;
+
+
+    private string[] _states =
+    {
+        "Alabama", "Alaska", "American Samoa", "Arizona",
+        "Arkansas", "California", "Colorado", "Connecticut",
+        "Delaware", "District of Columbia", "Federated States of Micronesia",
+        "Florida", "Georgia", "Guam", "Hawaii", "Idaho",
+        "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky",
+        "Louisiana", "Maine", "Marshall Islands", "Maryland",
+        "Massachusetts", "Michigan", "Minnesota", "Mississippi",
+        "Missouri", "Montana", "Nebraska", "Nevada",
+        "New Hampshire", "New Jersey", "New Mexico", "New York",
+        "North Carolina", "North Dakota", "Northern Mariana Islands", "Ohio",
+        "Oklahoma", "Oregon", "Palau", "Pennsylvania", "Puerto Rico",
+        "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
+        "Texas", "Utah", "Vermont", "Virgin Island", "Virginia",
+        "Washington", "West Virginia", "Wisconsin", "Wyoming",
+    };
+
+    private bool SearchItems(string value, string searchString)
+    {
+        if (searchString == "")
+        {
+            return true;
+        }
+
+        if (value.StartsWith(searchString, StringComparison.CurrentCultureIgnoreCase))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void OnSelectedValueChanged(PlaceDTO placeDTO)
+    {
+        SelectedCityName = placeDTO.Place;
+
+    }
+
+    public class ComplexTypes
+    {
+        public string Name { get; set; }
+        public string SurName { get; set; }
+    }
+}

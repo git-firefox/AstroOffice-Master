@@ -1,0 +1,16 @@
+﻿
+<select class="form-control form-control-sm mb-2" aria-label="Selection of BirthCity" size="3" @onchange="OnChange_ListBirthCities">
+    <option value="0">-- Select --</option>
+
+   @*  @for (int i = 0; i < ListBirthCities.Count; i++)
+    {
+        <option value="@(i + 1)">@ListBirthCities[i].Place</option>
+    } *@
+</select>
+
+@code {
+    private void OnChange_ListBirthCities()
+    {
+        
+    }
+}

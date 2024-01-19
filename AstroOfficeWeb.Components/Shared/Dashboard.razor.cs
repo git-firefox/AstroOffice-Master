@@ -20,6 +20,19 @@ namespace AstroOfficeWeb.Components.Shared
 {
     public partial class Dashboard
     {
+
+        [Parameter]
+
+        public RenderFragment SelectCityFragment { get; set; } = null!;
+
+        [Parameter]
+
+        public List<PlaceDTO>? ListBirthCities { get; set; } = null!;
+
+
+        [Parameter]
+        public EventCallback<List<PlaceDTO>> CityListChanged { get; set; }
+
         #region Define Variables
 
 
@@ -94,7 +107,7 @@ namespace AstroOfficeWeb.Components.Shared
         private string? imgSrcBhavChalit;
         private string? htmlStringFalla;
 
-        private List<PlaceDTO>? ListBirthCities = new();
+        // private List<PlaceDTO>? ListBirthCities = new();
         private SavedStateModel SavedStateModel = new();
 
         #region View Models Data
@@ -226,6 +239,7 @@ namespace AstroOfficeWeb.Components.Shared
             if (!this.no_countryload && this.BirthDetails.CmbCountry != null && BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
             {
                 this.ListBirthCities = await this.GetPlaceListLike(place: BirthDetails?.TxtBirthPlace?.Trim(), countrycode: this.BirthDetails?.CmbCountry);
+                await CityListChanged.InvokeAsync(ListBirthCities);
                 this.no_countryload = false;
             }
 
@@ -1725,6 +1739,7 @@ namespace AstroOfficeWeb.Components.Shared
             if (!this.no_countryload && this.BirthDetails.CmbCountry != null && BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
             {
                 this.ListBirthCities = await this.GetPlaceListLike(place: BirthDetails?.TxtBirthPlace?.Trim(), countrycode: this.BirthDetails?.CmbCountry);
+               
                 this.no_countryload = false;
             }
             else { return; }
@@ -1760,12 +1775,13 @@ namespace AstroOfficeWeb.Components.Shared
                     //await OnChange_ListBirthCities(new ChangeEventArgs() { Value = selectedBirthCityIndex });
                     await SelectedIndex(selectedBirthCityIndex);
                 }
-            }
+            }   
             else if (char.TryParse(e.Key, out char result))
             {
                 if (!this.no_countryload && this.BirthDetails.CmbCountry != null && BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
                 {
                     this.ListBirthCities = await this.GetPlaceListLike(place: BirthDetails?.TxtBirthPlace?.Trim(), countrycode: this.BirthDetails?.CmbCountry);
+                    await CityListChanged.InvokeAsync(ListBirthCities);
                     this.no_countryload = false;
 
                     if (ListBirthCities != null && ListBirthCities.Any())
@@ -3193,7 +3209,7 @@ namespace AstroOfficeWeb.Components.Shared
             }
             else
             {
-                
+
                 //MessageBox.Show("Please choose City from list.");
                 //this.TxtBirthplace.SelectAll();
                 //this.TxtBirthplace.Focus();

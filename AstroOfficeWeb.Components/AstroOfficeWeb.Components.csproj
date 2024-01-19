@@ -28,6 +28,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Blazored.Video" Version="1.0.1" />
+		<PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="6.7.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.22" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.25" />
 		<PackageReference Include="MudBlazor" Version="6.11.2" />
