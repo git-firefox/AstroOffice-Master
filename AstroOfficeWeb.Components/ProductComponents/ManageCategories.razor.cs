@@ -36,7 +36,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
             return false;
         };
 
-        private List<CategoryListItem>? CategoryList { get; set; }
+        private List<CategoryListItem>? Categories { get; set; }
         private IEnumerable<Option>? CategoryOptions { get; set; }
 
         protected override void OnInitialized()
@@ -46,8 +46,8 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         protected override async Task OnInitializedAsync()
         {
-            CategoryList = await ProductService.GetCategories();
-            CategoryOptions = CategoryList?.Select(cl => new Option(cl.Title, cl.Sno));
+            Categories = await ProductService.GetCategories();
+            CategoryOptions = Categories?.Select(cl => new Option(cl.Title, cl.Sno));
         }
 
         private async Task OnClick_DeleteCategory(CategoryListItem category)
@@ -59,7 +59,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
                 var response = await ProductService.IsDeletedSelectedCategory(category.Sno);
                 if (response)
                 {
-                    CategoryList?.Remove(category);
+                    Categories?.Remove(category);
                     StateHasChanged();
                 }
             }
@@ -83,7 +83,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         private void UpdateLocalCategory(CategoryListItem item)
         {
-            if (CategoryList?.FirstOrDefault(cl => cl.Sno == item.Sno) is CategoryListItem category)
+            if (Categories?.FirstOrDefault(cl => cl.Sno == item.Sno) is CategoryListItem category)
             {
 
             }

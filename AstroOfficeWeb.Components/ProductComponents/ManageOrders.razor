@@ -6,45 +6,45 @@
 @inject NavigationManager NavigationManager
 @* @inject StateContainerService StateContainerService *@
 
-
-@if (OrderDTOs == null)
+@if (Orders == null)
 {
-    <table>
-        <thead>
-            <tr>
-                <th>Sr No</th>
-                <th>Billing Name</th>
-                <th>Date</th>
-                <th>Payment Status</th>
-                <th>Total</th>
-                <th>Payment Method</th>
-                <th>Order Status</th>
-                <th>Action </th>
-            </tr>
-        </thead>
-        <tbody>      
-            @for (int row = 0; row < 10; row++)
-            {
+    <div class="table-responsive">
+        <table class="table table-centered table-nowrap">
+            <thead>
                 <tr>
-                    <td> <MudSkeleton /></td>
-                    <td> <MudSkeleton /></td>
-                    <td> <MudSkeleton /></td>
-                    <td> <MudSkeleton /></td>
-                    <td> <MudSkeleton /></td>
-                    <td> <MudSkeleton /></td>
-                    <td> <MudSkeleton /></td>
-                    <td> <MudSkeleton /></td>
+
+                    <th scope="col">Sr No</th>
+                    <th scope="col">Billing Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Payment Status</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Payment Method</th>
+                    <th scope="col">Order Status</th>
+                    <th scope="col">Action</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-
-
+            </thead>
+            <tbody>
+                @for (int i = 1; i <= 10; i++)
+                {
+                    <tr>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
-else
+else if (Orders.Any())
 {
 
-    <MudDataGrid T="OrderDTO" Items="OrderDTOs" Filterable="true" FilterMode="DataGridFilterMode.ColumnFilterRow" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive">
+    <MudDataGrid T="OrderDTO" Items="Orders" Filterable="true" FilterMode="DataGridFilterMode.ColumnFilterRow" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive">
         <Columns>
             <PropertyColumn Property="x => x.OrderId" Title="Sr No" Filterable="false" />
             <PropertyColumn Property="x => x.BillingName" Title="Billing Name" />

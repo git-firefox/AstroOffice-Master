@@ -6,51 +6,84 @@
 @inject IDialogService Dialog
 
 <MudButton OnClick="() => OnClick_UpdateCategory()" Class="btn-custom">Add Category</MudButton>
+@if (Categories == null)
+{
+    <div class="table-responsive">
+        <table class="table table-centered table-nowrap">
+            <thead>
+                <tr>
 
-<MudDataGrid T="CategoryListItem" Items="@CategoryList" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@QuickFilter">
-    <ToolBarContent>
-        <MudTextField @bind-Value="SearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-    </ToolBarContent>
-    <NoRecordsContent>
-        <MudText Typo="Typo.h5" Class="mud-text-secondary mt-16 mb-16">No data to display</MudText>
-    </NoRecordsContent>
-    <Columns>
-        <PropertyColumn Property="x=> x.Title" Title="Category">
-            <CellTemplate>
-                <table>
+                    <th scope="col">Sr No</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Total Products</th>
+                    <th scope="col">Added Date</th>
+                    <th scope="col">Last Modified Date</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 1; i <= 10; i++)
+                {
                     <tr>
-                        <td>
-                            <img class="img-thumbnail" src="@context.Item.ImageUrl" height="50" width="50" />
-
-                        </td>
-                        <td>
-                            <MudText>
-                                @(context.Item.Title)
-                            </MudText>
-                            @if (!string.IsNullOrEmpty(context.Item.Descriptions))
-                            {
-                                <MudText>
-                                    @(new MarkupString(context.Item.Descriptions))
-                                </MudText>
-                            }
-                        </td>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
+                        <td><MudSkeleton /></td>
                     </tr>
-                </table>
-            </CellTemplate>
-        </PropertyColumn>
-        <PropertyColumn Property="x => x.TotalProducts" Title="Total Products" />
-        <PropertyColumn Property="x => x.AddedDate" Title="Added Date" />
-        <PropertyColumn Property="x => x.LastModifiedDate" Title="Last Modified Date" />
-        <TemplateColumn Filterable="false" Sortable="false" CellClass="mud-table-cell">
-            <CellTemplate>
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="()=> OnClick_UpdateCategory(ActionMode.Edit, context.Item)" />
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="() => OnClick_DeleteCategory(context.Item)" />
-            </CellTemplate>
-        </TemplateColumn>
-    </Columns>
-    <PagerContent>
-        <MudDataGridPager T="CategoryListItem" />
-    </PagerContent>
-</MudDataGrid>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else if (Categories.Any())
+{
+    <MudDataGrid T="CategoryListItem" Items="@Categories" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@QuickFilter">
+        <ToolBarContent>
+            <MudTextField @bind-Value="SearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <NoRecordsContent>
+            <MudText Typo="Typo.h5" Class="mud-text-secondary mt-16 mb-16">No data to display</MudText>
+        </NoRecordsContent>
+        <Columns>
+            <PropertyColumn Property="x => x.Sno" Title="Sr No" />
+            <PropertyColumn Property="x=> x.Title" Title="Category">
+                <CellTemplate>
+                    <table>
+                        <tr>
+                            <td>
+                                <img class="img-thumbnail" src="@context.Item.ImageUrl" height="50" width="50" />
 
+                            </td>
+                            <td>
+                                <MudText>
+                                    @(context.Item.Title)
+                                </MudText>
+                                @if (!string.IsNullOrEmpty(context.Item.Descriptions))
+                                {
+                                    <MudText>
+                                        @(new MarkupString(context.Item.Descriptions))
+                                    </MudText>
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </CellTemplate>
+            </PropertyColumn>
+            <PropertyColumn Property="x => x.TotalProducts" Title="Total Products" />
+            <PropertyColumn Property="x => x.AddedDate" Title="Added Date" />
+            <PropertyColumn Property="x => x.LastModifiedDate" Title="Last Modified Date" />
+            <TemplateColumn Filterable="false" Sortable="false" CellClass="mud-table-cell">
+                <CellTemplate>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="()=> OnClick_UpdateCategory(ActionMode.Edit, context.Item)" />
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="() => OnClick_DeleteCategory(context.Item)" />
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="CategoryListItem" />
+        </PagerContent>
+    </MudDataGrid>
+}

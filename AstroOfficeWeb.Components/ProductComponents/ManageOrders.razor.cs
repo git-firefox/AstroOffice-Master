@@ -10,7 +10,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 {
     public partial class ManageOrders
     {
-        private IEnumerable<OrderDTO>? OrderDTOs { get; set; }
+        private IEnumerable<OrderDTO>? Orders { get; set; }
 
         protected override void OnInitialized()
         {
@@ -19,7 +19,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         protected override async Task OnInitializedAsync()
         {
-            OrderDTOs = await ProductService.GetOrders();
+            Orders = await ProductService.GetOrders();
         }
 
         private void OnClick_BtnViewOrder(OrderDTO order)
