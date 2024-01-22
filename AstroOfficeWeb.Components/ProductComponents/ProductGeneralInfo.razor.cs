@@ -11,13 +11,13 @@ namespace AstroOfficeWeb.Components.ProductComponents
 {
     public partial class ProductGeneralInfo : ComponentBase
     {
-        [Parameter]
+        [Parameter, EditorRequired]
         public BaseProductDTO Model { get; set; } = null!;
 
         [Parameter]
         public EventCallback<bool> ValidSubmit { get; set; }
         
-        [Parameter]
+        [Parameter, EditorRequired]
         public IEnumerable<Option> CategoryItems { get; set; } = Enumerable.Empty<Option>();
 
         public EditContext GeneralInformationContext { get; set; } = null!;

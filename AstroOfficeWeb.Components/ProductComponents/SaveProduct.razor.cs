@@ -84,11 +84,11 @@ namespace AstroOfficeWeb.Components.ProductComponents
         private async Task OnClick_BtnPublish()
         {
 
-            if (!GeneralInfoRef.GeneralInformationContext.Validate())
-            {
-                await OnClick_BtnProceed(SaveProductTab.General);
-                return;
-            }
+            //if (!GeneralInfoRef.GeneralInformationContext.Validate())
+            //{
+            //    await OnClick_BtnProceed(SaveProductTab.General);
+            //    return;
+            //}
 
             if (!MediaFiles!.Any())
             {

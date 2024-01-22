@@ -29,7 +29,7 @@
                     <TabPaneBody>
                         @if (IsCompleted)
                         {
-                            <ProductGeneralInfo @ref="GeneralInfoRef" Model=@(GeneralInfo ?? new ()) CategoryItems="CategoryOptions" />
+                            <ProductGeneralInfo @ref="GeneralInfoRef"  Model=@(GeneralInfo ?? new ()) CategoryItems="CategoryOptions" />
                         }
 
                         <MudStack Justify="Justify.FlexEnd" Row="true">
