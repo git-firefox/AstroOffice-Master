@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
+using MudExtensions;
 
 namespace AstroOfficeWeb.Components.Shared
 {
@@ -32,6 +33,10 @@ namespace AstroOfficeWeb.Components.Shared
 
         [Parameter]
         public EventCallback<List<PlaceDTO>> CityListChanged { get; set; }
+
+        private PlaceDTO SelectedCity { get; set; }
+
+
 
         #region Define Variables
 
@@ -1739,7 +1744,7 @@ namespace AstroOfficeWeb.Components.Shared
             if (!this.no_countryload && this.BirthDetails.CmbCountry != null && BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
             {
                 this.ListBirthCities = await this.GetPlaceListLike(place: BirthDetails?.TxtBirthPlace?.Trim(), countrycode: this.BirthDetails?.CmbCountry);
-               
+
                 this.no_countryload = false;
             }
             else { return; }
@@ -1753,6 +1758,15 @@ namespace AstroOfficeWeb.Components.Shared
             {
                 return;
             }
+        }
+
+
+        private async void OnSelectedCity(MudListItemExtended<PlaceDTO> selectedPlace)
+        {
+            var index = ListBirthCities?.IndexOf(selectedPlace.Value);
+            selectedBirthCityIndex = index.GetValueOrDefault();
+            BirthDetails!.TxtBirthPlace = selectedPlace.Value.Place;
+            await OnChange_ListBirthCities(new ChangeEventArgs { Value = (selectedBirthCityIndex+1) });
         }
 
         private async Task OnKeyDown_TxtBirthplace(KeyboardEventArgs e)
@@ -1775,7 +1789,7 @@ namespace AstroOfficeWeb.Components.Shared
                     //await OnChange_ListBirthCities(new ChangeEventArgs() { Value = selectedBirthCityIndex });
                     await SelectedIndex(selectedBirthCityIndex);
                 }
-            }   
+            }
             else if (char.TryParse(e.Key, out char result))
             {
                 if (!this.no_countryload && this.BirthDetails.CmbCountry != null && BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
@@ -1898,6 +1912,7 @@ namespace AstroOfficeWeb.Components.Shared
             ListBirthCities.Clear();
 
             await Gen_Kundali_Chart();
+            StateHasChanged();
         }
 
         private async Task OnClick_Lagan(MouseEventArgs e)
@@ -3215,6 +3230,8 @@ namespace AstroOfficeWeb.Components.Shared
                 //this.TxtBirthplace.Focus();
             }
         }
+
+
 
         [Inject]
         private NavigationManager? NavigationManager { get; set; }
