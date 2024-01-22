@@ -20,13 +20,13 @@ namespace AstroOfficeWeb.Components.ProductComponents
         [Parameter]
         public IEnumerable<Option> CategoryItems { get; set; } = Enumerable.Empty<Option>();
 
-        private EditContext GeneralInformationContext { get; set; } = null!;
+        public EditContext GeneralInformationContext { get; set; } = null!;
 
         private int CharacterCount { get; set; } = 0;
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            //    CharacterCount = Convert.ToInt32(ProductModel.Summary?.Length);
+            CharacterCount = Convert.ToInt32(Model.Summary?.Length);
             GeneralInformationContext = new EditContext(Model);
         }
         private void UpdateCharacterCount(ChangeEventArgs args)
@@ -35,9 +35,5 @@ namespace AstroOfficeWeb.Components.ProductComponents
             CharacterCount = summary.Length;
         }
 
-        private async Task OnSubmit_EditForm(EditContext context)
-        {
-            await ValidSubmit.InvokeAsync(context.Validate());
-        }
     }
 }

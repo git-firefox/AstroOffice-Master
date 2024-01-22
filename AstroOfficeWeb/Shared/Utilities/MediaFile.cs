@@ -19,7 +19,7 @@ namespace AstroOfficeWeb.Shared.Utilities
         /// </summary>
         public string MediaName { get; set; } = null!;
 
-        public Stream File { get; set; } = null!;
+        public Stream Stream { get; set; } = null!;
         public string FileDataUrl { get; set; } = null!;
         public string ContentType { get; set; } = null!;
         public string MediaType { get; set; } = null!;

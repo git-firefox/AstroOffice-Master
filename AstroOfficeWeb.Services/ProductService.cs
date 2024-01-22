@@ -7,6 +7,7 @@ using AstroOfficeWeb.Shared.Utilities;
 using Microsoft.AspNetCore.Components;
 //using Stripe;
 using System.Collections.Generic;
+using System.Text;
 
 namespace AstroOfficeWeb.Services
 {
@@ -34,6 +35,61 @@ namespace AstroOfficeWeb.Services
             var response = await _swagger.GetAsync<GetProductResponse>(ProductApiConst.GET_ProductBySno, queryParams);
             return (response?.GeneralInformation, response?.ProductMediaFiles, response?.ProductMetaDatas);
         }
+
+        public async Task SaveProduct(BaseProductDTO GeneralInformation, List<MediaFileDTO> ProductMediaFiles, List<MetaDataDTO> ProductMetaDatas, long sno = 0)
+        {
+            var files = new List<MediaFile>();
+            ProductMediaFiles?.ForEach(a =>
+            {
+                StringBuilder sb = new StringBuilder(a.MediaName);
+
+                if (a.File != null)
+                {
+                    if (a.IsPrimary)
+                    {
+                        sb.Append("|is-primary");
+                        a.File!.MediaName = sb.ToString();
+                    }
+                    if (a.IsSecondary)
+                    {
+                        sb.Append("|is-secondary");
+                        a.File!.MediaName = sb.ToString();
+                    }
+
+                    files.Add(a.File);                               
+                }
+            });
+
+            var request = new SaveProductRequest()
+            {
+                Sno = sno,
+                GeneralInformation = GeneralInformation,
+                ProductMediaFiles = ProductMediaFiles?.Where(a => a.File == null).ToList()!,
+                ProductMetaDatas = ProductMetaDatas
+            };
+
+            ApiResponse<string>? response = null;
+
+            if (sno > 0)
+            {
+                response = await _swagger.PutWithMultipartFormDataContentAsync<SaveProductRequest, ApiResponse<string>>(ProductApiConst.PUT_UpdateProduct +"?sno=" + sno, request, files);
+            }
+            else
+            {
+                response = await _swagger.PostWithMultipartFormDataContentAsync<SaveProductRequest, ApiResponse<string>>(ProductApiConst.POST_AddProduct, request, files);
+            }
+
+            if (response!.Success)
+            {
+                _snackbar?.ShowSuccessSnackbar(response.Message);
+                _navigation.NavigateTo("/manage-products");
+            }
+            else
+            {
+                _snackbar?.ShowErrorSnackbar(response.Message);
+            }
+        }
+
 
         public async Task<List<ViewProductDTO>?> GetProducts(long? categorySno = null)
         {

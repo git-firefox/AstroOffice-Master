@@ -8,6 +8,6 @@ namespace AstroOfficeWeb.Shared.Models
 {
     public class SignUpResponse : ApiResponse<int>
     {
-        public bool IsRegisterationSuccessful { get; set; }
+        public bool IsRegisterationSuccessful { get; set; }   
     }
 }

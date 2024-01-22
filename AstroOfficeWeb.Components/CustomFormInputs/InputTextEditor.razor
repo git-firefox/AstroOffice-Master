@@ -27,7 +27,7 @@
     [JSInvokable]
     public async Task OnInputSummernoteTextChange(object value)
     {
-        // CurrentValue = value.ToStringX();
+        CurrentValue = value.ToStringX();
         await ValueChanged.InvokeAsync(value.ToStringX());
         StateHasChanged();
     }

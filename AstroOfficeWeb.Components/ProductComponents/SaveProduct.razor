@@ -4,12 +4,13 @@
 
 @using AstroOfficeWeb.Services;
 @using AstroOfficeWeb.Shared.DTOs;
+@using MudBlazor
 
 @inject ProductService ProductService
 @inject LookupService LookupService
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
-@inject ISnackbar Snackbar
+@inject ISnackbarService Snackbar
 @inject IDialogService Dialog
 
 <MudOverlay Visible=!IsCompleted DarkBackground="true">
@@ -28,7 +29,7 @@
                     <TabPaneBody>
                         @if (IsCompleted)
                         {
-                            <ProductGeneralInfo Model=@(GeneralInfo ?? new ()) CategoryItems="CategoryOptions" />
+                            <ProductGeneralInfo @ref="GeneralInfoRef" Model=@(GeneralInfo ?? new ()) CategoryItems="CategoryOptions" />
                         }
 
                         <MudStack Justify="Justify.FlexEnd" Row="true">

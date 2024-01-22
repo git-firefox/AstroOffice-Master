@@ -8,9 +8,13 @@
 
 	<ItemGroup>
 	  <Compile Remove="AccountComponents\**" />
+	  <Compile Remove="Temp\**" />
 	  <Content Remove="AccountComponents\**" />
+	  <Content Remove="Temp\**" />
 	  <EmbeddedResource Remove="AccountComponents\**" />
+	  <EmbeddedResource Remove="Temp\**" />
 	  <None Remove="AccountComponents\**" />
+	  <None Remove="Temp\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -45,7 +49,6 @@
 
 	<ItemGroup>
 		<Folder Include="CustomFormInputs\CustomInputs\" />
-		<Folder Include="Temp\" />
 		<Folder Include="wwwroot\loaders\" />
 	</ItemGroup>
 

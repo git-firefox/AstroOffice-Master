@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AstroOfficeWeb.Shared.BaseModels;
 using AstroOfficeWeb.Shared.Utilities;
 
 
@@ -117,7 +118,7 @@ namespace AstroOfficeWeb.Shared.DTOs
         public long Sno { get; set; }
     }
 
-    public class MediaFileDTO
+    public class MediaFileDTO : BaseFormFile
     {
         public long Sno { get; set; }
         public bool IsPrimary { get; set; } = false;
@@ -126,6 +127,5 @@ namespace AstroOfficeWeb.Shared.DTOs
         public string MediaUrl { get; set; } = null!;
         public string MediaType { get; set; } = null!;
         public DateTime UploadDate { get; set; } = DateTime.Now;
-        public MediaFile? File { get; set; }
     }
 }

@@ -204,43 +204,43 @@ namespace AstroOfficeWeb.Server.Controllers
         // POST api/<ProductController>
         [Authorize]
         [HttpPost]
-        public IActionResult AddProduct([FromBody] SaveProductDTO productDTO)
+        public IActionResult AddProduct([FromForm] MultipartFormRequest<SaveProductRequest> request)
         {
-            var apiResponse = new ApiResponse<ViewProductDTO> { Data = null };
-            try
-            {
-                AProduct aProduct = _mapper.Map<AProduct>(productDTO);
-                aProduct.AddedByAUsersSno = User.GetUserSno();
-                aProduct.AddedDate = DateTime.Now;
-                _context.AProducts.Add(aProduct);
+            var apiResponse = new ApiResponse<string> { Data = null };
+            //try
+            //{
+            //    AProduct aProduct = _mapper.Map<AProduct>(productDTO);
+            //    aProduct.AddedByAUsersSno = User.GetUserSno();
+            //    aProduct.AddedDate = DateTime.Now;
+            //    _context.AProducts.Add(aProduct);
 
-                _context.SaveChanges();
+            //    _context.SaveChanges();
 
-                apiResponse.Message = ProductMessageConst.AddProduct;
-                apiResponse.Success = true;
-                var viewProduct = _mapper.Map<ViewProductDTO>(aProduct);
-                apiResponse.Data = viewProduct;
+            //    apiResponse.Message = ProductMessageConst.AddProduct;
+            //    apiResponse.Success = true;
+            //    var viewProduct = _mapper.Map<ViewProductDTO>(aProduct);
+            //    apiResponse.Data = viewProduct;
 
-                if (productDTO.ProductImages != null)
-                {
+            //    if (productDTO.ProductImages != null)
+            //    {
 
-                    var productImages = productDTO.ProductImages.Select(a => new AProductMediaFile
-                    {
-                        MediaUrl = a.ImageURL,
-                        MediaName = Path.GetFileNameWithoutExtension(a.ImageName),
-                        AProductsSno = aProduct.Sno
-                    });
+            //        var productImages = productDTO.ProductImages.Select(a => new AProductMediaFile
+            //        {
+            //            MediaUrl = a.ImageURL,
+            //            MediaName = Path.GetFileNameWithoutExtension(a.ImageName),
+            //            AProductsSno = aProduct.Sno
+            //        });
 
-                    _context.AProductMediaFiles.AddRange(productImages);
-                    _context.SaveChanges();
-                }
+            //        _context.AProductMediaFiles.AddRange(productImages);
+            //        _context.SaveChanges();
+            //    }
 
-            }
-            catch (Exception ex)
-            {
-                apiResponse.Success = false;
-                apiResponse.Message = ex.Message;
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    apiResponse.Success = false;
+            //    apiResponse.Message = ex.Message;
+            //}
             return Ok(apiResponse);
         }
 
@@ -249,114 +249,114 @@ namespace AstroOfficeWeb.Server.Controllers
         // PUT api/<ProductController>/5
         [Authorize]
         [HttpPut]
-        public IActionResult UpdateProduct(long sno, [FromBody] SaveProductDTO productDTO)
+        public IActionResult UpdateProduct([FromQuery] long sno, [FromForm]MultipartFormRequest<SaveProductRequest> request)
         {
-            var apiResponse = new ApiResponse<ViewProductDTO> { Data = null };
+            var apiResponse = new ApiResponse<string> { Data = null };
+            
             try
             {
-                if (_context.AProducts.FirstOrDefault(ap => ap.Sno == sno && ap.IsActive == true) is AProduct existedProduct)
-                {
-                    _context.Entry(existedProduct).State = EntityState.Detached;
+                //if (_context.AProducts.FirstOrDefault(ap => ap.Sno == sno && ap.IsActive == true) is AProduct existedProduct)
+                //{
+                //    _context.Entry(existedProduct).State = EntityState.Detached;
 
-                    AProduct aProduct = _mapper.Map<AProduct>(productDTO);
-                    aProduct.Sno = sno;
-                    aProduct.AddedByAUsersSno = existedProduct.AddedByAUsersSno;
-                    aProduct.AddedDate = existedProduct.AddedDate;
-                    aProduct.ModifiedByAUsersSno = User.GetUserSno();
-                    aProduct.LastModifiedDate = DateTime.Now;
-                    //aProduct.IsActive = true;
+                //    AProduct aProduct = _mapper.Map<AProduct>(productDTO);
+                //    aProduct.Sno = sno;
+                //    aProduct.AddedByAUsersSno = existedProduct.AddedByAUsersSno;
+                //    aProduct.AddedDate = existedProduct.AddedDate;
+                //    aProduct.ModifiedByAUsersSno = User.GetUserSno();
+                //    aProduct.LastModifiedDate = DateTime.Now;
+                //    //aProduct.IsActive = true;
 
-                    _context.AProducts.Update(aProduct);
-                    _context.SaveChanges();
+                //    _context.AProducts.Update(aProduct);
+                //    _context.SaveChanges();
 
-                    apiResponse.Message = ProductMessageConst.UpdateProduct;
-                    apiResponse.Success = true;
-
-
-                    var viewProduct = _mapper.Map<ViewProductDTO>(aProduct);
+                //    apiResponse.Message = ProductMessageConst.UpdateProduct;
+                //    apiResponse.Success = true;
 
 
-
-                    if (productDTO.ProductImages != null)
-                    {
-
-                        var existsImages = _context.AProductMediaFiles.Where(p => p.AProductsSno == aProduct.Sno).ToList();
-
-                        var doNotingImageSnos = productDTO.ProductImages.Where(pi => pi.Sno != 0).Select(pi => pi.Sno).ToList();
-
-                        var imagesNeedToDelete = existsImages.Where(ei => !doNotingImageSnos.Contains(ei.Sno));
-
-                        var imagesNeedToAdd = productDTO.ProductImages.Where(pi => !doNotingImageSnos.Contains(pi.Sno)).Select(pi => new AProductMediaFile
-                        {
-                            MediaUrl = pi.ImageURL,
-                            MediaName = Path.GetFileNameWithoutExtension(pi.ImageName),
-                            AProductsSno = aProduct.Sno
-                        });
-
-                        _context.AProductMediaFiles.RemoveRange(imagesNeedToDelete);
-
-                        if (imagesNeedToAdd.Any())
-                        {
-                            foreach (var pi in imagesNeedToAdd)
-                            {
-                                _context.Add(pi);
-                                _context.SaveChanges();
-
-                                var imagesDTO = _mapper.Map<ImagesDTO>(pi);
-                                viewProduct?.ProductImages?.Add(imagesDTO);
-                            }
-
-                        }
+                //    var viewProduct = _mapper.Map<ViewProductDTO>(aProduct);
 
 
-                        var existMetaData = _context.ProductMetaDatas.Where(p => p.AProductsSno == aProduct.Sno).ToList();
 
-                        var doNothingMetaDataSnos = productDTO.MetaDatas.Where(p => p.Sno != 0).Select(pi => pi.Sno).ToList();
+                //    if (productDTO.ProductImages != null)
+                //    {
 
-                        var metaDataNeedToDelete = existMetaData.Where(p => !doNothingMetaDataSnos.Contains(p.Sno));
+                //        var existsImages = _context.AProductMediaFiles.Where(p => p.AProductsSno == aProduct.Sno).ToList();
 
-                        var metaDataNeedToUpdate = existMetaData.Where(p => doNothingMetaDataSnos.Contains(p.Sno));
+                //        var doNotingImageSnos = productDTO.ProductImages.Where(pi => pi.Sno != 0).Select(pi => pi.Sno).ToList();
 
-                        var metaDataNeedToAdd = productDTO.MetaDatas.Where(pi => !doNothingMetaDataSnos.Contains(pi.Sno)).Select(pi => new ProductMetaData
-                        {
-                            MetaKeyword = pi.MetaKeyword,
-                            MetaValue = pi.MetaValue,
-                            AProductsSno = aProduct.Sno
-                        });
+                //        var imagesNeedToDelete = existsImages.Where(ei => !doNotingImageSnos.Contains(ei.Sno));
 
-                        if (metaDataNeedToUpdate.Any())
-                        {
-                            var newMetaDatas = productDTO.MetaDatas.Where(pi => doNothingMetaDataSnos.Contains(pi.Sno));
+                //        var imagesNeedToAdd = productDTO.ProductImages.Where(pi => !doNotingImageSnos.Contains(pi.Sno)).Select(pi => new AProductMediaFile
+                //        {
+                //            MediaUrl = pi.ImageURL,
+                //            MediaName = Path.GetFileNameWithoutExtension(pi.ImageName),
+                //            AProductsSno = aProduct.Sno
+                //        });
 
-                            var joinData = metaDataNeedToUpdate.Join(newMetaDatas,
-                                metaData => metaData.Sno,
-                                metaDataDto => metaDataDto.Sno,
-                                (metaData, metaDataDto) => new { OldMetaData = metaData, NewMetaDataDTO = metaDataDto });
+                //        _context.AProductMediaFiles.RemoveRange(imagesNeedToDelete);
+
+                //        if (imagesNeedToAdd.Any())
+                //        {
+                //            foreach (var pi in imagesNeedToAdd)
+                //            {
+                //                _context.Add(pi);
+                //                _context.SaveChanges();
+
+                //                var imagesDTO = _mapper.Map<ImagesDTO>(pi);
+                //                viewProduct?.ProductImages?.Add(imagesDTO);
+                //            }
+
+                //        }
 
 
-                            foreach (var tempData in joinData)
-                            {
-                                tempData.OldMetaData.MetaKeyword = tempData.NewMetaDataDTO.MetaKeyword;
-                                tempData.OldMetaData.MetaValue = tempData.NewMetaDataDTO.MetaValue;
-                                _context.ProductMetaDatas.Update(tempData.OldMetaData);
-                                _context.SaveChanges();
-                            }
-                        }
+                //        var existMetaData = _context.ProductMetaDatas.Where(p => p.AProductsSno == aProduct.Sno).ToList();
 
-                        _context.AddRange(metaDataNeedToAdd);
-                        _context.ProductMetaDatas.RemoveRange(metaDataNeedToDelete);
-                        _context.SaveChanges();
-                    }
-                    apiResponse.Data = viewProduct;
+                //        var doNothingMetaDataSnos = productDTO.MetaDatas.Where(p => p.Sno != 0).Select(pi => pi.Sno).ToList();
+
+                //        var metaDataNeedToDelete = existMetaData.Where(p => !doNothingMetaDataSnos.Contains(p.Sno));
+
+                //        var metaDataNeedToUpdate = existMetaData.Where(p => doNothingMetaDataSnos.Contains(p.Sno));
+
+                //        var metaDataNeedToAdd = productDTO.MetaDatas.Where(pi => !doNothingMetaDataSnos.Contains(pi.Sno)).Select(pi => new ProductMetaData
+                //        {
+                //            MetaKeyword = pi.MetaKeyword,
+                //            MetaValue = pi.MetaValue,
+                //            AProductsSno = aProduct.Sno
+                //        });
+
+                //        if (metaDataNeedToUpdate.Any())
+                //        {
+                //            var newMetaDatas = productDTO.MetaDatas.Where(pi => doNothingMetaDataSnos.Contains(pi.Sno));
+
+                //            var joinData = metaDataNeedToUpdate.Join(newMetaDatas,
+                //                metaData => metaData.Sno,
+                //                metaDataDto => metaDataDto.Sno,
+                //                (metaData, metaDataDto) => new { OldMetaData = metaData, NewMetaDataDTO = metaDataDto });
+
+
+                //            foreach (var tempData in joinData)
+                //            {
+                //                tempData.OldMetaData.MetaKeyword = tempData.NewMetaDataDTO.MetaKeyword;
+                //                tempData.OldMetaData.MetaValue = tempData.NewMetaDataDTO.MetaValue;
+                //                _context.ProductMetaDatas.Update(tempData.OldMetaData);
+                //                _context.SaveChanges();
+                //            }
+                //        }
+
+                //        _context.AddRange(metaDataNeedToAdd);
+                //        _context.ProductMetaDatas.RemoveRange(metaDataNeedToDelete);
+                //        _context.SaveChanges();
+                //    }
+                //    apiResponse.Data = viewProduct;
+                //}
+                //else
+                //{
+                //    apiResponse.ErrorNo = 1;
+                //    apiResponse.Success = false;
+                //    apiResponse.Message = ProductMessageConst.NotFoundProduct;
+                //    return Ok(apiResponse);
                 }
-                else
-                {
-                    apiResponse.ErrorNo = 1;
-                    apiResponse.Success = false;
-                    apiResponse.Message = ProductMessageConst.NotFoundProduct;
-                    return Ok(apiResponse);
-                }
-            }
             catch (Exception ex)
             {
                 apiResponse.ErrorNo = 2;

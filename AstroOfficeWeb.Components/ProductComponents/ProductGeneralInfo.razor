@@ -1,4 +1,4 @@
-﻿<EditForm EditContext="GeneralInformationContext" OnSubmit="OnSubmit_EditForm">
+﻿<EditForm EditContext="GeneralInformationContext">
     <DataAnnotationsValidator />
     <h4 class="header-title">General Information</h4>
     <p class="sub-header">Fill all information below</p>
@@ -32,7 +32,7 @@
     <div class="mb-3">
         <label for="product-description" class="form-label">Product Description <span class="text-danger">*</span></label>
         <ValidationMessage For=@(() => Model!.Description) />
-        <InputTextEditor @bind-Value="@Model!.Description" id="product-description"></InputTextEditor>
+        <InputTextEditor @bind-Value="Model!.Description" id="product-description"></InputTextEditor>
         @* @Model!.Description *@
     </div>
 

@@ -783,18 +783,18 @@ namespace ASModels
                     .HasConstraintName("FK_ProductCategories_Sno");
             });
 
-            modelBuilder.Entity<AProductMediaFile>((Action<Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<AProductMediaFile>>)(entity =>
+            modelBuilder.Entity<AProductMediaFile>(entity =>
             {
                 entity.HasKey(e => e.Sno)
                     .HasName("PK__A_Produc__CA1FE464A4480897");
 
                 entity.Property(e => e.UploadDate).HasDefaultValueSql("(getdate())");
 
-                entity.HasOne<AProduct>(d => d.AProductsSnoNavigation)
+                entity.HasOne(d => d.AProductsSnoNavigation)
                     .WithMany(p => p.AProductMediaFiles)
-                    .HasForeignKey((System.Linq.Expressions.Expression<Func<AProductMediaFile, object?>>)(d => (object?)d.AProductsSno))
-                    .HasConstraintName<AProduct, AProductMediaFile>("FK_ProductMediaFiles_A_Products_Sno");
-            }));
+                    .HasForeignKey(d => d.AProductsSno)
+                    .HasConstraintName("FK_ProductMediaFiles_A_Products_Sno");
+            });
 
             modelBuilder.Entity<APunjabi>(entity =>
             {

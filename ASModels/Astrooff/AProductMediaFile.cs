@@ -20,6 +20,8 @@ namespace ASModels.Astrooff
         public string? MediaType { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? UploadDate { get; set; }
+        public bool IsPrimary { get; set; }
+        public bool IsSecondary { get; set; }
 
         [ForeignKey("AProductsSno")]
         [InverseProperty("AProductMediaFiles")]

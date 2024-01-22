@@ -1,4 +1,6 @@
-﻿using AstroOfficeWeb.Shared.Models;
+﻿using AstroOfficeWeb.Shared.BaseModels;
+using AstroOfficeWeb.Shared.DTOs;
+using AstroOfficeWeb.Shared.Models;
 using AstroOfficeWeb.Shared.Utilities;
 
 namespace AstroOfficeWeb.Services.IServices
@@ -12,5 +14,6 @@ namespace AstroOfficeWeb.Services.IServices
         Task<TResponse?> PutAsync<TRequest, TResponse>(string url, TRequest request);
         Task<TResponse?> GetAsync<TResponse>(string url, Dictionary<string, string>? queryParams = null);
         Task<TResponse?> DeleteAsync<TResponse>(string url, Dictionary<string, string>? queryParams = null);
+        //Task<TResponse?> PostWithMultipartFormDataContentAsync1<TRequest,TResponse>(string url, TRequest request, List<MediaFileDTO> fileRequest);
     }
 }

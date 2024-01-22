@@ -1,9 +1,12 @@
-﻿using System.Linq.Expressions;
+﻿using System.Dynamic;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using AstroOfficeWeb.Services.IServices;
+using AstroOfficeWeb.Shared.BaseModels;
+using AstroOfficeWeb.Shared.DTOs;
 using AstroOfficeWeb.Shared.Helper;
 using AstroOfficeWeb.Shared.Models;
 using AstroOfficeWeb.Shared.Utilities;
@@ -72,9 +75,9 @@ namespace AstroOfficeWeb.Services
                 {
                     foreach (var file in files)
                     {
-                        if (file?.File != null)
+                        if (file?.Stream != null)
                         {
-                            var fileStreamContent = new StreamContent(file.File);
+                            var fileStreamContent = new StreamContent(file.Stream);
                             fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                             {
                                 Name = "Files",
@@ -132,9 +135,9 @@ namespace AstroOfficeWeb.Services
                 {
                     foreach (var file in files)
                     {
-                        if (file?.File != null)
+                        if (file?.Stream != null)
                         {
-                            var fileStreamContent = new StreamContent(file.File);
+                            var fileStreamContent = new StreamContent(file.Stream);
                             fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                             {
                                 Name = "Files",
@@ -191,7 +194,7 @@ namespace AstroOfficeWeb.Services
                         if (file != null)
                         {
 
-                            var fileStreamContent = new StreamContent(file.File);
+                            var fileStreamContent = new StreamContent(file.Stream);
                             fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                             {
                                 Name = "Files",
@@ -328,5 +331,79 @@ namespace AstroOfficeWeb.Services
             }
             return uriBuilder;
         }
+
+
+        //public async Task<TResponse?> PostWithMultipartFormDataContentAsync1<TRequest, TResponse>(string url, TRequest request, List<MediaFileDTO> fileRequest) 
+        //{
+        //    try
+        //    {
+
+        //        var expandoObject = new ExpandoObject() as IDictionary<string, object>;
+        //        var properties = request?.GetType().GetProperties();
+        //        var multipartContent = new MultipartFormDataContent();
+
+        //        foreach (var property in properties)
+        //        {
+        //            var value = property.GetValue(request);
+        //            multipartContent.Add(new StringContent(JsonConvert.SerializeObject(value)), property.Name);
+        //        }
+
+
+        //        //if (request != null)
+        //        //{
+        //        //    var content = JsonConvert.SerializeObject(request);
+        //        //    var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+        //        //    multipartContent.Add(bodyContent, "Data");
+        //        //}
+
+
+        //        if (fileRequest != null)
+        //        {
+        //            for (int i = 0; i < fileRequest.Count; i++)
+        //            {
+        //                var file = fileRequest[i];
+        //                var propertiesfileRequest = fileRequest.GetType().GetProperties();
+
+        //                if (file.File != null)
+        //                {
+        //                    var streamContent = new StreamContent(file.File.Stream);
+        //                    multipartContent.Add(streamContent, $"Files[{i}].File", file.File.MediaName);
+        //                }
+
+        //                foreach (var property in propertiesfileRequest.Where(property => property.PropertyType == typeof(BaseFormFile)))
+        //                {
+        //                    var value = property.GetValue(file);
+        //                    multipartContent.Add(new StringContent(JsonConvert.SerializeObject(value)), $"Files[{i}].{property.Name}");
+        //                }
+
+        //            }
+        //        }
+        //        var response = await _client.PostAsync(_client.BaseAddress + url, multipartContent);
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var contentTemp = await response.Content.ReadAsStringAsync();
+        //            var result = JsonConvert.DeserializeObject<TResponse>(contentTemp);
+        //            return result;
+        //        }
+        //        else if (response.StatusCode == HttpStatusCode.Unauthorized)
+        //        {
+        //            var errorResponse = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+        //            _snackbar.ShowErrorSnackbar(errorResponse?.Title);
+        //        }
+        //        else
+        //        {
+        //            var errorResponse = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+        //            _snackbar.ShowErrorSnackbar(errorResponse?.Title);
+        //        };
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _snackbar.ShowErrorSnackbar(ex.Message);
+        //    }
+        //    return default;
+        //}
+
     }
 }

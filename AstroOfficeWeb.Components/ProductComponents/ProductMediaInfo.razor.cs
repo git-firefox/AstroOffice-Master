@@ -69,7 +69,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
                         MediaUrl = $"data:{file.ContentType};base64," + base64String,
                         File = new MediaFile
                         {
-                            File = file.OpenReadStream(file.Size),
+                            Stream = file.OpenReadStream(file.Size),
                             Name = Path.GetFileNameWithoutExtension(file.Name),
                             MediaName = file.Name,
                             ContentType = file.ContentType,

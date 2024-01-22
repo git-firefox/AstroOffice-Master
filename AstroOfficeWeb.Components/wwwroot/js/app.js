@@ -73,7 +73,7 @@ window.fnSummernoteInterop = function (element, height, dotnetObject) {
         });
 
         $(element).on('summernote.change', function (we, contents, $editable) {
-            console.log('Summernote\'s content is changed.');
+            dotnetObject.invokeMethodAsync("OnInputSummernoteTextChange", contents);
         });
 
         $(element).on('summernote.paste', function (e) {
