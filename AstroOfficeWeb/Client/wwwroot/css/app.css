@@ -931,3 +931,8 @@ section .section-overlay {
         border-bottom: 15px solid #f78100;
     }
 }
+
+.karan-image {
+    background-color: rgb(251, 196, 111);
+}
+

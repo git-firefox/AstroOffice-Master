@@ -66,14 +66,9 @@
 
 @if (KaranOpened)
 {
-    <MudExpansionPanels MultiExpansion="true">
-        <MudExpansionPanel Text="Karan" IsExpandedChanged="ExpandedChanged">
-            @KaranPanelContent
-        </MudExpansionPanel>
-    </MudExpansionPanels>
+
     // IsKaranOpened.InvokeAsync(true);
 }
-
 
 <FaladeshModal @ref="FaladeshModal" Falla="@htmlStringFalla" ImgSrcLagan="@imgSrcLagan" ImgSrcBhavChalit="@imgSrcBhavChalit" ConfirmationChanged="ConfirmationChangedModel" />
 
@@ -150,13 +145,14 @@
                                         @if ((IsAdmin || UserCanEdit) && inputBirthPlaceEnabled)
                                         {
                                             @* <InputText @ref="inputTextBirthPlace" @bind-Value="BirthDetails!.TxtBirthPlace" class="form-control form-control-sm mb-2" @onkeydown="OnKeyDown_TxtBirthplace" @oninput="OnInput_TxtBirthplace" @onfocus="OnFocus_TxtBirthplace" /> *@
-                                            <input class="form-control form-control-sm mb-2" @bind="BirthDetails!.TxtBirthPlace" @bind:event="oninput" @onkeyup="OnKeyDown_TxtBirthplace" />
+                                            // <input class="form-control form-control-sm mb-2" @bind="BirthDetails!.TxtBirthPlace" @bind:event="oninput" @onkeyup="OnKeyDown_TxtBirthplace"/>
+                                            <input class="form-control form-control-sm mb-2" @bind="BirthDetails!.TxtBirthPlace" @onkeyup="OnKeyDown_TxtBirthplace" @oninput="OnChange_TxtBirthplace" />
                                         }
                                         else
                                         {
                                             <input value="@BirthDetails!.TxtBirthPlace" class="form-control form-control-sm mb-2" readonly />
                                         }
-                                        @if (ListBirthCities != null)
+                                        @if (ListBirthCities != null && ListBirthCities.Count != 0)
                                         {
 
                                             // <select value="@selectedBirthCityIndex" class="form-control form-control-sm mb-2" aria-label="Selection of BirthCity" size="3" @onchange="OnChange_ListBirthCities">
@@ -175,7 +171,7 @@
 
 
 
-                                        // <div >
+                                            // <div >
                                             //     @SelectCityFragment
                                             // </div>
 
@@ -183,9 +179,9 @@
                                         }
                                         else
                                         {
-                                            <MudPaper>
-                                                <MudListExtended T="PlaceDTO"  Clickable="true" MaxItems="3" ToStringFunc="@(e => e?.Place)" Dense="true" SelectedItemChanged="OnSelectedCity" />
-                                            </MudPaper>
+                                            // <MudPaper>
+                                            //     <MudListExtended T="PlaceDTO"  Clickable="true" MaxItems="3" ToStringFunc="@(e => e?.Place)" Dense="true" SelectedItemChanged="OnSelectedCity" />
+                                            // </MudPaper>
                                         }
 
                                         <div class="row">
@@ -547,6 +543,18 @@
         </div>
     </div>
 </div>
+
+
+
+<MudExpansionPanels  MultiExpansion="true">
+
+    <MudExpansionPanel Class="karan-image" Text="Karan" IsExpandedChanged="ExpandedChanged">
+
+        @KaranPanelContent
+    </MudExpansionPanel>
+
+</MudExpansionPanels>
+
 
 <div class="row mt-5 pt-2">
     <div class="col">

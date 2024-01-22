@@ -5,9 +5,9 @@
 @attribute [Authorize(Roles = $"{ApplicationConst.Role_Admin},{ApplicationConst.Role_User},{ApplicationConst.Role_Astrologer},{ApplicationConst.Role_Member}")]
 
 <PageLayout Title="Dashboard">
-    <RightContainer>
+   @*  <RightContainer>
         <MudButton Class="btn-custom" OnClick="OnClick_Karan">Karan</MudButton>
-    </RightContainer>
+    </RightContainer> *@
     <ChildContent>
         <div class="mt-5 px-3">
             <AstroOfficeWeb.Components.Shared.Dashboard @ref="RKaran" IsKaranOpened="OnClick_Karan" CityListChanged="OnCityListChanged" >

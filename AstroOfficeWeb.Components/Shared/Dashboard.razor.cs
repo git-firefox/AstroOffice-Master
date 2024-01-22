@@ -1760,15 +1760,25 @@ namespace AstroOfficeWeb.Components.Shared
             }
         }
 
-
+        private PlaceDTO SelectedPlace { get; set; }
         private async void OnSelectedCity(MudListItemExtended<PlaceDTO> selectedPlace)
         {
             var index = ListBirthCities?.IndexOf(selectedPlace.Value);
             selectedBirthCityIndex = index.GetValueOrDefault();
             BirthDetails!.TxtBirthPlace = selectedPlace.Value.Place;
-            await OnChange_ListBirthCities(new ChangeEventArgs { Value = (selectedBirthCityIndex+1) });
+            SelectedPlace = selectedPlace.Value;
+            //await OnChange_ListBirthCities(new ChangeEventArgs { Value = (selectedBirthCityIndex +1) });
+            await OnChange_ListBirthCities(new ChangeEventArgs { Value = (selectedBirthCityIndex) });
         }
 
+        private async Task OnChange_TxtBirthplace(ChangeEventArgs args)
+        {
+            var searchString = args.Value.ToStringX();
+            if (!this.no_countryload && this.BirthDetails.CmbCountry != null && searchString.Length > 2)
+            {
+                this.ListBirthCities = await this.GetPlaceListLike(place: searchString, countrycode: this.BirthDetails?.CmbCountry);
+            }
+        }
         private async Task OnKeyDown_TxtBirthplace(KeyboardEventArgs e)
         {
             BirthDetails.PlaceOfBirthID = null;
@@ -1783,7 +1793,7 @@ namespace AstroOfficeWeb.Components.Shared
             }
             else if (e.Key == "ArrowDown")
             {
-                if (selectedBirthCityIndex < ListBirthCities?.Count - 1)
+                if (selectedBirthCityIndex <= ListBirthCities?.Count - 1)
                 {
                     selectedBirthCityIndex++;
                     //await OnChange_ListBirthCities(new ChangeEventArgs() { Value = selectedBirthCityIndex });
@@ -1795,7 +1805,7 @@ namespace AstroOfficeWeb.Components.Shared
                 if (!this.no_countryload && this.BirthDetails.CmbCountry != null && BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
                 {
                     this.ListBirthCities = await this.GetPlaceListLike(place: BirthDetails?.TxtBirthPlace?.Trim(), countrycode: this.BirthDetails?.CmbCountry);
-                    await CityListChanged.InvokeAsync(ListBirthCities);
+                    //await CityListChanged.InvokeAsync(ListBirthCities);
                     this.no_countryload = false;
 
                     if (ListBirthCities != null && ListBirthCities.Any())
@@ -1834,7 +1844,7 @@ namespace AstroOfficeWeb.Components.Shared
             }
 
             selectedBirthCity = ListBirthCities![selectedBirthCityIndex - 1];
-
+            SelectedPlace = selectedBirthCity;
             // this.BirthDetails.BirthPlace = selectedBirthCity?.Place ?? "";
 
             BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
@@ -1900,9 +1910,10 @@ namespace AstroOfficeWeb.Components.Shared
             //await Task.Delay(1000);
             string value = e.Value.ToStringX();
             selectedBirthCityIndex = Convert.ToInt32(value);
-            if (selectedBirthCityIndex == 0) return;
+            //if (selectedBirthCityIndex == 0) return;
 
-            var selectedBirthCity = ListBirthCities![selectedBirthCityIndex - 1];
+            //var selectedBirthCity = ListBirthCities![selectedBirthCityIndex - 1];
+            var selectedBirthCity = ListBirthCities![selectedBirthCityIndex];
 
             await SelectedIndex(selectedBirthCityIndex);
             // this.BirthDetails.BirthPlace = selectedBirthCity?.Place ?? "";
