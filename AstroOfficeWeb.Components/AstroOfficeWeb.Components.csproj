@@ -21,6 +21,11 @@
 		<Content Remove="SavedKundalis.razor" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Include="wwwroot\backgrounds\astro-background.webp" />
+	  <None Include="wwwroot\js\app.js" />
+	</ItemGroup>
+
  
 	<ItemGroup>
 		<SupportedPlatform Include="browser" />

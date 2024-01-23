@@ -1,4 +1,5 @@
 ﻿@page "/dashboard"
+@using MudExtensions
 
 @attribute [Authorize(Roles = $"{ApplicationConst.Role_Admin},{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
 
@@ -167,7 +168,7 @@
                                             //         <option value="@(i + 1)">@ListBirthCities[i].Place</option>
                                             //     }
                                             // </select>
-                                            <MudListExtended T="PlaceDTO" ItemCollection="ListBirthCities" Clickable="true" MaxItems="3" ToStringFunc="@(e => e?.Place)" Dense="true" SelectedValueChanged="OnSelectedValueChanged" />
+                                            <MudListExtended T="PlaceDTO" ItemCollection="ListBirthCities" Clickable="true" MaxItems="3" ToStringFunc="@(e => e?.Place)" Dense="true"/>
 
                                             // <div >
                                             //     @SelectCityFragment
