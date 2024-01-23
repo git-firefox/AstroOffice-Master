@@ -26,7 +26,7 @@
     [Parameter]
     public EventCallback<bool> IsKaranOpened { get; set; }
 
-   
+
 
     private RenderFragment? KaranPanelContent;
 
@@ -67,14 +67,9 @@
 
 @if (KaranOpened)
 {
-    <MudExpansionPanels MultiExpansion="true">
-        <MudExpansionPanel Text="Karan" IsExpandedChanged="ExpandedChanged">
-            @KaranPanelContent
-        </MudExpansionPanel>
-    </MudExpansionPanels>
+
     // IsKaranOpened.InvokeAsync(true);
 }
-
 
 <FaladeshModal @ref="FaladeshModal" Falla="@htmlStringFalla" ImgSrcLagan="@imgSrcLagan" ImgSrcBhavChalit="@imgSrcBhavChalit" ConfirmationChanged="ConfirmationChangedModel" />
 
@@ -94,7 +89,7 @@
 
                 </div>
                 <EditForm Model="BirthDetails">
-                    <div class="card-body px-md-0">
+                    <div class="card-body px-md-0 p-0">
                         <div class="row">
                             <div class="col">
                                 <select @onchange="OnChange_CmbSkipBad" value="@BirthDetails!.CmbSkipBad" class="form-control form-control-sm" aria-label="Selection of SkipBad" title="Skip Bad">
@@ -151,13 +146,14 @@
                                         @if ((IsAdmin || UserCanEdit) && inputBirthPlaceEnabled)
                                         {
                                             @* <InputText @ref="inputTextBirthPlace" @bind-Value="BirthDetails!.TxtBirthPlace" class="form-control form-control-sm mb-2" @onkeydown="OnKeyDown_TxtBirthplace" @oninput="OnInput_TxtBirthplace" @onfocus="OnFocus_TxtBirthplace" /> *@
-                                            <input class="form-control form-control-sm mb-2" @bind="BirthDetails!.TxtBirthPlace" @bind:event="oninput"  @onkeyup="OnKeyDown_TxtBirthplace" />
+                                            // <input class="form-control form-control-sm mb-2" @bind="BirthDetails!.TxtBirthPlace" @bind:event="oninput" @onkeyup="OnKeyDown_TxtBirthplace"/>
+                                            <input class="form-control form-control-sm mb-2" @bind="BirthDetails!.TxtBirthPlace" @onkeyup="OnKeyDown_TxtBirthplace" @oninput="OnChange_TxtBirthplace" />
                                         }
                                         else
                                         {
                                             <input value="@BirthDetails!.TxtBirthPlace" class="form-control form-control-sm mb-2" readonly />
                                         }
-                                        @if (ListBirthCities != null)
+                                        @if (ListBirthCities != null && ListBirthCities.Count != 0)
                                         {
 
                                             // <select value="@selectedBirthCityIndex" class="form-control form-control-sm mb-2" aria-label="Selection of BirthCity" size="3" @onchange="OnChange_ListBirthCities">
@@ -168,13 +164,25 @@
                                             //         <option value="@(i + 1)">@ListBirthCities[i].Place</option>
                                             //     }
                                             // </select>
-                                            <MudListExtended T="PlaceDTO" ItemCollection="ListBirthCities" Clickable="true" MaxItems="3" ToStringFunc="@(e => e?.Place)" Dense="true"/>
+                                            // <MudListExtended T="PlaceDTO" ItemCollection="ListBirthCities" Clickable="true" MaxItems="3" ToStringFunc="@(e => e?.Place)" Dense="true" SelectedValueChanged="OnSelectedValueChanged" />
+
+                                            <MudPaper>
+                                                <MudListExtended T="PlaceDTO" ItemCollection="ListBirthCities" Clickable="true" MaxItems="3" ToStringFunc="@(e => e?.Place)" Dense="true" SelectedItemChanged="OnSelectedCity" />
+                                            </MudPaper>
+
+
 
                                             // <div >
                                             //     @SelectCityFragment
                                             // </div>
 
 
+                                        }
+                                        else
+                                        {
+                                            // <MudPaper>
+                                            //     <MudListExtended T="PlaceDTO"  Clickable="true" MaxItems="3" ToStringFunc="@(e => e?.Place)" Dense="true" SelectedItemChanged="OnSelectedCity" />
+                                            // </MudPaper>
                                         }
 
                                         <div class="row">
@@ -421,7 +429,7 @@
                 <div class="card-header p-0 text-center mb-2">
                     <h2 class="font-weight-bold">Kundali Table</h2>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div class="row">
                         <div class="col-md-12">
                             <table class="table table-sm table-hover">
@@ -481,7 +489,7 @@
                 </div>
 
                 <EditForm Model="BirthDetails">
-                    <div class="card-body">
+                    <div class="card-body p-0">
 
 
 
@@ -536,6 +544,18 @@
         </div>
     </div>
 </div>
+
+
+
+<MudExpansionPanels  MultiExpansion="true">
+
+    <MudExpansionPanel Class="karan-image" Text="Karan" IsExpandedChanged="ExpandedChanged">
+
+        @KaranPanelContent
+    </MudExpansionPanel>
+
+</MudExpansionPanels>
+
 
 <div class="row mt-5 pt-2">
     <div class="col">
