@@ -2,6 +2,7 @@
 using AstroOfficeWeb.Shared.Helper;
 using AstroOfficeWeb.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor;
 using System;
@@ -25,6 +26,10 @@ namespace AstroOfficeWeb.Components.ProductComponents
         [Parameter]
         public int CurrentPage { get; set; } = 1;
 
+        public bool IsDrawerOpen { get; set; }
+        private string sortByPrice = "Default";
+        private string pageSize = "24";
+
         public List<ViewProductDTO>? Products { get; set; }
         private List<ViewProductDTO> FilteredProducts = new List<ViewProductDTO>();
         private List<ViewProductDTO> ListedProducts = new List<ViewProductDTO>();
@@ -39,6 +44,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         protected override void OnInitialized()
         {
             base.OnInitialized();
+           
         }
         protected override async Task OnInitializedAsync()
         {
@@ -48,7 +54,13 @@ namespace AstroOfficeWeb.Components.ProductComponents
             if (Products is not null)
             {
                 await ApplyFilter();
+
             }
+        }
+
+        private void OnClick_BtnClose(MouseEventArgs e)
+        {
+            IsDrawerOpen = !IsDrawerOpen;
         }
 
         private async Task PageChanged(int i)
@@ -89,7 +101,13 @@ namespace AstroOfficeWeb.Components.ProductComponents
         }
         private async Task OnClick_BtnClear()
         {
-            await JSRuntime.InvokeVoidAsync("location.reload");
+
+            // await JSRuntime.InvokeVoidAsync("location.reload");
+            sortByPrice = "Default";
+            pageSize = "24";
+            Products = await ProductService.GetProducts();
+            await ApplyFilter();
+            IsDrawerOpen = false;
         }
 
         private async Task ApplyFilter()
@@ -133,6 +151,14 @@ namespace AstroOfficeWeb.Components.ProductComponents
             //}
         }
 
+        public void OnSwipe(SwipeEventArgs direction)
+        {
+            if (direction.SwipeDirection == SwipeDirection.LeftToRight)
+            {
+                IsDrawerOpen = false;
+                StateHasChanged();
+            }
+        }
 
         private void UpdateVisibleItems()
         {
@@ -162,7 +188,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         bool IsFilterOpened = false;
 
-        private async void OnClick_BtnFilter()
+        public void OnClick_BtnFilter(MouseEventArgs e)
         {
             //if (!IsFilterOpened)
             //{
@@ -174,7 +200,10 @@ namespace AstroOfficeWeb.Components.ProductComponents
             //    //await JSRuntime.InvokeVoidAsync("eval", "document.getElementsByClassName('categories')[0].style.left = '-500px'");
             //   // IsFilterOpened = false;
             //}
-            await EventCallback.InvokeAsync(true);
+
+            IsDrawerOpen = true;
+
+            //await EventCallback.InvokeAsync(true);
         }
 
 

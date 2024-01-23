@@ -3,11 +3,11 @@
 
 @inject IJSRuntime JSRuntime
 <PageLayout Title="Shop">
-    <RightContainer>
-        <MudIconButton OnClick="()=>OnClick_BtnFilter(isOpened)" Color="Color.Primary" Icon="@Icons.Material.Filled.FilterAlt" Class="d-flex d-sm-none" Style="background-color:white; height: 40px; width: 40px;"></MudIconButton>
-    </RightContainer>
+   @*  <RightContainer>
+        <MudIconButton OnClick="viewProducts.OnClick_BtnFilter" Color="Color.Primary" Icon="@Icons.Material.Filled.FilterAlt" Class="d-flex d-sm-none" Style="background-color:white; height: 40px; width: 40px;"></MudIconButton>
+    </RightContainer> *@
     <ChildContent>
-        <AstroOfficeWeb.Components.ProductComponents.ViewProducts EventCallback="OnClick_BtnFilter" CategoryName="@CategoryName" CategorySno="@CategorySno" CurrentPage="@CurrentPage"></AstroOfficeWeb.Components.ProductComponents.ViewProducts>
+        <AstroOfficeWeb.Components.ProductComponents.ViewProducts @ref=viewProducts EventCallback="OnClick_BtnFilter" CategoryName="@CategoryName" CategorySno="@CategorySno" CurrentPage="@CurrentPage"></AstroOfficeWeb.Components.ProductComponents.ViewProducts>
     </ChildContent>
 </PageLayout>
 
@@ -21,6 +21,7 @@
     [Parameter]
     public int CurrentPage { get; set; } = 1;
 
+    AstroOfficeWeb.Components.ProductComponents.ViewProducts viewProducts = null!;
 
     bool isOpened = true;
     private async void OnClick_BtnFilter(bool isOpen)

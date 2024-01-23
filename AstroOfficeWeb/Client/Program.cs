@@ -18,6 +18,7 @@ builder.Services.AddMudServices();
 builder.Services.AddMudExtensions();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddAuthorizationCore();
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://ec2-15-207-51-190.ap-south-1.compute.amazonaws.com") });
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<ISnackbarService, CustomSnackbar>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationStateService>();

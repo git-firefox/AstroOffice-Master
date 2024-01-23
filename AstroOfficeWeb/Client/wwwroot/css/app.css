@@ -718,10 +718,10 @@ a.forgot-link {
         font-size: 0.775rem;
     }
 
-    .brand-text {
+    /*.brand-text {
         display: none;
     }
-
+*/
     .login-box, .register-box {
         width: 100%;
     }
@@ -1011,11 +1011,11 @@ section .section-overlay {
     border-bottom: 2px solid transparent;
 }
 
-@media (max-width: 375px) {
+/*@media (max-width: 375px) {
     .brand-text {
         display: none;
     }
-}
+}*/
 
 @media screen and (max-width: 1400px) {
     .brand {
@@ -1162,3 +1162,8 @@ header#header-container {
     .nav-profile-menu-item .dropdown-item.active, .nav-profile-menu-item .dropdown-item:active {
         background-color: #440606;
     }
+
+.karan-image {
+    background-color: rgb(251, 196, 111);
+}
+

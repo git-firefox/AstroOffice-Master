@@ -1,25 +1,39 @@
 <div class="container p-3">
-    <div class="justify-content-between d-none d-md-flex">
-        <h1 class="pt-4 pb-2 font-weight-bold">@Name</h1>
-        <div class="pt-4 pb-2 ">
-            @Header
+    <div class="d-flex justify-content-between">
+        <h1 class="pt-4 pb-2 font-weight-bold ">@Name</h1>
+        @if (Header != null)
+        {
+            <div class="pt-4 pb-2 ">
+
+                @Header
+
+            </div>
+        }
+        
+
+
+    </div> 
+    @if (ChildContent != null)
+    {
+        <div class="child-content">
+
+            @ChildContent
+
         </div>
-    
+    }
+    @if (Footer != null)
+    {
 
-    </div>
-
-    <div class="child-content">
-        @ChildContent
-    </div>
-
-    <div class="footer">
-        @Footer
-    </div>
+        <div class="footer">
+            @Footer
+        </div>
+    }
 </div>
 
 @code {
     [Parameter]
     public RenderFragment? Header { get; set; }
+   
 
     [Parameter]
     public String? Name { get; set; }
@@ -28,6 +42,6 @@
     public RenderFragment? Footer { get; set; }
 
     [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    public RenderFragment ChildContent { get; set; } = null!;
 
 }

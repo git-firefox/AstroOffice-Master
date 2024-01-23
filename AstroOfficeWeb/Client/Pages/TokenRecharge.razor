@@ -224,14 +224,19 @@
 
 
 
-<ContainerFluid HeaderTitle="Recharge Token" UserToken="TotalBalance" >
-    
+<ContainerFluid HeaderTitle="Recharge Token">
+    <Header>
+        @if (TotalBalance != null)
+        {
+            <MudChip Color="Color.Warning" Icon="@Icons.Material.Filled.CurrencyRupee"> @TotalBalance</MudChip>
+        }
+    </Header>
     <ChildContent>
         <AstroOfficeWeb.Components.TokenComponents.TokenRecharge OnTokenUpdated="OnTokenUpdated"></AstroOfficeWeb.Components.TokenComponents.TokenRecharge>
     </ChildContent>
 </ContainerFluid>
 
-@code{
+@code {
     private decimal? TotalBalance;
     private void OnTokenUpdated(decimal? userToken)
     {

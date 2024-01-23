@@ -191,6 +191,10 @@
 
 
 <Container Name="Shop">
+  @*   <Header>
+        <MudIconButton OnClick="OnClickBtnFilter" Icon="@Icons.Material.Filled.FilterAlt" Class="d-flex d-sm-none mt-2" Style="background-color:white; height: 40px; width: 40px;"></MudIconButton>
+    </Header>
+ *@
     <ChildContent>
         <AstroOfficeWeb.Components.ProductComponents.ViewProducts CategoryName="@CategoryName" CategorySno="@CategorySno" CurrentPage="@CurrentPage"></AstroOfficeWeb.Components.ProductComponents.ViewProducts>
     </ChildContent>
@@ -205,5 +209,14 @@
     public string? CategoryName { get; set; } = null;
     [Parameter]
     public int CurrentPage { get; set; } = 1;
+
+    // AstroOfficeWeb.Components.ProductComponents.ViewProducts viewProducts = null!;
+
+
+    // private void OnClickBtnFilter(MouseEventArgs args)
+    // {
+    //     viewProducts.IsDrawerOpen = !viewProducts.IsDrawerOpen;
+    //     StateHasChanged();
+    // }
 
 }

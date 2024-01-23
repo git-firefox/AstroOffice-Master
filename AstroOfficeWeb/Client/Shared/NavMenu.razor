@@ -16,7 +16,7 @@
                     <ul class="d-flex m-0 list-unstyled">
                         <AuthorizeView>
                             <Authorized>
-                                @if (context.User.IsInRole(ApplicationConst.Role_Admin) || context.User.IsInRole(ApplicationConst.Role_User) || context.User.IsInRole(ApplicationConst.Role_Astrologer))
+                                @if (context.User.IsInRole(ApplicationConst.Role_Admin) || context.User.IsInRole(ApplicationConst.Role_User) || context.User.IsInRole(ApplicationConst.Role_Astrologer)|| context.User.IsInRole(ApplicationConst.Role_Member))
                                 {
                                     @* Home *@
                                     <li class="nav-item icon-change me-4 pt-2">
@@ -160,8 +160,8 @@
                                 @if (!context.User.IsInRole(ApplicationConst.Role_ProductManager))
                                 {
                                     <li><a class="dropdown-item" href="/viewed-kundalis"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/tarot-fill.png" alt="Viewed Kundali" />Viewed Kundalis</a></li>
-                                    <li><a class="dropdown-item" href="/token-recharge"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/magic-ball-fill.png" alt="Saved Kundali" />Token Recharge</a></li>
-                                    <li><a class="dropdown-item" href="/saved-kundalis"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/transaction.png" alt="Transaction History" />Saved Kundalis</a></li>
+                                    <li><a class="dropdown-item" href="/token-recharge"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/top-up-fill.png" alt="Token Recharge" />Token Recharge</a></li>
+                                    <li><a class="dropdown-item" href="/saved-kundalis"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/transaction.png" alt="Saved Kundalis" />Saved Kundalis</a></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>

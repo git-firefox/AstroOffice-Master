@@ -125,6 +125,8 @@ namespace AstroOfficeWeb.Components.ProductComponents
                 if (BillingOption == PaymentMethod.CashOnDelivery)
                 {
                     PlaceOrder.PaymentMethod = BillingOption;
+                    //PlaceOrder.ShippingAddressSno = 0;
+                    //PlaceOrder.BillingAddressSno = 0;
                     await ProductService.PlaceOrder(PlaceOrder);
                 }
                 else if (BillingOption == PaymentMethod.Stripe)
@@ -225,6 +227,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
             BillingInfo.Email = address.Email;
             BillingInfo.Country = address.Country;
             BillingInfo.PhoneNumber = address.PhoneNumber;
+            PlaceOrder.BillingAddressSno = address.Sno;
             BillingInfoContext.Validate();
         }
     }

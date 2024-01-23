@@ -1,14 +1,9 @@
-﻿<div class="container-fluid p-3">
+﻿<div class="container-fluid pb-15 ">
     <div class="d-flex justify-content-between">
         <h1 class="pt-4 pb-2 font-weight-bold">@HeaderTitle</h1>
-        <div class="pt-4 pb-2 ">
+        <div class="my-auto">
             @Header
         </div>
-        @if (UserToken != null)
-        {
-            <MudChip Color="Color.Warning"> @UserToken</MudChip>
-          @*   @UserToken *@
-        }
     </div>
     <section class="content">
         @ChildContent
@@ -36,6 +31,5 @@
     [Parameter]
     public RenderFragment ChildContent { get; set; } = null!;
 
-    [Parameter]
-    public decimal? UserToken { get; set; } 
+
 }
