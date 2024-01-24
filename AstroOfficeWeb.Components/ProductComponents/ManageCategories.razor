@@ -52,7 +52,8 @@
         <TemplateColumn Filterable="false" Sortable="false" CellClass="mud-table-cell">
             <CellTemplate>
                 <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="()=> OnClick_CategoryEdit(context.Item)" />
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="() => OnClick_DeleteCategory(context.Item)" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="() => OnClick_DeleteCategory(context.Item)" Disabled="context.Item.TotalProducts != 0" />
+
             </CellTemplate>
         </TemplateColumn>
     </Columns>

@@ -947,3 +947,6 @@ section .section-overlay {
     background-color: rgb(251, 196, 111);
 }
 
+.form-check-input {
+    margin-top: 0.25rem;
+}

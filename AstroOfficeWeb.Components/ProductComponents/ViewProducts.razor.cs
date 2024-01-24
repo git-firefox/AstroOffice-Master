@@ -27,8 +27,8 @@ namespace AstroOfficeWeb.Components.ProductComponents
         public int CurrentPage { get; set; } = 1;
 
         public bool IsDrawerOpen { get; set; }
-        private string sortByPrice = "Default";
-        private string pageSize = "24";
+        private string sortByPrice = "";
+        private string pageSize = "";
 
         public List<ViewProductDTO>? Products { get; set; }
         private List<ViewProductDTO> FilteredProducts = new List<ViewProductDTO>();
@@ -103,8 +103,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
         {
 
             // await JSRuntime.InvokeVoidAsync("location.reload");
-            sortByPrice = "Default";
-            pageSize = "24";
+            sortByPrice = "";
+            pageSize = "";
+            searchString = "";
             Products = await ProductService.GetProducts();
             await ApplyFilter();
             IsDrawerOpen = false;

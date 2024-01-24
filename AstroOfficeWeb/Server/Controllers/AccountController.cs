@@ -327,7 +327,8 @@ namespace AstroOfficeWeb.Server.Controllers
                     Password = request.Password,
                     Username = request.UserName,
                     MobileNumber = request.MobileNumber,
-                    Role = UserRole.Guest.ToString()
+                    Role = UserRole.Guest.ToString(),
+                    Status = UserStatus.Active.ToString(),
                 });
 
                 response.Success = true;

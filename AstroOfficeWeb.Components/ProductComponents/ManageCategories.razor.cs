@@ -36,7 +36,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         [Parameter]
         public EventCallback<CategoryDialoge> OnSelectCategoryChanged { get; set; }
 
-        private string _searchString;
+        private string? _searchString;
 
         protected override void OnInitialized()
         {
@@ -48,14 +48,14 @@ namespace AstroOfficeWeb.Components.ProductComponents
             if (string.IsNullOrWhiteSpace(_searchString))
                 return true;
 
-            if (x.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            if (x?.Title?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true)
                 return true;
 
-            if (x.Descriptions.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            if (x?.Descriptions?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true)
                 return true;
 
-            if ($"{x.TotalProducts} {x.TotalEarning}".Contains(_searchString))
-                return true;
+            //if ($"{x.TotalProducts} {x.TotalEarning}".Contains(_searchString))
+            //    return true;
 
             return false;
         };
@@ -74,7 +74,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         }
 
 
-        public async Task Onclick_AddMetaData() 
+        public async Task Onclick_AddMetaData()
         {
             var parameters = new DialogParameters();
             parameters.Add("CategoryDTOs", categoryList);

@@ -22,7 +22,7 @@ namespace AstroOfficeWeb.Client.Pages.Account
                 UserName = RegistrationModel.UserName
             });
 
-            if (response.IsRegisterationSuccessful)
+            if (response.Success)
             {
                 await JSRuntime.ShowToastAsync(response?.Message, SwalIcon.Success);
                 NavigationManager!.NavigateTo("/login");

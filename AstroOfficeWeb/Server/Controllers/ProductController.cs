@@ -865,7 +865,7 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
-        
+
         [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpPost]
         public IActionResult PlaceOrder(PlaceOrderRequest request)
@@ -1124,14 +1124,23 @@ namespace AstroOfficeWeb.Server.Controllers
             var response = new ApiResponse<string>();
             try
             {
-                var category = await _context.ProductCategories.FirstAsync(a => a.Sno == sno);
-                _context.ProductCategories.Remove(category);
-                await _context.SaveChangesAsync();
-                response.Message = "Category has been deleted";
+                var category = await _context.ProductCategories.FirstOrDefaultAsync(a => a.Sno == sno);
+                if (category == null)
+                {
+                    response.Success = false;
+                    response.Message = "Category not found!";
+                }
+                else
+                {
+                    _context.ProductCategories.Remove(category);
+                    await _context.SaveChangesAsync();
+                    response.Message = "Category has been deleted";
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                response.Message = "Category not found";
+                response.Success = false;
+                response.Message = ex.Message;
             }
             return Ok(response);
         }
