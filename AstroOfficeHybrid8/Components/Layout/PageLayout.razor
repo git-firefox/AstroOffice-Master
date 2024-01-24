@@ -31,11 +31,15 @@
 
         @if (UserToken.HasValue)
         {
-            @UserToken
+            <div>
+                <i class="fas fa-rupee-sign"></i>
+                @UserToken
+            </div>
+
         }
     }
 
-    @if(RightContainer!= null)
+    @if (RightContainer != null)
     {
         @RightContainer
     }

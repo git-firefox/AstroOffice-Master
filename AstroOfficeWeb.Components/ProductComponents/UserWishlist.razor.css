@@ -10,9 +10,9 @@
     text-overflow: ellipsis;
 }
 
-    .card-title:hover {
+  /*  .card-title:hover {
         color: #fff;
-    }
+    }*/
 
 .fa-heart:before {
     display: block;

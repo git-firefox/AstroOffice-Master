@@ -107,7 +107,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
                 Addresses!.Add(BillingInfo!);
                 Mode = AddressMode.Edit;
             }
-            Snackbar.Add("Address updated successfully", Severity.Success);
+           // Snackbar.Add("Address updated successfully", Severity.Success);
         }
 
         protected async Task OnConfirmationChange(bool isConfirm)
