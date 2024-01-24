@@ -44,7 +44,6 @@ namespace AstroOfficeWeb.Components.ProductComponents
         protected override void OnInitialized()
         {
             base.OnInitialized();
-           
         }
         protected override async Task OnInitializedAsync()
         {
@@ -109,8 +108,10 @@ namespace AstroOfficeWeb.Components.ProductComponents
             Products = await ProductService.GetProducts();
             await ApplyFilter();
             IsDrawerOpen = false;
+            await Form.ResetAsync();
         }
 
+        private MudForm Form { get; set; } = null!;
         private async Task ApplyFilter()
         {
             FilteredProducts = Products!.ToList();
@@ -137,10 +138,10 @@ namespace AstroOfficeWeb.Components.ProductComponents
             UpdateVisibleItems();
         }
         private string searchString = "";
-        private void FilterFunc(ChangeEventArgs e)
+        private void FilterFunc(string value)
         {
             FilteredProducts = Products!.ToList();
-            searchString = e.Value.ToStringX(); // Update the searchString
+            searchString = value.ToStringX(); // Update the searchString
             if (!string.IsNullOrWhiteSpace(searchString))
             {
                 FilteredProducts = Products!.Where(item => item.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();

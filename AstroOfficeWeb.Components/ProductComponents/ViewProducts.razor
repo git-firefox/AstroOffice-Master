@@ -101,19 +101,16 @@
 <Container>
     <ChildContent>
         <div class="search-btn-group">
-            <div class="row">
-                <div class="col">
-                    <div id="search">
-                        <div class="form-group has-search">
-                            <span class="fa fa-search form-control-feedback"></span>
-                            <input type="search" class="form-control w-100 form-control mt-2 rounded-pill" @bind="searchString" @oninput="FilterFunc" placeholder="Search Products">
-                        </div>
+            <MudPaper Class="rounded-lg p-2">
+                <div class="row">
+                    <div class="col">
+                        <MudTextField T="string" DebounceInterval="500" InputType="InputType.Search" TextChanged="FilterFunc" Placeholder="Search Product" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Margin="Margin.Dense" />
+                    </div>
+                    <div class="col-2 d-flex justify-content-end">
+                        <MudIconButton OnClick="OnClick_BtnFilter" Icon="@Icons.Material.Filled.FilterAlt" Class="d-flex d-md-none m-auto rounded-circle" Variant="Variant.Filled" Size="Size.Medium" Color="Color.Primary"></MudIconButton>
                     </div>
                 </div>
-                <div class="col-2 d-flex justify-content-end">
-                    <MudIconButton OnClick="OnClick_BtnFilter" Icon="@Icons.Material.Filled.FilterAlt" Class="d-flex d-sm-none  mt-2" Style="background-color:white; height: 40px; width: 40px;"></MudIconButton>
-                </div>
-            </div>
+            </MudPaper>
         </div>
         <div class="row">
             <div class="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12">
@@ -159,67 +156,55 @@
             </div>
             <div class="col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12 mb-3">
                 <div class="shop-search">
-                    <MudGrid >
-                        <MudItem xs="12" sm="4" Class="pr-0">
-                            <MudTextField T="string" DebounceInterval="500"  InputType="InputType.Search" @bind-Value="@searchString"  Placeholder="Search Product" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Margin="Margin.Dense" />
-                            @* <div class="shop-search-input">
-                                <div class="mud-input-control mud-input-input-control mt-0">
-                                    <div class="mud-input-control-input-container">
-                                        <div class="mud-input mud-input-text mud-input-adorned-start mud-input-underline input-text-color mud-shrink">
-                                            <div class="mud-input-adornment mud-input-adornment-start">
-                                                <svg aria-label="Icon" tabindex="-1" class="mud-icon-root mud-icon-default mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><!--!--><path d="M0 0h24v24H0z" fill="none"></path><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
-                                            </div>
-                                            <input class="mud-input-slot mud-input-root mud-input-root-text mud-input-root-adorned-start" type="text" @bind="searchString" @oninput="FilterFunc" id="searchShopBox" placeholder="Search" inputmode="text" maxlength="524288" aria-invalid="false" _bl_23="">
-                                            <div class="mud-input-slot mud-input-root mud-input-root-text mud-input-root-adorned-start" style="display:none" tabindex="-1" _bl_24="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> *@
-                        </MudItem>
+                    <MudForm @ref="Form">
+                        <MudGrid>
+                            <MudItem xs="12" sm="4" Class="pr-0">
+                                <MudTextField T="string" DebounceInterval="500" InputType="InputType.Search" TextChanged="FilterFunc" Placeholder="Search Product" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Margin="Margin.Dense" />
+                            </MudItem>
 
-                        <MudItem xs="12" sm="4" Class="pr-0">
-                            <MudSelect T="string" Class="text-white" Variant="Variant.Outlined" Margin="Margin.Dense" Label="Sort by price" @bind-Value="sortByPrice" SelectedValuesChanged="(async (x)=> await ApplyFilter())" AnchorOrigin="Origin.BottomCenter" id="sortShopdropdown">
-                                <MudSelectItem Value="@("Default")" />
-                                <MudSelectItem Value="@("Low-Max")" />
-                                <MudSelectItem Value="@("Max-Low")" />
-                            </MudSelect>
-                        </MudItem>
-                        <MudItem xs="12" sm="3" >
-                            <MudSelect T="string" Label="Page size" @bind-Value="pageSize" Margin="Margin.Dense" Variant="Variant.Outlined" SelectedValuesChanged="(async (x)=> await ApplyFilter())" AnchorOrigin="Origin.BottomCenter" id="pageSizeShopdropdown">
-                                <MudSelectItem Value="@("24")" />
-                                <MudSelectItem Value="@("40")" />
-                                <MudSelectItem Value="@("80")" />
-                            </MudSelect>
-                        </MudItem>
-                        <MudItem sm="1" Class="d-flex justify-center align-content-center m-auto">
-                            @* <MudButton OnClick="OnClick_BtnClear" Class="btn-custom" Style="margin-top:20px;"  >Clear</MudButton> *@
-                            <MudIconButton Class="rounded-circle btn btn-custom" ButtonType="ButtonType.Button" Variant="Variant.Filled" Icon="@Icons.Material.Rounded.FilterAltOff" OnClick="OnClick_BtnClear" aria-label="clear filter"></MudIconButton>
-                        </MudItem>
-                    </MudGrid>
+                            <MudItem xs="12" sm="4" Class="pr-0">
+                                <MudSelect T="string" Class="text-white" Variant="Variant.Outlined" Margin="Margin.Dense" Label="Sort by price" @bind-Value="sortByPrice" SelectedValuesChanged="(async (x)=> await ApplyFilter())" AnchorOrigin="Origin.BottomCenter" id="sortShopdropdown">
+                                    <MudSelectItem Value="@("Default")" />
+                                    <MudSelectItem Value="@("Low-Max")" />
+                                    <MudSelectItem Value="@("Max-Low")" />
+                                </MudSelect>
+                            </MudItem>
+                            <MudItem xs="12" sm="3">
+                                <MudSelect T="string" Label="Page size" @bind-Value="pageSize" Margin="Margin.Dense" Variant="Variant.Outlined" SelectedValuesChanged="(async (x)=> await ApplyFilter())" AnchorOrigin="Origin.BottomCenter" id="pageSizeShopdropdown">
+                                    <MudSelectItem Value="@("24")" />
+                                    <MudSelectItem Value="@("40")" />
+                                    <MudSelectItem Value="@("80")" />
+                                </MudSelect>
+                            </MudItem>
+                            <MudItem sm="1" Class="d-flex justify-center align-content-center m-auto">
+                                @* <MudButton OnClick="OnClick_BtnClear" Class="btn-custom" Style="margin-top:20px;">Clear</MudButton> *@
+                                <MudIconButton Class="rounded-circle btn btn-custom" ButtonType="ButtonType.Button" Variant="Variant.Filled" Icon="@Icons.Material.Rounded.FilterAltOff" OnClick="OnClick_BtnClear" aria-label="clear filter"></MudIconButton>
+                            </MudItem>
+                        </MudGrid>
+                    </MudForm>
 
-                   @*  <MudGrid>
-                        <MudItem xs="12" sm="4">
-                            <MudTextField T="string" DebounceInterval="500" InputType="InputType.Search" TextChanged="OnTextChanged_InputSearch" Placeholder="Search Product" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Margin="Margin.Dense" />
-                        </MudItem>
-                        <MudItem xs="12" sm="4">
-                            <MudSelect T="ProductSorting" Label="Sort by" Variant="Variant.Outlined" SelectedValuesChanged="SelectedValuesChanged_InputSorting" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense">
-                                @foreach (ProductSorting item in Enum.GetValues(typeof(ProductSorting)))
-                                {
-                                    <MudSelectItem Value="@item">@item.ToDescriptionString()</MudSelectItem>
-                                }
-                            </MudSelect>
-                        </MudItem>
-                        <MudItem xs="12" sm="3">
-                            <MudSelect T="int" Label="Page size" Value="ProductFilterModal.Page" Variant="Variant.Outlined" SelectedValuesChanged="SelectedValuesChanged_InputPage" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense">
-                                <MudSelectItem Value="25" />
-                                <MudSelectItem Value="50" />
-                                <MudSelectItem Value="100" />
-                            </MudSelect>
-                        </MudItem>
-                        <MudItem sm="1" Class="d-flex justify-center align-content-center m-auto">
-                            <MudIconButton Class="rounded-circle btn btn-custom" ButtonType="ButtonType.Button" Variant="Variant.Filled" Color="Color.Secondary" Icon="@Icons.Material.Rounded.FilterAltOff" OnClick="OnClick_BtnReset" aria-label="clear filter"></MudIconButton>
-                        </MudItem>
+                    @*  <MudGrid>
+                    <MudItem xs="12" sm="4">
+                    <MudTextField T="string" DebounceInterval="500" InputType="InputType.Search" TextChanged="OnTextChanged_InputSearch" Placeholder="Search Product" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Margin="Margin.Dense" />
+                    </MudItem>
+                    <MudItem xs="12" sm="4">
+                    <MudSelect T="ProductSorting" Label="Sort by" Variant="Variant.Outlined" SelectedValuesChanged="SelectedValuesChanged_InputSorting" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense">
+                    @foreach (ProductSorting item in Enum.GetValues(typeof(ProductSorting)))
+                    {
+                    <MudSelectItem Value="@item">@item.ToDescriptionString()</MudSelectItem>
+                    }
+                    </MudSelect>
+                    </MudItem>
+                    <MudItem xs="12" sm="3">
+                    <MudSelect T="int" Label="Page size" Value="ProductFilterModal.Page" Variant="Variant.Outlined" SelectedValuesChanged="SelectedValuesChanged_InputPage" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense">
+                    <MudSelectItem Value="25" />
+                    <MudSelectItem Value="50" />
+                    <MudSelectItem Value="100" />
+                    </MudSelect>
+                    </MudItem>
+                    <MudItem sm="1" Class="d-flex justify-center align-content-center m-auto">
+                    <MudIconButton Class="rounded-circle btn btn-custom" ButtonType="ButtonType.Button" Variant="Variant.Filled" Color="Color.Secondary" Icon="@Icons.Material.Rounded.FilterAltOff" OnClick="OnClick_BtnReset" aria-label="clear filter"></MudIconButton>
+                    </MudItem>
                     </MudGrid> *@
 
                 </div>
