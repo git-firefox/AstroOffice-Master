@@ -115,8 +115,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
         private async Task ApplyFilter()
         {
             FilteredProducts = Products!.ToList();
-            var searchString = await JSRuntime.InvokeAsync<string>("getSearchboxValue");
-            var filter = await JSRuntime.InvokeAsync<string>("getDropdownValue");
+          //  searchString = await JSRuntime.InvokeAsync<string>("getSearchboxValue");
+          // var searchStrings = searchString;
+           var filter = await JSRuntime.InvokeAsync<string>("getDropdownValue");
             var size = await JSRuntime.InvokeAsync<string>("getPageSizeValue");
             PageSize = string.IsNullOrEmpty(size) ? 24 : Convert.ToInt32(size);
 
