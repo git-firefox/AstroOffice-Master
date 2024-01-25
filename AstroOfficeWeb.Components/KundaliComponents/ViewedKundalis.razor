@@ -160,70 +160,67 @@
     </MudDrawerContainer>
 </MudDrawer>
 
-<MudContainer Class="content">
-    @if (personKundaliTableTRs == null)
+
+@if (personKundaliTableTRs == null)
+{
+    <div class="overlay dark ">
+        <i class="fas fa-2x fa-sync fa-spin"></i>
+    </div>
+}
+else
+{
+
+    @if (personKundaliTableTRs.Any())
     {
-        <div class="overlay dark ">
-            <i class="fas fa-2x fa-sync fa-spin"></i>
+        @* <MudTextField @bind-Value="searchString" TextChanged="FilterFunc" InputType="InputType.Search" T="string" Placeholder="Search Kundali by name" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mud-theme-primary rounded-pill kundali-search" /> *@
+
+        @* <input class="w-100 form-control mt-3 mb-3 rounded-pill" type="search" @bind="searchString" @oninput="FilterFunc" placeholder="Search Kundali by name" /> *@
+
+        <div class="form-group has-search">
+            <span class="fa fa-search form-control-feedback"></span>
+            <input type="search" class="form-control w-100 form-control mt-3 mb-3 rounded-pill" @bind="searchString" @oninput="FilterFunc" placeholder="Search Kundali by name">
         </div>
+
+        <MudGrid>
+            @foreach (var row in personKundaliTableTRs.Where(item => item!.Name!.Contains(searchString, StringComparison.OrdinalIgnoreCase)))
+            {
+                <MudItem xs="12" sm="6" md="4">
+                    @* <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=12</MudPaper> *@
+                    <MudCard Elevation="8">
+                        <MudCardHeader Class="py-0">
+                            <CardHeaderAvatar>
+                                <MudAvatar Color="Color.Primary">@(!string.IsNullOrEmpty(row.Name) ? row.Name.ToUpper()[0] : 'U')</MudAvatar>
+                            </CardHeaderAvatar>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h6">
+                                    @row.Name
+                                </MudText>
+                                <MudText Typo="Typo.subtitle1">
+                                    @row.ProductName
+                                </MudText>
+                                <MudText Typo="Typo.subtitle1">
+                                    @row.ViewDate
+                                </MudText>
+                            </CardHeaderContent>
+
+                            <CardHeaderActions>
+                                <div class="mt-6">
+                                    <MudIconButton Class="py-3" OnClick="()=>OnClick_BtnAction(row)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Default" />
+                                </div>
+                            </CardHeaderActions>
+                        </MudCardHeader>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
     }
     else
     {
-
-        @if (personKundaliTableTRs.Any())
-        {
-            @* <MudTextField @bind-Value="searchString" TextChanged="FilterFunc" InputType="InputType.Search" T="string" Placeholder="Search Kundali by name" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mud-theme-primary rounded-pill kundali-search" /> *@
-
-            @* <input class="w-100 form-control mt-3 mb-3 rounded-pill" type="search" @bind="searchString" @oninput="FilterFunc" placeholder="Search Kundali by name" /> *@
-
-            <div class="form-group has-search">
-                <span class="fa fa-search form-control-feedback"></span>
-                <input type="search" class="form-control w-100 form-control mt-3 mb-3 rounded-pill" @bind="searchString" @oninput="FilterFunc" placeholder="Search Kundali by name">
-            </div>
-
-            <MudGrid>
-                @foreach (var row in personKundaliTableTRs.Where(item => item!.Name!.Contains(searchString, StringComparison.OrdinalIgnoreCase)))
-                {
-                    <MudItem xs="12" sm="6" md="4">
-                        @* <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=12</MudPaper> *@
-                        <MudCard Elevation="8">
-                            <MudCardHeader Class="py-0">
-                                <CardHeaderAvatar>
-                                    <MudAvatar Color="Color.Primary">@(!string.IsNullOrEmpty(row.Name) ? row.Name.ToUpper()[0] : 'U')</MudAvatar>
-                                </CardHeaderAvatar>
-                                <CardHeaderContent>
-                                    <MudText Typo="Typo.h6">
-                                        @row.Name
-                                    </MudText>
-                                    <MudText Typo="Typo.subtitle1">
-                                        @row.ProductName
-                                    </MudText>
-                                    <MudText Typo="Typo.subtitle1">
-                                        @row.ViewDate
-                                    </MudText>
-                                </CardHeaderContent>
-
-                                <CardHeaderActions>
-                                    <div class="mt-6">
-                                        <MudIconButton Class="py-3" OnClick="()=>OnClick_BtnAction(row)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Default" />
-                                    </div>
-                                </CardHeaderActions>
-                            </MudCardHeader>
-                        </MudCard>
-                    </MudItem>
-                }
-            </MudGrid>
-        }
-        else
-        {
-            <div colspan="10" class="text-center">
-                <h3>No records found.</h3>
-            </div>
-        }
+        <div colspan="10" class="text-center">
+            <h3>No records found.</h3>
+        </div>
     }
-
-
-</MudContainer>
+}
 
 
 

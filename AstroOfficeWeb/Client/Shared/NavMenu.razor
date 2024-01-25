@@ -16,7 +16,7 @@
                     <ul class="d-flex m-0 list-unstyled">
                         <AuthorizeView>
                             <Authorized>
-                                @if (context.User.IsInRole(ApplicationConst.Role_Admin) || context.User.IsInRole(ApplicationConst.Role_User) || context.User.IsInRole(ApplicationConst.Role_Astrologer)|| context.User.IsInRole(ApplicationConst.Role_Member))
+                                @if (context.User.IsInRole(ApplicationConst.Role_Admin) || context.User.IsInRole(ApplicationConst.Role_User) || context.User.IsInRole(ApplicationConst.Role_Astrologer) || context.User.IsInRole(ApplicationConst.Role_Member))
                                 {
                                     @* Home *@
                                     <li class="nav-item icon-change me-4 pt-2">
@@ -30,7 +30,7 @@
                                     </li>
                                 }
 
-                                @if (context.User.IsInRole(ApplicationConst.Role_Admin) || context.User.IsInRole(ApplicationConst.Role_User))
+                                @if (context.User.IsInRole(ApplicationConst.Role_Admin) || context.User.IsInRole(ApplicationConst.Role_User) || context.User.IsInRole(ApplicationConst.Role_Member))
                                 {
                                     @* Top Up *@
                                     <li class="nav-item icon-change me-4 pt-2">
@@ -182,14 +182,14 @@
                                     <li class="nav-item dropdown">
                                         <NavLink class="nav-link" href="/" role="button" data-toggle="dropdown" aria-expanded="false">
                                             <MudAvatar Color="Color.Warning" Class="text-uppercase">@context.User?.Identity?.Name?[0]</MudAvatar>
-                                            @* <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle"> *@
-                                        </NavLink>
-                                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDarkDropdownMenuLink">
-                                            <li><NavLink class="dropdown-item" href="/viewed-kundalis"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/tarot-fill.png" alt="Viewed Kundali" />Viewed Kundali</NavLink></li>
-                                            <li><NavLink class="dropdown-item" href="/saved-kundalis"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/magic-ball-fill.png" alt="Saved Kundali" />Saved Kundali</NavLink></li>
-                                            <li><NavLink class="dropdown-item" href="/transactions"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/transaction.png" alt="Transaction History" />Transaction History</NavLink></li>
+                                                @* <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle"> *@
+                                            </NavLink>
+                                            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDarkDropdownMenuLink">
+                                                <li><NavLink class="dropdown-item" href="/viewed-kundalis"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/tarot-fill.png" alt="Viewed Kundali" />Viewed Kundali</NavLink></li>
+                                                <li><NavLink class="dropdown-item" href="/saved-kundalis"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/magic-ball-fill.png" alt="Saved Kundali" />Saved Kundali</NavLink></li>
+                                                <li><NavLink class="dropdown-item" href="/transactions"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/transaction.png" alt="Transaction History" />Transaction History</NavLink></li>
 
-                                            @if (context.User.IsInRole(ApplicationConst.Role_User))
+                                                @if (context.User.IsInRole(ApplicationConst.Role_User))
                                             {
                                                 <li><hr class="dropdown-divider"></li>
                                                 <li><NavLink class="dropdown-item" href="/my-orders"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/order.png" alt="My Orders" />My Orders</NavLink></li>
