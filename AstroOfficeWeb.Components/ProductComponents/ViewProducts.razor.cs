@@ -38,7 +38,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         private List<ViewProductDTO> ListedProducts = new List<ViewProductDTO>();
         private List<PCategoryDTO>? CategoryDTOs { get; set; }
 
-        private int PageSize { get; set; } = 40;
+        private int PageSize { get; set; } =40;
         private int TotalPages => (int)Math.Ceiling((double)FilteredProducts.Count / PageSize);
 
         private bool IsFirstPage { get; set; }

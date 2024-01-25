@@ -45,8 +45,6 @@ namespace AstroOfficeWeb.Server.Controllers
         [Authorize]
         public async Task<IActionResult> GetProducts(long? categorySno = null, bool isDataUrl = false)
         {
-            var d = HttpContext.Request.Path;
-
             var shoppingCart = await _context.ShoppingCarts.Include(i => i.CartItems).FirstOrDefaultAsync(a => a.AUsersSno == User.GetUserSno());
             var cartItems = shoppingCart?.CartItems.ToList();
 

@@ -15,7 +15,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         public bool IsDataUrl { get; set; } = false;
 
         [Parameter]
-        public string Breakpoint { get; set; } = "row-cols-1 row-cols-sm-3 row-cols-md-3 row-cols-xl-5";
+        public string Breakpoint { get; set; } = "row-cols-2 row-cols-sm-3 row-cols-md-3 row-cols-xl-5";
 
         private List<ViewProductDTO>? ViewProductDTOs { get; set; }
         protected override void OnInitialized()

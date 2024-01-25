@@ -30,8 +30,8 @@ else if (ViewProductDTOs.Any())
         @foreach (var product in ViewProductDTOs)
         {
             <div class="col wishlist-card">
-                <div class="card-body mb-2" style="transform: rotate(0);">
-                    <div class="card card-img-actions bg-transparent " @onclick="()=>OnCLick_ALickViewProdcut(product)">
+                <div class="card-body mb-2 bg-light rounded-lg" style="transform: rotate(0);">
+                    <div class="card card-img-actions rounded-lg m-2  " @onclick="()=>OnCLick_ALickViewProdcut(product)">
                         <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="card-img img-fluid">
 
                         @if (product.SecondaryImageUrl == null)
@@ -52,11 +52,10 @@ else if (ViewProductDTOs.Any())
                     <div class=" text-center">
                         <h5 class="card-title">@product.Name</h5>
 
-                        <MudStack Justify="Justify.Center" Row="true">
-                            <MudButton Variant="Variant.Filled" Size="Size.Small" StartIcon="@Icons.Material.Filled.AddShoppingCart" Color="Color.Warning" OnClick="()=>OnCLick_BtnAddToCart(product)"> Add to cart </MudButton>
+                        <div class="m-2">
+                            <MudButton Variant="Variant.Filled" Class="btn-block " Size="Size.Small" StartIcon="@Icons.Material.Filled.AddShoppingCart" Color="Color.Warning" OnClick="()=>OnCLick_BtnAddToCart(product)"> Add to cart </MudButton>
 
-
-                        </MudStack>
+                        </div>
 
                     </div>
 

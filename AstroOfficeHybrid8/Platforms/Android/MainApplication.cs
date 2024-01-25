@@ -6,7 +6,8 @@ namespace AstroOfficeHybrid8
 #if DEBUG
     [Application(UsesCleartextTraffic = true)]
 #else
-    [Application]                               
+    [Application]
+    
 #endif
     public class MainApplication : MauiApplication
     {

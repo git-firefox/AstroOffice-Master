@@ -31,9 +31,9 @@ namespace AstroOfficeHybrid8
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
             builder.Logging.AddDebug();
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://192.168.1.213:8081") });
+            //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://192.168.1.213:8081") });
             //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5029") });
-            //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://ec2-15-207-51-190.ap-south-1.compute.amazonaws.com") });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://ec2-15-207-51-190.ap-south-1.compute.amazonaws.com") });
 #else
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://ec2-15-207-51-190.ap-south-1.compute.amazonaws.com") });
 #endif

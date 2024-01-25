@@ -98,254 +98,251 @@
 </MudSwipeArea>
 
 
-<Container>
-    <ChildContent>
-        <div class="search-btn-group">
-            <MudPaper Class="rounded-lg p-2">
-                <div class="row">
-                    <div class="col">
-                        <MudTextField T="string" DebounceInterval="500" InputType="InputType.Search" TextChanged="FilterFunc" Placeholder="Search Product" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Margin="Margin.Dense" />
-                    </div>
-                    <div class="col-2 d-flex justify-content-end">
-                        <MudIconButton OnClick="OnClick_BtnFilter" Icon="@Icons.Material.Filled.FilterAlt" Class="d-flex d-md-none m-auto rounded-circle" Variant="Variant.Filled" Size="Size.Medium" Color="Color.Primary"></MudIconButton>
-                    </div>
-                </div>
-            </MudPaper>
-        </div>
+
+<div class="search-btn-group">
+    <MudPaper Class="rounded-lg p-2">
         <div class="row">
-            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12">
-                <div class="categories h-100">
-
-                    <h2 class="category-title">Shop Categories</h2>
-
-
-                    <div class="categories-list">
-                        <MudNavMenu>
-
-                            @if (CategoryDTOs == null)
-                            {
-                                for (int i = 0; i < 10; i++)
-                                {
-                                    <MudSkeleton Width="100%" Height="42px;" />
-                                }
-                            }
-                            else if (CategoryDTOs.Any())
-                            {
-                                foreach (var category in CategoryDTOs)
-                                {
-                                    if (category.SubCategories != null && category.SubCategories.Any())
-                                    {
-                                        <MudNavGroup Title="@category.Title">
-                                            @foreach (var subcategory in category.SubCategories)
-                                            {
-                                                <MudNavLink OnClick="(()=> OnClick_CategoryList(subcategory))">@subcategory.Title</MudNavLink>
-                                            }
-                                        </MudNavGroup>
-                                    }
-                                    else
-                                    {
-                                        <MudNavLink OnClick="(()=> OnClick_CategoryList(category))">@category.Title</MudNavLink>
-                                    }
-                                }
-                            }
-
-                        </MudNavMenu>
-
-                    </div>
-                </div>
+            <div class="col">
+                <MudTextField T="string" DebounceInterval="500" InputType="InputType.Search" TextChanged="FilterFunc" Placeholder="Search Product" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Margin="Margin.Dense" />
             </div>
-            <div class="col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12">
-                <div class="shop-search">
-                    <MudForm @ref="Form">
-                        <MudGrid>
-                            <MudItem xs="12" sm="4" Class="pr-0">
-                                <MudTextField T="string" DebounceInterval="500" InputType="InputType.Search" TextChanged="FilterFunc" Placeholder="Search Product" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Margin="Margin.Dense" />
-                            </MudItem>
+            <div class="col-2 d-flex justify-content-end">
+                <MudIconButton OnClick="OnClick_BtnFilter" Icon="@Icons.Material.Filled.FilterAlt" Class="d-flex d-md-none m-auto rounded-circle" Variant="Variant.Filled" Size="Size.Medium" Color="Color.Primary"></MudIconButton>
+            </div>
+        </div>
+    </MudPaper>
+</div>
+<div class="row">
+    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12">
+        <div class="categories h-100">
 
-                            <MudItem xs="12" sm="4" Class="pr-0">
-                                <MudSelect T="string" Class="text-white" Variant="Variant.Outlined" Margin="Margin.Dense" Label="Sort by price" @bind-Value="sortByPrice" SelectedValuesChanged="(async (x)=> await ApplyFilter())" AnchorOrigin="Origin.BottomCenter" id="sortShopdropdown">
-                                    <MudSelectItem Value="@("Default")" />
-                                    <MudSelectItem Value="@("Low-Max")" />
-                                    <MudSelectItem Value="@("Max-Low")" />
-                                </MudSelect>
-                            </MudItem>
-                            <MudItem xs="12" sm="3">
-                                <MudSelect T="string" Label="Page size" @bind-Value="pageSize" Margin="Margin.Dense" Variant="Variant.Outlined" SelectedValuesChanged="(async (x)=> await ApplyFilter())" AnchorOrigin="Origin.BottomCenter" id="pageSizeShopdropdown">
-                                    <MudSelectItem Value="@("24")" />
-                                    <MudSelectItem Value="@("40")" />
-                                    <MudSelectItem Value="@("80")" />
-                                </MudSelect>
-                            </MudItem>
-                            <MudItem sm="1" Class="d-flex justify-center align-content-center m-auto">
-                                @* <MudButton OnClick="OnClick_BtnClear" Class="btn-custom" Style="margin-top:20px;">Clear</MudButton> *@
-                                <MudIconButton Class="rounded-circle btn btn-custom" ButtonType="ButtonType.Button" Variant="Variant.Filled" Icon="@Icons.Material.Rounded.FilterAltOff" OnClick="OnClick_BtnClear" aria-label="clear filter"></MudIconButton>
-                            </MudItem>
-                        </MudGrid>
-                    </MudForm>
+            <h2 class="category-title">Shop Categories</h2>
 
-                    @*  <MudGrid>
-                    <MudItem xs="12" sm="4">
-                    <MudTextField T="string" DebounceInterval="500" InputType="InputType.Search" TextChanged="OnTextChanged_InputSearch" Placeholder="Search Product" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Margin="Margin.Dense" />
-                    </MudItem>
-                    <MudItem xs="12" sm="4">
-                    <MudSelect T="ProductSorting" Label="Sort by" Variant="Variant.Outlined" SelectedValuesChanged="SelectedValuesChanged_InputSorting" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense">
-                    @foreach (ProductSorting item in Enum.GetValues(typeof(ProductSorting)))
-                    {
-                    <MudSelectItem Value="@item">@item.ToDescriptionString()</MudSelectItem>
-                    }
-                    </MudSelect>
-                    </MudItem>
-                    <MudItem xs="12" sm="3">
-                    <MudSelect T="int" Label="Page size" Value="ProductFilterModal.Page" Variant="Variant.Outlined" SelectedValuesChanged="SelectedValuesChanged_InputPage" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense">
-                    <MudSelectItem Value="25" />
-                    <MudSelectItem Value="50" />
-                    <MudSelectItem Value="100" />
-                    </MudSelect>
-                    </MudItem>
-                    <MudItem sm="1" Class="d-flex justify-center align-content-center m-auto">
-                    <MudIconButton Class="rounded-circle btn btn-custom" ButtonType="ButtonType.Button" Variant="Variant.Filled" Color="Color.Secondary" Icon="@Icons.Material.Rounded.FilterAltOff" OnClick="OnClick_BtnReset" aria-label="clear filter"></MudIconButton>
-                    </MudItem>
-                    </MudGrid> *@
 
-                </div>
+            <div class="categories-list">
+                <MudNavMenu>
 
-                <div class="row">
-                    @if (Products == null)
+                    @if (CategoryDTOs == null)
                     {
                         for (int i = 0; i < 10; i++)
                         {
-                            <div class="col-lg-3 col-md-4 col-6 mt-2">
-                                <div class="card shop-card">
-                                    <div class="card-body d-flex flex-column">
-                                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="110px" />
-                                        <MudSkeleton Width="50%" Height="40px" />
-                                        <MudSkeleton Width="75%" Height="40px;" />
-                                        <MudSkeleton Width="100%" Height="50px;" />
-                                    </div>
-                                </div>
-                            </div>
+                            <MudSkeleton Width="100%" Height="42px;" />
                         }
                     }
-                    else if (Products.Any())
+                    else if (CategoryDTOs.Any())
                     {
-                        foreach (ViewProductDTO product in ListedProducts)
+                        foreach (var category in CategoryDTOs)
                         {
-
-                            <div class="col-lg-3 col-md-4 col-6 mt-2">
-                                <div class="card shop-card h-100">
-                                    <div class="card-body" style="transform: rotate(0);">
-                                        <div class="card-img-actions">
-                                            <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="card-img img-fluid" width="96" height="350">
-
-                                            @if (product.SecondaryImageUrl == null)
-                                            {
-                                                <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="hover-img" width="96" height="350">
-                                            }
-                                            else
-                                            {
-                                                <img src="@product.SecondaryImageUrl" alt="@product.Name" class="hover-img" width="96" height="350">
-                                            }
-
-
-                                        </div>
-
-                                        <div class="card-icon">
-                                            <div class="quick-view wd-action-btn wd-style-icon wd-quick-view-icon">
-
-                                                <a> <i class="fas fa-search"></i></a>
-                                            </div>
-                                            <div class="wd-wishlist-btn wd-action-btn wd-style-icon wd-wishlist-icon">
-                                                <a> <i class="far fa-heart"></i></a>
-
-                                            </div>
-
-                                        </div>
-
-                                        <a href="javascript:void(0);" class="text-default mb-2 stretched-link" data-abc="true" @onclick="() => OnClick_ALinkView(product)"></a>
-                                    </div>
-
-                                    <div class="card-body text-center">
-                                        <div class="mb-2 " style="transform: rotate(0);">
-                                            <h6 class="font-weight-semibold mb-0 text-truncate">
-                                                <a href="javascript:void(0);" class="text-default mb-0 stretched-link" title="@product.Name" data-abc="true" @onclick="() => OnClick_ALinkView(product)">@product.Name</a>
-                                            </h6>
-                                        </div>
-
-                                        <h3 class="mb-0">
-                                            &#8377; @product.Price.ToString("N2")
-                                        </h3>
-
-                                        @* <div>
-                                <i class="fa fa-star star"></i>
-                                <i class="fa fa-star star"></i>
-                                <i class="fa fa-star star"></i>
-                                <i class="fa fa-star star"></i>
-                                </div> *@
-
-                                        @* <div class="text-muted mb-3">34 reviews</div> *@
-
-                                        <button type="button" class="btn btn-block btn-sm btn-warning text-light" @onclick="() => OnClick_BtnAddToCart(product)"><i class="fa fa-cart-plus mr-2"></i> Add to cart</button>
-
-                                    </div>
-                                </div>
-                            </div>
+                            if (category.SubCategories != null && category.SubCategories.Any())
+                            {
+                                <MudNavGroup Title="@category.Title">
+                                    @foreach (var subcategory in category.SubCategories)
+                                    {
+                                        <MudNavLink OnClick="(()=> OnClick_CategoryList(subcategory))">@subcategory.Title</MudNavLink>
+                                    }
+                                </MudNavGroup>
+                            }
+                            else
+                            {
+                                <MudNavLink OnClick="(()=> OnClick_CategoryList(category))">@category.Title</MudNavLink>
+                            }
                         }
                     }
 
-                    @* <div class="row">
-
-                    <div class="col-12 d-flex justify-content-center scrolling-product">
-                    <MudPagination SelectedChanged="PageChanged" BoundaryCount="1" MiddleCount="1" Count="TotalPages" />
-                    </div>
-                    </div>
-                    *@
-
-                    @* <div class="row">
-                    <div class="col-12 d-flex justify-content-center scrolling-product">
-                    *@
-                    @*   <nav>
-                    <ul>
-                    <li>
-                    <MudIconButton Icon="@Icons.Material.Filled.ArrowBackIos" aria-label="delete" @onclick="PreviousPage" disabled="@IsFirstPage"></MudIconButton>
-                    </li>
-
-                    @for (int pageNo = 1; pageNo <= TotalPages; pageNo++)
-                    {
-                    <li><a href="javascript:void(0);">@pageNo</a></li>
-                    }
-                    <li>
-                    <MudIconButton Icon="@Icons.Material.Filled.ArrowForwardIos" aria-label="delete" @onclick="NextPage" disabled="@IsLastPage"></MudIconButton>
-                    </li>
-                    </ul>
-                    </nav> *@
-
-
-
-
-                    @* <nav>
-                    <ul>
-                    <li><i class="fas fa-chevron-left"></i></li>
-                    <li><a href="javascript:void(0);">1</a></li>l
-                    <li><a href="javascript:void(0);">2</a></li>
-                    <li><a href="javascript:void(0);">3</a></li>
-                    <li><a href="javascript:void(0);">4</a></li>
-                    <li><i class="fas fa-chevron-right"></i></li>
-                    </ul>
-                    </nav> *@
-                </div>
-
-                <div class="row">
-                    <MudPaper Class="w-100 p-2 mt-2 mx-2 rounded-lg">
-                        <div class="col-12 d-flex justify-content-center scrolling-product">
-                            <MudPagination SelectedChanged="PageChanged" BoundaryCount="1" MiddleCount="1" Count="TotalPages" />
-                        </div>
-
-                    </MudPaper>
-                </div>
+                </MudNavMenu>
 
             </div>
         </div>
+    </div>
+    <div class="col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12">
+        <div class="shop-search">
+            <MudForm @ref="Form">
+                <MudGrid>
+                    <MudItem xs="12" sm="4" Class="pr-0">
+                        <MudTextField T="string" DebounceInterval="500" InputType="InputType.Search" TextChanged="FilterFunc" Placeholder="Search Product" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Margin="Margin.Dense" />
+                    </MudItem>
+
+                    <MudItem xs="12" sm="4" Class="pr-0">
+                        <MudSelect T="string" Class="text-white" Variant="Variant.Outlined" Margin="Margin.Dense" Label="Sort by price" @bind-Value="sortByPrice" SelectedValuesChanged="(async (x)=> await ApplyFilter())" AnchorOrigin="Origin.BottomCenter" id="sortShopdropdown">
+                            <MudSelectItem Value="@("Default")" />
+                            <MudSelectItem Value="@("Low-Max")" />
+                            <MudSelectItem Value="@("Max-Low")" />
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="12" sm="3">
+                        <MudSelect T="string" Label="Page size" @bind-Value="pageSize" Margin="Margin.Dense" Variant="Variant.Outlined" SelectedValuesChanged="(async (x)=> await ApplyFilter())" AnchorOrigin="Origin.BottomCenter" id="pageSizeShopdropdown">
+                            <MudSelectItem Value="@("24")" />
+                            <MudSelectItem Value="@("40")" />
+                            <MudSelectItem Value="@("80")" />
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem sm="1" Class="d-flex justify-center align-content-center m-auto">
+                        @* <MudButton OnClick="OnClick_BtnClear" Class="btn-custom" Style="margin-top:20px;">Clear</MudButton> *@
+                        <MudIconButton Class="rounded-circle btn btn-custom" ButtonType="ButtonType.Button" Variant="Variant.Filled" Icon="@Icons.Material.Rounded.FilterAltOff" OnClick="OnClick_BtnClear" aria-label="clear filter"></MudIconButton>
+                    </MudItem>
+                </MudGrid>
+            </MudForm>
+
+            @*  <MudGrid>
+            <MudItem xs="12" sm="4">
+            <MudTextField T="string" DebounceInterval="500" InputType="InputType.Search" TextChanged="OnTextChanged_InputSearch" Placeholder="Search Product" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Margin="Margin.Dense" />
+            </MudItem>
+            <MudItem xs="12" sm="4">
+            <MudSelect T="ProductSorting" Label="Sort by" Variant="Variant.Outlined" SelectedValuesChanged="SelectedValuesChanged_InputSorting" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense">
+            @foreach (ProductSorting item in Enum.GetValues(typeof(ProductSorting)))
+            {
+            <MudSelectItem Value="@item">@item.ToDescriptionString()</MudSelectItem>
+            }
+            </MudSelect>
+            </MudItem>
+            <MudItem xs="12" sm="3">
+            <MudSelect T="int" Label="Page size" Value="ProductFilterModal.Page" Variant="Variant.Outlined" SelectedValuesChanged="SelectedValuesChanged_InputPage" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense">
+            <MudSelectItem Value="25" />
+            <MudSelectItem Value="50" />
+            <MudSelectItem Value="100" />
+            </MudSelect>
+            </MudItem>
+            <MudItem sm="1" Class="d-flex justify-center align-content-center m-auto">
+            <MudIconButton Class="rounded-circle btn btn-custom" ButtonType="ButtonType.Button" Variant="Variant.Filled" Color="Color.Secondary" Icon="@Icons.Material.Rounded.FilterAltOff" OnClick="OnClick_BtnReset" aria-label="clear filter"></MudIconButton>
+            </MudItem>
+            </MudGrid> *@
+
+        </div>
+
+        <div class="row">
+            @if (Products == null)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    <div class="col-lg-3 col-md-4 col-6 mt-2">
+                        <div class="card shop-card">
+                            <div class="card-body d-flex flex-column">
+                                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="110px" />
+                                <MudSkeleton Width="50%" Height="40px" />
+                                <MudSkeleton Width="75%" Height="40px;" />
+                                <MudSkeleton Width="100%" Height="50px;" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else if (Products.Any())
+            {
+                foreach (ViewProductDTO product in ListedProducts)
+                {
+
+                    <div class="col-lg-3 col-md-4 col-6 mt-2">
+                        <div class="card shop-card h-100">
+                            <div class="card-body" style="transform: rotate(0);">
+                                <div class="card-img-actions">
+                                    <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="card-img img-fluid" width="96" height="350">
+
+                                    @if (product.SecondaryImageUrl == null)
+                                    {
+                                        <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="hover-img" width="96" height="350">
+                                    }
+                                    else
+                                    {
+                                        <img src="@product.SecondaryImageUrl" alt="@product.Name" class="hover-img" width="96" height="350">
+                                    }
 
 
-    </ChildContent>
-</Container>
+                                </div>
+
+                                <div class="card-icon">
+                                    <div class="quick-view wd-action-btn wd-style-icon wd-quick-view-icon">
+
+                                        <a> <i class="fas fa-search"></i></a>
+                                    </div>
+                                    <div class="wd-wishlist-btn wd-action-btn wd-style-icon wd-wishlist-icon">
+                                        <a> <i class="far fa-heart"></i></a>
+
+                                    </div>
+
+                                </div>
+
+                                <a href="javascript:void(0);" class="text-default mb-2 stretched-link" data-abc="true" @onclick="() => OnClick_ALinkView(product)"></a>
+                            </div>
+
+                            <div class="card-body text-center">
+                                <div class="mb-2 " style="transform: rotate(0);">
+                                    <h6 class="font-weight-semibold mb-0 text-truncate">
+                                        <a href="javascript:void(0);" class="text-default mb-0 stretched-link" title="@product.Name" data-abc="true" @onclick="() => OnClick_ALinkView(product)">@product.Name</a>
+                                    </h6>
+                                </div>
+
+                                <h3 class="mb-0">
+                                    &#8377; @product.Price.ToString("N2")
+                                </h3>
+
+                                @* <div>
+                        <i class="fa fa-star star"></i>
+                        <i class="fa fa-star star"></i>
+                        <i class="fa fa-star star"></i>
+                        <i class="fa fa-star star"></i>
+                        </div> *@
+
+                                @* <div class="text-muted mb-3">34 reviews</div> *@
+
+                                <button type="button" class="btn btn-block btn-sm btn-warning text-light" @onclick="() => OnClick_BtnAddToCart(product)"><i class="fa fa-cart-plus mr-2"></i> Add to cart</button>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            @* <div class="row">
+
+            <div class="col-12 d-flex justify-content-center scrolling-product">
+            <MudPagination SelectedChanged="PageChanged" BoundaryCount="1" MiddleCount="1" Count="TotalPages" />
+            </div>
+            </div>
+            *@
+
+            @* <div class="row">
+            <div class="col-12 d-flex justify-content-center scrolling-product">
+            *@
+            @*   <nav>
+            <ul>
+            <li>
+            <MudIconButton Icon="@Icons.Material.Filled.ArrowBackIos" aria-label="delete" @onclick="PreviousPage" disabled="@IsFirstPage"></MudIconButton>
+            </li>
+
+            @for (int pageNo = 1; pageNo <= TotalPages; pageNo++)
+            {
+            <li><a href="javascript:void(0);">@pageNo</a></li>
+            }
+            <li>
+            <MudIconButton Icon="@Icons.Material.Filled.ArrowForwardIos" aria-label="delete" @onclick="NextPage" disabled="@IsLastPage"></MudIconButton>
+            </li>
+            </ul>
+            </nav> *@
+
+
+
+
+            @* <nav>
+            <ul>
+            <li><i class="fas fa-chevron-left"></i></li>
+            <li><a href="javascript:void(0);">1</a></li>l
+            <li><a href="javascript:void(0);">2</a></li>
+            <li><a href="javascript:void(0);">3</a></li>
+            <li><a href="javascript:void(0);">4</a></li>
+            <li><i class="fas fa-chevron-right"></i></li>
+            </ul>
+            </nav> *@
+        </div>
+
+        <div class="row">
+            <MudPaper Class="w-100 p-2 mt-2 mx-2 rounded-lg">
+                <div class="col-12 d-flex justify-content-center scrolling-product">
+                    <MudPagination SelectedChanged="PageChanged" BoundaryCount="1" MiddleCount="1" Count="TotalPages" />
+                </div>
+
+            </MudPaper>
+        </div>
+
+    </div>
+</div>
+
+
