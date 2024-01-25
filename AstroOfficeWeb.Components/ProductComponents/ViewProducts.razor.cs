@@ -111,14 +111,15 @@ namespace AstroOfficeWeb.Components.ProductComponents
             await Form.ResetAsync();
         }
 
+
         private MudForm Form { get; set; } = null!;
         private async Task ApplyFilter()
         {
             FilteredProducts = Products!.ToList();
-          //  searchString = await JSRuntime.InvokeAsync<string>("getSearchboxValue");
-          // var searchStrings = searchString;
-           var filter = await JSRuntime.InvokeAsync<string>("getDropdownValue");
-            var size = await JSRuntime.InvokeAsync<string>("getPageSizeValue");
+            //  searchString = await JSRuntime.InvokeAsync<string>("getSearchboxValue");
+            // var searchStrings = searchString;
+            filter = await JSRuntime.InvokeAsync<string>("getDropdownValue");
+            size = await JSRuntime.InvokeAsync<string>("getPageSizeValue");
             PageSize = string.IsNullOrEmpty(size) ? 24 : Convert.ToInt32(size);
 
             if (!string.IsNullOrEmpty(searchString))
@@ -139,14 +140,28 @@ namespace AstroOfficeWeb.Components.ProductComponents
             UpdateVisibleItems();
         }
         private string searchString = "";
+        private string size = "";
+        private string filter = "";
+
         private void FilterFunc(string value)
         {
             FilteredProducts = Products!.ToList();
             searchString = value.ToStringX(); // Update the searchString
+            PageSize = string.IsNullOrEmpty(size) ? 24 : Convert.ToInt32(size);
             if (!string.IsNullOrWhiteSpace(searchString))
             {
                 FilteredProducts = Products!.Where(item => item.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
             }
+
+            if (filter == "Low-Max")
+            {
+                FilteredProducts = FilteredProducts.OrderBy(x => x.Price).ToList();
+            }
+            else if (filter == "Max-Low")
+            {
+                FilteredProducts = FilteredProducts.OrderByDescending(x => x.Price).ToList();
+            }
+
             UpdateVisibleItems();
             //else
             //{
