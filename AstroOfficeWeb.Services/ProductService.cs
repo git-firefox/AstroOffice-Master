@@ -24,24 +24,37 @@ namespace AstroOfficeWeb.Services
         }
 
 
-        public async Task<List<ViewProductDTO>?> GetProducts(long? categorySno = null)
+        public async Task<List<ViewProductDTO>?> GetProducts(long? categorySno = null, bool isDataUrl = false)
         {
             List<ViewProductDTO>? products = null;
 
+            //if (categorySno != null)
+            //{
+            //    var queryParams = new Dictionary<string, string>()
+            //    {
+            //        { "categorySno", categorySno!.ToStringX()},
+            //        { "isDataUrl", isDataUrl.ToStringX()}
+            //    };
+
+            //    products = await _swagger.GetAsync<List<ViewProductDTO>>(ProductApiConst.GET_Products, queryParams);
+            //}
+            //else
+            //{
+
+            //    products = await _swagger.GetAsync<List<ViewProductDTO>>(ProductApiConst.GET_Products);
+            //}
+            var queryParams = new Dictionary<string, string>()
+            {
+                { "isDataUrl", isDataUrl.ToStringX() }
+            };
+
             if (categorySno != null)
             {
-                var queryParams = new Dictionary<string, string>()
-                {
-                    { "categorySno", categorySno!.ToStringX()}
-                };
-
-                products = await _swagger.GetAsync<List<ViewProductDTO>>(ProductApiConst.GET_Products, queryParams);
+                queryParams.Add("categorySno", categorySno!.ToStringX());
             }
-            else
-            {
 
-                products = await _swagger.GetAsync<List<ViewProductDTO>>(ProductApiConst.GET_Products);
-            }
+            products = await _swagger.GetAsync<List<ViewProductDTO>>(ProductApiConst.GET_Products, queryParams);
+
             return products;
         }
 
@@ -67,11 +80,12 @@ namespace AstroOfficeWeb.Services
             return response.Data;
         }
 
-        public async Task<ProductDTO?> GetProductBySno(long sno)
+        public async Task<ProductDTO?> GetProductBySno(long sno, bool isDataUrl = false)
         {
             var queryParams = new Dictionary<string, string>()
             {
-                { "Sno", sno.ToString()}
+                { "Sno", sno.ToString()},
+                { "isDataUrl", isDataUrl.ToStringX() }
             };
 
             var response = await _swagger.GetAsync<ApiResponse<ProductDTO>>(ProductApiConst.GET_ProductBySno, queryParams);
@@ -202,9 +216,13 @@ namespace AstroOfficeWeb.Services
             return true;
         }
 
-        public async Task<List<CartItemDTO>?> GetCartItems()
+        public async Task<List<CartItemDTO>?> GetCartItems(bool isDataUrl = false)
         {
-            var response = await _swagger.GetAsync<ApiResponse<List<CartItemDTO>>>(ProductApiConst.GET_UserShoppingCart);
+            var queryParams = new Dictionary<string, string>()
+            {
+                { "isDataUrl", isDataUrl.ToStringX() }
+            };
+            var response = await _swagger.GetAsync<ApiResponse<List<CartItemDTO>>>(ProductApiConst.GET_UserShoppingCart, queryParams);
             if (!response!.Success)
             {
                 _snackbar?.ShowErrorSnackbar(response.Message);
@@ -299,9 +317,16 @@ namespace AstroOfficeWeb.Services
             }
         }
 
-        public async Task<GetOrderResponse?> GetUserOrder(long orderSno)
+        public async Task<GetOrderResponse?> GetUserOrder(long orderSno, bool isDataUrl = false)
         {
-            var response = await _swagger.GetAsync<GetOrderResponse>(ProductApiConst.GET_UserOrder, new Dictionary<string, string> { { "orderSno", orderSno.ToStringX() } });
+
+            var queryParams = new Dictionary<string, string>()
+            {
+                { "orderSno", orderSno.ToStringX() },
+                { "isDataUrl", isDataUrl.ToStringX() }
+            };
+
+            var response = await _swagger.GetAsync<GetOrderResponse>(ProductApiConst.GET_UserOrder, queryParams);
             if (!response!.Success)
             {
                 _snackbar?.ShowErrorSnackbar(response.Message);
@@ -309,9 +334,14 @@ namespace AstroOfficeWeb.Services
             }
             return (response);
         }
-        public async Task<List<OrderDTO>?> GetUserOrders()
+        public async Task<List<OrderDTO>?> GetUserOrders(bool isDataUrl = false)
         {
-            var response = await _swagger.GetAsync<ApiResponse<List<OrderDTO>>>(ProductApiConst.GET_UserOrders);
+            var queryParams = new Dictionary<string, string>()
+            {
+
+                { "isDataUrl", isDataUrl.ToStringX() }
+            };
+            var response = await _swagger.GetAsync<ApiResponse<List<OrderDTO>>>(ProductApiConst.GET_UserOrders, queryParams);
 
             if (!response!.Success)
             {
@@ -356,9 +386,13 @@ namespace AstroOfficeWeb.Services
             return response.Data;
         }
 
-        public async Task<List<ViewProductDTO>?> GetUserWishList()
+        public async Task<List<ViewProductDTO>?> GetUserWishList(bool isDataUrl = false)
         {
-            var response = await _swagger.GetAsync<ApiResponse<List<ViewProductDTO>>>(ProductApiConst.GET_UserWishList);
+            var queryParams = new Dictionary<string, string>()
+              {
+                  { "isDataUrl", isDataUrl.ToStringX() }
+              };
+            var response = await _swagger.GetAsync<ApiResponse<List<ViewProductDTO>>>(ProductApiConst.GET_UserWishList, queryParams);
 
             if (!response!.Success)
             {

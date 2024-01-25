@@ -8,7 +8,7 @@
 <PageLayout Title="Save Product">
     <ChildContent>
         <div class="mt-5">
-            <AstroOfficeWeb.Components.ProductComponents.SaveProduct Sno="@Sno" ProductModel="@ProductModel" CategoryDTOs="CategoryDTOs"></AstroOfficeWeb.Components.ProductComponents.SaveProduct>
+            <AstroOfficeWeb.Components.ProductComponents.SaveProduct IsDataUrl="true" Sno="@Sno" ProductModel="@ProductModel" CategoryDTOs="CategoryDTOs"></AstroOfficeWeb.Components.ProductComponents.SaveProduct>
         </div>
     </ChildContent>
 </PageLayout>
@@ -16,6 +16,9 @@
 @code {
     [Parameter]
     public long Sno { get; set; }
+
+    [Parameter]
+    public bool IsDataUrl { get; set; } = false;
 
 
     public ProductDTO ProductModel { get; set; } = new();
@@ -31,7 +34,7 @@
         }
         if (Sno != 0)
         {
-            var productDTO = await ProductService.GetProductBySno(Sno);
+            var productDTO = await ProductService.GetProductBySno(Sno, IsDataUrl);
             if (productDTO != null)
             {
                 ProductModel = productDTO;

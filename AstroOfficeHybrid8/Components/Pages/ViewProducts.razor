@@ -7,7 +7,7 @@
         <MudIconButton OnClick="viewProducts.OnClick_BtnFilter" Color="Color.Primary" Icon="@Icons.Material.Filled.FilterAlt" Class="d-flex d-sm-none" Style="background-color:white; height: 40px; width: 40px;"></MudIconButton>
     </RightContainer> *@
     <ChildContent>
-        <AstroOfficeWeb.Components.ProductComponents.ViewProducts @ref=viewProducts EventCallback="OnClick_BtnFilter" CategoryName="@CategoryName" CategorySno="@CategorySno" CurrentPage="@CurrentPage"></AstroOfficeWeb.Components.ProductComponents.ViewProducts>
+        <AstroOfficeWeb.Components.ProductComponents.ViewProducts IsDataUrl="true" @ref=viewProducts EventCallback="OnClick_BtnFilter" CategoryName="@CategoryName" CategorySno="@CategorySno" CurrentPage="@CurrentPage"></AstroOfficeWeb.Components.ProductComponents.ViewProducts>
     </ChildContent>
 </PageLayout>
 

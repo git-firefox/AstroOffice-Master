@@ -1,5 +1,5 @@
 ﻿using AstroOfficeWeb.Shared.DTOs;
-
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +10,8 @@ namespace AstroOfficeWeb.Components.ProductComponents
 {
     public partial class UserOrders
     {
+        [Parameter]
+        public bool IsDataUrl { get; set; } = false;
         private IEnumerable<OrderDTO>? OrderDTOs { get; set; }
         protected override void OnInitialized()
         {
@@ -20,7 +22,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         {
             await base.OnInitializedAsync();
 
-            OrderDTOs = await ProductService.GetUserOrders();
+            OrderDTOs = await ProductService.GetUserOrders(IsDataUrl);
         }
 
         private void OnClick_DivElement(OrderDTO order)

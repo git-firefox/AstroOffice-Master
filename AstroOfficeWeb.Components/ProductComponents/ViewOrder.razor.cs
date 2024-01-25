@@ -14,6 +14,8 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         [Parameter]
         public long OrderId { get; set; }
+        [Parameter]
+        public bool IsDataUrl { get; set; } = false;
         public GetOrderResponse? Order { get; set; }
         public CalculateOrderSummary? OrderSummary { get; set; }
 
@@ -24,7 +26,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         protected override async Task OnInitializedAsync()
         {
-            Order = await ProductService.GetUserOrder(OrderId);
+            Order = await ProductService.GetUserOrder(OrderId, IsDataUrl);
             OrderSummary = new(Order!.OrderItems.Sum(oi => oi.ProductQuantity * oi.ProductPrice));
         }
     }

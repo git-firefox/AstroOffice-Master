@@ -43,7 +43,7 @@ namespace AstroOfficeWeb.Server.Controllers
         // GET: api/<ProductController>
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetProducts(long? categorySno = null)
+        public async Task<IActionResult> GetProducts(long? categorySno = null, bool isDataUrl = false)
         {
             var d = HttpContext.Request.Path;
 
@@ -72,8 +72,8 @@ namespace AstroOfficeWeb.Server.Controllers
                 secondaryImage = aProducts.First(a => a.Sno == pd.Sno).ProductMedia.FirstOrDefault(a => a.AProductsSno == pd.Sno && a.IsSecondary && a.MediaType != "MP4" && a.MediaType != "WEBM" && a.MediaType != "OGG");
 
                 pd.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == pd.Sno)?.Quantity ?? 0;
-                pd.ImageUrl = SetMedia(primaryImage?.MediaUrl, primaryImage?.MediaType);
-                pd.SecondaryImageUrl = SetMedia(secondaryImage?.MediaUrl, secondaryImage?.MediaType);
+                pd.ImageUrl = SetMedia(primaryImage?.MediaUrl, primaryImage?.MediaType, isDataUrl);
+                pd.SecondaryImageUrl = SetMedia(secondaryImage?.MediaUrl, secondaryImage?.MediaType, isDataUrl);
 
             });
 
@@ -94,7 +94,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
         // GET api/<ProductController>/5
         [HttpGet]
-        public async Task<IActionResult> GetProductBySno(long sno)
+        public async Task<IActionResult> GetProductBySno(long sno, bool isDataUrl = false)
         {
             var apiResponse = new ApiResponse<ProductDTO> { Data = null };
 
@@ -192,15 +192,15 @@ namespace AstroOfficeWeb.Server.Controllers
 
             mediaDTOs.ForEach(md =>
             {
-                md.MediaUrl = SetMedia(md.MediaUrl, md.MediaType);
+                md.MediaUrl = SetMedia(md.MediaUrl, md.MediaType, isDataUrl);
             });
             productDTO.ProductMediaFiles = mediaDTOs;
             productDTO.MetaDatas = metaDataDTOs;
             productDTO.ProductCategory = aProduct.ProductCategoriesSnoNavigation?.Title ?? string.Empty;
             productDTO.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == aProduct.Sno)?.Quantity ?? 0;
 
-            productDTO.ImageUrl = SetMedia(productDTO.ImageUrl);
-            productDTO.SecondaryImageUrl = SetMedia(productDTO.SecondaryImageUrl);
+            productDTO.ImageUrl = SetMedia(productDTO.ImageUrl, null, isDataUrl);
+            productDTO.SecondaryImageUrl = SetMedia(productDTO.SecondaryImageUrl, null, isDataUrl);
 
             apiResponse.Data = productDTO;
 
@@ -747,7 +747,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
         [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpGet]
-        public IActionResult GetUserShoppingCart()
+        public IActionResult GetUserShoppingCart(bool isDataUrl = false)
         {
             var response = new ApiResponse<List<CartItemDTO>>();
             var shoppingCart = _context.ShoppingCarts.Include(sc => sc.CartItems).ThenInclude(sc => sc.AProductsSnoNavigation).ThenInclude(a => a.ProductMedia).FirstOrDefault(a => a.AUsersSno == User.GetUserSno());
@@ -758,7 +758,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 ProductSno = ci.AProductsSno ?? 0,
                 ProductName = ci.AProductsSnoNavigation?.Name ?? "",
                 ProductQuantity = ci.Quantity ?? 0,
-                ProductImageSrc = GetPrimaryImageUrl(ci.AProductsSnoNavigation?.ProductMedia),
+                ProductImageSrc = GetPrimaryImageUrl(ci.AProductsSnoNavigation?.ProductMedia, isDataUrl),
                 ProductPrice = ci.AProductsSnoNavigation?.Price ?? 0
             }).ToList();
 
@@ -766,16 +766,16 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(response);
         }
 
-        private string? GetPrimaryImageUrl(IEnumerable<ProductMedia>? aProduct)
+        private string? GetPrimaryImageUrl(IEnumerable<ProductMedia>? aProduct, bool isDataUrl = false)
         {
             var primaryImage = aProduct?.FirstOrDefault(a => a.IsPrimary && a.MediaType != "MP4" && a.MediaType != "WEBM" && a.MediaType != "OGG");
-            return SetMedia(primaryImage?.MediaUrl, primaryImage?.MediaType);
+            return SetMedia(primaryImage?.MediaUrl, primaryImage?.MediaType, isDataUrl);
         }
 
-        private string? GetSecondaryImageUrl(IEnumerable<ProductMedia>? aProduct)
+        private string? GetSecondaryImageUrl(IEnumerable<ProductMedia>? aProduct, bool isDataUrl = false)
         {
             var primaryImage = aProduct?.FirstOrDefault(a => a.IsSecondary && a.MediaType != "MP4" && a.MediaType != "WEBM" && a.MediaType != "OGG");
-            return SetMedia(primaryImage?.MediaUrl, primaryImage?.MediaType);
+            return SetMedia(primaryImage?.MediaUrl, primaryImage?.MediaType, isDataUrl);
         }
 
 
@@ -959,7 +959,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetUserOrder(long orderSno)
+        public async Task<IActionResult> GetUserOrder(long orderSno, bool isDataUrl = false)
         {
             var response = new GetOrderResponse();
 
@@ -985,7 +985,7 @@ namespace AstroOfficeWeb.Server.Controllers
                 ProductName = ci.AProductsSnoNavigation!.Name,
                 ProductPrice = ci.AProductsSnoNavigation.Price,
                 //ProductImageSrc = ci.AProductsSnoNavigation.ImageUrl,
-                ProductImageSrc = GetPrimaryImageUrl(ci.AProductsSnoNavigation?.ProductMedia),
+                ProductImageSrc = GetPrimaryImageUrl(ci.AProductsSnoNavigation?.ProductMedia, isDataUrl),
 
             }).ToList();
 
@@ -1007,7 +1007,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
         [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpGet]
-        public async Task<IActionResult> GetUserOrders()
+        public async Task<IActionResult> GetUserOrders(bool isDataUrl = false)
         {
             var response = new ApiResponse<List<OrderDTO>>();
             try
@@ -1049,7 +1049,7 @@ namespace AstroOfficeWeb.Server.Controllers
                     od.OrderItems.ForEach(oi =>
                     {
                         var primaryImage = primaryImages.FirstOrDefault(a => a.AProductsSno == oi.ProductSno);
-                        oi.ProductImageSrc = SetMedia(primaryImage?.MediaUrl, primaryImage?.MediaType);
+                        oi.ProductImageSrc = SetMedia(primaryImage?.MediaUrl, primaryImage?.MediaType, isDataUrl);
                     });
                 });
 
@@ -1148,15 +1148,13 @@ namespace AstroOfficeWeb.Server.Controllers
 
         [Authorize(Roles = $"{ApplicationConst.Role_User},{ApplicationConst.Role_Member}")]
         [HttpGet]
-        public async Task<IActionResult> GetUserWishList()
+        public async Task<IActionResult> GetUserWishList(bool isDataUrl = false)
         {
             var response = new ApiResponse<List<ViewProductDTO>>();
             var shoppingCart = await _context.ShoppingCarts.Include(i => i.CartItems).FirstOrDefaultAsync(a => a.AUsersSno == User.GetUserSno());
             var cartItems = shoppingCart?.CartItems.ToList();
 
             var productWishlists = await _context.ProductWishlists.Include(pw => pw.AProductsSnoNavigation).ThenInclude(a => a!.ProductMedia).Where(pw => pw.AUsersSno == User.GetUserSno()).ToListAsync();
-
-
 
             var aProducts = productWishlists.Select(wi => wi.AProductsSnoNavigation).Where(p => p!.IsActive == true).OrderByDescending(p => p!.Sno).ToList();
 
@@ -1165,8 +1163,8 @@ namespace AstroOfficeWeb.Server.Controllers
             productDTOs.ForEach(pd =>
             {
                 pd.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == pd.Sno)?.Quantity ?? 0;
-                pd.ImageUrl = GetPrimaryImageUrl(aProducts.FirstOrDefault(a => pd.Sno == a!.Sno)?.ProductMedia);
-                pd.SecondaryImageUrl = GetSecondaryImageUrl(aProducts.FirstOrDefault(a => pd.Sno == a!.Sno)?.ProductMedia);
+                pd.ImageUrl = GetPrimaryImageUrl(aProducts.FirstOrDefault(a => pd.Sno == a!.Sno)?.ProductMedia, isDataUrl);
+                pd.SecondaryImageUrl = GetSecondaryImageUrl(aProducts.FirstOrDefault(a => pd.Sno == a!.Sno)?.ProductMedia, isDataUrl);
             });
             response.Data = productDTOs;
             return Ok(response);

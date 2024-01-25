@@ -43,6 +43,8 @@ namespace AstroOfficeWeb.Components.ProductComponents
     {
         [Parameter]
         public long Sno { get; set; }
+        [Parameter]
+        public bool IsDataUrl { get; set; } = false;
 
         private EditContext SaveProductInfoContext { get; set; } = null!;
         private EditContext SaveProductImageInfoContext { get; set; } = null!;
@@ -109,7 +111,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         protected override async Task OnInitializedAsync()
         {
-            var productDTO = await ProductService.GetProductBySno(Sno);
+            var productDTO = await ProductService.GetProductBySno(Sno, IsDataUrl);
             if (productDTO != null)
             {
                 ProductModel = productDTO;

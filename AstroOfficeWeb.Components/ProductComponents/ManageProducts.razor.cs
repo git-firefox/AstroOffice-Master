@@ -1,6 +1,7 @@
 ﻿
 using AstroOfficeWeb.Components.MyComponents;
 using AstroOfficeWeb.Shared.DTOs;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
 {
     public partial class ManageProducts
     {
+        [Parameter]
+        public bool IsDataUrl { get; set; } = false;
+
         public List<ViewProductDTO>? Products { get; set; }
         public ConfirmationModal Confirmation { get; set; } = null!;
         public ViewProductDTO? SelectedProduct { get; set; }
@@ -23,7 +27,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         protected override async Task OnInitializedAsync()
         {
             StateContainerService.SetSelectedProduct(null);
-            Products = await ProductService.GetProducts();
+            Products = await ProductService.GetProducts(null, IsDataUrl);
         }
 
         private void OnClick_BtnAdd()

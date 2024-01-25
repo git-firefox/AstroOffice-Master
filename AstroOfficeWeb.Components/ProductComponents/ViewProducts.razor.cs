@@ -26,6 +26,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
         [Parameter]
         public int CurrentPage { get; set; } = 1;
 
+        [Parameter]
+        public bool IsDataUrl { get; set; } = false;
+
         public bool IsDrawerOpen { get; set; }
         private string sortByPrice = "";
         private string pageSize = "";
@@ -49,7 +52,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         {
             await base.OnInitializedAsync();
             CategoryDTOs = await ProductService.GetShopCategories();
-            Products = await ProductService.GetProducts();
+            Products = await ProductService.GetProducts(isDataUrl: IsDataUrl);
             if (Products is not null)
             {
                 await ApplyFilter();
@@ -71,7 +74,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         private async Task OnClick_CategoryList(BaseCategoryDTO category)
         {
-            Products = await ProductService.GetProducts(category.Sno);
+            Products = await ProductService.GetProducts(category.Sno, isDataUrl: IsDataUrl);
             await ApplyFilter();
             NavigationManager.NavigateTo($"/products/{category.Sno}/{category!.Title!.Replace(" ", "-").ToLower()}");
         }
@@ -105,7 +108,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
             sortByPrice = "";
             pageSize = "";
             searchString = "";
-            Products = await ProductService.GetProducts();
+            Products = await ProductService.GetProducts(isDataUrl: IsDataUrl);
             await ApplyFilter();
             IsDrawerOpen = false;
             await Form.ResetAsync();

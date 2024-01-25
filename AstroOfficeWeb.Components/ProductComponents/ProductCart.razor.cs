@@ -15,6 +15,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
     public partial class ProductCart
     {
         [Parameter]
+        public bool IsDataUrl { get; set; } = false;
+
+        [Parameter]
         public EventCallback<bool> HandleEmptyCart { get; set; }
 
         private CalculateOrderSummary OrderSummary { get; set; } = null!;
@@ -28,7 +31,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         protected override async Task OnInitializedAsync()
         {
             //CartItems = await ProductService.GetCartItems();
-            CartItems = await ProductService.GetCartItems();
+            CartItems = await ProductService.GetCartItems(IsDataUrl);
             if (CartItems != null)
             {
                 UpdateOrderSummary();

@@ -11,6 +11,8 @@ namespace AstroOfficeWeb.Components.ProductComponents
 {
     public partial class UserWishlist
     {
+        [Parameter]
+        public bool IsDataUrl { get; set; } = false;
 
         [Parameter]
         public string Breakpoint { get; set; } = "row-cols-1 row-cols-sm-3 row-cols-md-3 row-cols-xl-5";
@@ -23,7 +25,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         protected override async Task OnInitializedAsync()
         {
-            ViewProductDTOs = await ProductService.GetUserWishList();
+            ViewProductDTOs = await ProductService.GetUserWishList(IsDataUrl);
         }
 
         private async Task OnCLick_ALickViewProdcut(ViewProductDTO productDTO)

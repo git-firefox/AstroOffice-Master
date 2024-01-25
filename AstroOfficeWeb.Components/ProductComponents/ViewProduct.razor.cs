@@ -18,6 +18,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
         public long ProductSno { get; set; }
 
         [Parameter]
+        public bool IsDataUrl { get; set; }= false;
+
+        [Parameter]
         public string? ProductName { get; set; }
 
         //public ImagesDTO? SelectedImage { get; set; } = new ImagesDTO();
@@ -38,7 +41,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         protected override async Task OnInitializedAsync()
         {
-            ViewProductDTO = await ProductService.GetProductBySno(ProductSno) ?? new();
+            ViewProductDTO = await ProductService.GetProductBySno(ProductSno, IsDataUrl) ?? new();
             //BrowserFiles = ViewProductDTO.ProductImages ??= new();
             MediaDTOs = ViewProductDTO.ProductMediaFiles ??= new();
             MetaDataList = ViewProductDTO.MetaDatas ??= new();

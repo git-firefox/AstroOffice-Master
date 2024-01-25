@@ -56,6 +56,8 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
     public partial class ProductCheckout
     {
+        [Parameter]
+        public bool IsDataUrl { get; set; } = false;
         private ViewAddressModal Modal_ViewAddress { get; set; } = null!;
 
         private ElementReference ER_ABillingInfo { get; set; }
@@ -89,7 +91,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
             await base.OnInitializedAsync();
             CountryOptions = await CountryService.GetCountryOptionsAsync();
             Addresses = await ProductService.GetUserAddresses();
-            CartItems = await ProductService.GetCartItems();
+            CartItems = await ProductService.GetCartItems(IsDataUrl);
             OrderSummary = new(CartItems!.Sum(ci => ci.ProductQuantity * ci.ProductPrice));
         }
 

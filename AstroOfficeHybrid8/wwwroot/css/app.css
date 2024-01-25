@@ -836,9 +836,9 @@ section .section-overlay {
     border-bottom: 1px solid var(--mud-palette-lines-inputs) !important;
 }
 
-.mud-button:hover, .mud-button:focus-visible {
+/*.mud-button:hover, .mud-button:focus-visible {
     background-color: transparent;
-}
+}*/
 .card-body::after, .card-footer::after, .card-header::after{
     display:none !important;
 }
