@@ -109,8 +109,8 @@
     background-color: #fff;
     transition: all .3s ease;
     position: absolute;
-    top: 21px;
-    right: 10px;
+    top: 24px;
+    right: 15px;
     opacity: 0;
     transform: translateX(20px) translateZ(0);
     width: 25px;
@@ -180,14 +180,14 @@
     justify-content:center;
     text-align:center;
 }*/
-.wishlist-main{
+/*.wishlist-main{
     margin:25px;
 }
 .wishlist-card .card-body {
     background: #fff;
     padding: 10px !important;
     border-radius: 35px;
-}
+}*/
 @media(max-width:767px){
     .card-body:hover .card-img-actions img {
         opacity: 1;

@@ -9,7 +9,7 @@
 
 @if (ViewProductDTOs == null)
 {
-    <div class="row @Breakpoint wishlist-main">
+    <div class="row @Breakpoint">
         @for (int i = 0; i < 10; i++)
         {
 
@@ -26,12 +26,12 @@
 }
 else if (ViewProductDTOs.Any())
 {
-    <div class="row @Breakpoint wishlist-main">
+    <div class="row @Breakpoint">
         @foreach (var product in ViewProductDTOs)
         {
             <div class="col wishlist-card">
                 <div class="card-body mb-2 bg-light rounded-lg" style="transform: rotate(0);">
-                    <div class="card card-img-actions rounded-lg m-2  " @onclick="()=>OnCLick_ALickViewProdcut(product)">
+                    <div class="card card-img-actions rounded-lg m-2" @onclick="()=>OnCLick_ALickViewProdcut(product)">
                         <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="card-img img-fluid">
 
                         @if (product.SecondaryImageUrl == null)

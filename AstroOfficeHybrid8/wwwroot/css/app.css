@@ -950,8 +950,8 @@ section .section-overlay {
 .form-check-input {
     margin-top: 0.25rem;
 }
-.bg-custom {
-    /* From https://css.glass */
+
+.bg-glass {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
