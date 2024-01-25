@@ -10,7 +10,7 @@
     --a-bg-border-primary: url('../borders/border-image-fill.png');
 }
 
-header {
+header#header-container {
     background-color: #910d0d;
 }
 
@@ -778,6 +778,11 @@ input[type=number] {
     .mud-table-body .mud-table-row {
         border-bottom: 15px solid #f78100;
     }
+}
+
+ /*SummerNote*/
+.note-editable {
+    font-family: 'Philosopher';
 }
 
 .note-editor .dropdown-toggle::after {

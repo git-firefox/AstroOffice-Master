@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text.Json;
 using AstroOfficeWeb.Shared.Helper;
 using AstroOfficeWeb.Shared.Models;
 
@@ -29,12 +30,17 @@ namespace AstroOfficeWeb.Server.Middlewares
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            await context.Response.WriteAsync(new ApiErrorResponse()
+
+            var errorResponse = new ApiErrorResponse()
             {
                 Status = context.Response.StatusCode,
                 Type = "Internal Server Error.",
                 Title = "Internal Server Error from the custom middleware."
-            }.ToStringX());
+            };
+
+            var jsonResponse = JsonSerializer.Serialize(errorResponse);
+
+            await context.Response.WriteAsync(jsonResponse);
         }
     }
 }

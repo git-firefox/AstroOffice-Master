@@ -36,9 +36,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
         private BSNavItem BSNavMetaData { get; set; } = null!;
         private ProductGeneralInfo GeneralInfoRef { get; set; } = null!;
 
-        private BaseProductDTO? GeneralInfo { get; set; }
-        private List<MediaFileDTO>? MediaFiles { get; set; }
-        private List<MetaDataDTO>? MetaDatas { get; set; }
+        private BaseProductDTO GeneralInfo { get; set; } = new();
+        private List<MediaFileDTO> MediaFiles { get; set; } = new();
+        private List<MetaDataDTO> MetaDatas { get; set; } = new();
         private IEnumerable<Option> CategoryOptions { get; set; } = Enumerable.Empty<Option>();
 
         protected override void OnInitialized()
@@ -53,9 +53,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
             if (Sno != 0)
             {
                 var productInfo = await ProductService.InitialiseProductBySno(Sno);
-                GeneralInfo = productInfo.GeneralInformation;
-                MediaFiles = productInfo.ProductMediaFiles;
-                MetaDatas = productInfo.ProductMetaDatas;
+                GeneralInfo = productInfo.GeneralInformation!;
+                MediaFiles = productInfo.ProductMediaFiles!;
+                MetaDatas = productInfo.ProductMetaDatas!;
             }
             IsCompleted = true;
         }
@@ -84,26 +84,20 @@ namespace AstroOfficeWeb.Components.ProductComponents
         private async Task OnClick_BtnPublish()
         {
 
-            //if (!GeneralInfoRef.GeneralInformationContext.Validate())
-            //{
-            //    await OnClick_BtnProceed(SaveProductTab.General);
-            //    return;
-            //}
+            if (!GeneralInfoRef.GeneralInformationContext.Validate())
+            {
+                await OnClick_BtnProceed(SaveProductTab.General);
+                return;
+            }
 
-            if (!MediaFiles!.Any())
+            if (!MediaFiles.Any())
             {
                 Snackbar.ShowErrorSnackbar("Upload atleast 1 image.");
                 await OnClick_BtnProceed(SaveProductTab.ProductImages);
                 return;
             }
 
-            //if (!MediaFiles!.Any())
-            //{
-            //    Snackbar.ShowErrorSnackbar("");
-            //    return;
-            //}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-            await ProductService.SaveProduct(GeneralInfo!, MediaFiles!,MetaDatas!, Sno);
+            await ProductService.SaveProduct(GeneralInfo!, MediaFiles!, MetaDatas!, Sno);
         }
     }
 }

@@ -106,9 +106,7 @@ namespace AstroOfficeWeb.Server.Controllers
 
 
             productDTO.ProductCategory = aProduct.ProductCategoriesSnoNavigation?.Title ?? string.Empty;
-            productDTO.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == aProduct.Sno)?.Quantity ?? 0; ;
-
-
+            productDTO.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == aProduct.Sno)?.Quantity ?? 0;
 
             return Ok(apiResponse);
         }
@@ -207,40 +205,38 @@ namespace AstroOfficeWeb.Server.Controllers
         public IActionResult AddProduct([FromForm] MultipartFormRequest<SaveProductRequest> request)
         {
             var apiResponse = new ApiResponse<string> { Data = null };
-            //try
-            //{
-            //    AProduct aProduct = _mapper.Map<AProduct>(productDTO);
-            //    aProduct.AddedByAUsersSno = User.GetUserSno();
-            //    aProduct.AddedDate = DateTime.Now;
-            //    _context.AProducts.Add(aProduct);
+            try
+            {
+                AProduct aProduct = _mapper.Map<AProduct>(request.DataObject);
+                aProduct.AddedByAUsersSno = User.GetUserSno();
+                aProduct.AddedDate = DateTime.Now;
+                _context.AProducts.Add(aProduct);
 
-            //    _context.SaveChanges();
+                _context.SaveChanges();
 
-            //    apiResponse.Message = ProductMessageConst.AddProduct;
-            //    apiResponse.Success = true;
-            //    var viewProduct = _mapper.Map<ViewProductDTO>(aProduct);
-            //    apiResponse.Data = viewProduct;
+                apiResponse.Message = ProductMessageConst.AddProduct;
+                apiResponse.Success = true;
 
-            //    if (productDTO.ProductImages != null)
-            //    {
+                //if (request.DataObject..ProductImages != null)
+                //{
 
-            //        var productImages = productDTO.ProductImages.Select(a => new AProductMediaFile
-            //        {
-            //            MediaUrl = a.ImageURL,
-            //            MediaName = Path.GetFileNameWithoutExtension(a.ImageName),
-            //            AProductsSno = aProduct.Sno
-            //        });
+                //    var productImages = productDTO.ProductImages.Select(a => new AProductMediaFile
+                //    {
+                //        MediaUrl = a.ImageURL,
+                //        MediaName = Path.GetFileNameWithoutExtension(a.ImageName),
+                //        AProductsSno = aProduct.Sno
+                //    });
 
-            //        _context.AProductMediaFiles.AddRange(productImages);
-            //        _context.SaveChanges();
-            //    }
+                //    _context.AProductMediaFiles.AddRange(productImages);
+                //    _context.SaveChanges();
+                //}
 
-            //}
-            //catch (Exception ex)
-            //{
-            //    apiResponse.Success = false;
-            //    apiResponse.Message = ex.Message;
-            //}
+            }
+            catch (Exception ex)
+            {
+                apiResponse.Success = false;
+                apiResponse.Message = ex.Message;
+            }
             return Ok(apiResponse);
         }
 

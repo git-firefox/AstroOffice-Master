@@ -85,7 +85,6 @@ namespace AstroOfficeWeb.Shared.DTOs
         [Range(1, 9999, ErrorMessage = "{0} must be between {1} and {2}.")]
         public int StockQuantity { get; set; }
 
-        [Required]
         public string? ImageUrl { get; set; }
 
         [Required]

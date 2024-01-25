@@ -54,24 +54,24 @@ window.fnSummernoteInterop = function (element, height, dotnetObject) {
                 ['height', ['height']]
             ],
             height: height, 
-            //fontName: 'Philosopher',
-            addDefaultFonts: false,
+            fontName: 'Philosopher',
             disableGrammar: false,
             shortcuts: false,
             disableDragAndDrop: false,
             tabDisable: false,
             codeviewFilter: false,
             codeviewIframeFilter: true,
-            spellCheck: true
+            spellCheck: true,
+            callbacks: {
+                onInit: function () {
+                    $(element).summernote('fontName', 'Philosopher');
+                }
+            }
+
         };
 
         $(element).summernote(summernoteConfig);
-        $(element).summernote('fontName', 'Philosopher');
-        $(element).summernote('removeFormat');
-        $(element).on('summernote.init', function () {
-            console.log('Summernote is launched');
-        });
-
+        
         $(element).on('summernote.change', function (we, contents, $editable) {
             dotnetObject.invokeMethodAsync("OnInputSummernoteTextChange", contents);
         });

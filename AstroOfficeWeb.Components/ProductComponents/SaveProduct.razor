@@ -29,9 +29,8 @@
                     <TabPaneBody>
                         @if (IsCompleted)
                         {
-                            <ProductGeneralInfo @ref="GeneralInfoRef"  Model=@(GeneralInfo ?? new ()) CategoryItems="CategoryOptions" />
+                            <ProductGeneralInfo @ref="GeneralInfoRef"  Model=GeneralInfo CategoryItems="CategoryOptions" />
                         }
-
                         <MudStack Justify="Justify.FlexEnd" Row="true">
                             <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowForward" Color="Color.Primary" OnClick="() => OnClick_BtnProceed(SaveProductTab.ProductImages)">Add More Info</MudButton>
                         </MudStack>
@@ -40,7 +39,7 @@
 
                 <BSNavItemPane TabPanelName="@SaveProductTab.ProductImages.ToDescriptionString()">
                     <TabPaneBody>
-                        <ProductMediaInfo Items="MediaFiles ?? new List<MediaFileDTO>()" />
+                        <ProductMediaInfo Items="MediaFiles" />
                         <MudStack Justify="Justify.FlexEnd" Row="true">
                             <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Secondary" OnClick="() => OnClick_BtnProceed(SaveProductTab.General)">Back To General</MudButton>
                             <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowForward" Color="Color.Primary" OnClick="() => OnClick_BtnProceed(SaveProductTab.Metadata)">Add Metadata</MudButton>
@@ -50,7 +49,7 @@
 
                 <BSNavItemPane TabPanelName="@SaveProductTab.Metadata.ToDescriptionString()">
                     <TabPaneBody>
-                        <ProductMetadataInfo Items="MetaDatas ?? new List<MetaDataDTO>()" />
+                        <ProductMetadataInfo Items="MetaDatas" />
                         <MudStack Justify="Justify.FlexEnd" Row="true">
                             <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Secondary" OnClick="() => OnClick_BtnProceed(SaveProductTab.ProductImages)">Edit Information</MudButton>
                             <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Publish" Color="Color.Success" OnClick="OnClick_BtnPublish">Publish Product</MudButton>
