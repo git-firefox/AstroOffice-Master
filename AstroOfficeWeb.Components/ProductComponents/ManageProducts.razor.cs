@@ -13,12 +13,16 @@ namespace AstroOfficeWeb.Components.ProductComponents
     public partial class ManageProducts
     {
         [Parameter]
-        public bool IsDataUrl { get; set; } = false;
+        public bool IsDataUrl { get; set; } = false; 
+        
+        [Parameter]
+        public string GridClass { get; set; } = string.Empty;
 
         public List<ViewProductDTO>? Products { get; set; }
         public ConfirmationModal Confirmation { get; set; } = null!;
         public ViewProductDTO? SelectedProduct { get; set; }
         public string _searchString { get; set; }
+        
         protected override void OnInitialized()
         {
             StateContainerService.OnStateChange += StateHasChanged;

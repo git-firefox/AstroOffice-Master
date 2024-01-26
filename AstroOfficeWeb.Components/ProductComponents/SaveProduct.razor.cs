@@ -43,6 +43,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
     {
         [Parameter]
         public long Sno { get; set; }
+
+        [Parameter]
+        public string CardClass { get; set; } = string.Empty;
         [Parameter]
         public bool IsDataUrl { get; set; } = false;
 

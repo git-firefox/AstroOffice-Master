@@ -26,7 +26,7 @@
     }
     else if (Products.Any())
     {
-        <MudDataGrid T="ViewProductDTO" Items="@Products" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter">
+        <MudDataGrid T="ViewProductDTO" Items="@Products" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter" Class="@GridClass">
             <ToolBarContent>
                 <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
                               AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>

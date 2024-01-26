@@ -20,6 +20,9 @@ namespace AstroOfficeWeb.Components.ProductComponents
     public partial class ManageCategories
     {
         [Parameter]
+        public string GridClass { get; set; } = string.Empty;
+
+        [Parameter]
         public EventCallback<bool> IsCategoryLoaded { get; set; }
 
         [CascadingParameter]

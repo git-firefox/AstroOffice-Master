@@ -159,9 +159,10 @@
                             <ul class="dropdown-menu dropdown-menu-right dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                                 @if (!context.User.IsInRole(ApplicationConst.Role_ProductManager))
                                 {
-                                    <li><a class="dropdown-item" href="/viewed-kundalis"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/tarot-fill.png" alt="Viewed Kundali" />Viewed Kundalis</a></li>
-                                    <li><a class="dropdown-item" href="/token-recharge"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/top-up-fill.png" alt="Token Recharge" />Token Recharge</a></li>
-                                    <li><a class="dropdown-item" href="/saved-kundalis"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/transaction.png" alt="Saved Kundalis" />Saved Kundalis</a></li>
+                                    <li><NavLink class="dropdown-item" href="/viewed-kundalis"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/tarot-fill.png" alt="Viewed Kundali" />Viewed Kundalis</NavLink></li>
+                                    <li><NavLink class="dropdown-item" href="/token-recharge"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/top-up-fill.png" alt="Token Recharge" />Token Recharge</NavLink></li>
+                                    <li><NavLink class="dropdown-item" href="/saved-kundalis"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/magic-ball-fill.png" alt="Saved Kundalis" />Saved Kundalis</NavLink></li>
+                                    <li><NavLink class="dropdown-item" href="/transactions"><img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/transaction.png" alt="Transaction History" />Transaction History</NavLink></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>

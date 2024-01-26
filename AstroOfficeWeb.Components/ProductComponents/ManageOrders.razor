@@ -16,7 +16,7 @@
 else
 {
 
-    <MudDataGrid T="OrderDTO" Items="OrderDTOs" Filterable="true" FilterMode="DataGridFilterMode.ColumnFilterRow" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive">
+    <MudDataGrid T="OrderDTO" Items="OrderDTOs" Filterable="true" FilterMode="DataGridFilterMode.ColumnFilterRow" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive" Class="@GridClass">
         <Columns>
             <PropertyColumn Property="x => x.OrderId" Title="Sr No" Filterable="false" />
             <PropertyColumn Property="x => x.BillingName" Title="Billing Name" />

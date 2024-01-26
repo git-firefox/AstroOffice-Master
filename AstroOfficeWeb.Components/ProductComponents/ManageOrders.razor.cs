@@ -1,5 +1,5 @@
 ﻿using AstroOfficeWeb.Shared.DTOs;
-
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +10,8 @@ namespace AstroOfficeWeb.Components.ProductComponents
 {
     public partial class ManageOrders
     {
+        [Parameter]
+        public string GridClass { get; set; } = string.Empty;
         private IEnumerable<OrderDTO>? OrderDTOs { get; set; }
 
         protected override void OnInitialized()

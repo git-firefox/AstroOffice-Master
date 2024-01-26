@@ -5,11 +5,10 @@
 
 @inject ProductService ProductService
 
-<PageLayout Title="Save Product">
+<PageLayout Title="Save Product" ViewInContainer="false">
     <ChildContent>
-        <div class="mt-5">
-            <AstroOfficeWeb.Components.ProductComponents.SaveProduct IsDataUrl="true" Sno="@Sno" ProductModel="@ProductModel" CategoryDTOs="CategoryDTOs"></AstroOfficeWeb.Components.ProductComponents.SaveProduct>
-        </div>
+            <AstroOfficeWeb.Components.ProductComponents.SaveProduct CardClass="my-3" IsDataUrl="true" Sno="@Sno" ProductModel="@ProductModel" CategoryDTOs="CategoryDTOs"></AstroOfficeWeb.Components.ProductComponents.SaveProduct>
+       
     </ChildContent>
 </PageLayout>
 

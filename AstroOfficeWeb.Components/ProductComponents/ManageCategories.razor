@@ -13,7 +13,7 @@
         <MudButton OnClick="Onclick_AddMetaData" Class="btn-custom">Add Category</MudButton>
     </Header>
     <ChildContent> *@
-<MudDataGrid T="CategoryDialoge" Items="@categoryList" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter">
+<MudDataGrid T="CategoryDialoge" Items="@categoryList" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter" Class="@GridClass">
     <ToolBarContent>
         <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>

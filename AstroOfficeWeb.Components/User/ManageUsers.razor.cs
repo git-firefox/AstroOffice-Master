@@ -15,6 +15,9 @@ namespace AstroOfficeWeb.Components.User
     public partial class ManageUsers
     {
         [Parameter]
+        public string GridClass { get; set; } = string.Empty;
+
+        [Parameter]
         public EventCallback<bool> UsersLoaded { get; set; }
 
         private bool IsDrawerOpen { get; set; }

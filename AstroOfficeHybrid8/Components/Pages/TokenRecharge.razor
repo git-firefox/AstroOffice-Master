@@ -1,12 +1,11 @@
 ﻿@page "/token-recharge"
 @inject TokenWalletService TokenWallet
 
-<PageLayout Title="Recharge" UserToken="TotalBalance">
+<PageLayout Title="Recharge" UserToken="TotalBalance" ViewInContainer="false">
 
     <ChildContent>
-        <div class="mt-5 px-3">
             <AstroOfficeWeb.Components.TokenComponents.TokenRecharge OnTokenUpdated="OnTokenUpdated"></AstroOfficeWeb.Components.TokenComponents.TokenRecharge>
-        </div>
+       
     </ChildContent>
 </PageLayout>
 

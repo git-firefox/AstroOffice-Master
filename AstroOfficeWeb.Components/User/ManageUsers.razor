@@ -71,7 +71,7 @@
         <MudButton Variant="Variant.Text" Class="btn-custom" OnClick="()=>OnClick_BtnAction(FormMode.Add)">Add User</MudButton>
     </Header>
     <ChildContent> *@
-<MudDataGrid T=UserListItemModel Items=Users Filterable="true" FilterMode="DataGridFilterMode.ColumnFilterRow" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive">
+<MudDataGrid T=UserListItemModel Items=Users Filterable="true" FilterMode="DataGridFilterMode.ColumnFilterRow" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive" Class="@GridClass">
     <Columns>
         <PropertyColumn Property="x => x.Sno" Title="Sno" Filterable="false" Sortable="false" />
         <PropertyColumn Property="x => x.Username" Title="User Name" />

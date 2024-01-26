@@ -45,8 +45,18 @@
     }
 
 </MudAppBar>
-<MudMainContent>
-    @ChildContent
+
+<MudMainContent Class="px-2">
+    @if (ViewInContainer)
+    {
+        <MudContainer Class="p-3">
+            @ChildContent
+        </MudContainer>
+    }
+    else
+    {
+        @ChildContent
+    }
 </MudMainContent>
 
 @code {
@@ -67,6 +77,9 @@
 
     [Parameter]
     public bool IsChild { get; set; } = false;
+
+    [Parameter]
+    public bool ViewInContainer { get; set; } = true; 
 
     // protected override async Task OnInitializedAsync()
     // {

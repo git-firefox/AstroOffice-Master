@@ -1,6 +1,6 @@
 ﻿@page "/manage-products"
 
-<PageLayout Title="Manage Products">
+<PageLayout Title="Manage Products" ViewInContainer="false">
     <RightContainer>
 
         <div class="pt-4 pb-2 ">
@@ -10,9 +10,7 @@
     </RightContainer>
 
     <ChildContent>
-        <div class="mt-5 px-3">
-            <AstroOfficeWeb.Components.ProductComponents.ManageProducts IsDataUrl="true"></AstroOfficeWeb.Components.ProductComponents.ManageProducts>
-        </div>
+        <AstroOfficeWeb.Components.ProductComponents.ManageProducts GridClass="my-3" IsDataUrl="true"></AstroOfficeWeb.Components.ProductComponents.ManageProducts>
     </ChildContent>
 </PageLayout>
 

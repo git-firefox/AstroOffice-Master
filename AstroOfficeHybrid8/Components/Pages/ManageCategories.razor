@@ -1,7 +1,7 @@
 ﻿@page "/manage-categories"
 @using AstroOfficeWeb.Components.ProductComponents
 
-<PageLayout Title="Manage category">
+<PageLayout Title="Manage category" ViewInContainer="false">
     <RightContainer>
         @if (isLoadedCategory)
         {
@@ -11,9 +11,8 @@
     </RightContainer>
 
     <ChildContent>
-        <div class="mt-5 px-3">
-            <AstroOfficeWeb.Components.ProductComponents.ManageCategories @ref=MCategories IsCategoryLoaded="CategoryLoaded"></AstroOfficeWeb.Components.ProductComponents.ManageCategories>
-        </div>
+        <AstroOfficeWeb.Components.ProductComponents.ManageCategories GridClass="my-3" @ref=MCategories IsCategoryLoaded="CategoryLoaded"></AstroOfficeWeb.Components.ProductComponents.ManageCategories>
+
     </ChildContent>
 </PageLayout>
 

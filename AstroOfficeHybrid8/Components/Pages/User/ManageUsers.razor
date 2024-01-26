@@ -1,7 +1,7 @@
 ﻿@page "/manage-users"
 @using AstroOfficeWeb.Shared.Utilities
 
-<PageLayout Title="Manage Users">
+<PageLayout Title="Manage Users" ViewInContainer="false">
     <RightContainer>
         @if (IsLoaded)
         {
@@ -9,9 +9,7 @@
         }
     </RightContainer>
     <ChildContent>
-        <div class="mt-5 px-3">
-            <AstroOfficeWeb.Components.User.ManageUsers @ref=MUsers UsersLoaded="UserLoaded"></AstroOfficeWeb.Components.User.ManageUsers>
-        </div>
+            <AstroOfficeWeb.Components.User.ManageUsers GridClass="my-3" @ref=MUsers UsersLoaded="UserLoaded"></AstroOfficeWeb.Components.User.ManageUsers>
     </ChildContent>
 </PageLayout>
 
