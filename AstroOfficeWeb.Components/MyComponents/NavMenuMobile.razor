@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Routing
 @* <nav class="fixed-bottom bottom-0 position-fixed end-0 start-0 border-top"> *@
 
-<footer id="footer-container" class="footer mt-auto bg-light fixed-bottom">
+<footer id="footer-container" class="footer mt-auto bg-light position-sticky fixed-bottom">
     <AuthorizeView>
         <Authorized>
             <nav class="end-0 start-0 border-top d-lg-none">
@@ -12,14 +12,14 @@
 
                                 @* Home *@
                                 @if (!context.User.IsInRole(ApplicationConst.Role_ProductManager))
-                {
-                                <li class="m-nav-item">
-                                    <NavLink href="/" Match="NavLinkMatch.All" class="m-nav-item-link">
-                                        <div class="m-nav-item-icon">
-                                            <img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/magic-ball-fill.png" alt="Home" />
-                                        </div>
-                                        <span class="m-nav-item-text">Home</span>
-                                    </NavLink>
+                                {
+                                    <li class="m-nav-item">
+                                        <NavLink href="/" Match="NavLinkMatch.All" class="m-nav-item-link">
+                                            <div class="m-nav-item-icon">
+                                                <img class="icon-height mx-2" src="_content/AstroOfficeWeb.Components/icons/magic-ball-fill.png" alt="Home" />
+                                            </div>
+                                            <span class="m-nav-item-text">Home</span>
+                                        </NavLink>
                                     </li>
                                 }
 
@@ -43,8 +43,8 @@
                                             </div>
                                             <span class="m-nav-item-text">Shopping</span>
                                         </NavLink>
-                                    </li> 
-                                    
+                                    </li>
+
                                     @* Wishlist *@
                                     <li class="m-nav-item">
                                         <NavLink href="/user-wishlist" class="m-nav-item-link">
@@ -106,7 +106,7 @@
                                         </NavLink>
                                     </li>
 
-                                    }
+                                }
 
                                 @if (context.User.IsInRole(ApplicationConst.Role_Admin) || context.User.IsInRole(ApplicationConst.Role_ProductManager) || context.User.IsInRole(ApplicationConst.Role_OrderManager))
                                 {

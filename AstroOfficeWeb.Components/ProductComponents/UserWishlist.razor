@@ -49,8 +49,8 @@ else if (ViewProductDTOs.Any())
                             <a><MudButton StartIcon="@Icons.Material.Filled.Close" OnClick="()=>OnCLick_ALickVRemoveWishlist(product)" Class="pa-0 p-0"></MudButton></a>
                         </div>
                     </div>
-                    <div class=" text-center">
-                        <h5 class="card-title">@product.Name</h5>
+                    <div class="text-center">
+                        <h5 class="card-title px-2">@product.Name</h5>
 
                         <div class="m-2">
                             <MudButton Variant="Variant.Filled" Class="btn-block " Size="Size.Small" StartIcon="@Icons.Material.Filled.AddShoppingCart" Color="Color.Warning" OnClick="()=>OnCLick_BtnAddToCart(product)"> Add to cart </MudButton>

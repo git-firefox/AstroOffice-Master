@@ -84,9 +84,11 @@
         <div class="card card-primary card-frame">
 
             <div style="position:relative;z-index:999;padding:15px;">
-                <div class="card-header p-0 mb-2 px-4 px-md-0  ">
-                    <h2 class="font-weight-bold text-center">Birth Details</h2>
-
+                <div class="card-header d-flex px-4 px-sm-0">
+                    <h2 class="font-weight-bold flex-grow-1">
+                        Birth Details
+                    </h2>
+                    <button type="button" class="btn-custom btn-sm" @onclick="OnClick_BtnRefresh">Refresh</button>
                 </div>
                 <EditForm Model="BirthDetails">
                     <div class="card-body px-md-0 p-0">
@@ -115,9 +117,6 @@
                             </div>
                             <div class="col-auto">
                                 <button type="button" class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnPlus"> <i class="fa fa-plus"></i> </button>
-                            </div>
-                            <div class="col-auto d-none d-md-inline-block">
-                                <button type="button" class="btn btn-block btn-custom btn-sm" @onclick="OnClick_BtnRefresh">Refresh</button>
                             </div>
                         </div>
 
@@ -371,9 +370,6 @@
                                                         <label class="form-check-label" for="ChkMfal">Mfal</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-12  d-inline-block d-md-none">
-                                                    <button type="button" class="btn-custom btn-sm" @onclick="OnClick_BtnRefresh">Refresh</button>
-                                                </div>
                                                 @*  <div class="col">
                                                 <InputTextArea class="form-control mt-2" rows="4" Placeholder="Enter ..." @bind-Value="BirthDetails!.Brief" />
                                                 </div> *@
@@ -547,7 +543,7 @@
 
 
 
-<MudExpansionPanels  MultiExpansion="true">
+<MudExpansionPanels MultiExpansion="true">
 
     <MudExpansionPanel Class="karan-image" Text="Karan" IsExpandedChanged="ExpandedChanged">
 

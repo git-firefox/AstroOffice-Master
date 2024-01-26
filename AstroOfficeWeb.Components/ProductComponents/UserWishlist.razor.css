@@ -3,7 +3,7 @@
     font-size: 1.1rem;
     font-weight: 400;
     width: 149px;
-    color: #fab73a;
+    /*color: #fab73a;*/
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
@@ -199,6 +199,6 @@
         }
     .card-title {
         width: 100%;
-        color: #fab73a !important;
+        /*color: #fab73a !important;*/
     }
 }

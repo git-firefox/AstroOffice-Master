@@ -115,7 +115,7 @@
     <div class="col">
         <div class="shop-search">
             <MudForm @ref="Form">
-                <MudGrid>
+                <MudGrid Class="pl-2">
                     <MudItem xs="12" sm="4" Class="pr-0">
                         <MudTextField T="string" DebounceInterval="500" InputType="InputType.Search" TextChanged="FilterFunc" Placeholder="Search Product" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Margin="Margin.Dense" />
                     </MudItem>
@@ -134,7 +134,7 @@
                             <MudSelectItem Value="@("80")" />
                         </MudSelect>
                     </MudItem>
-                    <MudItem Class="d-flex justify-center align-content-center">
+                    <MudItem sm="1" Class="d-flex justify-center align-content-center pl-0">
                         @* <MudButton OnClick="OnClick_BtnClear" Class="btn-custom" Style="margin-top:20px;">Clear</MudButton> *@
                         <MudIconButton Class="rounded-circle btn btn-custom m-auto" ButtonType="ButtonType.Button" Variant="Variant.Filled" Icon="@Icons.Material.Rounded.FilterAltOff" OnClick="OnClick_BtnClear" aria-label="clear filter"></MudIconButton>
                     </MudItem>
@@ -211,7 +211,7 @@
                     <div class="col mb-2">
                         <div class="card shop-card h-100">
                             <div class="card-body" style="transform: rotate(0);">
-                                <div class="card-img-actions">
+                                <div class="card-img-actions overflow-hidden rounded-lg">
                                     <img src="@product.ImageUrl" alt="@product.Name" title="@product.Name" class="card-img img-fluid" width="96" height="350">
 
                                     @if (product.SecondaryImageUrl == null)
