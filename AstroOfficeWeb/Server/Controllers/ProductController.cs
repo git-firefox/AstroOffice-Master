@@ -404,6 +404,7 @@ namespace AstroOfficeWeb.Server.Controllers
         [HttpPut]
         public IActionResult UpdateProduct([FromQuery] long sno, [FromForm] MultipartFormRequest<SaveProductDTO> request)
 
+        
         {
             SaveProductDTO productDTO = request.DataObject;
 
