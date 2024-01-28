@@ -3,9 +3,9 @@
 
 @attribute [Authorize(Roles = "Admin,User,ManageProduct")]
 
-<FluidPageLayout Title="Add Product">
+<FluidPageLayout Title=@_title>
     <ChildContent>
-        <AstroOfficeWeb.Components.ProductComponents.SaveProduct Sno="Sno" Mode="Enum.Parse<ActionMode>(Mode, true)" Name="@Name" />
+        <AstroOfficeWeb.Components.ProductComponents.SaveProduct Sno="Sno" Mode="_mode" Name="@Name" />
     </ChildContent>
 </FluidPageLayout>
 
@@ -19,4 +19,21 @@
 
     [Parameter]
     public string? Name { get; set; }
+
+    string _title = "";
+    string? _titleHeader;
+    ActionMode _mode;
+
+    protected override void OnInitialized()
+    {
+        _mode = Enum.Parse<ActionMode>(Mode, true);
+        if (_mode == ActionMode.Edit)
+        {
+            _title = "Edit Product";
+        }
+        else
+        {
+            _title = "Add Product";
+        }
+    }
 }

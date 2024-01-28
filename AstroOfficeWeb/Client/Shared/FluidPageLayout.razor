@@ -1,24 +1,27 @@
 ﻿<PageTitle>@Title</PageTitle>
 
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row my-3">
-            <div class="col-12">
-                <h1>@Title</h1>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row my-3">
+                <div class="col-12">
+                    <h1> @(string.IsNullOrEmpty(HeaderTitle) ? Title : HeaderTitle) </h1>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="content">
-    <div class="container-fluid">
-        @ChildContent
+    <section class="content">
+        <div class="container-fluid">
+            @ChildContent
     </div>
 </section>
 
 @code {
     [Parameter]
     public string Title { get; set; } = null!;
+
+    [Parameter]
+    public string? HeaderTitle { get; set; } = null;
 
     [Parameter]
     public RenderFragment ChildContent { get; set; } = null!;

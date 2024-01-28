@@ -1,6 +1,6 @@
 ﻿<EditForm EditContext="GeneralInformationContext">
     <DataAnnotationsValidator />
-    <ValidationSummary />
+    @* <ValidationSummary /> *@
     <h4 class="header-title">General Information</h4>
     <p class="sub-header">Fill all information below</p>
 
@@ -82,12 +82,5 @@
             <label class="form-label">Comment</label>
             <InputTextArea @bind-Value="Model!.Comment" class="form-control" rows="3" placeholder="Please enter comment"></InputTextArea>
         </div>
-
     </div>
-
-    <ul class="pager wizard mb-0 list-inline text-end mt-3">
-        <li class="next list-inline-item">
-            <button type="submit" class="btn btn-success">Add More Info <i class="mdi mdi-arrow-right ms-1"></i></button>
-        </li>
-    </ul>
 </EditForm>
