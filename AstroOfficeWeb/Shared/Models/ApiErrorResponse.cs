@@ -12,6 +12,6 @@ namespace AstroOfficeWeb.Shared.Models
         public string Title { get; set; } = null!;
         public int Status { get; set; }
         public string TraceId { get; set; } = null!;
-        public Dictionary<string, string[]> Errors { get; set; } = null!;
+        public Dictionary<string, string[]>? Errors { get; set; }
     }
 }

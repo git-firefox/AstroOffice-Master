@@ -43,6 +43,7 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="wwwroot\media\" />
   </ItemGroup>
 
 

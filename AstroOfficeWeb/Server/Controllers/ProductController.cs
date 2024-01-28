@@ -200,16 +200,13 @@ namespace AstroOfficeWeb.Server.Controllers
 
         private void UploadFileToServer(IFormFileCollection files, AProduct existedProduct)
         {
-
             if (files != null)
             {
-
-
                 if (files.Any())
                 {
                     var mediaFiles = new List<AProductMediaFile>();
                     //var test = Request.Form.Files;
-                    var countOrder = existedProduct.AProductMediaFiles.Count;
+                    //var countOrder = existedProduct.AProductMediaFiles.Count;
                     var mediaPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media");
 
                     foreach (var file in files)
@@ -312,13 +309,13 @@ namespace AstroOfficeWeb.Server.Controllers
         // PUT api/<ProductController>/5
         [Authorize]
         [HttpPut]
-        public IActionResult UpdateProduct([FromQuery] long sno, [FromForm] MultipartFormRequest<SaveProductRequest> request)
+        public async Task<IActionResult> UpdateProduct([FromQuery] long sno, [FromForm] MultipartFormRequest<SaveProductRequest> request)
         {
             var apiResponse = new ApiResponse<string> { Data = null };
             try
             {
                 var productInfo = request.DataObject!;
-                if (_context.AProducts.Include(a => a.AProductMediaFiles).FirstOrDefault(ap => ap.Sno == sno && ap.IsActive == true) is AProduct existedProduct)
+                if (await _context.AProducts.Include(a => a.AProductMediaFiles).Include(a => a.ProductMetaData).FirstOrDefaultAsync(ap => ap.Sno == sno && ap.IsActive == true) is AProduct existedProduct)
                 {
                     _context.Entry(existedProduct).State = EntityState.Detached;
 
@@ -327,22 +324,18 @@ namespace AstroOfficeWeb.Server.Controllers
                     aProduct.AddedByAUsersSno = existedProduct.AddedByAUsersSno;
                     aProduct.AddedDate = existedProduct.AddedDate;
                     aProduct.ModifiedByAUsersSno = User.GetUserSno();
-
                     aProduct.LastModifiedDate = DateTime.Now;
-
+                    aProduct.IsActive = true;
 
                     //aProduct.IsActive = true;c
                     if (productInfo.ProductMediaFiles.Any())
                     {
 
-                        var existsImages = existedProduct.AProductMediaFiles.Where(p => p.AProductsSno == aProduct.Sno).ToList();
-
                         var doNotingImageSnos = productInfo.ProductMediaFiles.Where(pi => pi.Sno != 0).Select(pi => pi.Sno).ToList();
 
                         var needToUpdateImage = productInfo.ProductMediaFiles.Where(pi => pi.Sno != 0).ToList();
 
-
-                        var imagesNeedToDelete = existsImages.Where(ei => !doNotingImageSnos.Contains(ei.Sno));
+                        var imagesNeedToDelete = existedProduct.AProductMediaFiles.Where(ei => !doNotingImageSnos.Contains(ei.Sno));
 
                         if (imagesNeedToDelete.Any())
                         {
@@ -362,21 +355,19 @@ namespace AstroOfficeWeb.Server.Controllers
 
                         foreach (var updateImage in needToUpdateImage)
                         {
-                            existsImages.First(pi => pi.Sno == updateImage.Sno).IsPrimary = updateImage.IsPrimary;
-                            existsImages.First(pi => pi.Sno == updateImage.Sno).IsSecondary = updateImage.IsSecondary;
+                            existedProduct.AProductMediaFiles.First(pi => pi.Sno == updateImage.Sno).IsPrimary = updateImage.IsPrimary;
+                            existedProduct.AProductMediaFiles.First(pi => pi.Sno == updateImage.Sno).IsSecondary = updateImage.IsSecondary;
                         }
 
-                        UploadFileToServer(request.Files, existedProduct);
                     }
 
-
-                    var existMetaData = _context.ProductMetaDatas.Where(p => p.AProductsSno == aProduct.Sno).ToList();
+                    UploadFileToServer(request.Files, existedProduct);
 
                     var doNothingMetaDataSnos = productInfo.ProductMetaDatas.Where(p => p.Sno != 0).Select(pi => pi.Sno).ToList();
 
-                    var metaDataNeedToDelete = existMetaData.Where(p => !doNothingMetaDataSnos.Contains(p.Sno));
+                    var metaDataNeedToDelete = existedProduct.ProductMetaData.Where(p => !doNothingMetaDataSnos.Contains(p.Sno));
 
-                    var metaDataNeedToUpdate = existMetaData.Where(p => doNothingMetaDataSnos.Contains(p.Sno));
+                    var metaDataNeedToUpdate = existedProduct.ProductMetaData.Where(p => doNothingMetaDataSnos.Contains(p.Sno));
 
                     var metaDataNeedToAdd = productInfo.ProductMetaDatas.Where(pi => !doNothingMetaDataSnos.Contains(pi.Sno)).Select(pi => new ProductMetaData
                     {
@@ -394,24 +385,22 @@ namespace AstroOfficeWeb.Server.Controllers
                             metaDataDto => metaDataDto.Sno,
                             (metaData, metaDataDto) => new { OldMetaData = metaData, NewMetaDataDTO = metaDataDto });
 
-
                         foreach (var tempData in joinData)
                         {
                             tempData.OldMetaData.MetaKeyword = tempData.NewMetaDataDTO.MetaKeyword;
                             tempData.OldMetaData.MetaValue = tempData.NewMetaDataDTO.MetaValue;
                             _context.ProductMetaDatas.Update(tempData.OldMetaData);
-                            _context.SaveChanges();
                         }
                     }
 
                     if (metaDataNeedToAdd.Any())
-                        _context.AddRange(metaDataNeedToAdd);
+                        await _context.ProductMetaDatas.AddRangeAsync(metaDataNeedToAdd);
 
                     if (metaDataNeedToDelete.Any())
                         _context.ProductMetaDatas.RemoveRange(metaDataNeedToDelete);
 
                     _context.AProducts.Update(aProduct);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
 
                     apiResponse.Message = ProductMessageConst.UpdateProduct;
                     apiResponse.Success = true;

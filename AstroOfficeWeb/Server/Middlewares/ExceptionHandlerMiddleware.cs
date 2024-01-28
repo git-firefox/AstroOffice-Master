@@ -35,7 +35,7 @@ namespace AstroOfficeWeb.Server.Middlewares
             {
                 Status = context.Response.StatusCode,
                 Type = "Internal Server Error.",
-                Title = "Internal Server Error from the custom middleware."
+                Title = exception.Message
             };
 
             var jsonResponse = JsonSerializer.Serialize(errorResponse);

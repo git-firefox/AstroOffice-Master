@@ -36,7 +36,7 @@ namespace AstroOfficeWeb.Server
 
 
 
-            CreateMap<AProduct, BaseProductDTO>();
+            CreateMap<AProduct, BaseProductDTO>().ReverseMap();
             CreateMap<AProductMediaFile, MediaFileDTO>();
             CreateMap<ProductMetaData, MetaDataDTO>();
 
