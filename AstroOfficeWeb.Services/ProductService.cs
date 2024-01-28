@@ -112,27 +112,6 @@ namespace AstroOfficeWeb.Services
             return products;
         }
 
-        public async Task<List<ViewProductDTO>?> GetUserAddedProducts()
-        {
-            var productDTOs = await _swagger.GetAsync<List<ViewProductDTO>>(ProductApiConst.GET_UserAddedProducts);
-            return productDTOs;
-        }
-
-        public async Task<List<ImagesDTO>?> GetImagesByProductIds(long sno)
-        {
-
-            var queryParams = new Dictionary<string, string>
-            {
-                { "productId" , sno.ToString() },
-            }; var response = await _swagger.GetAsync<ApiResponse<List<ImagesDTO>>>(ProductApiConst.GET_ProductImages, queryParams);
-            if (!response!.Success)
-            {
-                _snackbar?.ShowErrorSnackbar(response.Message);
-                return null;
-            }
-            return response.Data;
-        }
-
         public async Task<ProductDTO?> GetProductBySno(long sno)
         {
             var queryParams = new Dictionary<string, string>()

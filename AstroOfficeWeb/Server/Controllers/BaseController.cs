@@ -46,7 +46,7 @@ namespace AstroOfficeWeb.Server.Controllers
                     fileUrl = $"data:{GetMimeType(GetFileExtension(filePath))};base64,{Convert.ToBase64String(fileBytes)}";
                 }
             }
-            else (!String.IsNullOrEmpty(fileName) && (!fileName.StartsWith("data:image") && (!fileName.StartsWith("http") || !fileName.StartsWith("https"))))
+            else if(!string.IsNullOrEmpty(fileName) && (!fileName.StartsWith("data:image") && (!fileName.StartsWith("http") || !fileName.StartsWith("https"))))
             {
                 fileUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value + "/media/" + fileName;
                 var sb = new StringBuilder(fileUrl);

@@ -65,6 +65,39 @@ namespace AstroOfficeWeb.Server.Controllers
             return Ok(productDTOs);
         }
 
+        //[HttpGet]
+        //[Authorize]
+        //public async Task<IActionResult> GetProducts(long? categorySno = null, bool returnDataUrl = false)
+        //{
+        //    List<AProduct>? listedProducts = null;
+        //    if (categorySno != null)
+        //    {
+        //        listedProducts = _context.AProducts.Include(a => a.AProductMediaFiles).Where(p => p.ProductCategoriesSno == categorySno && p.IsActive == true).OrderByDescending(p => p.Sno).ToList();
+        //    }
+        //    else
+        //    {
+        //        listedProducts = _context.AProducts.Include(a => a.AProductMediaFiles).Where(p => p.IsActive == true).OrderByDescending(p => p.Sno).ToList();
+        //    }
+
+        //    var productDTOs = _mapper.Map<List<ViewProductDTO>>(listedProducts);
+        //    ProductMedia? primaryImage = null;
+        //    ProductMedia? secondaryImage = null;
+
+        //    productDTOs.ForEach(pd =>
+        //    {
+        //        primaryImage = listedProducts.First(a => a.Sno == pd.Sno).ProductMedia.FirstOrDefault(a => a.AProductsSno == pd.Sno && a.IsPrimary && a.MediaType != "MP4" && a.MediaType != "WEBM" && a.MediaType != "OGG");
+        //        secondaryImage = listedProducts.First(a => a.Sno == pd.Sno).ProductMedia.FirstOrDefault(a => a.AProductsSno == pd.Sno && a.IsSecondary && a.MediaType != "MP4" && a.MediaType != "WEBM" && a.MediaType != "OGG");
+
+        //        pd.ProductQuantity = cartItems?.FirstOrDefault(ci => ci.AProductsSno == pd.Sno)?.Quantity ?? 0;
+        //        pd.ImageUrl = SetMedia(primaryImage?.MediaUrl, primaryImage?.MediaType, returnDataUrl);
+        //        pd.SecondaryImageUrl = SetMedia(secondaryImage?.MediaUrl, secondaryImage?.MediaType, returnDataUrl);
+
+        //    });
+
+        //    return Ok(productDTOs);
+        //}
+
+
         [Authorize]
         [HttpGet]
         public IActionResult GetUserAddedProducts()
