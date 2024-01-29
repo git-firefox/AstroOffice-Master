@@ -5,13 +5,13 @@
         @if (isLoadedCategory)
         {
 
-            <MudButton OnClick="MCategories.Onclick_AddMetaData" Class="btn-custom">Add Category</MudButton>
+            <MudButton Class="btn-custom">Add Category</MudButton>
         }
     </RightContainer>
 
     <ChildContent>
         <div class="mt-5 px-3">
-            <AstroOfficeWeb.Components.ProductComponents.ManageCategories @ref=MCategories IsCategoryLoaded="CategoryLoaded" />
+            <AstroOfficeWeb.Components.ProductComponents.ManageCategories @ref=MCategories  />
         </div>
     </ChildContent>
 </PageLayout>
