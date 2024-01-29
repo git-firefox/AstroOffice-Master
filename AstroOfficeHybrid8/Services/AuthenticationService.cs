@@ -34,7 +34,8 @@ namespace AstroOfficeHybrid8.Services
 
                 if (response!.IsAuthSuccessful)
                 {
-                    //await SecureStorage.SetAsync(ApplicationConst.Local_Token, response!.Token!);
+                    await SecureStorage.SetAsync(ApplicationConst.Local_Token, response!.Token!);
+                    
                     ((AuthenticationStateService)_authStateProvider).NotifyUserLoggedIn(response.Token);
                     _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", response.Token);                    
                 }

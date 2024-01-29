@@ -30,7 +30,7 @@
 	<string>Assets.xcassets/appicon.appiconset</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-	<key>NSAllowsArbitraryLoads</key>
+		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
@@ -49,5 +49,7 @@
 	<true/>
 	<key>UIStatusBarHidden</key>
 	<true/>
+	<key>CFBundleIdentifier</key>
+	<string></string>
 </dict>
 </plist>

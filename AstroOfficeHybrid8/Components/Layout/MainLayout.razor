@@ -54,9 +54,9 @@
                             <AuthorizeView Roles=@(ApplicationConst.Role_AdminUser + "," + ApplicationConst.Role_Astrologer + "," + ApplicationConst.Role_Member) Context="check">
                                 <Authorized>
 
-                                    <MudNavLink Href="/" Match="NavLinkMatch.All" Style="font-size: 16px">
+                             @*        <MudNavLink Href="/" Match="NavLinkMatch.All" Style="font-size: 16px">
                                         <MudIcon Icon="@Icons.Material.Filled.Home" /> Home
-                                    </MudNavLink>
+                                    </MudNavLink> *@
 
                                     <MudNavLink Href="/dashboard" Match="NavLinkMatch.All" Style="font-size: 16px">
                                         <MudIcon Icon="@Icons.Material.Filled.Dashboard" /> Dashboard
@@ -204,7 +204,10 @@
     </ErrorContent> *@
     @* </ErrorBoundary> *@
 </CascadingValue>
+<AstroOfficeWeb.Components.MyComponents.NavMenuMobile></AstroOfficeWeb.Components.MyComponents.NavMenuMobile>
+
 @*
+
 
 <NavMenu></NavMenu>
 <NavMenuMobile></NavMenuMobile> *@
@@ -232,7 +235,7 @@
             {
                 Primary = new MudBlazor.Utilities.MudColor("#ff8808"),
                 Secondary = new MudBlazor.Utilities.MudColor("#ff8808"),
-                AppbarBackground = Colors.Red.Default,
+                AppbarBackground = new MudBlazor.Utilities.MudColor("#910d0d"),
                 Success = new MudBlazor.Utilities.MudColor("#ff8808")
             },
             PaletteDark = new PaletteDark()
