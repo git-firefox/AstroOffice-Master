@@ -9,18 +9,36 @@
     --a-text-secondary: rgb(233, 175, 0);
     --a-text-primary-2: rgb(3, 26, 42);
 }
-body {
-    font-family: 'Philosopher', sans-serif;
+/*body {
+    font-family: 'Philosopher', sans-serif;*/
     /*background-image: url('/images/astro-container.webp');*/
-    background-color: #f37d01;
+    /*background-color: #f37d01;
     background-size: cover;
     background: rgb(250,132,1);
     background: -moz-linear-gradient(90deg, rgba(250,132,1,1) 0%, rgba(141,14,0,1) 100%);
     background: -webkit-linear-gradient(90deg, rgba(250,132,1,1) 0%, rgba(141,14,0,1) 100%);
-    background: linear-gradient(90deg, rgba(250,132,1,1) 0%, rgba(141,14,0,1) 100%);
+    background: linear-gradient(90deg, rgba(250,132,1,1) 0%, rgba(141,14,0,1) 100%);*/
     /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fa8401",endColorstr="#8d0e00",GradientType=1);*/
     /*animation: background-animation 20s infinite linear;*/
+/*}*/
+
+
+body {
+    font-family: 'Philosopher', sans-serif;
+    background-color: #e56d00; /*
+    background: rgb(250,132,1);
+    background: -moz-linear-gradient(90deg, rgba(250,132,1,1) 0%, rgba(141,14,0,1) 100%);
+    background: -webkit-linear-gradient(90deg, rgba(250,132,1,1) 0%, rgba(141,14,0,1) 100%);
+    background: linear-gradient(90deg, rgba(250,132,1,1) 0%, rgba(141,14,0,1) 100%);*/
 }
+/*
+.bg-main-color {
+    background-color: #f37d01;
+    background: rgb(250,132,1);
+    background: -moz-linear-gradient(90deg, rgba(250,132,1,1) 0%, rgba(141,14,0,1) 100%);
+    background: -webkit-linear-gradient(90deg, rgba(250,132,1,1) 0%, rgba(141,14,0,1) 100%);
+    background: linear-gradient(90deg, rgba(250,132,1,1) 0%, rgba(141,14,0,1) 100%);
+}*/
 
 /*@keyframes background-animation {
     0% {
