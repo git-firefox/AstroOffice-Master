@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Routing
 @inject NavigationManager Navigation
 
-<header id="header-container" class="sticky-top">
+<header id="header-container" class="@Class">
     <nav class="border-bottom navbar navbar-expand-lg">
         <div class="container-fluid">
             <div class="d-flex align-items-center">
@@ -214,6 +214,8 @@
 </header>
 
 @code {
+    [Parameter]
+    public string Class { get; set; } = string.Empty;
     private void OnClick_BtnSignIn(MouseEventArgs args)
     {
         Navigation.NavigateTo("/login");
