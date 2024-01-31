@@ -43,6 +43,7 @@ namespace AstroOfficeHybrid8
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<ISwaggerApiService, SwaggerApiService>();
             builder.Services.AddScoped<IPrintService, CustomPrintService>();
+            builder.Services.AddScoped<IAppService, AppService>();
             builder.Services.AddScoped<AccountService>();
             builder.Services.AddScoped<ProductService>();
             builder.Services.AddScoped<KundaliHistroyService>();

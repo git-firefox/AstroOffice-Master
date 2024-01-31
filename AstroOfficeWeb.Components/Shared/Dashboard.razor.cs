@@ -1777,7 +1777,10 @@ namespace AstroOfficeWeb.Components.Shared
             if (!this.no_countryload && this.BirthDetails.CmbCountry != null && searchString.Length > 2)
             {
                 this.ListBirthCities = await this.GetPlaceListLike(place: searchString, countrycode: this.BirthDetails?.CmbCountry);
+                StateHasChanged();
+
             }
+
         }
         private async Task OnKeyDown_TxtBirthplace(KeyboardEventArgs e)
         {
@@ -1800,7 +1803,8 @@ namespace AstroOfficeWeb.Components.Shared
                     await SelectedIndex(selectedBirthCityIndex);
                 }
             }
-            else if (char.TryParse(e.Key, out char result))
+            //else if (char.TryParse(e.Key, out char result))
+            else 
             {
                 if (!this.no_countryload && this.BirthDetails.CmbCountry != null && BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
                 {
@@ -1824,10 +1828,11 @@ namespace AstroOfficeWeb.Components.Shared
                     return;
                 }
             }
-            else
-            {
-                return;
-            }
+            //else
+            //{
+
+            //    return;
+            //}
         }
 
 

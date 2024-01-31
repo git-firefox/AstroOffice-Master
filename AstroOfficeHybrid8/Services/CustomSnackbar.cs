@@ -50,6 +50,11 @@ namespace AstroOfficeHybrid8.Services
 
         public void ShowWarningSnackbar(string? message)
         {
+            if(DeviceInfo.Current.Platform == DevicePlatform.Android || DeviceInfo.Current.Platform == DevicePlatform.iOS)
+            {
+
+            }
+
             _snackbar.Add(message, Severity.Warning);
         }
     }

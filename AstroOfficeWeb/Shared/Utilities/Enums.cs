@@ -165,4 +165,13 @@ namespace AstroOfficeWeb.Shared.Utilities
         Warning,
         Error
     }
+
+    public enum PlatformType
+    {
+        Mobile,
+        Windows,
+        Web
+    }
+
+
 }
