@@ -1,16 +1,16 @@
 ﻿@using AstroOfficeWeb.Components.HomeComponents
 @inherits LayoutComponentBase
+
 <MudThemeProvider Theme="AppTheme" />
-@* <MudDialogProvider /> *@
 <MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.Small" />
 <MudSnackbarProvider />
 
 
-@* <AstroOfficeWeb.Components.Shared.NavMenu /> *@
 <MudLayout>
-    <MudContainer>
+    <AstroOfficeWeb.Components.MyComponents.NavMenu Class="mud-appbar mud-appbar-fixed-top" />
+    <MudMainContent>
         @Body
-    </MudContainer>
+    </MudMainContent>
+    <AstroOfficeWeb.Components.MyComponents.NavMenuMobile />
 </MudLayout>
-@* <AstroOfficeWeb.Components.Shared.NavMenuMobile /> *@
 
