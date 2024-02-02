@@ -8,7 +8,7 @@
 <PageLayout Title="Save Product">
     <ChildContent>
         <div class="mt-5">
-            <AstroOfficeWeb.Components.ProductComponents.SaveProduct Sno="@Sno" ProductModel="@ProductModel" CategoryDTOs="CategoryDTOs"></AstroOfficeWeb.Components.ProductComponents.SaveProduct>
+            <AstroOfficeWeb.Components.ProductComponents.SaveProduct Sno="@Sno"></AstroOfficeWeb.Components.ProductComponents.SaveProduct>
         </div>
     </ChildContent>
 </PageLayout>
@@ -22,21 +22,21 @@
 
     public List<CategoryListItem> CategoryDTOs { get; set; } = new();
 
-    protected override async Task OnInitializedAsync()
-    {
-        var categories = await ProductService.GetCategories();
-        if (categories != null)
-        {
-            CategoryDTOs = categories;
-        }
-        if (Sno != 0)
-        {
-            var productDTO = await ProductService.GetProductBySno(Sno);
-            if (productDTO != null)
-            {
-                ProductModel = productDTO;
-            }
-        }
-    }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     // var categories = await ProductService.GetCategories();
+    //     // if (categories != null)
+    //     // {
+    //     //     CategoryDTOs = categories;
+    //     // }
+    //     // if (Sno != 0)
+    //     // {
+    //     //     var productDTO = await ProductService.GetProductBySno(Sno);
+    //     //     if (productDTO != null)
+    //     //     {
+    //     //         ProductModel = productDTO;
+    //     //     }
+    //     // }
+    // }
 
 } 

@@ -56,7 +56,7 @@ namespace AstroOfficeWeb.Services
                         a.File!.MediaName = sb.ToString();
                     }
 
-                    files.Add(a.File);                               
+                    files.Add(a.File);
                 }
             });
 
@@ -72,7 +72,7 @@ namespace AstroOfficeWeb.Services
 
             if (sno > 0)
             {
-                response = await _swagger.PutWithMultipartFormDataContentAsync<SaveProductRequest, ApiResponse<string>>(ProductApiConst.PUT_UpdateProduct +"?sno=" + sno, request, files);
+                response = await _swagger.PutWithMultipartFormDataContentAsync<SaveProductRequest, ApiResponse<string>>(ProductApiConst.PUT_UpdateProduct + "?sno=" + sno, request, files);
             }
             else
             {
@@ -112,16 +112,19 @@ namespace AstroOfficeWeb.Services
             return products;
         }
 
-        public async Task<ProductDTO?> GetProductBySno(long sno)
+        public async Task<(BaseProductDTO GeneralInformation, List<MediaFileDTO> ProductMediaFiles, List<MetaDataDTO> ProductMetaDatas)> GetProductBySno(long sno)
         {
             var queryParams = new Dictionary<string, string>()
             {
                 { "Sno", sno.ToString()}
             };
 
-            var response = await _swagger.GetAsync<ApiResponse<ProductDTO>>(ProductApiConst.GET_ProductBySno, queryParams);
+            var response = await _swagger.GetAsync<GetProductResponse>(ProductApiConst.GET_ProductBySno, queryParams);
 
-            return response?.Data;
+            if (response!.Success!)
+            {
+            }
+            return (response.GeneralInformation, response.ProductMediaFiles, response.ProductMetaDatas);
         }
 
         public async Task AddProduct(ProductDTO saveProduct)

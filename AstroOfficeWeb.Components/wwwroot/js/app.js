@@ -82,6 +82,27 @@ window.fnSummernoteInterop = function (element, height, dotnetObject) {
     }
 }
 
+window.fnOwlCarouselInterop = function (element, dotnetObject) {
+    if (element instanceof HTMLDivElement) {
+        $(element).owlCarousel({
+            loop: true,
+            margin: 10,
+            nav: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 3
+                },
+                1000: {
+                    items: 5
+                }
+            }
+        });
+    }
+}
+
 window.fnFocusBlazorElement = function (element) {
     if (element instanceof HTMLInputElement) {
         element.focus();

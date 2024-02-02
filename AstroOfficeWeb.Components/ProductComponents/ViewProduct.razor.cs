@@ -28,6 +28,7 @@ namespace AstroOfficeWeb.Components.ProductComponents
         public ProductDTO? ViewProductDTO { get; set; } = new ViewProductDTO();
 
         private List<MetaDataDTO> MetaDataList { get; set; } = new List<MetaDataDTO>();
+        private List<MediaFileDTO> MediaFileDTOs { get; set; } = new();
 
         protected override void OnInitialized()
         {
@@ -36,7 +37,8 @@ namespace AstroOfficeWeb.Components.ProductComponents
 
         protected override async Task OnInitializedAsync()
         {
-            ViewProductDTO = await ProductService.GetProductBySno(ProductSno) ?? new();
+            var dd = await ProductService.GetProductBySno(ProductSno);
+            MediaFileDTOs = dd.ProductMediaFiles;
             BrowserFiles = ViewProductDTO.ProductImages ??= new();
             MetaDataList = ViewProductDTO.MetaDatas ??= new();
             SelectedImage = new ImagesDTO { ImageName = ViewProductDTO?.Name ?? "", ImageURL = ViewProductDTO?.ImageUrl ?? "" };
