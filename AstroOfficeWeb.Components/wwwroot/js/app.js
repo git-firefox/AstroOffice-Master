@@ -85,20 +85,16 @@ window.fnSummernoteInterop = function (element, height, dotnetObject) {
 window.fnOwlCarouselInterop = function (element, dotnetObject) {
     if (element instanceof HTMLDivElement) {
         $(element).owlCarousel({
+            items: 1,
+            slideSpeed: 2000,
+            nav: false,
+            autoplay: true,
+            dots: true,
+            responsiveRefreshRate: 200,
             loop: true,
-            margin: 10,
-            nav: true,
-            responsive: {
-                0: {
-                    items: 1
-                },
-                600: {
-                    items: 3
-                },
-                1000: {
-                    items: 5
-                }
-            }
+            video: true,
+            lazyLoad: true,
+            center: true,
         });
     }
 }
