@@ -4,10 +4,10 @@ using Android.Runtime;
 namespace AstroOfficeHybrid8
 {
 #if DEBUG
-    [Application(UsesCleartextTraffic = true)]
+    //[Application(UsesCleartextTraffic = true)]
+    [Application]
 #else
     [Application]
-    
 #endif
     public class MainApplication : MauiApplication
     {

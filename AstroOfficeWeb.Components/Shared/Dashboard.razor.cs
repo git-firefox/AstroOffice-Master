@@ -250,7 +250,8 @@ namespace AstroOfficeWeb.Components.Shared
 
             if (ListBirthCities != null && ListBirthCities.Any())
             {
-                selectedBirthCityIndex = 1;
+                //selectedBirthCityIndex = 1;
+                selectedBirthCityIndex = 0;
 
                 //await OnChange_ListBirthCities(new ChangeEventArgs { Value = selectedBirthCityIndex });
                 await SelectedIndex(selectedBirthCityIndex);
@@ -1792,19 +1793,23 @@ namespace AstroOfficeWeb.Components.Shared
                     selectedBirthCityIndex--;
                     //await OnChange_ListBirthCities(new ChangeEventArgs() { Value = selectedBirthCityIndex });
                     await SelectedIndex(selectedBirthCityIndex);
+
+                    BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
                 }
             }
             else if (e.Key == "ArrowDown")
             {
                 if (selectedBirthCityIndex <= ListBirthCities?.Count - 1)
                 {
-                    selectedBirthCityIndex++;
                     //await OnChange_ListBirthCities(new ChangeEventArgs() { Value = selectedBirthCityIndex });
                     await SelectedIndex(selectedBirthCityIndex);
+                    selectedBirthCityIndex++;
+
+                    BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
                 }
             }
             //else if (char.TryParse(e.Key, out char result))
-            else 
+            else
             {
                 if (!this.no_countryload && this.BirthDetails.CmbCountry != null && BirthDetails?.TxtBirthPlace?.Trim().Length > 2)
                 {
@@ -1839,20 +1844,26 @@ namespace AstroOfficeWeb.Components.Shared
         private async Task SelectedIndex(int selectedIndex)
         {
             selectedBirthCityIndex = selectedIndex;
-            if (selectedBirthCityIndex == 0) return;
+            //if (selectedBirthCityIndex == 0) return;
+
+            //full_lon = (selectedBirthCity!.Longitude ?? "").Trim();
+            //full_lat = (selectedBirthCity!.Latitude ?? "").Trim();
+            //full_time_corr = selectedBirthCity.TimeCorrectionCode ?? "";
 
             if (BirthDetails.PlaceOfBirthID != null)
             {
                 var index = ListBirthCities!.FindIndex(a => a.Sno == BirthDetails.PlaceOfBirthID);
-                selectedBirthCityIndex = index + 1;
-                //selectedBirthCity = ListBirthCities![index];
+                //selectedBirthCityIndex = index + 1;
+                selectedBirthCityIndex = index;
+                selectedBirthCity = ListBirthCities![index];
             }
 
-            selectedBirthCity = ListBirthCities![selectedBirthCityIndex - 1];
+            //selectedBirthCity = ListBirthCities![selectedBirthCityIndex - 1];
+            selectedBirthCity = ListBirthCities![selectedBirthCityIndex];
             SelectedPlace = selectedBirthCity;
             // this.BirthDetails.BirthPlace = selectedBirthCity?.Place ?? "";
 
-            BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
+            //BirthDetails.TxtBirthPlace = selectedBirthCity?.Place ?? "";
 
 
             var task1 = Swagger!.GetAsync<PlaceDTO>(string.Format(LocationBLLApiConst.GET_GetPlaceByID, selectedBirthCity?.Sno));
@@ -1875,9 +1886,11 @@ namespace AstroOfficeWeb.Components.Shared
             //var country = await Swagger!.GetAsync<DTOs.ACountryMaster>(string.Format(LocationBLLApiConst.GET_GetCountryByCode, selectedBirthCity?.CountryCode));
             //var state = await Swagger!.GetAsync<DTOs.AStateMaster>(string.Format(LocationBLLApiConst.GET_GetStateByCode, place?.CountryCode));
 
+
             full_lon = (selectedBirthCity!.Longitude ?? "").Trim();
             full_lat = (selectedBirthCity!.Latitude ?? "").Trim();
             full_time_corr = selectedBirthCity.TimeCorrectionCode ?? "";
+
 
             //var timeCorrection = new TimeCorrection();
             //string str = "";
@@ -1885,7 +1898,6 @@ namespace AstroOfficeWeb.Components.Shared
             //string fullTimeCorr = this.full_time_corr;
             //string[] text = new string[] { this.BirthDetails.Dobdd.ToString(), "/", this.BirthDetails.Dobmm.ToString(), "/", this.BirthDetails.Dobyy.ToString() };
             //timeCorrectionCode = timeCorrection.GetTimeCorrectionCode(fullTimeCorr, string.Concat(text), ref str);
-
 
             if (state == null)
             {
@@ -2896,14 +2908,16 @@ namespace AstroOfficeWeb.Components.Shared
                     house = kPSublordPred.Sublord;
                     predHindi[3] = house.ToString();
                     predHindi[4] = "  ";
-                    if (string.IsNullOrEmpty(kPSublordPred.Pred_English))
-                    {
-                        predHindi[5] = kPSublordPred.Pred_Hindi;
-                    }
-                    else
-                    {
-                        predHindi[5] = kPSublordPred.Pred_English;
-                    }
+                    //if (string.IsNullOrEmpty(kPSublordPred.Pred_English))
+                    //{
+                    //    predHindi[5] = kPSublordPred.Pred_Hindi;
+                    //}
+                    //else
+                    //{
+                    //    predHindi[5] = kPSublordPred.Pred_English;
+                    //}
+                    predHindi[5] = kPSublordPred.Pred_Hindi;
+
                     predHindi[6] = "&nbsp;<br />&nbsp;<br />";
                     str1 = string.Concat(predHindi);
                 }

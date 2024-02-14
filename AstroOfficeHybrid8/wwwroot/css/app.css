@@ -1057,15 +1057,17 @@ section .section-overlay {
     .m-nav-item:has(a.active) .m-nav-item-text {
         transform: scale(1);
     }
-
 .m-nav-item-link {
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: #f2aa36;
+    color: white;
     text-decoration: none;
 }
 
+    .m-nav-item-link:hover {
+        color: white;
+    }
 .m-nav-item-icon {
     display: flex;
     align-items: center;

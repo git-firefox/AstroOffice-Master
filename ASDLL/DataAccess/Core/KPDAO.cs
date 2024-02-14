@@ -410,7 +410,7 @@ namespace ASDLL.DataAccess.Core
                 {
                     kPLangVO.mixno = Convert.ToInt16(row["sno"]);
                     kPLangVO.pred_hindi = row["pred_hindi"].ToString();
-                    kPLangVO.pred_english = row["pred_english"].ToString();
+                    //kPLangVO.pred_english = row["pred_english"].ToString(); // 
                 }
                 else
                 {
