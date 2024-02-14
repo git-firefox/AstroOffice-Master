@@ -88,7 +88,7 @@ window.fnOwlCarouselInterop = function (element, dotnetObject) {
             items: 1,
             slideSpeed: 2000,
             nav: false,
-            autoplay: true,
+            autoplay: false,
             dots: true,
             responsiveRefreshRate: 200,
             loop: true,
